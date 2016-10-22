@@ -1,3 +1,4 @@
+
 # nii-cyber-security-admin
 
 # K-means 
@@ -35,3 +36,44 @@
   </pre>
   
   <img src="kmeans-1.png">
+  
+# one-class SVM
+
+<pre>
+# git clone https://github.com/cjlin1/libsvm
+
+Cloning into 'libsvm'...
+remote: Counting objects: 3485, done.
+remote: Total 3485 (delta 0), reused 0 (delta 0), pack-reused 3485
+Receiving objects: 100% (3485/3485), 5.85 MiB | 189.00 KiB/s, done.
+Resolving deltas: 100% (1857/1857), done.
+Checking connectivity... done.
+
+# cd libsvm/
+~/libsvm# make
+g++ -Wall -Wconversion -O3 -fPIC -c svm.cpp
+g++ -Wall -Wconversion -O3 -fPIC svm-train.c svm.o -o svm-train -lm
+g++ -Wall -Wconversion -O3 -fPIC svm-predict.c svm.o -o svm-predict -lm
+g++ -Wall -Wconversion -O3 -fPIC svm-scale.c -o svm-scale
+
+~/libsvm# cat test.cpp
+~/libsvm# g++ test.cpp svm.cpp
+~/libsvm# ./a.out
+
+..*...*
+optimization finished, #iter = 20
+obj = 1.646537, rho = 1.646558
+nSV = 4, nBSV = 0
+
+2 2 2 2 2 1 2 2 2 2
+2 2 1 1 1 1 1 1 2 2
+2 1 1 1 1 1 1 1 1 2
+2 1 1 1 1 1 1 1 1 2
+2 1 1 1 1 1 1 1 1 1
+2 1 1 1 1 1 1 1 1 1
+2 1 1 1 1 1 1 1 1 2
+2 1 1 1 1 1 1 1 1 2
+2 2 1 1 1 1 1 1 2 2
+2 2 2 2 1 1 2 2 2 2
+
+</pre>
