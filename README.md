@@ -1,8 +1,3 @@
-
-
-
-
-
 # nii-cyber-security-admin
 
 # K-means 
@@ -36,6 +31,7 @@
 # K-means with pylab plots
   <pre>
   -bash-4.1# apt-get install python-matplotlib
+  -bash-4.1# python km2.py test.txt
   </pre>
   
   <img src="kmeans-1.png">
