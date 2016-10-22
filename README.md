@@ -1,6 +1,7 @@
 
 
 
+
 # nii-cyber-security-admin
 
 # K-means 
@@ -25,7 +26,6 @@
   -bash-4.1# easy_install cython
   -bash-4.1# easy_install pandas
   -bash-4.1# easy_install -U statsmodels
-
   -bash-4.1# python cpd.py
   </pre>
   
