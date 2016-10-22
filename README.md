@@ -1,8 +1,9 @@
 
+
 # nii-cyber-security-admin
 
 # K-means 
-
+  <pre>
    -bash-4.1# python km.py test.txt <br>
    0 739.828002664 <br>
    1 364.390406921 <br>
@@ -15,13 +16,19 @@
    8 345.671668541 <br>
    9 345.170391332 <br> 
    10 344.946493745 <br>
+  </pre>
+
 
 # Changepoint detection
 
+  <pre>
   -bash-4.1# apt-get install scipy
   -bash-4.1# easy_install cython
   -bash-4.1# easy_install pandas
   -bash-4.1# easy_install -U statsmodels
 
   -bash-4.1# python cpd.py
+  </pre>
   
+  <img src="changepoint-detection-1.png">
+  <img src="changepoint-detection-2.png">
