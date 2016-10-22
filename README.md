@@ -1,4 +1,5 @@
 
+
 # nii-cyber-security-admin
 
 # K-means 
@@ -77,3 +78,20 @@ nSV = 4, nBSV = 0
 2 2 2 2 1 1 2 2 2 2
 
 </pre>
+
+
+SMO algorithm
+
+<pre>
+
+(gdb) r                                                                                                                     
+(gdb) bt
+#0  Solver::Solve (this=0x7fffffffe0c0, l=4, Q=..., p_=0x62ba30, y_=0x62ba60 "\001\001\001\001", alpha_=0x62ba00, Cp=1, Cn=1, eps=0.001, si=0x7fffffffe210, shrinking=1) at svm.cpp:508
+#1  0x0000000000407163 in solve_one_class (prob=0x7fffffffe490, param=0x7fffffffe3e0, alpha=0x62ba00, si=0x7fffffffe210) at svm.cpp:1556
+#2  0x0000000000407a03 in svm_train_one (prob=0x7fffffffe490, param=0x7fffffffe3e0, Cp=0, Cn=0) at svm.cpp:1662
+#3  0x0000000000409c3b in svm_train (prob=0x7fffffffe490, param=0x7fffffffe3e0) at svm.cpp:2117
+#4  0x0000000000401b22 in main () at test.cpp:77
+
+</pre>
+
+
