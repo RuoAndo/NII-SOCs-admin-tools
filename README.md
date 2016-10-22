@@ -2,6 +2,7 @@
 
 
 
+
 # nii-cyber-security-admin
 
 # K-means 
@@ -31,3 +32,10 @@
   
   <img src="changepoint-detection-1.png">
   <img src="changepoint-detection-2.png">
+
+# K-means with pylab plots
+  <pre>
+  -bash-4.1# apt-get install python-matplotlib
+  </pre>
+  
+  <img src="kmeans-1.png">
