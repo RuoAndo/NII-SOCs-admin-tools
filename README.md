@@ -1,3 +1,4 @@
+
 # nii-cyber-security-admin
 
 # K-means 
@@ -14,7 +15,15 @@
    8 345.671668541
    9 345.170391332 
    10 344.946493745
-  </pre>
+
+   calculating distance ...
+   data:0:[ 0.82706862 -0.76446403]
+    mean:0:[-0.92139629  0.18107609]
+     distance:1.98775643847
+　　mean:1:[ 0.77916733 -0.15312475]
+     distance:0.613213055326
+
+</pre>
 
 # Changepoint detection
   <pre>

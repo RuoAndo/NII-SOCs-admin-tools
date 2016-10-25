@@ -1,5 +1,4 @@
 #coding:utf-8
-
 # K-means
 
 import numpy as np
@@ -47,7 +46,7 @@ if __name__ == "__main__":
     # r is the assignment of clusters
     r = np.zeros( (N, K) )
     r[:, 0] = 1
-    
+
     # init 
     target = J(X, mean, r)
     
@@ -84,3 +83,16 @@ if __name__ == "__main__":
         target = new_target
         turn += 1
     
+    print "calculating distance ..."
+
+    for i in range(len(data)):
+        print "data" + ":" + str(i) + ":" + str(data[i])
+        for j in range(len(mean)):
+            print " mean:" + str(j) + ":" + str(mean[j])
+                                                     
+            u = data[i] - mean[j]
+            print "  distance:" + str(np.linalg.norm(u))
+        
+
+            
+
