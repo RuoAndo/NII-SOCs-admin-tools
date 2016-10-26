@@ -1,6 +1,6 @@
 # nii-cyber-security-admin
 
-# K-means 
+# K-means test
   <pre>
    -bash-4.1# python km.py test.txt 
    0 739.828002664 
