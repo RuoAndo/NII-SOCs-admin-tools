@@ -1,6 +1,6 @@
 # nii-cyber-security-admin
 
-# K-means test
+# K-means 
   <pre>
    -bash-4.1# python km.py test.txt 
    0 739.828002664 
@@ -104,6 +104,8 @@ SMO algorithm
 390//                                                                                                                    391// solution will be put in \alpha, objective value will be put in obj                                                 392//                                                                                                                    393class Solver {                                                                                                        394public:                             
 
 504void Solver::Solve(int l, const QMatrix& Q, const double *p_, const schar *y_,                                        505                   double *alpha_, double Cp, double Cn, double eps,                                                  506                   SolutionInfo* si, int shrinking)                          
+
+</pre>
 
 # PostgreSQL driver
 
