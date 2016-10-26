@@ -114,7 +114,7 @@ psql (9.6.0, サーバー 9.5.4)
 sample=# create TABLE "test"(id INT, name varchar(40));
 CREATE TABLE
 
-# python pg1.py 
+bash# python pg1.py 
 </pre>
 
 
