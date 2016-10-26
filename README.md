@@ -1,4 +1,3 @@
-
 # nii-cyber-security-admin
 
 # K-means 
@@ -99,29 +98,24 @@ SMO algorithm
 #3  0x0000000000409c3b in svm_train (prob=0x7fffffffe490, param=0x7fffffffe3e0) at svm.cpp:2117
 #4  0x0000000000401b22 in main () at test.cpp:77
 
-375// An SMO algorithm in Fan et al., JMLR 6(2005), p. 1889--1918                                                          
-376// Solves:
-378//      min 0.5(\alpha^T Q \alpha) + p^T \alpha                                                                         
-379//                                                                                                                      
-380//              y^T \alpha = \delta                                                                                     
-381//              y_i = +1 or -1                                                                                          
-382//              0 <= alpha_i <= Cp for y_i = 1                                                                          
-383//              0 <= alpha_i <= Cn for y_i = -1                                                                         
-384//                                                                                                                      
-385// Given:                                                                                                               
-386//                                                                                                                      
-387//      Q, p, y, Cp, Cn, and an initial feasible point \alpha                                                           
-388//      l is the size of vectors and matrices                                                                           
-389//      eps is the stopping tolerance                                                                                   
-390//                                                                                                                      
-391// solution will be put in \alpha, objective value will be put in obj                                                   
-392//                                                                                                                      
-393class Solver {                                                                                                          
-394public:                             
+375// An SMO algorithm in Fan et al., JMLR 6(2005), p. 1889--1918                                                        376// Solves:
+378//      min 0.5(\alpha^T Q \alpha) + p^T \alpha                                                                       379//                                                                                                                    380//              y^T \alpha = \delta
+381//              y_i = +1 or -1                                                                                        382//              0 <= alpha_i <= Cp for y_i = 1                                                                        383//              0 <= alpha_i <= Cn for y_i = -1                                                                       384//                                                                                                                    385// Given:                                                                                                             386//                                                                                                                    387//      Q, p, y, Cp, Cn, and an initial feasible point \alpha                                                         388//      l is the size of vectors and matrices                                                                         389//      eps is the stopping tolerance
+390//                                                                                                                    391// solution will be put in \alpha, objective value will be put in obj                                                 392//                                                                                                                    393class Solver {                                                                                                        394public:                             
 
-504void Solver::Solve(int l, const QMatrix& Q, const double *p_, const schar *y_,                                          
-505                   double *alpha_, double Cp, double Cn, double eps,                                                    
-506                   SolutionInfo* si, int shrinking)                          
+504void Solver::Solve(int l, const QMatrix& Q, const double *p_, const schar *y_,                                        505                   double *alpha_, double Cp, double Cn, double eps,                                                  506                   SolutionInfo* si, int shrinking)                          
+
+# PostgreSQL driver
+
+<pre>
+postgres@flare:~$ psql sample
+psql (9.6.0, サーバー 9.5.4)
+"help" でヘルプを表示します.
+sample=# create TABLE "test"(id INT, name varchar(40));
+CREATE TABLE
+
+# python pg1.py 
 </pre>
+
 
 
