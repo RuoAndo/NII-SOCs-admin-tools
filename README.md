@@ -22,14 +22,13 @@
 　　mean:1:[ 0.77916733 -0.15312475]
      distance:0.613213055326
 
+</pre>
+
 <img src="diff-100000.png>
 <img src="diff-10000.png>
 <img src="diff-1000.png>
 <img src="diff-10.png>
 <img src="diff-01.png>
-
-
-</pre>
 
 # Changepoint detection
   <pre>
