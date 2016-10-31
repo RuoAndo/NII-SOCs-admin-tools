@@ -25,22 +25,22 @@
 </pre>
 
 diff = 100000
-<img src="diff-100000.png">
+<img src="diff-100000.png" scale=0.7> <br>
 
 diff = 10000
-<img src="diff-10000.png">
+<img src="diff-10000.png" scale=0.7> <br>
 
 diff = 1000
-<img src="diff-1000.png">
+<img src="diff-1000.png" scale=0.7> <br>
 
 diff = 10
-<img src="diff-10.png">
+<img src="diff-10.png" scale=0.7> <br>
 
 diff = 0.1
-<img src="diff-01.png">
+<img src="diff-01.png" scale=0.7> <br>
 
 diff = 0.01 (default)
-<img src="diff-001.png">
+<img src="diff-001.png" scale=0.7> <br>
 
 # Changepoint detection
   <pre>
