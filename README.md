@@ -22,6 +22,13 @@
 　　mean:1:[ 0.77916733 -0.15312475]
      distance:0.613213055326
 
+<img src="diff-100000.png>
+<img src="diff-10000.png>
+<img src="diff-1000.png>
+<img src="diff-10.png>
+<img src="diff-01.png>
+
+
 </pre>
 
 # Changepoint detection
@@ -113,10 +120,11 @@ SMO algorithm
 postgres@flare:~$ psql sample
 psql (9.6.0, サーバー 9.5.4)
 "help" でヘルプを表示します.
+
 sample=# create TABLE "test"(id INT, name varchar(40));
 CREATE TABLE
+bash# python pg1.py
 
-bash# python pg1.py 
 </pre>
 
 
