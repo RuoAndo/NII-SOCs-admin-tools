@@ -24,10 +24,10 @@
 
 </pre>
 
-diff = 100000
-<img src="diff-100000.png" scale=0.7> <br>
+diff = 100000<br>
+<img src="diff-100000.png" width=0.7> <br>
 
-diff = 10000
+diff = 10000<br>
 <img src="diff-10000.png" scale=0.7> <br>
 
 diff = 1000
