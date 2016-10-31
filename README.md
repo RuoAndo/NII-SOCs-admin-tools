@@ -24,11 +24,11 @@
 
 </pre>
 
-<img src="diff-100000.png>
-<img src="diff-10000.png>
-<img src="diff-1000.png>
-<img src="diff-10.png>
-<img src="diff-01.png>
+<img src="diff-100000.png">
+<img src="diff-10000.png">
+<img src="diff-1000.png">
+<img src="diff-10.png">
+<img src="diff-01.png"x>
 
 # Changepoint detection
   <pre>
