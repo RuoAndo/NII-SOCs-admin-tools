@@ -25,7 +25,7 @@
 </pre>
 
 diff = 100000<br>
-<img src="diff-100000.png" witdh="70%"> <br>
+<img src="diff-100000.png" witdh="700"> <br>
 
 diff = 10000<br>
 <img src="diff-10000.png" scale=0.7> <br>
