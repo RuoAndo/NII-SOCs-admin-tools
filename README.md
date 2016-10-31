@@ -37,10 +37,10 @@ diff = 10
 <img src="diff-10.png">
 
 diff = 0.1
-<img src="diff-01.png"x>
+<img src="diff-01.png">
 
 diff = 0.01 (default)
-<img src="diff-001.png"x>
+<img src="diff-001.png">
 
 # Changepoint detection
   <pre>
