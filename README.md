@@ -160,5 +160,13 @@ postgres=# SELECT * FROM pg_stat_database WHERE datname = 'sample';
 
 </pre>
 
+# chagepoint detection 2016-11-03
 
+data
+<img src="cpd-2016-11-03-01.png">
 
+score
+<img src="cpd-2016-11-03-02.png">
+
+norm
+<img src="cpd-2016-11-03-03.png">

@@ -88,7 +88,7 @@ if __name__ == "__main__":
     for i in range(len(data)):
         print "data" + ":" + str(i) + ":" + str(data[i])
         for j in range(len(mean)):
-            print " mean:" + str(j) + ":" + str(mean[j])
+            print " centroid:" + str(j) + ":" + str(mean[j])
                                                      
             u = data[i] - mean[j]
             print "  distance:" + str(np.linalg.norm(u))
