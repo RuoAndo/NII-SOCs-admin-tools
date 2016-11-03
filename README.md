@@ -138,5 +138,27 @@ bash# python pg1.py
 
 </pre>
 
+<pre>
+
+postgres=# CREATE TABLE test (id int, name test);
+postgres=# SELECT * FROM pg_stat_database WHERE datname = 'test';
+postgres=# INSERT INTO test (id, name) VALUES (2, 'taro');
+INSERT 0 1
+
+postgres=# select * from test;
+ id | name
+ ----+------
+   1 | taro
+   2 | taro
+   (2 行)
+
+postgres=# SELECT * FROM pg_stat_database WHERE datname = 'sample';
+ datid | datname | numbackends | xact_commit | xact_rollback | blks_read | blks_hit | tup_returned | tup_fetched | tup_inserted | tup_updated | tup_deleted | conflicts | temp_files | temp_bytes | deadlocks | blk_read_time | blk_write_time |          stats_reset
+ -------+---------+-------------+-------------+---------------+-----------+----------+--------------+-------------+--------------+-------------+-------------+-----------+------------+------------+-----------+---------------+----------------+-------------------------------
+  16384 | sample  |           0 |       22921 |            85 |       447 |   902708 |     11376251 |      150222 |           59 |          12 |          13 |         0 |          0 |          0 |         0 |             0 |              0 | 2016-10-26 18:05:04.122336+09
+  (1 行)
+
+</pre>
+
 
 
