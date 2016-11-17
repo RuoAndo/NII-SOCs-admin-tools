@@ -210,3 +210,32 @@ data:8:[-0.28658214 -0.69424718  1.52872945][ 0.  0.  1.]
 data:9:[-0.84677815  0.07218387 -1.62459037][ 0.  1.  0.]
 
 </pre>
+
+#DBScan
+
+<pre>
+	bash# pip install scikit-learn
+</pre>
+
+# data
+# * * * * * * * *
+# * * * * * 1 1 *
+# * * * * * * 1 *
+# * * 2 * * * * *
+# * 2 2 * * * * *
+# * * * * * * * *
+
+<pre>
+	db = DBSCAN().fit(data)
+	labels = db.labels_
+
+	dbc1 = data[labels == 0] 
+	dbc2 = data[labels == 1] 
+	noise = data[labels == -1] 
+
+</pre>
+
+<img src="dbs1.png" width="70%"> <br>
+<img src="dbs2.png" width="70%"> <br>
+<img src="dbs3.png" width="70%"> <br>
+<img src="dbs4.png" width="70%"> <br>
