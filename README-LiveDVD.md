@@ -103,7 +103,8 @@ passwd: password updated successfully
 STEP3-4:grub.cfgの作成
 
 <pre>
-cat <<EOF | tee /boot/grub/grub.cfg
+/boot/grub/grub.cfg
+
 set timeout=1
 
 serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1
@@ -115,7 +116,7 @@ menuentry 'ubuntu-live' {
     initrd /boot/initrd.img-4.4.0-45-generic
     }
     EOF
-    </pre>
+</pre>
 
 STEP3-4：コンテナからログオフ、電源を切る
 
