@@ -150,3 +150,5 @@ STEP4-4: iso作成
 <pre>
 $ sudo grub-mkrescue -o ubuntu-live.iso iso
 </pre>
+
+<img src="livedvd-2016-11-20-01.png" width="70%"> <br>
