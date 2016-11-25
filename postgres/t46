@@ -1,0 +1,17 @@
+alm_notify_id,bigint
+university_id,bigint
+detection_system_type,varchar(20)
+risk_level,integer
+schedule_type,varchar(20)
+exec_date,varchar(31)
+exec_week,varchar(7)
+exec_type,varchar(20)
+exec_time,time
+exec_interval,integer
+exec_start_time,time
+exec_end_time,time
+valid_start_date,date
+valid_end_date,date
+last_sequence_id,bigint
+next_exec_time,timestamp
+message,text
