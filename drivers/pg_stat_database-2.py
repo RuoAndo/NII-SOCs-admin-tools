@@ -1,6 +1,8 @@
 import time
 import psycopg2
 import os
+import commands
+import re
 
 connection3 = psycopg2.connect(host="127.0.0.1", port=5432, database="sample", user="postgres", password="")
 cursor5 = connection3.cursor()
@@ -40,7 +42,15 @@ cursor5.close()
 
 num = 0
 while num < 2000:
-        
+
+
+    check = commands.getoutput("vmstat")
+    #print check
+    tmp = check.split("\n")
+    #print tmp[2].replace([\s+],",")
+    vmstat = re.sub(r'\s+', ",", tmp[2])
+    #print vmstat
+    
     connection4 = psycopg2.connect(host="127.0.0.1", port=5432, database="sample", user="postgres", password="")
     cursor6 = connection4.cursor()
     cursor6.execute("SELECT * FROM pg_stat_database WHERE datname = 'sample';")
@@ -70,7 +80,7 @@ while num < 2000:
         str = str + "," + unicode(row[17])
         str = str + "," + unicode(row[18])
 
-    print str
+    print "*" + vmstat.strip() + str
 
     time.sleep(5)
     num = num + 1
