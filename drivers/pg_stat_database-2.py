@@ -17,7 +17,7 @@ for stat in stats:
     result[database] = stat
 
 #print stats
-
+print " r | b |swpd |  free |  buff | cache |  si |  so  |  bi |   bo |  in |  cs | us | sy | id | wa | st"
 print "datid |  datname   | numbackends | xact_commit | xact_rollback | blks_read  |  blks_hit   | tup_returned | tup_fetched | tup_inserted | tup_updated | tup_deleted | conflicts | temp_files |  temp_bytes  | deadlocks | blk_read_time | blk_write_time | stats_reset | size"
 
 #print stats
@@ -80,7 +80,7 @@ while num < 2000:
         str = str + "," + unicode(row[17])
         str = str + "," + unicode(row[18])
 
-    print "*" + vmstat.strip() + str
+    print vmstat.strip().lstrip(",") + str
 
     time.sleep(5)
     num = num + 1
