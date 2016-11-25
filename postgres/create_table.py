@@ -13,8 +13,8 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-#sql = "drop TABLE test;"
-#cur.execute(sql)
+sql = "drop TABLE " + argvs[1] + ";"
+cur.execute(sql)
 
 #sql = "create TABLE test(id INT, name varchar(1024));"
 #cur.execute(sql)
@@ -33,12 +33,17 @@ while line:
     str = tmp[0] + " " + tmp[1].strip()
     sql = sql + "," + str
 
+    #print tmp[1]
+    
     line = f.readline() 
 
 sql = sql.lstrip(",")
-print sql
+#print sql
 
 sql2 = "create TABLE " + argvs[1] + "(" + sql + ");"
 print sql2
 cur.execute(sql2)
 conn.commit()
+
+cur.close()
+conn.close()
