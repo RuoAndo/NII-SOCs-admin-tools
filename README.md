@@ -264,7 +264,11 @@ adding repository.
 <pre>
 emacs /etc/yum.repos.d/datastax.repo
 
-[datastax]                                                                                                               name = DataStax Repo for Apache Cassandra                                                                                baseurl = http://rpm.datastax.com/community                                                                              enabled = 1                                                                                                              gpgcheck = 0
+[datastax]
+name = DataStax Repo for Apache Cassandra                                                                               
+baseurl = http://rpm.datastax.com/community                                                                             
+enabled = 1                                                                                                             
+gpgcheck = 0
 </pre>
 
 modifying /etc/cassandra/default.conf/cassandra.yaml
