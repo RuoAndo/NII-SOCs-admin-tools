@@ -274,15 +274,15 @@ gpgcheck = 0
 modifying /etc/cassandra/default.conf/cassandra.yaml
 
 <pre>
-# diff -ur cassandra.yaml cassandra.yaml.bak
---- cassandra.yaml      2016-11-30 23:52:10.828417148 -0500
-+++ cassandra.yaml.bak  2016-11-30 23:51:42.427918226 -0500
+# diff -ur cassandra.yaml.bak cassandra.yaml                                             
+--- cassandra.yaml.bak  2016-11-30 23:51:42.427918226 -0500
++++ cassandra.yaml      2016-11-30 23:52:10.828417148 -0500
 @@ -354,7 +354,7 @@
  # that rely on node auto-discovery.
  #
  # For security reasons, you should not expose this port to the internet.  Firewall it if needed.
--rpc_address: 0.0.0.0
-+rpc_address: localhost
+-rpc_address: localhost
++rpc_address: 0.0.0.0
  # port for Thrift to listen for clients on
  rpc_port: 9160
 </pre>
