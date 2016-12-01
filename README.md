@@ -243,6 +243,7 @@ data:9:[-0.84677815  0.07218387 -1.62459037][ 0.  1.  0.]
 <img src="dbs3.png" width="70%"> <br>
 <img src="dbs4.png" width="70%"> <br>
 
+<a name="cassandra"></a>
 # installing Cassandra
 
 installing jna and OpenJDK7.
