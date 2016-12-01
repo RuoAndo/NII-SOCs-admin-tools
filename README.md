@@ -242,3 +242,52 @@ data:9:[-0.84677815  0.07218387 -1.62459037][ 0.  1.  0.]
 <img src="dbs2.png" width="70%"> <br>
 <img src="dbs3.png" width="70%"> <br>
 <img src="dbs4.png" width="70%"> <br>
+
+# installing Cassandra
+
+installing jna and OpenJDK7.
+
+<pre>
+
+    3  time yum install -y jna
+    6  yum install java-1.7.0*
+
+    java-1.7.0-openjdk.x86_64 : OpenJDK Runtime Environment
+    java-1.7.0-openjdk-devel.x86_64 : OpenJDK Development Environment
+    java-1.7.0-openjdk-headless.x86_64 : The OpenJDK runtime environment without audio and video support
+
+</pre>
+
+adding repository.
+
+<pre>
+emacs /etc/yum.repos.d/datastax.repo
+
+[datastax]                                                                                                               name = DataStax Repo for Apache Cassandra                                                                                baseurl = http://rpm.datastax.com/community                                                                              enabled = 1                                                                                                              gpgcheck = 0
+</pre>
+
+modifying /etc/cassandra/default.conf/cassandra.yaml
+
+<pre>
+# diff -ur cassandra.yaml cassandra.yaml.bak
+--- cassandra.yaml      2016-11-30 23:52:10.828417148 -0500
++++ cassandra.yaml.bak  2016-11-30 23:51:42.427918226 -0500
+@@ -354,7 +354,7 @@
+ # that rely on node auto-discovery.
+ #
+ # For security reasons, you should not expose this port to the internet.  Firewall it if needed.
+-rpc_address: 0.0.0.0
++rpc_address: localhost
+ # port for Thrift to listen for clients on
+ rpc_port: 9160
+</pre>
+
+launching cqlsh.
+
+<pre>
+# cqlsh                                                                                  
+Connected to Test Cluster at localhost:9160.
+[cqlsh 4.1.1 | Cassandra 2.0.17 | CQL spec 3.1.1 | Thrift protocol 19.39.0]
+Use HELP for help.
+cqlsh>
+</pre> 
