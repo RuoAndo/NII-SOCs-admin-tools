@@ -1,4 +1,7 @@
-# cassandra-cli 
+# creating keyspace
+
+bash #cassandra-cli
+<pre> 
 Connected to: "Test Cluster" on 127.0.0.1/9160
 Welcome to Cassandra CLI version 2.0.17
 
@@ -14,9 +17,11 @@ Keyspace: test:
   Replication Strategy: org.apache.cassandra.locator.SimpleStrategy
   Durable Writes: true
     Options: [replication_factor:2]
+</pre>
 
 デフォルトで作成されるkeyspaceはsystem, system-tracesの２つ
 
+<pre> 
 Keyspace: system:
   Replication Strategy: org.apache.cassandra.locator.LocalStrategy
   Durable Writes: true
@@ -121,7 +126,13 @@ Keyspace: test:
   Durable Writes: true
     Options: [replication_factor:2]
 
-# python create_keyspace.py test
+</pre>
+
+# python driver log
+
+bash # python create_keyspace.py test
+
+<pre> 
 2016-12-02 00:54:28,977 [DEBUG] cassandra.cluster: Connecting to cluster, contact points: ['127.0.0.1']; protocol version: 4
 2016-12-02 00:54:28,977 [DEBUG] cassandra.io.asyncorereactor: Validated loop dispatch with cassandra.io.asyncorereactor._AsyncorePipeDispatcher
 2016-12-02 00:54:28,977 [DEBUG] cassandra.pool: Host 127.0.0.1 is now marked up
@@ -183,3 +194,4 @@ Keyspace: test:
 2016-12-02 00:54:29,290 [DEBUG] cassandra.io.asyncorereactor: Closed socket to 127.0.0.1
 2016-12-02 00:54:29,290 [DEBUG] cassandra.io.asyncorereactor: Closing connection (139680121353360) to 127.0.0.1
 2016-12-02 00:54:29,290 [DEBUG] cassandra.io.asyncorereactor: Closed socket to 127.0.0.1
+</pre> 
