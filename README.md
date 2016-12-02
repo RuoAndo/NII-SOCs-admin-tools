@@ -25,22 +25,22 @@
 </pre>
 
 diff = 100000<br>
-<img src="diff-100000.png" width="70%"> <br>
+<img src="images/diff-100000.png" width="70%"> <br>
 
 diff = 10000<br>
-<img src="diff-10000.png" width="70%"> <br>
+<img src="images/diff-10000.png" width="70%"> <br>
 
 diff = 1000<br>
-<img src="diff-1000.png" width="70%"> <br>
+<img src="images/diff-1000.png" width="70%"> <br>
 
 diff = 10<br>
-<img src="diff-10.png" width="70%"> <br>
+<img src="images/diff-10.png" width="70%"> <br>
 
 diff = 0.1<br>
-<img src="diff-01.png" width="70%"> <br>
+<img src="images/diff-01.png" width="70%"> <br>
 
 diff = 0.01 (default)<br>
-<img src="diff-001.png" width="70%"> <br>
+<img src="images/diff-001.png" width="70%"> <br>
 
 # Changepoint detection
   <pre>
@@ -60,7 +60,7 @@ diff = 0.01 (default)<br>
   -bash-4.1# python km2.py test.txt
   </pre>
   
-  <img src="kmeans-1.png">
+  <img src="images/kmeans-1.png">
   
 # one-class SVM
 
@@ -163,13 +163,13 @@ postgres=# SELECT * FROM pg_stat_database WHERE datname = 'sample';
 # chagepoint detection 2016-11-03
 
 data
-<img src="cpd-2016-11-03-01.png" width="70%">
+<img src="images/cpd-2016-11-03-01.png" width="70%">
 
 score
-<img src="cpd-2016-11-03-02.png" width="70%">
+<img src="images/cpd-2016-11-03-02.png" width="70%">
 
 norm
-<img src="cpd-2016-11-03-03.png" width="70%">
+<img src="images/cpd-2016-11-03-03.png" width="70%">
 
 # kmeans 2016-11-06
 
@@ -238,10 +238,10 @@ data:9:[-0.84677815  0.07218387 -1.62459037][ 0.  1.  0.]
 
 </pre>
 
-<img src="dbs1.png" width="70%"> <br>
-<img src="dbs2.png" width="70%"> <br>
-<img src="dbs3.png" width="70%"> <br>
-<img src="dbs4.png" width="70%"> <br>
+<img src="images/dbs1.png" width="70%"> <br>
+<img src="images/dbs2.png" width="70%"> <br>
+<img src="images/dbs3.png" width="70%"> <br>
+<img src="images/dbs4.png" width="70%"> <br>
 
 <a name="cassandra"></a>
 # installing Cassandra
