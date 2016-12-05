@@ -1,0 +1,770 @@
+#! /bin/sh
+set -e
+
+export LC_ALL=C
+
+( . "${LIVE_BUILD}/scripts/build.sh" > /dev/null 2>&1 || true ) || . /usr/lib/live/build.sh
+
+Arguments "${@}"
+
+Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
+Set_defaults
+
+# Setup cleanup function
+Setup_cleanup
+
+rm -f binary.success
+(
+	if [ -d config/gnupg ]; then
+		cat << @@EOF > config/gnupg/NEWKEY
+Key-Type: DSA
+Key-Length: 1024
+Key-Usage: sign
+Name-Real: Ubuntu Local Archive One-Time Signing Key
+Name-Email: cdimage@ubuntu.com
+Expire-Date: 0
+@@EOF
+		gpg --home config/gnupg --gen-key --batch < config/gnupg/NEWKEY \
+			> config/gnupg/generate.log 2>&1 &
+		GPG_PROCESS=$!
+	fi
+
+	lb bootstrap "$@"
+
+	Chroot chroot "dpkg-divert --quiet --add \
+		--divert /usr/sbin/update-initramfs.REAL --rename \
+		/usr/sbin/update-initramfs"
+	cat > chroot/usr/sbin/update-initramfs <<'EOF'
+#! /bin/sh
+if [ $# != 1 ] || [ "$1" != -u ]; then
+	exec update-initramfs.REAL "$@"
+fi
+echo "update-initramfs: diverted by livecd-rootfs (will be called later)" >&2
+exit 0
+EOF
+	chmod +x chroot/usr/sbin/update-initramfs
+
+	cat > config/hooks/999-undivert-update-initramfs.chroot <<'EOF'
+#! /bin/sh
+rm -f /usr/sbin/update-initramfs
+dpkg-divert --quiet --remove --rename /usr/sbin/update-initramfs
+EOF
+
+	lb chroot "$@"
+
+	if [ -f config/oem-config-preinstalled ]; then
+
+# This is cargo-culted almost verbatim (with some syntax changes for
+# preinstalled being slightly different in what it doesn't ask) from
+# debian-installer's apt-setup:
+
+codename=$LB_DISTRIBUTION
+file="chroot/etc/apt/sources.list"
+dists="main"
+alldists="main"
+if echo "$LB_PARENT_ARCHIVE_AREAS" | grep -q restricted; then
+	dists="$dists restricted"
+	alldists="$alldists restricted"
+fi
+if echo "$LB_PARENT_ARCHIVE_AREAS" | grep -q universe; then
+	UNIVERSE=true
+else
+	UNIVERSE=false
+fi
+if echo "$LB_PARENT_ARCHIVE_AREAS" | grep -q multiverse; then
+	MULTIVERSE=true
+else
+	MULTIVERSE=false
+fi
+
+cat > $file <<EOF
+# See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
+# newer versions of the distribution.
+
+deb $LB_PARENT_MIRROR_BINARY $codename $dists
+deb-src $LB_PARENT_MIRROR_BINARY $codename $dists
+
+## Major bug fix updates produced after the final release of the
+## distribution.
+deb $LB_PARENT_MIRROR_BINARY $codename-updates $dists
+deb-src $LB_PARENT_MIRROR_BINARY $codename-updates $dists
+EOF
+
+# Even if universe isn't enabled, we write example lines for it.
+echo >> $file
+if [ "$UNIVERSE" = true ]; then
+	alldists="$alldists universe"
+	COMMENT=
+else
+	cat >> $file <<EOF
+## Uncomment the following two lines to add software from the 'universe'
+## repository.
+EOF
+	COMMENT='# '
+fi
+cat >> $file <<EOF
+## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
+## team. Also, please note that software in universe WILL NOT receive any
+## review or updates from the Ubuntu security team.
+${COMMENT}deb $LB_PARENT_MIRROR_BINARY $codename universe
+${COMMENT}deb-src $LB_PARENT_MIRROR_BINARY $codename universe
+${COMMENT}deb $LB_PARENT_MIRROR_BINARY $codename-updates universe
+${COMMENT}deb-src $LB_PARENT_MIRROR_BINARY $codename-updates universe
+EOF
+
+# Multiverse is different, don't write anything unless enabled.
+if [ "$MULTIVERSE" = true ]; then
+	alldists="$alldists multiverse"
+	cat >> $file <<EOF
+
+## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu 
+## team, and may not be under a free licence. Please satisfy yourself as to 
+## your rights to use the software. Also, please note that software in 
+## multiverse WILL NOT receive any review or updates from the Ubuntu
+## security team.
+deb $LB_PARENT_MIRROR_BINARY $codename multiverse
+deb-src $LB_PARENT_MIRROR_BINARY $codename multiverse
+deb $LB_PARENT_MIRROR_BINARY $codename-updates multiverse
+deb-src $LB_PARENT_MIRROR_BINARY $codename-updates multiverse
+EOF
+fi
+
+cat >> $file <<EOF
+
+## N.B. software from this repository may not have been tested as
+## extensively as that contained in the main release, although it includes
+## newer versions of some applications which may provide useful features.
+## Also, please note that software in backports WILL NOT receive any review
+## or updates from the Ubuntu security team.
+# deb $LB_PARENT_MIRROR_BINARY $codename-backports $alldists
+# deb-src $LB_PARENT_MIRROR_BINARY $codename-backports $alldists
+EOF
+
+cat >> $file <<EOF
+
+deb $LB_PARENT_MIRROR_BINARY $codename-security $dists
+deb-src $LB_PARENT_MIRROR_BINARY $codename-security $dists
+EOF
+
+# Security sources for Ubuntu universe; not used much, but e.g. unsupported
+# binary packages from a supported source package will end up here.
+if [ "$UNIVERSE" = true ]; then
+        COMMENT=
+else
+        COMMENT='# '
+fi
+cat >> $file <<EOF
+${COMMENT}deb $LB_PARENT_MIRROR_BINARY $codename-security universe
+${COMMENT}deb-src $LB_PARENT_MIRROR_BINARY $codename-security universe
+EOF
+
+# Security sources for Ubuntu multiverse, with the same caveats as for
+# universe.
+if [ "$MULTIVERSE" = true ]; then
+        COMMENT=
+else
+        COMMENT='# '
+fi
+cat >> $file <<EOF
+${COMMENT}deb $LB_PARENT_MIRROR_BINARY $codename-security multiverse
+${COMMENT}deb-src $LB_PARENT_MIRROR_BINARY $codename-security multiverse
+EOF
+
+	fi
+	if [ -d chroot/var/lib/preinstalled-pool ]; then
+		cat > config/indices/apt.conf <<-EOF
+Dir {
+ ArchiveDir "chroot/var/lib/preinstalled-pool";
+ OverrideDir "config/indices";
+ CacheDir "config/indices";
+}
+Default { Packages::Compress ". bzip2"; }
+TreeDefault { Directory "pool"; }
+Tree "dists/$LB_DISTRIBUTION"
+{
+ Sections "$LB_PARENT_ARCHIVE_AREAS";
+ Architectures "$LB_ARCHITECTURES";
+ BinOverride "override.$LB_DISTRIBUTION.\$(SECTION)";
+ ExtraOverride "override.$LB_DISTRIBUTION.extra.\$(SECTION)";
+ Contents " ";
+}
+EOF
+		for component in $LB_PARENT_ARCHIVE_AREAS; do
+			mkdir -p chroot/var/lib/preinstalled-pool/dists/$LB_DISTRIBUTION/$component/binary-$LB_ARCHITECTURES
+		done
+		apt-ftparchive generate config/indices/apt.conf
+		cat << @@EOF > chroot/etc/apt/sources.list.preinstall
+# This is a sources.list entry for a small pool of packages
+# provided on your preinstalled filesystem for your convenience.
+#
+# It is perfectly safe to delete both this entry and the directory
+# it references, should you want to save disk space and fetch the
+# packages remotely instead.
+#
+deb file:/var/lib/preinstalled-pool/ $LB_DISTRIBUTION $LB_PARENT_ARCHIVE_AREAS
+#
+@@EOF
+
+		cp chroot/etc/apt/sources.list chroot/etc/apt/sources.list.orig
+		cp chroot/etc/apt/sources.list.preinstall chroot/etc/apt/sources.list
+
+		echo "Waiting on gnupg ("$GPG_PROCESS") to finish generating a key."
+		wait $GPG_PROCESS
+
+		R_ORIGIN=$(lsb_release -i -s)
+		R_CODENAME=$(lsb_release -c -s)
+		R_VERSION=$(lsb_release -r -s)
+		R_PRETTYNAME=$(echo $R_CODENAME | sed -e 's/^\(.\)/\U\1/')
+
+		apt-ftparchive -o APT::FTPArchive::Release::Origin=$R_ORIGIN \
+			-o APT::FTPArchive::Release::Label=$R_ORIGIN \
+			-o APT::FTPArchive::Release::Suite=$R_CODENAME-local \
+			-o APT::FTPArchive::Release::Version=$R_VERSION \
+			-o APT::FTPArchive::Release::Codename=$R_CODENAME \
+			-o APT::FTPArchive::Release::Description="$R_ORIGIN $R_PRETTYNAME Local" \
+			release chroot/var/lib/preinstalled-pool/dists/$R_CODENAME/ \
+				> config/gnupg/Release
+
+		gpg --home config/gnupg --detach-sign --armor config/gnupg/Release
+		mv config/gnupg/Release \
+			chroot/var/lib/preinstalled-pool/dists/$R_CODENAME/Release
+		mv config/gnupg/Release.asc \
+			chroot/var/lib/preinstalled-pool/dists/$R_CODENAME/Release.gpg
+		apt-key --keyring chroot/etc/apt/trusted.gpg add config/gnupg/pubring.gpg
+		find chroot/var/lib/preinstalled-pool/ -name Packages | xargs rm
+
+		Chroot chroot "apt-get update"
+		cat chroot/etc/apt/sources.list.preinstall chroot/etc/apt/sources.list.orig \
+			> chroot/etc/apt/sources.list
+		rm chroot/etc/apt/sources.list.preinstall chroot/etc/apt/sources.list.orig
+	fi
+	if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
+		if [ "$ARCH" = "armhf" ]; then
+			INFO_DESC="$(lsb_release -d -s)"
+			echo "$INFO_DESC - $ARCH ($BUILDSTAMP)" >chroot/etc/media-info
+			mkdir -p chroot/var/log/installer
+			Chroot chroot "ln -s /etc/media-info /var/log/installer/media-info"
+		fi
+	fi
+	if [ "$PROJECT" = "ubuntu-cpc" ]; then
+		cat > chroot/etc/cloud/build.info << EOF
+build_name: server
+serial: $BUILDSTAMP
+EOF
+		cat > chroot/etc/apt/sources.list << EOF
+deb ${LB_PARENT_MIRROR_BINARY} ${LB_DISTRIBUTION} main restricted universe multiverse
+deb ${LB_PARENT_MIRROR_BINARY} ${LB_DISTRIBUTION}-updates main restricted universe multiverse
+deb ${LB_PARENT_MIRROR_BINARY_SECURITY} ${LB_DISTRIBUTION}-security main restricted universe multiverse
+EOF
+		lb chroot_hosts install
+		lb chroot_resolv install
+		Chroot chroot "apt-get update"
+		lb chroot_resolv remove
+		lb chroot_hosts remove
+	fi
+
+	echo "===== Checking size of /usr/share/doc ====="
+	echo BEGIN docdirs
+	(cd chroot && find usr/share/doc -maxdepth 1 -type d | xargs du -s | sort -nr)
+	echo END docdirs
+
+	lb binary "$@"
+	touch binary.success
+) 2>&1 | tee binary.log
+
+# bash has trouble with the build.sh sourcing arrangement at the top of this
+# file, so we use this cheap-and-cheerful approach rather than the more
+# correct 'set -o pipefail'.
+if [ -e binary.success ]; then
+	rm -f binary.success
+else
+	exit 1
+fi
+
+# Link output files somewhere BuildLiveCD will be able to find them.
+PREFIX="livecd.$PROJECT${SUBARCH:+-$SUBARCH}"
+
+case $LB_INITRAMFS in
+	casper)
+		INITFS="casper"
+		;;
+
+	live-boot)
+		INITFS="live"
+		;;
+
+	*)
+		INITFS="boot"
+		;;
+esac
+
+for OUTPUT in ext2 ext3 ext4 manifest manifest-remove size squashfs; do
+	[ -e "binary/$INITFS/filesystem.$OUTPUT" ] || continue
+	ln "binary/$INITFS/filesystem.$OUTPUT" "$PREFIX.$OUTPUT"
+	chmod 644 "$PREFIX.$OUTPUT"
+done
+
+for ISO in binary.iso binary.hybrid.iso; do
+	[ -e "$ISO" ] || continue
+	ln "$ISO" "$PREFIX.iso"
+	chmod 644 "$PREFIX.iso"
+	break
+done
+
+if [ -e "binary/$INITFS/filesystem.dir" ]; then
+	(cd "binary/$INITFS/filesystem.dir/" && tar -c *) | \
+		gzip -9 --rsyncable > "$PREFIX.rootfs.tar.gz"
+	chmod 644 "$PREFIX.rootfs.tar.gz"
+elif [ -e binary-tar.tar.gz ]; then
+	cp -a binary-tar.tar.gz "$PREFIX.rootfs.tar.gz"
+fi
+
+if [ "$PROJECT:$SUBPROJECT" = "ubuntu-core:system-image" ]; then
+    if [ -e "binary/$INITFS/filesystem.dir" ]; then
+        rootfs="binary/$INITFS/filesystem.dir"
+
+        for dir in lib/modules lib/firmware writable meta; do
+            mkdir -p $rootfs/$dir
+        done
+
+        VERSION="$(lsb_release -r -s)+$(date +20%y%m%d.%H-%M)"
+
+        cat > $rootfs/meta/snap.yaml <<EOF
+name: ubuntu-core
+version: $VERSION
+summary: The ubuntu-core OS snap
+architectures: [$ARCH]
+type: os
+EOF
+
+        apt-get -y install snapcraft
+        snapcraft snap $rootfs
+
+        snapfile="$(ls ubuntu-core*.snap)"
+        cp -a $snapfile $PREFIX.os.snap
+    fi
+fi
+
+if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
+	(cd "binary/$INITFS/custom.dir/" && tar -c *) | \
+		gzip -9 --rsyncable > "$PREFIX.custom.tar.gz"
+	chmod 644 "$PREFIX.custom.tar.gz"
+fi
+
+# '--initramfs none' produces different manifest names.
+if [ -e "binary/$INITFS/filesystem.packages" ]; then
+	ln "binary/$INITFS/filesystem.packages" "$PREFIX.manifest"
+	chmod 644 "$PREFIX.manifest"
+fi
+if [ -e "binary/$INITFS/filesystem.packages-remove" ]; then
+	# Not a typo, empty manifest-remove has a single LF in it. :/
+	if [ $(cat binary/$INITFS/filesystem.packages-remove | wc -c) -gt 1 ]; then
+		ln "binary/$INITFS/filesystem.packages-remove" "$PREFIX.manifest-remove"
+		chmod 644 "$PREFIX.manifest-remove"
+	fi
+fi
+
+# ubuntu-core and ubuntu-desktop-next splits kernel stuff into a "device" tarball so
+# at this point we reset it to "none" as all the work to extract it was done already
+# in a binary hook
+case $PROJECT:$SUBPROJECT in
+        ubuntu-core:system-image|ubuntu-desktop-next:system-image)
+
+    # create device tarball (for snappy only atm)
+    if [ "$PROJECT:$SUBPROJECT" = "ubuntu-core:system-image" ]; then
+      case $ARCH in
+          armhf)
+            subarches="generic raspi2"
+            ;;
+          arm64)
+            subarches="generic dragonboard"
+            ;;
+          i386|amd64|powerpc|ppc64el|s390x)
+            subarches="generic"
+            ;;
+      esac
+
+      # create a clean chroot
+      debootstrap --variant=minbase $LB_DISTRIBUTION chroot-device $LB_PARENT_MIRROR_BOOTSTRAP
+
+      # ... but keep the PPA setup
+      cp -a chroot/etc/apt/* chroot-device/etc/apt/
+
+      # ... and move it in place
+      rm -rf chroot
+      mv chroot-device chroot
+
+      for devarch in $subarches; do
+        (echo "I: creating $devarch device tarball for $ARCH"
+        HERE="$(pwd)"
+        set -x
+
+        linux_package="linux-image-$devarch"
+        case $ARCH in
+            amd64)
+              linux_package="linux-signed-image-generic"
+              ;;
+            arm64)
+              if [ "$devarch" = "dragonboard" ]; then
+                  linux_package="linux-image-snapdragon linux-firmware-snapdragon"
+              fi
+              ;;
+            armhf)
+              if [ "$devarch" = "raspi2" ]; then
+                  linux_package="linux-image-raspi2"
+              fi
+              ;;
+            ppc64el|s390x)
+              echo "I: skipping kernel and device tarball for $ARCH"
+              return
+              ;;
+        esac
+
+        # make sure all virtual filesystems are available
+        lb chroot_proc install "$@"
+        lb chroot_sysfs install "$@"
+        lb chroot_devpts install "$@"
+
+        # prepare the env
+        Chroot chroot "apt-get -y update"
+        Chroot chroot "apt-get -y purge linux-image-*"
+        Chroot chroot "apt-get -y autoremove"
+        rm -rf chroot/boot/initrd.img* chroot/boot/vmlinu?-* chroot/lib/modules/* \
+            chroot/boot/abi-* chroot/boot/System.map-* chroot/boot/config-*
+        mkdir -p chroot/etc/initramfs-tools/conf.d
+        echo "COMPRESS=lzma" >chroot/etc/initramfs-tools/conf.d/snappy-device-tarball.conf
+
+        # install needed packages and the kernel itself
+        Chroot chroot "apt-get -y install initramfs-tools-ubuntu-core linux-firmware xz-utils"
+        Chroot chroot "apt-get -y install $linux_package"
+
+        Chroot chroot "dpkg -l" > chroot/dpkg.list
+        
+        # clean up
+        lb chroot_devpts remove "$@"
+        lb chroot_sysfs remove "$@"
+        lb chroot_proc remove "$@"
+
+        # now build the actual device tarball
+        TMPDIR="$(mktemp -d)"
+        mkdir -p $TMPDIR/system/
+        mkdir -p $TMPDIR/assets/
+
+        cd chroot
+        cp -ar --parent lib/modules/ $TMPDIR/system/
+        cp -ar --parent lib/firmware/ $TMPDIR/system/
+
+        # new assets handling
+        if [ -f boot/vmlinu?-*.signed ]; then
+            kernel=boot/vmlinu?-*.signed
+        else
+            kernel=boot/vmlinu?-*
+        fi
+
+        initrd=boot/initrd.img-*
+
+        cp -ar $initrd $TMPDIR/assets/
+        cp -ar $kernel $TMPDIR/assets/
+        cp -ar boot/abi-* boot/System.map-* boot/config-* $TMPDIR/assets/
+
+        dtbs=$(find lib/firmware -type d -name 'device-tree' -print0)
+        if [ -n "$dtbs" ]; then
+           mv "$dtbs" $TMPDIR/assets/dtbs
+           case $devarch in
+               raspi2)
+                   # ubuntu-device-flash does not like subdirs here, we need to tar it up
+                   if [ -e $TMPDIR/assets/dtbs/overlays ]; then
+                       tar -C $TMPDIR/assets/dtbs -f $TMPDIR/assets/dtbs/overlays.tgz -czv overlays
+                       rm -rf $TMPDIR/assets/dtbs/overlays
+                   fi
+                   ;;
+               dragonboard)
+                   cp $TMPDIR/assets/dtbs/qcom/apq8016-sbc-snappy.dtb $TMPDIR/assets/dtbs/apq8016-sbc.dtb
+                   # add special link needed by the dragonboard wifi driver
+                   mkdir -p $TMPDIR/system/lib/firmware/wlan/
+                   ln -s /run/macaddr0 $TMPDIR/system/lib/firmware/wlan/
+                   ;;
+           esac
+        fi
+
+        # copy dpkg manifest
+        cp -ar dpkg.list $TMPDIR/assets
+
+        # create hardware.yaml
+        # this assumes armhf == u-boot
+        # and all others grub
+        # common bits
+        cat > $TMPDIR/hardware.yaml << EOF
+kernel: assets/$(basename $kernel)
+initrd: assets/$(basename $initrd)
+partition-layout: system-AB
+EOF
+        # arch specific ones
+        if [ "$ARCH" = "armhf" ]; then
+          cat >> $TMPDIR/hardware.yaml << EOF
+dtbs: assets/dtbs
+bootloader: u-boot
+EOF
+        else
+          cat >> $TMPDIR/hardware.yaml << EOF
+bootloader: grub
+EOF
+        fi
+
+        # compress everything
+        cd $TMPDIR
+        tarname="device.tar.gz"
+        manifestname="device.manifest"
+        if [ "$devarch" = "raspi2" ];then
+            tarname="raspi2.$tarname"
+            manifestname="$devarch.$manifestname"
+        elif [ "$devarch" = "dragonboard" ];then
+            tarname="$devarch.$tarname"
+            manifestname="$devarch.$manifestname"
+        fi
+        # create tarfile
+        tar -c -z -f $HERE/$PREFIX.$tarname system assets hardware.yaml
+
+        # create device specific manifest to track kernel dpkg version
+        cp assets/dpkg.list $HERE/$PREFIX.$manifestname
+
+        # show size of initrd and kernel in the log
+        ls -lh assets/
+
+        # dump the content list into the log
+        echo "I: device tarball contents for $PREFIX.$tarname:"
+        find . -type f
+
+        # azure wants its own device tarball
+        if [ "$ARCH" = "amd64" ]; then
+            cp $HERE/$PREFIX.$tarname $HERE/$PREFIX.azure.$tarname
+        fi
+
+        # create snap
+        snapname="kernel.snap"
+        metaname=canonical-pc-linux
+
+        if [ "$devarch" = "raspi2" ];then
+            metaname=canonical-pi2-linux
+            snapname="$devarch.kernel.snap"
+        elif [ "$devarch" = "generic" ] && [ "$ARCH" = "armhf" ];then
+            metaname=canonical-bbb-linux
+        elif [ "$devarch" = "dragonboard" ] && [ "$ARCH" = "arm64" ];then
+            metaname=canonical-snapdragon-linux
+            snapname="$devarch.kernel.snap"
+        fi
+
+        rm -rf $HERE/snap || true
+        mkdir -p $HERE/snap/meta
+        cp -a $TMPDIR/assets/* $HERE/snap
+        cp -a $TMPDIR/system/* $HERE/snap
+
+        cd $HERE/snap
+        kernel="$(ls vmlinuz-*)"
+        initrd="$(ls initrd.img-*)"
+        ln -s $kernel vmlinuz
+        ln -s $initrd initrd.img
+        kvers="$(ls vmlinuz-*|sed 's/^.*vmlinuz-//;s/-[a-z.]*$//')"
+
+        VERSION=$kvers+$(date +20%y%m%d.%H-%M)
+
+        cat > meta/snap.yaml <<EOF
+name: $metaname
+version: $VERSION
+architectures: [$ARCH]
+summary: The canonical $devarch $ARCH kernel
+type: kernel
+
+kernel: $(ls vmlinuz-*)
+initrd: $(ls initrd.img-*)
+modules: $(ls -d lib/modules/*)
+firmware: lib/firmware
+EOF
+        if [ -d dtbs ]; then
+            printf "dtbs: dtbs/ \n" >> meta/snap.yaml
+        fi
+        cd $HERE
+
+        apt-get -y install snapcraft
+        snapcraft snap snap
+
+        snapfile="$(ls $metaname*.snap)"
+        cp -a $snapfile $PREFIX.$snapname
+        )
+      done
+    fi
+
+    LB_LINUX_FLAVOURS=none
+    ;;
+esac
+
+for FLAVOUR in $LB_LINUX_FLAVOURS; do
+	if [ -z "$LB_LINUX_FLAVOURS" ] || [ "$LB_LINUX_FLAVOURS" = "none" ]; then
+		continue
+	fi
+	if [ "$FLAVOUR" = "virtual" ]; then
+		# The virtual kernel is named generic in /boot
+		FLAVOUR="generic"
+	fi
+	KVERS="$( (cd "binary/$INITFS"; ls vmlinu?-* 2>/dev/null || true) | (fgrep -v .efi || true) | sed -n "s/^vmlinu.-\\([^-]*-[^-]*-$FLAVOUR\\)$/\\1/p" )"
+	if [ -z "$KVERS" ]; then
+		if [ -e "binary/$INITFS/vmlinuz" ]; then
+			# already renamed by ubuntu-defaults-image
+			break
+		fi
+		echo "No kernel output for $FLAVOUR!" >&2
+		exit 1
+	fi
+	NUMKVERS="$(set -- $KVERS; echo $#)"
+	if [ "$NUMKVERS" -gt 1 ]; then
+		echo "Cannot handle more than one kernel for $FLAVOUR ($KVERS)!" >&2
+		exit 1
+	fi
+	ln "binary/$INITFS/"vmlinu?-"$KVERS" "$PREFIX.kernel-$FLAVOUR"
+	if [ -e "binary/$INITFS/"vmlinu?-"$KVERS.efi.signed" ]; then
+		ln "binary/$INITFS/"vmlinu?-"$KVERS.efi.signed" "$PREFIX.kernel-$FLAVOUR.efi.signed"
+		chmod 644 "$PREFIX.kernel-$FLAVOUR.efi.signed"
+	fi
+	chmod 644 "$PREFIX.kernel-$FLAVOUR"
+	if [ -e "binary/$INITFS/initrd.img-$KVERS" ]; then
+		ln "binary/$INITFS/initrd.img-$KVERS" "$PREFIX.initrd-$FLAVOUR"
+		chmod 644 "$PREFIX.initrd-$FLAVOUR"
+	fi
+done
+
+NUMFLAVOURS="$(set -- $LB_LINUX_FLAVOURS; echo $#)"
+if [ "$NUMFLAVOURS" = 1 ] && [ "$LB_LINUX_FLAVOURS" != "none" ]; then
+	# only one kernel flavour
+	if [ -e "binary/$INITFS/vmlinuz" ]; then
+		ln "binary/$INITFS/vmlinuz" "$PREFIX.kernel"
+		chmod 644 "$PREFIX.kernel"
+	else
+		ln -sf "$PREFIX.kernel-$LB_LINUX_FLAVOURS" "$PREFIX.kernel"
+	fi
+	if [ -e "binary/$INITFS/initrd.lz" ]; then
+		ln "binary/$INITFS/initrd.lz" "$PREFIX.initrd"
+		chmod 644 "$PREFIX.initrd"
+	else
+		ln -sf "$PREFIX.initrd-$LB_LINUX_FLAVOURS" "$PREFIX.initrd"
+	fi
+fi
+
+if [ "$SUBARCH" = "ac100" ] || [ "$SUBARCH" = "nexus7" ]; then
+	# create the md5sum and size files for which we are actually doing all this
+	md5sum $PREFIX.rootfs.tar.gz >chroot/installer.md5
+	wc -c $PREFIX.rootfs.tar.gz >chroot/installer.size
+
+	INFO_DESC="$(lsb_release -d -s)"
+	INFO_STAMP=$(date +20%y%m%d-%H:%M)
+
+	echo "$INFO_DESC - $ARCH ($INFO_STAMP)" >chroot/media-info
+
+	# make sure update-initramfs feels cosy and warm in the environment
+	lb chroot_proc install "$@"
+	lb chroot_sysfs install "$@"
+	lb chroot_devpts install "$@"
+
+	# re-create initrd to contain the installer.md5 file
+	Chroot chroot "env FLASH_KERNEL_SKIP=1 update-initramfs -k all -t -u -v"
+
+	# create boot.img
+	Chroot chroot "abootimg --create /boot/installer-${KVERS}.img -f /boot/bootimg.cfg-$SUBARCH -r /boot/initrd.img-${KVERS} -k /boot/vmlinuz-${KVERS}"
+
+	if [ "$SUBARCH" = "nexus7" ]; then
+		# roll the android rootfs images
+		mkdir -p userdata
+		mv $PREFIX.rootfs.tar.gz userdata/rootfs.tar.gz
+		make_ext4fs -l 6G -s $PREFIX.ext4-$FLAVOUR userdata/
+		mv userdata/rootfs.tar.gz $PREFIX.rootfs.tar.gz
+		ln -sf "$PREFIX.ext4-$FLAVOUR" "$PREFIX.ext4"
+	fi
+
+	# clean up
+	lb chroot_devpts remove "$@"
+	lb chroot_sysfs remove "$@"
+	lb chroot_proc remove "$@"
+
+	cp "chroot/boot/installer-${KVERS}.img" "$PREFIX.bootimg-$FLAVOUR"
+	ln -sf "$PREFIX.bootimg-$FLAVOUR" "$PREFIX.bootimg"
+
+fi
+
+if [ "$PROJECT" = "ubuntu-touch" ] || [ "$PROJECT" = "ubuntu-touch-custom" ]; then
+	sourceslist="chroot/etc/apt/sources.list"
+
+	lb chroot_proc install "$@"
+	lb chroot_sysfs install "$@"
+	lb chroot_devpts install "$@"
+
+	if [ -e "$PREFIX.manifest" ]; then
+		 Chroot chroot "click list" | while read line; do
+			 echo "click:$line" >>"$PREFIX.manifest"
+		 done
+	fi
+
+	if [ -e chroot/etc/resolv.conf ]; then
+		mv chroot/etc/resolv.conf chroot/etc/resolv.conf.orig
+	fi
+	if [ -e /etc/resolv.conf ]; then
+		cp /etc/resolv.conf chroot/etc/resolv.conf
+	fi
+
+	mv "${sourceslist}" "${sourceslist}.orig"
+	mv "${sourceslist}.d" "${sourceslist}.d.orig"
+	echo "deb $LB_PARENT_MIRROR_CHROOT ${LB_DISTRIBUTION} main universe multiverse restricted" >$sourceslist
+	Chroot chroot "apt-get -y update"
+	Chroot chroot "apt-get -y install android"
+
+	if [ "$ARCH" = "armhf" ]; then
+		touchsubarches="flo mako generic"
+		for subarch in $touchsubarches; do
+			cp -v chroot/usr/share/android/product/*-preinstalled-system-armel+${subarch}.img\
+				"${PREFIX}.system-armel+${subarch}.img"
+			cp -v chroot/usr/share/android/product/*-preinstalled-recovery-armel+${subarch}.img\
+				"${PREFIX}.recovery-armel+${subarch}.img"
+			cp -v chroot/usr/share/android/product/*-preinstalled-boot-armhf+${subarch}.img\
+				"${PREFIX}.boot-armhf+${subarch}.img"
+			# drop this following line once cdimage can handle -boot-*.img
+			cp -v "${PREFIX}.boot-armhf+${subarch}.img" "${PREFIX}.bootimg-${subarch}"
+		done
+	fi
+	if [ "$ARCH" = "i386" ]; then
+		touchsubarches="generic_x86"
+		for subarch in $touchsubarches; do
+			cp -v chroot/usr/share/android/product/*-preinstalled-system-i386+${subarch}.img\
+				"${PREFIX}.system-i386+${subarch}.img"
+			cp -v chroot/usr/share/android/product/*-preinstalled-recovery-i386+${subarch}.img\
+				"${PREFIX}.recovery-i386+${subarch}.img"
+			cp -v chroot/usr/share/android/product/*-preinstalled-boot-i386+${subarch}.img\
+				"${PREFIX}.boot-i386+${subarch}.img"
+			# drop this following line once cdimage can handle -boot-*.img
+			cp -v "${PREFIX}.boot-i386+${subarch}.img" "${PREFIX}.bootimg-${subarch}"
+		done
+	fi
+
+	lb chroot_devpts remove "$@"
+	lb chroot_sysfs remove "$@"
+	lb chroot_proc remove "$@"
+
+	rm -rf chroot/etc/init/*.override
+fi
+
+# LTSP chroot building (only in 32bit and for Edubuntu (DVD))
+case $PROJECT in
+	edubuntu-dvd)
+		if [ "$ARCH" = i386 ]; then
+			echo "Building LTSP chroot"
+			ltsp-build-client --base $(pwd) --mirror $LB_PARENT_MIRROR_BOOTSTRAP --arch $ARCH --dist $LB_PARENT_DISTRIBUTION --chroot ltsp-live --late-packages ldm-edubuntu-theme,plymouth-theme-edubuntu --purge-chroot --skipimage
+			mkdir -p images
+			mksquashfs ltsp-live images/ltsp-live.img -e cdrom
+			rm -Rf ltsp-live
+			if [ -f images/ltsp-live.img ]; then
+				mv images/ltsp-live.img livecd.$PROJECT-ltsp.squashfs
+				chmod 0644 livecd.$PROJECT-ltsp.squashfs
+				rmdir --ignore-fail-on-non-empty images
+			else
+				echo "LTSP: Unable to build the chroot, see above for details."
+			fi
+		fi
+		;;
+esac
