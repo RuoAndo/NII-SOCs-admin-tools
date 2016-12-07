@@ -10,8 +10,8 @@ sudo lb build
 sudo cp /etc/apt/sources.list chroot/etc/apt/
 echo "ubuntu-live" | sudo tee chroot/etc/hostname
 echo "127.0.0.1 ubuntu-live" | sudo tee chroot/etc/hosts
-cp /home/ubuntu/nii-cyber-security-admin/livedvd/makecontainer.sh /home/ubuntu/nii-cyber-security-admin/livedvd/live-build/chroot/root/
-cp /home/ubuntu/nii-cyber-security-admin/livedvd/grub.com /home/ubuntu/nii-cyber-security-admin/livedvd/live-build/chroot/root/
+cp ~/nii-cyber-security-admin/livedvd/makecontainer.sh /home/ubuntu/nii-cyber-security-admin/livedvd/live-build/chroot/root/
+cp ~/nii-cyber-security-admin/livedvd/grub.com /home/ubuntu/nii-cyber-security-admin/livedvd/live-build/chroot/root/
 sudo chroot chroot
 passwd
 sudo systemd-nspawn -b -D chroot
