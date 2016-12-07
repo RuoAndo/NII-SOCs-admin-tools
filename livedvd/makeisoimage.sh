@@ -8,4 +8,4 @@ sudo mksquashfs chroot iso/live/filesystem.squashfs
 rm -rf ubuntu-live.iso
 sudo grub-mkrescue -o ubuntu-live.iso iso
 rm -rf /home/ubuntu/buntu-live.iso
-mv ubuntu-live.iso /home/ubuntu/
+mv ubuntu-live.iso ~/
