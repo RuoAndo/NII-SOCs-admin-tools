@@ -1,6 +1,13 @@
 LiveDVDの作成手順
 
-#STEP1: LiveDVDを作成するためのパッケージのインストール
+#シェルスクリプトの実行手順
+
+<pre>
+bash# makerootfs.sh
+bash" makeisoimage.sh
+</pre>
+
+# LiveDVDを作成するためのパッケージのインストール
 
 <pre>
 $ sudo apt install -y livecd-rootfs systemd-container xorriso
