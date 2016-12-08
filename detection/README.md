@@ -204,3 +204,8 @@ data:9:[-0.84677815  0.07218387 -1.62459037][ 0.  1.  0.]
 <img src="../images/dbs3.png" width="70%"> <br>
 <img src="../images/dbs4.png" width="70%"> <br>
 
+#DBScan pt.2
+
+<img src="dbscan3-1.png" width="70%"> <br>
+<img src="dbscan3-2.png" width="70%"> <br>
+<img src="dbscan3-3.png" width="70%"> <br>
