@@ -204,9 +204,9 @@ data:9:[-0.84677815  0.07218387 -1.62459037][ 0.  1.  0.]
 <img src="../images/dbs3.png" width="70%"> <br>
 <img src="../images/dbs4.png" width="70%"> <br>
 
-#DBScan pt.2
+#DBScan pt.3
 
-<a name="dbscanpt2"></a>
+<a name="dbscanpt3"></a>
 <img src="dbscan3-1.png" width="70%"> <br>
 
 <pre>
