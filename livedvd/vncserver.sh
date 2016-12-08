@@ -1,0 +1,2 @@
+vncserver -kill :1
+vncserver
