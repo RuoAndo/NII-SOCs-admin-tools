@@ -1,4 +1,6 @@
 # iperf -s
+
+<pre>
 ------------------------------------------------------------
 Server listening on TCP port 5001
 TCP window size: 85.3 KByte (default)
@@ -16,3 +18,4 @@ TCP window size: 85.0 KByte (default)
 
 [ ID] Interval       Transfer     Bandwidth
 [  3]  0.0-10.0 sec   112 MBytes  94.2 Mbits/sec
+</pre>
