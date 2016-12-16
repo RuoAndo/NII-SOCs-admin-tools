@@ -11,18 +11,15 @@ public class Convolution {
 	}
 	private void setIn(double[] _in)throws IllegalArgumentException {
 
-		// check the size of the datavector... 
 		if(_in.length <= 3) {
 			throw new IllegalArgumentException("Data length can't be zero or smaller than zero");
 		}
 
 		this.in = _in;
-		//Our denoised singal is of same length as of our input raw signal...
 		this.out = new double [_in.length];
 	}
 	private void setKernal(double[] _kernal)throws IllegalArgumentException {
 
-		//Check length of Kernel vector if its greater than zero; or Length is not an odd number. 
 		if(_kernal.length <= 0 || (_kernal.length%2) == 0) {
 			throw new IllegalArgumentException("kernal length can't be zero or smaller than zero");
 		}
