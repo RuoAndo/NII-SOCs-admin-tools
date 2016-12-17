@@ -41,6 +41,7 @@ user    3m31.720s
 sys     1m22.656s
 
 root@ubuntu-live:~# more grub.com
+<pre>
 cat <<EOF | tee /boot/grub/grub.cfg
 	      set timeout=1
 	      serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1
@@ -52,6 +53,7 @@ cat <<EOF | tee /boot/grub/grub.cfg
 	      initrd /boot/initrd.img-4.4.0-45-generic
 	      }
 EOF
+</pre>
 
 real    2m49.458s
 user    7m35.628s
@@ -59,6 +61,8 @@ sys     0m9.100s
 
 root@ubuntu-live:~# shutdown -h now
 </pre>
+
+outside container.
 
 root@flare-OptiPlex-3040:~/nii-cyber-security-admin/livedvd# time ./makeisoimage.sh
 
