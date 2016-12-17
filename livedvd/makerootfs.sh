@@ -16,6 +16,7 @@ cp ~/nii-cyber-security-admin/livedvd/makecontainer.sh ~/nii-cyber-security-admi
 cp ~/nii-cyber-security-admin/livedvd/grub.com ~/nii-cyber-security-admin/livedvd/live-build/chroot/root/
 sudo chroot chroot
 passwd
+exit
 sudo systemd-nspawn -b -D chroot
 
 #cd live-build
