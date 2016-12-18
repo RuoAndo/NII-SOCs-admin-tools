@@ -79,3 +79,5 @@ execute this command to launch X server.
 <pre>
 bash#startx -- :1
 </pre>
+
+<img src="screenshots/2016-12-18-01.png">
