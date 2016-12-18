@@ -41,19 +41,6 @@ user    3m31.720s
 sys     1m22.656s
 
 root@ubuntu-live:~# more grub.com
-<pre>
-cat <<EOF | tee /boot/grub/grub.cfg
-	      set timeout=1
-	      serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1
-	      terminal_input console serial
-	      terminal_output console serial
-
-	      menuentry 'ubuntu-live' {
-	      linux /boot/vmlinuz-4.4.0-45-generic boot=live console=tty1 console=ttyS0,115200
-	      initrd /boot/initrd.img-4.4.0-45-generic
-	      }
-EOF
-</pre>
 
 real    2m49.458s
 user    7m35.628s
