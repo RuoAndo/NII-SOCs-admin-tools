@@ -23,9 +23,9 @@ cp ~/nii-cyber-security-admin/livedvd/makecontainer.sh ~/nii-cyber-security-admi
 cp ~/nii-cyber-security-admin/livedvd/grub.com ~/nii-cyber-security-admin/livedvd/live-build/chroot/root/
 </pre>
 
-bash# sudo chroot chroot
-bash# passwd
-bash# exit
+bash# sudo chroot chroot<br>
+bash# passwd<br>
+bash# exit<br>
 
 launch container.
 
@@ -46,13 +46,36 @@ real    2m49.458s
 user    7m35.628s
 sys     0m9.100s
 
+Disabling guest session.
+
+root@ubuntu-live:~# vi /usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf
+[SeatDefaults]
+user-session=ubuntu
+allow-guest=false
+
+Setting text login.
+
+root@ubuntu-live:~# vi /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash text"
+
 root@ubuntu-live:~# shutdown -h now
 </pre>
 
 outside container.
 
+creating iso image.
 root@flare-OptiPlex-3040:~/nii-cyber-security-admin/livedvd# time ./makeisoimage.sh
 
+<pre>
 real    6m22.834s
 user    8m31.892s
 sys     0m13.184s
+</pre>
+
+launch liveDVD.
+
+execute this command to launch X server.
+
+<pre>
+bash#startx -- :1
+</pre>
