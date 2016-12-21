@@ -62,7 +62,7 @@ public class Convolution {
 
 	public static void main(String[] args) {
 
-	    double [] data = new double[1200];
+	    double [] data = new double[50];
 	    int j = 0;
 
 	    try{

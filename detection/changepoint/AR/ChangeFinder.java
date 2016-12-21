@@ -14,35 +14,35 @@ public class ChangeFinder {
     private double sum;
 
     /* for convolution */
-    private double[] in;
-    private double[] kernal;
-    private double[] out;
+    private static double[] in;
+    private static double[] kernal;
+    private static double[] out;
         
-    public void Convolution(double[] _in,double[]_kernal) {
+    public static void Convolution(double[] _in,double[]_kernal) {
 	setIn(_in);
 	setKernal(_kernal);
     }
 
-    private void setIn(double[] _in)throws IllegalArgumentException {
+    private static void setIn(double[] _in)throws IllegalArgumentException {
 
 	if(_in.length <= 3) {
 	    throw new IllegalArgumentException("Data length can't be zero or smaller than zero");
 	}
 
-	this.in = _in;
-	this.out = new double [_in.length];
+	ChangeFinder.in = _in;
+	ChangeFinder.out = new double [_in.length];
     }
     
-    private void setKernal(double[] _kernal)throws IllegalArgumentException {
+    private static void setKernal(double[] _kernal)throws IllegalArgumentException {
 
 	if(_kernal.length <= 0 || (_kernal.length%2) == 0) {
 	    throw new IllegalArgumentException("kernal length can't be zero or smaller than zero");
 	}
-	this.kernal = _kernal;
+	ChangeFinder.kernal = _kernal;
     }
 
     @SuppressWarnings("unused")
-    public double[] colvoltionSeries() {
+    public static double[] colvoltionSeries(double[] in) {
 
 	int kernalSize = kernal.length;
 	int zerosToAppend = (int) Math.ceil(kernalSize/2);
@@ -87,8 +87,10 @@ public class ChangeFinder {
  
     public static void main(String[] args) {
     	
-        double[] testData = new double[1200];
-        double[] changePoint = new double[1200];
+        double[] testData = new double[50];
+        double[] changePoint = new double[50];
+        double[] convData = new double[4];
+	double[] score = new double[50];
 	
 	// int[] windowSizes = {3,5};
 	int[] windowSizes = {3};
@@ -122,7 +124,8 @@ public class ChangeFinder {
                 ma.newNum(x);
                 // System.out.println("Next number = " + x + ", SMA = " + ma.getAvg());
 		tmp = x - ma.getAvg();
-
+		score[counter] = tmp;
+		
 		if(tmp > 0.5 || tmp < -0.5)
 		    {
 			changePoint[counter] = 1;
@@ -133,7 +136,7 @@ public class ChangeFinder {
 			changePoint[counter] = 0;
 		    }
 
-		System.out.println(tmp);
+		// System.out.println(tmp);
 		counter = counter + 1;
             }
             // System.out.println();
@@ -141,12 +144,27 @@ public class ChangeFinder {
 
 	double[] k = {1.0/9.0,2.0/9.0,3.0/9.0,2.0/9.0,1.0/9.0};
 
-	
-	// Convolution conv = new Convolution(data,k);
-	// double[] out = conv.colvoltionSeries();
+	for(int j = 0; j < changePoint.length; j ++) {
+	    if(changePoint[j] == 1)
+		{
+		    for(i = 0; i < 4; i ++)
+			{
+			    convData[i] = score[j-2+i];
+			}
+		    
+		    Convolution(convData, k);
+		    double[] out = colvoltionSeries(convData);
 
-	for(int j = 0; j < out.length; j ++) {
-	    System.out.print(out[i] + "\n");
+		    for(i = 0; i < 4; i ++)
+			{
+			    score[j-2+i] = out[i];
+			}
+		    
+		}
+	}
+
+	for(int j = 0; j < score.length; j ++) {
+	    System.out.print(score[j] + "\n");
 	}
     }
 }

@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-
 public class MovingAverage {
     private final Queue<Double> window = new LinkedList<Double>();
     private final int period;
@@ -34,8 +33,9 @@ public class MovingAverage {
  
     public static void main(String[] args) {
     	
-        double[] testData = new double[1200];
-	int[] windowSizes = {3,5};
+        double[] testData = new double[50];
+	// int[] windowSizes = {3,5};
+	int[] windowSizes = {3};
 	int i;
 	
 	try{
@@ -56,15 +56,28 @@ public class MovingAverage {
 	}
 
 	double tmp;
+	int counter;
+
+	counter = 0;
+	
 	for (int windSize : windowSizes) {
             MovingAverage ma = new MovingAverage(windSize);
             for (double x : testData) {
                 ma.newNum(x);
                 // System.out.println("Next number = " + x + ", SMA = " + ma.getAvg());
 		tmp = x - ma.getAvg();
+
+		/*
+		if(tmp > 0.5 || tmp < -0.5)
+		    {
+			System.out.println("anomaly detected at point: " + counter + " value = " + tmp);
+		    }
+		*/
+
 		System.out.println(tmp);
+		counter = counter + 1;
             }
-            System.out.println();
+            // System.out.println();
         }
     }
     

@@ -14,6 +14,6 @@ if __name__ == "__main__":
     plt.plot(data)
     plt.show()  
         
-
-            
+    filename = argvs[1] + ".png"
+    plt.savefig(filename)
 

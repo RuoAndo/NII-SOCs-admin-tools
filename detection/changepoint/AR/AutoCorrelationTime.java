@@ -22,9 +22,9 @@ public class AutoCorrelationTime
     {
 
 	//    Random rand = new Random(1);
-	double[] ns = new double[1200];
+	double[] ns = new double[50];
 
-	double[] tmp = new double[1500];
+	double[] tmp = new double[50];
 	//    for (int i = 0; i < 100; i++)
 	//      ns[i] = rand.nextDouble();
 
