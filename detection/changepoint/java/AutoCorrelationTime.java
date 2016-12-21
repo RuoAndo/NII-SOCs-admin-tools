@@ -4,6 +4,12 @@ import java.util.List;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import com.google.common.collect.Lists;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class AutoCorrelationTime
 {
 
@@ -16,16 +22,59 @@ public class AutoCorrelationTime
     {
 
 	//    Random rand = new Random(1);
-	double[] ns = new double[]{1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9};
+	double[] ns = new double[50];
+
+	double[] tmp = new double[50];
 	//    for (int i = 0; i < 100; i++)
 	//      ns[i] = rand.nextDouble();
 
+	// String[] strarray = new String[1000];
+	int i = 0;
+
+	try{
+	    File file = new File(args[0]);
+	    BufferedReader br = new BufferedReader(new FileReader(file));
+	    String str= null;
+	    i=0;
+	    while((str = br.readLine()) != null){
+		//System.out.println(str);
+		ns[i] = Double.parseDouble(str);
+		i = i +1;
+	    }
+	    br.close();
+	}catch(FileNotFoundException e){
+	    System.out.println(e);
+	}catch(IOException e){
+	    System.out.println(e);
+	}
+ 	
 	List<Double> values = Lists.newArrayList();
 	for (double n : ns) values.add(n);
-	System.out.println(values);
-	System.out.println(Arrays.toString(autocovariance(ns)));
-	System.out.println(estimateAutocorrelationFunction(values));
-	System.out.println(EffectiveSampleSize(values));
+
+	i = 0;
+	for (double c : autocovariance(ns))
+	    {
+		// System.out.print(c);
+		// System.out.print("\n");
+		tmp[i] = c;
+		i = i + 1;
+	    }
+
+	double t = 0;
+	double s = 0;
+	i = 0;
+
+    	for (double d : autocovariance(ns, 1199))
+	    {
+		t = tmp[i] * d;
+		s = t - ns[i];
+		System.out.print(t);
+		System.out.print("\n");
+		i = i + 1;
+	    }
+	
+	// System.out.println(estimateAutocorrelationFunction(values));
+	// System.out.println(EffectiveSampleSize(values));
     }
 
     public static double computeAutoCorrTime(List<Double> values)
