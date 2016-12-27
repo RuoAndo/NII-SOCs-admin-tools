@@ -45,12 +45,17 @@ java -cp ./guava-20.0.jar:./commons-math3-3.6.1/commons-math3-3.6.1.jar:. Change
 
 # Sample
 
+data
 <img src="images/NG.png">
 
+AR
 <img src="images/AR.png">
 
+MA
 <img src="images/MA.png">
 
+Convolution
 <img src="images/CO.png">
 
+Changepoint (pseudo)
 <img src="images/CF.png">
