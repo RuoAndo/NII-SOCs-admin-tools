@@ -18,9 +18,14 @@ public class ChangeFinder {
     private static double[] kernal;
     private static double[] out;
 
-    public static final int data_Size = 50;
+    
+    // public static final int[] windowSizes = {3,5};
+    public static final int[] windowSizes = {3};
+    
     public static final int conv_Window_Size = 4;
-        
+    public static final double[] k = {1.0/9.0,2.0/9.0,3.0/9.0,2.0/9.0,1.0/9.0};    
+    public static final int data_Size = 50;
+
     public static void Convolution(double[] _in,double[]_kernal) {
 	setIn(_in);
 	setKernal(_kernal);
@@ -96,8 +101,6 @@ public class ChangeFinder {
 	double[] score = new double[data_Size];
 	double[] score_abs = new double[data_Size];
 	
-	// int[] windowSizes = {3,5};
-	int[] windowSizes = {3};
 	int i;
 	
 	try{
@@ -146,8 +149,6 @@ public class ChangeFinder {
             }
             // System.out.println();
         } // for (int windSize : windowSizes) {
-
-	double[] k = {1.0/9.0,2.0/9.0,3.0/9.0,2.0/9.0,1.0/9.0};
 
 	for(int j = 0; j < changePoint.length; j ++) {
 	    if(changePoint[j] == 1)
