@@ -129,6 +129,7 @@ public class ChangeFinder {
                 // System.out.println("Next number = " + x + ", SMA = " + ma.getAvg());
 		tmp = x - ma.getAvg();
 		score[counter] = tmp;
+		score_abs[counter] = Math.abs(tmp);
 		
 		if(tmp > 0.5 || tmp < -0.5)
 		    {
@@ -163,14 +164,26 @@ public class ChangeFinder {
 			{
 			    score[j-2+i] = out[i];
 			    score_abs[j-2+i] = Math.abs(out[i]);
-			}
-		    
+			    // score_abs[j-2+i] = score[j-2+i];
+			}		    
 		}
 	}
 
 	for(int j = 0; j < score.length; j ++) {
-	    System.out.print(score[j] + "\n");
+	    // System.out.print(score[j] + "\n");
+	    System.out.print(score_abs[j] + "\n");
 	}
+
+	double max = score_abs[0];
+
+	for (int j =0; j < score_abs.length; j++) {
+	    if (max < score_abs[j]) {
+		max = score_abs[j];		
+	    }
+ 	}
+
+	// System.out.print("max: " + max + "\n");
+
     }
 }
 
