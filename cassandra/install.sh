@@ -1,3 +1,4 @@
+# note that instance type is NOT micro
 yum install -y jna
 yum install -y java-1.7.0*
 cp datasax.repo /etc/yum.repos.d/
