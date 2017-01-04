@@ -29,14 +29,8 @@ java -cp target/classes/ com.sample.App
 adding dependencies.
 
 <pre>
+<xmp>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.sample</groupId>
-  <artifactId>hello</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
   <name>hello</name>
   <url>http://maven.apache.org</url>
 
@@ -87,6 +81,7 @@ adding dependencies.
   </dependencies>
 </project>
 
+</xmp>
 </pre>
 
 mvn exec:java.
