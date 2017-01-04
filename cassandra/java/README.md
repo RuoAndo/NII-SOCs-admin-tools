@@ -1,6 +1,6 @@
-# installing maven
+# Cassandra Java driver with Maven
 
-from epel-apache-maven
+# from epel-apache-maven
 
 <pre>
 sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
@@ -9,7 +9,7 @@ sudo yum install -y apache-maven
 mvn --version
 </pre>
 
-creating maven template project.
+# creating maven template project.
 
 <pre>
 mvn archetype:generate \
@@ -19,14 +19,14 @@ mvn archetype:generate \
       -DartifactId=hello
 </pre>
 
-compile and execute.
+# compile and execute.
 
 <pre>
 mvn compile
 java -cp target/classes/ com.sample.App
 </pre>
 
-adding dependencies.
+# adding dependencies.
 
 <pre>
 <xmp>
@@ -83,6 +83,8 @@ adding dependencies.
 
 </xmp>
 </pre>
+
+# executing with Maven plugin
 
 mvn exec:java.
 
