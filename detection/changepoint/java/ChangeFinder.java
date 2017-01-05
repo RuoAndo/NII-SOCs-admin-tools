@@ -17,14 +17,13 @@ public class ChangeFinder {
     private static double[] in;
     private static double[] kernal;
     private static double[] out;
-
     
     // public static final int[] windowSizes = {3,5};
     public static final int[] windowSizes = {3};
     
     public static final int conv_Window_Size = 4;
     public static final double[] k = {1.0/9.0,2.0/9.0,3.0/9.0,2.0/9.0,1.0/9.0};    
-    public static final int data_Size = 50;
+    public static final int data_Size = 1000;
 
     public static void Convolution(double[] _in,double[]_kernal) {
 	setIn(_in);
@@ -97,7 +96,7 @@ public class ChangeFinder {
 
         double[] testData = new double[data_Size];
         double[] changePoint = new double[data_Size];
-        double[] convData = new double[4];
+        double[] convData = new double[conv_Window_Size];
 	double[] score = new double[data_Size];
 	double[] score_abs = new double[data_Size];
 	
@@ -155,7 +154,8 @@ public class ChangeFinder {
 		{
 		    for(i = 0; i < conv_Window_Size ; i ++)
 			{
-			    convData[i] = score[j-2+i];
+			    //convData[i] = score[j-2+i];
+			    convData[i] = score[j];
 			}
 		    
 		    Convolution(convData, k);
@@ -163,8 +163,9 @@ public class ChangeFinder {
 
 		    for(i = 0; i < conv_Window_Size ; i ++)
 			{
-			    score[j-2+i] = out[i];
-			    score_abs[j-2+i] = Math.abs(out[i]);
+			    // score[j-2+i] = out[i];
+			    score[j] = out[i];
+			    score_abs[j] = Math.abs(out[i]);
 			    // score_abs[j-2+i] = score[j-2+i];
 			}		    
 		}
