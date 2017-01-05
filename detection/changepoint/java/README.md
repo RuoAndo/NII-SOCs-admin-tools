@@ -59,3 +59,11 @@ Convolution
 
 Changepoint (pseudo)
 <img src="images/CF.png">
+
+# 2017-01-05
+
+data multivariate_normal(rand(1) * 20 - 10, np.eye(1) * (rand()), 250)
+<img src="images/2017-01-05-01.png">
+
+cf
+<img src="images/2017-01-05-02.png">
