@@ -7,10 +7,6 @@ import com.datastax.driver.core.Session;
 import com.datastax.driver.core.*;
 import static java.lang.System.out;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
