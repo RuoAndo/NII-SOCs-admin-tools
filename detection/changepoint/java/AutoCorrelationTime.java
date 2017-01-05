@@ -11,7 +11,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class AutoCorrelationTime
+
 {
+    public static final int data_Size = 500;
+    public static final int shift_Size = 10;
+    public static final	double[] ns = new double[data_Size];
+    public static final double[] tmp = new double[data_Size];
 
     public static double EffectiveSampleSize(List<Double> values)
     {
@@ -21,14 +26,11 @@ public class AutoCorrelationTime
     public static void main(String[]args)
     {
 
-	//    Random rand = new Random(1);
-	double[] ns = new double[50];
-
-	double[] tmp = new double[50];
+	//    Random rand = new Random(1);	
 	//    for (int i = 0; i < 100; i++)
 	//      ns[i] = rand.nextDouble();
-
 	// String[] strarray = new String[1000];
+	
 	int i = 0;
 
 	try{
@@ -62,15 +64,19 @@ public class AutoCorrelationTime
 
 	double t = 0;
 	double s = 0;
+	
 	i = 0;
-
-    	for (double d : autocovariance(ns, 1199))
+    	for (double d : autocovariance(ns, data_Size-1))
 	    {
-		t = tmp[i] * d;
-		s = t - ns[i];
-		System.out.print(t);
-		System.out.print("\n");
-		i = i + 1;
+		if(i  < data_Size - shift_Size)
+		    {
+			t = ns[i+10]*d - ns[i]*d;
+			// s = t - ns[i];
+			// t = d;
+			System.out.print(t);
+			System.out.print("\n");
+			i = i + 1;
+		    }
 	    }
 	
 	// System.out.println(estimateAutocorrelationFunction(values));
