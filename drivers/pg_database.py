@@ -21,7 +21,7 @@ for stat in stats:
     #print sqlstr
 
     cursor6 = connection3.cursor()
-    cursor6.execute("SELECT * FROM pg_stat_database WHERE datname = 'sample';")
+    cursor6.execute(sqlstr)
     stats = cursor6.fetchall()
 
     result = {}
