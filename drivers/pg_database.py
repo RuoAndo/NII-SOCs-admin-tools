@@ -1,7 +1,16 @@
-
 import time
 import psycopg2
 import os
+
+import sys
+import re
+import commands
+
+from pymongo import Connection
+connect = Connection('127.0.0.1', 27017)
+
+db = connect.pgstat
+collect = db.pgstat
 
 connection3 = psycopg2.connect(host="192.168.1.1", port=5432, database="sample", user="postgres", password="")
 cursor5 = connection3.cursor()
@@ -14,7 +23,6 @@ result = {}
 for stat in stats:
     database = stat[1]
     result[database] = stat
-    print stat[0]
 
     cursor5 = connection3.cursor()
     sqlstr = "SELECT * FROM pg_stat_database WHERE datname ='" + stat[0] +  "';"
@@ -29,8 +37,24 @@ for stat in stats:
         database = stat[1]
         result[database] = stat
 
-    print stats
-    
+    statstr = str(stats)
+    #print statstr
+
+    ret = collect.find({'_id' : {'$exists': 'true'}})
+    if ret.count() != "0":
+        #print "test"
+        collect.insert({'_id' : stat[0], 'stat' : statstr})    
+
+    ret = collect.find({'_id' : stat[0]})
+        
+    for doc in ret:
+             
+        if doc['stat'] != statstr:
+            print stat[1]
+            print doc['stat']
+            print statstr
+            collect.update({'_id' : stat[0]}, {'$set': {'stat' : statstr}})    
+            
     for database in result:
         for i in range(2,len(cursor6.description)):
             metric = cursor6.description[i].name
