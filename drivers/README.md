@@ -21,7 +21,7 @@ heap_blks_readとheap_blks_hitによるテーブル毎のキャッシュのヒ�
 ある程度長い時間稼働した後に、キャッシュヒット率が低いままなら、共有バッファshared_buffersの調整やテーブルのアクセスパターンを調整する。
 
 <pre>
-bash# python table-cachehit.py bind929
+bash# python table-cachehit.py sample
 ('template1', Decimal('99.00'))
 ('template0', Decimal('99.00'))
 ('postgres', Decimal('99.00'))
