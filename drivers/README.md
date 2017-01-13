@@ -14,3 +14,16 @@ bash# python fillfactor.py
 </pre>
 
 関連項目: HOT (Heap Only Taple)
+
+#テーブルのキャッシュヒット
+
+heap_blks_readとheap_blks_hitによるテーブル毎のキャッシュのヒット率を計算
+ある程度長い時間稼働した後に、キャッシュヒット率が低いままなら、共有バッファshared_buffersの調整やテーブルのアクセスパターンを調整する。
+
+<pre>
+bash# python table-cachehit.py bind929
+('template1', Decimal('99.00'))
+('template0', Decimal('99.00'))
+('postgres', Decimal('99.00'))
+('sample', Decimal('99.00'))
+</pre>
