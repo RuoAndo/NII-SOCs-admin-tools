@@ -12,9 +12,11 @@ def lkf(T, Y, U, mu0, Sigma0, A, B, C, Q, R):
     M = [mu] 
 
     for i in range(T):
+        # estimate
         mu_ = A * mu + B * U[i]
         Sigma_ = Q + A * Sigma * A.T
-        
+
+        # update
         yi = Y[i+1] - C * mu_
         S = C * Sigma_ * C.T + R
         K = Sigma_ * C.T * S.I
