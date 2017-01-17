@@ -27,3 +27,16 @@ bash# python table-cachehit.py sample
 ('postgres', Decimal('99.00'))
 ('sample', Decimal('99.00'))
 </pre>
+
+# HOT (Heap Only Taple)
+
+インデックスを持たない列への更新時に有効になる
+
+処理１: UPDATE時のインデックスエントリの追加処理をスキップ
+処理２: VACUUM処理を行わずに不要領域を再利用可能にする
+
+HOTの効果がない場合
+
+SQL文の見直しをする
+FILLFACTORによる物理設計の見直しをする
+
