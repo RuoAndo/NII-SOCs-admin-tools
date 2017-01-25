@@ -35,7 +35,8 @@ public class App
 
 	try {
 	    //ファイルを読み込む
-	    FileReader fr = new FileReader("/home/flare/nii-cyber-security-admin/detection/misc/v4v6/src/main/java/com/v4v6/address");
+	    //FileReader fr = new FileReader("/home/flare/nii-cyber-security-admin/detection/misc/v4v6/src/main/java/com/v4v6/address");
+	    FileReader fr = new FileReader("/home/ec2-user/nii-cyber-security-admin/detection/misc/v4v6/src/main/java/com/v4v6/address");
 	    BufferedReader br = new BufferedReader(fr);
 
 	    //読み込んだファイルを１行ずつ画面出力する
