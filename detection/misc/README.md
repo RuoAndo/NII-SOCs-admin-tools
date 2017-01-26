@@ -16,8 +16,10 @@ export PATH=$PATH:/root/apache-maven-3.3.9/bin
 
 # building maven project
 
+<pre>
 mvn archetype:generate \
       -DarchetypeArtifactId=maven-archetype-quickstart \
       -DinteractiveMode=false \
       -DgroupId=com.v4v6 \
       -DartifactId=v6
+</pre>
