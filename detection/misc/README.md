@@ -1,4 +1,4 @@
-# maven path
+# maven path - .bashrc
 
 <pre>
 alias rm='rm -i'
@@ -13,3 +13,11 @@ fi
 
 export PATH=$PATH:/root/apache-maven-3.3.9/bin
 </pre>
+
+# building maven project
+
+mvn archetype:generate \
+      -DarchetypeArtifactId=maven-archetype-quickstart \
+      -DinteractiveMode=false \
+      -DgroupId=com.v4v6 \
+      -DartifactId=v6
