@@ -1,4 +1,8 @@
 <pre>
+python mapper.py < $1 | sort | python reducer.py 
+</pre>
+
+<pre>
 3	a
 1	about
 1	adversity
