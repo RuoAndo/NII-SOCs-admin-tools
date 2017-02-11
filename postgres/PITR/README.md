@@ -36,8 +36,8 @@ setting postgresql.conf
 start / stop backup.
 
 <pre>
- 2015  python pg_start_backup.py linux405
- 2016  python pg_stop_backup.py linux405
+ 2015  python pg_start_backup.py dbname
+ 2016  python pg_stop_backup.py dbname
 </pre>
 
 vmstat -n 1
