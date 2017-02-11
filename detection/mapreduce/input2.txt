@@ -1,0 +1,39 @@
+['/root/flockGazer/tweets-en.py', 'blockchain_bitcoin']
+2
+py:blockchain_bitcoin
+tweet_id:728842081821675520text:RT @bitcoinagile: Rise of #bitcoin and the token economy in Japan  IndieSquare Official Blog #blockchain https://t.co/nfTKdAGQlB https://t.… created_at:Sat May 07 07:01:08 +0000 2016user_id:26425188 user_desc:Hollywood  showbiz talent agency.  Worldwide  Film, Television, Music, Digital Media Stars Over.34 years in showbiz Tel UK 07780 156 072 Anytime screen_name:CasLondon user_name:CAS LONDON
+
+--------
+tweet_id:728842079468703744text:Hype or Hope? Will Blockchain Based "Smart Contracts" Save Society? via @moneysummit https://t.co/jKodXGIhhx https://t.co/MDw8jyiudB created_at:Sat May 07 07:01:07 +0000 2016user_id:320779372 user_desc:Everyday I realize I don't know as much as I thought I did.  Most of that realization is thanks to emerging social networks. Hello to the era of New Media! screen_name:amandajelam user_name:Amanda Elam
+
+--------
+tweet_id:728841973805764609text:Make your transactions fast and secure using chip-chap
+Facebook Support 24/7 !!
+#fintech #bitcoin #blockchain https://t.co/Hbgx7Gdd9Y created_at:Sat May 07 07:00:42 +0000 2016user_id:2985730001 user_desc:Buy #bitcoin, send, pay in commerce or, simply, change your #BTC to cash at 10K ATM in Poland, Spain and more. // info@chip-chap.com screen_name:chipchapapp user_name:Chip-Chap
+
+--------
+tweet_id:728841861050314752text:RT @andi_staub: #Bitcoin &amp; #blockchain could be the start of a bigger revolution than the Internet itself
+
+#fintech #payments https://t.co/… created_at:Sat May 07 07:00:15 +0000 2016user_id:3505902095 user_desc: screen_name:BEeconCH user_name:BEeconCH
+
+--------
+tweet_id:728841853420900352text:RT @goodwinprocter: Congrats to @Chris_Skinner, author of bestseller Digital Bank, on his new book, ValueWeb https://t.co/DovNVHhO07 https:… created_at:Sat May 07 07:00:13 +0000 2016user_id:175433916 user_desc:Laugh in the face of adversity and be a winner screen_name:Stevewal63 user_name:Steve Waldron
+
+--------
+tweet_id:728841798223802368text:https://t.co/NoX0XHjkEJ - Hot topics: #usd #bitcoin #crypto #blockchain #btc #cryptocurrency created_at:Sat May 07 07:00:00 +0000 2016user_id:204112162 user_desc:#bitcoin social trends analyzer screen_name:BitcoinBuzzV9 user_name:BitcoinBuzz vega9
+
+--------
+tweet_id:728841698399428608text:Rise of #bitcoin and the token economy in Japan  IndieSquare Official Blog #blockchain https://t.co/nfTKdAGQlB https://t.co/cRSojsrnFr created_at:Sat May 07 06:59:36 +0000 2016user_id:2281314234 user_desc:Streaming News: Bitcoin, Blockchain & Beyond #FINTECH #bitcoin #blockchain #ethereum #venturecapital #startups #distributed #ledger #dapps #dao #smartcontracts screen_name:bitcoinagile user_name:BitcoinAgile
+
+--------
+tweet_id:728841683509624832text:"Rise of Bitcoin and the token economy in Japan" in IndieSquare Official Blog https://t.co/AiTrypOedu #blockchain #medium #bitcoin created_at:Sat May 07 06:59:33 +0000 2016user_id:2577061140 user_desc:Yope is a new digital-currencies payment network. Yope is changing the future face of software online transactions and banking. screen_name:yopeio user_name:Yope.io
+
+--------
+tweet_id:728841570108182528text:RT @CoinLook: IBM wants to move blockchain tech beyond Bitcoin and money transfer - Ars Technica https://t.co/e70ccCHoZl created_at:Sat May 07 06:59:06 +0000 2016user_id:4342165153 user_desc:finding articles on #bitcoin screen_name:bitcoinizer user_name:Chance
+
+--------
+tweet_id:728841485295230976text:Ibm unveils cloud-based #blockchain services for government and healthcare #bitcoin https://t.co/UfteikOgUw https://t.co/f1upTiDU49
+
+— Bi… created_at:Sat May 07 06:58:45 +0000 2016user_id:2275141800 user_desc:Tweets about CryptoCurrencies and Blockchain. Bitcoin and Blockchain technology are the future. #bitcoin #altcoins #blockchain screen_name:alt_bit_coins user_name:AllThingsAltBitcoins
+
+--------
