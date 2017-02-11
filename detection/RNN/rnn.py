@@ -1,7 +1,3 @@
-""" Vanilla RNN
-
-@author Graham Taylor
-"""
 import numpy as np
 import theano
 import theano.tensor as T
