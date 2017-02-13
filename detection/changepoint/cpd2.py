@@ -5,6 +5,7 @@ import sys
 import numpy as np
 import scipy as sp
 import statsmodels.tsa.arima_model as ar
+import matplotlib.pyplot as plt 
 
 # Change Finder
 class change_finder(object):
@@ -80,7 +81,17 @@ class change_finder(object):
 
         for i in score[0:250]:
             print float(i)
-    
+
+        plt.plot(score)
+        plt.show()
+
+        #std = np.std(score)
+
+        nm = score/np.linalg.norm(score)
+
+        plt.plot(nm)
+        plt.show()
+        
         return score
 
     # changepointScore <- outlierScore
@@ -98,7 +109,10 @@ def example():
 
     for i in data_a:
         print float(i)
-    
+
+    plt.plot(data_a)
+    plt.show()    
+        
     X = np.r_[data_a, data_b, data_c, data_d][:, 0]
     #X = np.r_[data_a][:, 0]
     #c_cf = change_finder(term=70, window=5, order=(2, 2, 0))
