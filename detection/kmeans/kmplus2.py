@@ -115,53 +115,6 @@ def lloyd(points, nclusters):
     return cluster_centers
  
  
-def print_eps(points, cluster_centers, W=400, H=400):
-    Color = namedtuple("Color", "r g b");
- 
-    colors = []
-    for i in xrange(len(cluster_centers)):
-        colors.append(Color((3 * (i + 1) % 11) / 11.0,
-                            (7 * i % 11) / 11.0,
-                            (9 * i % 11) / 11.0))
- 
-    max_x = max_y = -FLOAT_MAX
-    min_x = min_y = FLOAT_MAX
- 
-    for p in points:
-        if max_x < p.x: max_x = p.x
-        if min_x > p.x: min_x = p.x
-        if max_y < p.y: max_y = p.y
-        if min_y > p.y: min_y = p.y
- 
-    scale = min(W / (max_x - min_x),
-                H / (max_y - min_y))
-    cx = (max_x + min_x) / 2
-    cy = (max_y + min_y) / 2
- 
-    print "%%!PS-Adobe-3.0\n%%%%BoundingBox: -5 -5 %d %d" % (W + 10, H + 10)
- 
-    print ("/l {rlineto} def /m {rmoveto} def\n" +
-           "/c { .25 sub exch .25 sub exch .5 0 360 arc fill } def\n" +
-           "/s { moveto -2 0 m 2 2 l 2 -2 l -2 -2 l closepath " +
-           "   gsave 1 setgray fill grestore gsave 3 setlinewidth" +
-           " 1 setgray stroke grestore 0 setgray stroke }def")
- 
-    for i, cc in enumerate(cluster_centers):
-        print ("%g %g %g setrgbcolor" %
-               (colors[i].r, colors[i].g, colors[i].b))
- 
-        for p in points:
-            if p.group != i:
-                continue
-            print ("%.3f %.3f c" % ((p.x - cx) * scale + W / 2,
-                                    (p.y - cy) * scale + H / 2))
- 
-        print ("\n0 setgray %g %g s" % ((cc.x - cx) * scale + W / 2,
-                                        (cc.y - cy) * scale + H / 2))
- 
-    print "\n%%%%EOF"
- 
- 
 def main():
     npoints = 1000
     k = 7 # # clusters
