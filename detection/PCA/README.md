@@ -19,3 +19,7 @@ grep PCA tmp | grep "0.00"
   0.00      0.00     0.00        1     0.00     0.00  PCA::multiply(TNT::Array2D<double> const&, TNT::Array2D<double> const&, TNT::Array2D<double>&)
   0.00      0.00     0.00        1     0.00     0.00  PCA::transpose(TNT::Array2D<double> const&, TNT::Array2D<double>&)    
 </pre>
+
+# python
+
+<img src="pca2.png">
