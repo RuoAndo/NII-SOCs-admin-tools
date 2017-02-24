@@ -1,3 +1,4 @@
+
 # Cuckoo Hashing
 
 <pre>
@@ -44,5 +45,21 @@ Final hash tables:
 948 : 0.930417
 </pre>
 
+# hash table
 
+<pre>
+d個のk次元のランダムベクトルr[i]から、ハッシュ関数h_i(u)
 
+h_i(u) = 1 (r*u >=0)
+h_i(u) = 0 (r*u < 0)
+
+      int h = 0;
+      for(int j=0; j<d; j++){
+        h <<= 1;
+        if(dot(list[i], rndvec[j])>=0.0){
+          h += 1;
+        }else{
+          h += 0;
+        }
+      }
+</pre>
