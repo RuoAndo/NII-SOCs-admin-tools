@@ -146,3 +146,14 @@ packageJobJar: [/usr/local/hadoop/mapper.py, /usr/local/hadoop/reducer.py] [] /t
         File Output Format Counters 
                 Bytes Written=17
 </pre>
+
+# MapReduce 2
+
+<pre>
+
+# python mapper2.py < input2.txt | python reducer.py
+a       1
+b       2
+c       3
+
+</pre>
