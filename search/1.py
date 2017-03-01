@@ -5,18 +5,16 @@ import sys
 import socket, struct
 from binascii import hexlify
 
-def convert_ip4_address(ip_address):
-    packed_ip_addr = socket.inet_aton(ip_address)
-    unpacked_ip_addr = socket.inet_ntoa(packed_ip_addr)
-    print "Packed: %s, Unpacked: %s" % (hexlify(packed_ip_addr), unpacked_ip_addr)
-                    
+src = 0
+dst = 0
+
 if __name__ == '__main__':
 
     argvs = sys.argv  
     argc = len(argvs) 
 
     f = open(argvs[1])
-
+    
     line = f.readline() 
 
     alts = []
@@ -24,19 +22,6 @@ if __name__ == '__main__':
     
     while line:
         tmp = line.split("\t")
-
-        try:
-            ip = tmp[7]
-            dst = struct.unpack('I', socket.inet_aton(ip))[0]
-            #print dst
-            
-            ip = tmp[8]
-            src = struct.unpack('I', socket.inet_aton(ip))[0]
-
-            #print str(dst) + ":" + str(src)
-
-        except:
-            pass
 
         counter = 0
         for i in tmp:
@@ -52,8 +37,46 @@ if __name__ == '__main__':
         
     print alts_uniq
         
-    #for i in vuls:
-    #    print i
+    f.close()
+
+######
+
+    f2 = open(argvs[1])
+    
+    line = f2.readline() 
+
+    while line:
+        tmp = line.split("\t")
         
+        counter = 0
+        for i in tmp:
+            #print i + ":" + str(counter)
+
+            if counter == 32:
+                alts.append(tmp[32])
+                #print tmp[32]
+
+                counter2 = 0
+                for a in alts_uniq:
+                    if a == tmp[32]:
+
+                        try:
+                            #ip = tmp[7]
+                            dst = struct.unpack('I', socket.inet_aton(tmp[7]))[0]
+            
+                            #ip = tmp[8]
+                            src = struct.unpack('I', socket.inet_aton(tmp[8]))[0]
+
+                        except:
+                            pass
+                            
+                        print str(dst) + ":" + str(src) + ":" + str(counter2)
+                            
+                    counter2 = counter2 + 1
+                        
+            counter = counter + 1
+        
+        line = f2.readline() 
+    
     
 
