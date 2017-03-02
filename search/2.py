@@ -1,5 +1,3 @@
-# python 1.py tools/libxl/libxl.c libxl 372
-
 import mmh3
 import sys
 MIN_HASH_VALUE = 2 ** 128
