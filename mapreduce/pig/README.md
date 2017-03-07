@@ -26,6 +26,8 @@ sudo apt-get install hadoop-pig
 
 # filter
 
+<pre>
+
 grunt> records = LOAD 'input.txt' USING PigStorage(',') AS (year:chararray, temp:int, quality:int);
 grunt> dump records
 
@@ -46,3 +48,5 @@ grunt> dump filtered_records
 (1950,-11,1)
 (1949,111,1)
 (1949,78,1)
+
+</pre>
