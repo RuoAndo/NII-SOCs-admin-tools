@@ -157,3 +157,58 @@ b       2
 c       3
 
 </pre>
+
+# setting up Hadoop
+
+<pre>
+【1】ダウンロード
+
+wget http://ftp.yz.yamagata-u.ac.jp/pub/network/apache/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+
+# 展開
+tar xf hadoop-2.6.0.tar.gz
+sudo mv hadoop-2.6.0 /usr/local/hadoop
+
+# パスを通す
+echo 'export PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin' >> .bashrc
+source .bashrc
+
+【2】JAVA_HOMEの設定
+
+$ vim ~/.bashrc
+
+#一番下へ↓4行を追加
+
+JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
+export JAVA_HOME
+PATH=$PATH:$JAVA_HOME/bin
+export PATH
+
+$ source ~/.bashrc
+
+/usr/local/hadoop/etc/hadoop/hadoop-env.shの修正
+
+【3】sshの設定
+
+# すでに鍵があるなら不要。ないならつくる。
+mkdir -p ~/.ssh
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+【ファイルシステムの用意】
+
+# hadoop fs -mkdir /user/
+# hadoop fs -mkdir /user/root
+# hadoop fs -ls
+
+
+# time hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar -mapper mapper4.py -reducer reducer4.py -file mapper4.py reducer4.py -input /user/root/input.txt -output /user/root/output/
+
+real    0m5.015s
+user    0m11.340s
+sys     0m0.576s
+
+</pre>
+
+
