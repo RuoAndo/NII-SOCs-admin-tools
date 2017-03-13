@@ -179,11 +179,11 @@ int main(int argc, char* argv[]) {
 
     cout << "the final data" << endl;
 
-    for(i=0;i<10;i++)
+    for(i=0;i<row;i++)
       {
-          for(j=0;j<2;j++)
+          for(j=0;j<col;j++)
 	    {
-	      cout << final_data[i][j];
+	      cout << final_data[i][j] << ",";
 	    }
 	  cout << endl;
       }
