@@ -42,8 +42,8 @@ for i, offset in enumerate(clusters_separation):
 
     X = np.r_[X, np.random.uniform(low=-6, high=6, size=(n_outliers, 2))] 
 
-        # Fit the model with the One-Class SVM
-    #plt.figure(figsize=(10, 12))
+    # Fit the model with the One-Class SVM
+    plt.figure(figsize=(10, 12))
     
 
     Y = np.loadtxt("data.csv",delimiter=",")
@@ -61,30 +61,31 @@ for i, offset in enumerate(clusters_separation):
 
         Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
         Z = Z.reshape(xx.shape)
-        #subplot = plt.subplot(3, 3,i*3+j+1)
-        #subplot.set_title("Outlier detection nu=%s" % nu)
+        subplot = plt.subplot(3, 3,i*3+j+1)
+        subplot.set_title("Outlier detection nu=%s" % nu)
 
         #subplot.contourf(xx, yy, Z, levels=np.linspace(Z.min(), threshold, 7), cmap=plt.cm.Blues_r)
 
-        #a = subplot.contour(xx, yy, Z, levels=[threshold], linewidths=2, colors='red')
+        a = subplot.contour(xx, yy, Z, levels=[threshold], linewidths=2, colors='red')
 
-        #subplot.contourf(xx, yy, Z, levels=[threshold, Z.max()], colors='orange')
+        subplot.contourf(xx, yy, Z, levels=[threshold, Z.max()], colors='orange')
 
-        #b = subplot.scatter(X[:-n_outliers, 0], X[:-n_outliers, 1], c='white')
+        b = subplot.scatter(X[:-n_outliers, 0], X[:-n_outliers, 1], c='white')
 
-        #c = subplot.scatter(X[-n_outliers:, 0], X[-n_outliers:, 1], c='black')
-        #subplot.axis('tight')
-        #subplot.legend(
-        #    [a.collections[0], b, c],
-        #    ['learned decision function', 'true inliers', 'true outliers'],
-        #    prop=matplotlib.font_manager.FontProperties(size=11))
+        c = subplot.scatter(X[-n_outliers:, 0], X[-n_outliers:, 1], c='black')
+        subplot.axis('tight')
+        subplot.legend(
+            [a.collections[0], b, c],
+            ['a', 'b', 'c'],
+            prop=matplotlib.font_manager.FontProperties(size=11))
 
         #subplot.set_xlabel("%d. One class SVM (errors: %d)" % (i+1, n_errors))
-        #subplot.set_xlim((-7, 7))
-        #subplot.set_ylim((-7, 7))
-        #plt.subplots_adjust(0.04, 0.1, 1.2, 0.84, 0.1, 0.26)
+        subplot.set_xlim((-7, 7))
+        subplot.set_ylim((-7, 7))
+        plt.subplots_adjust(0.04, 0.1, 1.2, 0.84, 0.1, 0.26)
 
         print "test"
         print Z
-        
-#plt.show()
+
+plt.savefig("svm.png")
+plt.show()
