@@ -188,6 +188,12 @@ $ source ~/.bashrc
 
 /usr/local/hadoop/etc/hadoop/hadoop-env.shの修正
 
+#ファイルに追記
+JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
+export JAVA_HOME
+PATH=$PATH:$JAVA_HOME/bin
+export PATH
+
 【3】sshの設定
 
 # すでに鍵があるなら不要。ないならつくる。
@@ -195,6 +201,10 @@ mkdir -p ~/.ssh
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+起動
+root@ip-10-0-1-132:~# hostname localhost
+# start-dfs.sh
 
 【ファイルシステムの用意】
 
