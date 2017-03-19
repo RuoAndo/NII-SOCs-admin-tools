@@ -7,7 +7,7 @@ sudo vim /etc/apt/sources.list.d/cdh3.list <br>
 <xamp>
 deb     http://archive.cloudera.com/debian squeeze-cdh3 contrib
 deb-src http://archive.cloudera.com/debian squeeze-cdh3 contrib
-</xmp>
+</xamp>
 
 sudo apt-get update 
 sudo apt-get install hadoop-pig 
