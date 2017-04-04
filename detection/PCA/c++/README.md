@@ -85,3 +85,55 @@ cosine(0, 1) =
 5 0.000000 -0.010525 -0.012915 0.110596
 
 </pre>
+
+# 2017-04-04
+
+<pre>
+# time python palo-csv2.py session_0305_1100.csv > session-0305-row9
+
+real    3m36.513s
+user    3m27.416s
+sys     0m1.700s
+
+# wc -l session-0305-row9
+9979365 session-0305-row9
+
+# free -h
+              total        used        free      shared  buff/cache   available
+	      Mem:           7.7G        192M        6.8G         32M        700M        7.2G
+	      Swap:          7.9G        1.3M        7.9G
+
+# time ./a.out 1000 1000 8
+
+real    0m0.429s
+user    0m0.384s
+sys     0m0.000s
+
+# time ./a.out 10000 10000 8
+
+real    0m34.243s
+user    0m34.156s
+sys     0m0.072s
+
+# time ./a.out 20000 20000 8
+
+real    2m17.484s
+user    2m16.952s
+sys     0m0.528s
+
+# time ./a.out 30000 30000 8
+
+real    5m9.806s
+user    5m8.252s
+sys     0m1.504s
+
+# time ./a.out 50000 50000 8
+terminate called after throwing an instance of 'std::bad_alloc'
+  what():  std::bad_alloc
+  中止 (コアダンプ)
+
+real    0m3.215s
+user    0m0.112s
+sys     0m0.008s
+
+</pre>
