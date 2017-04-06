@@ -12,8 +12,8 @@ struct point {
 };
 
 const int current_value = 1;
-const int XLEN = 5;
-const int YLEN = 5;
+const int XLEN = 2;
+const int YLEN = 1000;
 list<point> point_list;
 
 void insertValues(double x, double y)
@@ -32,7 +32,7 @@ int main()
 	ifstream fi("tmp2");
 
 	char c;
-	double array[5][5];
+	double array[1000][1000];
 
 	if(!fi) {
 	  cerr << "open error" << endl;
@@ -41,15 +41,14 @@ int main()
   
 	i = 0;
   
-	while(i < 5) {
-    
+	while(i < 1000) {    
 	  fi >> array[i][0] >> c >> array[i][1];
 	  if(fi.eof()) {
 	    cerr << "eof" << endl;
 	    break;
 	  }
 
-	  insertValues(array[i][0], array[i][1]);	  
+	  insertValues(array[i][0], array[i][1]);
 	  cout << array[i][0] << ',' << array[i][1] << endl;
 	  i++;
 	}
@@ -80,7 +79,6 @@ int main()
         insertValues(5.0, 0.0);
         insertValues(5.0, 9.0);                                                                                         
         insertValues(9.0, 5.0);
-
 	*/
 
         svm_problem prob;
@@ -109,6 +107,8 @@ int main()
             
         // building models and classification
         svm_model *model = svm_train(&prob, &param);
+
+	/*
         svm_node x[3];
         x[0].index = 1;
         x[1].index = 2;
@@ -116,18 +116,17 @@ int main()
 
         for (i = 0; i < XLEN; i++){
                 for (j = 0; j < YLEN ; j++) {
-                        x[0].value = (double) i / XLEN;
-                        x[1].value = (double) j / YLEN;
+                        x[i].value = array[i][j];
+                        x[j].value = array[i][j];
 
                         double d = svm_predict(model, x);
-                        if (param.svm_type == ONE_CLASS && d<0){
-                                d=2;
-                        }
+
                         cout << d << " ";
                 }
                 cout << endl;
         }
-                                                                                                                                             
+	*/
+	
         svm_free_and_destroy_model(&model);
         delete[] x_space;
         delete[] prob.x;
