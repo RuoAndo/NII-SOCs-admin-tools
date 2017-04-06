@@ -161,9 +161,14 @@ c       3
 # setting up Hadoop
 
 <pre>
-【1】ダウンロード
+Do not try this with root account.
 
-wget http://ftp.yz.yamagata-u.ac.jp/pub/network/apache/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+【0】Java installation
+sudo apt-get install openjdk-8-jdk 
+
+【1】ダウンロード
+wget https://archive.apache.org/dist/hadoop/core/hadoop-2.6.0/hadoop-2.6.0.tar.gz
+//wget http://ftp.yz.yamagata-u.ac.jp/pub/network/apache/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
 
 # 展開
 tar xf hadoop-2.6.0.tar.gz
@@ -202,6 +207,37 @@ ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
+【4】/usr/local/hadoop/etc/hadoop/core-site.xmlの設定
+
+-----
+
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+<property>
+   <name>fs.default.name</name>
+   <value>hdfs://localhost:9000</value>
+</property>
+</configuration>
+
+----
+
 起動
 root@ip-10-0-1-132:~# hostname localhost
 # start-dfs.sh
@@ -221,4 +257,19 @@ sys     0m0.576s
 
 </pre>
 
+# hadoop pig
 
+<pre>
+
+# 公開鍵の追加
+curl -s http://archive.cloudera.com/debian/archive.key | sudo apt-key add -
+
+# ソースリストの記述
+sudo vim /etc/apt/sources.list.d/cdh3.list
+# deb     http://archive.cloudera.com/debian squeeze-cdh3 contrib
+#　deb-src http://archive.cloudera.com/debian squeeze-cdh3 contrib
+
+sudo apt-get update
+sudo apt-get install hadoop-pig
+
+</pre>
