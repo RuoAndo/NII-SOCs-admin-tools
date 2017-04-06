@@ -209,7 +209,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 【4】/usr/local/hadoop/etc/hadoop/core-site.xmlの設定
 
------
+</pre>
 
 <xamp>
 
@@ -240,7 +240,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 </xamp>
 
-----
+<pre>
 
 起動
 root@ip-10-0-1-132:~# hostname localhost
