@@ -211,6 +211,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 </pre>
 
+<html>
 <xmp>
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -239,6 +240,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 </configuration>
 
 </xmp>
+</html>
 
 <pre>
 
