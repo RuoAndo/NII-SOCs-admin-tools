@@ -211,6 +211,8 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 -----
 
+<xamp>
+
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <!--
@@ -235,6 +237,8 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
    <value>hdfs://localhost:9000</value>
 </property>
 </configuration>
+
+</xamp>
 
 ----
 
