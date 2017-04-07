@@ -12,27 +12,32 @@ struct point {
 };
 
 const int current_value = 1;
-const int XLEN = 2;
-const int YLEN = 1000;
+// const int XLEN = 2;
+// const int YLEN = 1000;
 list<point> point_list;
 
-void insertValues(double x, double y)
+void insertValues(double x, double y, int XLEN, int YLEN)
 
 {
         point p = {x / XLEN, y / YLEN, current_value};
         point_list.push_back(p);
 }
 
-int main()
-
+int main(int argc,char *argv[])
 {
         svm_parameter param;
         int i,j;        
 
-	ifstream fi("tmp2");
+	int XLEN;
+	int YLEN;
+
+	XLEN = atoi(argv[1]);
+	YLEN = atoi(argv[2]);
+	
+	ifstream fi("out");
 
 	char c;
-	double array[1000][1000];
+	double array[YLEN][YLEN];
 
 	if(!fi) {
 	  cerr << "open error" << endl;
@@ -41,14 +46,14 @@ int main()
   
 	i = 0;
   
-	while(i < 1000) {    
+	while(i < YLEN) {    
 	  fi >> array[i][0] >> c >> array[i][1];
 	  if(fi.eof()) {
 	    cerr << "eof" << endl;
 	    break;
 	  }
 
-	  insertValues(array[i][0], array[i][1]);
+	  insertValues(array[i][0], array[i][1], XLEN, YLEN);
 	  cout << array[i][0] << ',' << array[i][1] << endl;
 	  i++;
 	}

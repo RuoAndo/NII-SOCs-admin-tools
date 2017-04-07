@@ -1,0 +1,5 @@
+# head -n 1030 out-100000 > out
+# ./a.out 1030 1030
+Segmentation fault (コアダンプ)
+
+
