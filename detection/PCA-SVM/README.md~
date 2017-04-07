@@ -1,0 +1,5 @@
+# PCA-SVM
+
+<pre>
+#g++ one-class-svm-3.cpp svm.cpp -std=c++11
+</pre>
