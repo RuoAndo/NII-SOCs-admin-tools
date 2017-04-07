@@ -50,3 +50,11 @@ grunt> dump filtered_records
 (1949,78,1)
 
 </pre>
+
+# group3.py
+
+<pre>
+# python csvfilter.py session-1000 > tmp-1000 
+# ./group3.sh tmp-1000
+<pre>
+
