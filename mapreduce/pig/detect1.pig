@@ -8,8 +8,8 @@ filtered_targeted = FILTER targeted BY severity == 400;
 filtered_session = FILTER session BY bytes => 100;
 
 alert_join = JOIN
-  targeted BY source_ip, severity
-  session BY source_ip, destination_ip
+  filtered_targeted BY source_ip, severity
+  filtered_session BY source_ip, destination_ip
   ;
 
 STORE alert_join INTO 'detect1.dump';
