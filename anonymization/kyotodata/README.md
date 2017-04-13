@@ -1,5 +1,7 @@
 # kyotodata 20090801.txt
 
+available at: http://www.takakura.com/Kyoto_data/
+
 <pre>
 python 1.py $1 > tmp
 python 2.py tmp > tmp2
