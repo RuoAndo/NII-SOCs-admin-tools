@@ -36,18 +36,18 @@ f.close()
     
 time_end = dif
 
-print "start:" + str(time_start)
-print "end:" + str(time_end)
+#print "start:" + str(time_start)
+#print "end:" + str(time_end)
 
 diff = time_end - time_start
-print diff
+#print diff
 
 #start:1488283203.77
 #end:1488890458.45
 #607254.681
 
 interval = int(diff) / 1000
-print interval
+#print interval
 
 chpd = []
 
