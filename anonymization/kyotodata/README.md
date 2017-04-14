@@ -15,3 +15,8 @@ counter0: 125433
 counter1: 4
 counter2: 1
 </pre>
+
+PCA <br>
+bash# python pca.py tmp4
+
+<img src="KyotoData-20090801.png">
