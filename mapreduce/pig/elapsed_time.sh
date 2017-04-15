@@ -1,1 +1,1 @@
-pig -x local -param SRCS=$1 -param IP=$2 detect4.pig
+pig -x local -param SRCS=$1 -param IP=$2 -param DUMP=$3 elapsed_time.pig

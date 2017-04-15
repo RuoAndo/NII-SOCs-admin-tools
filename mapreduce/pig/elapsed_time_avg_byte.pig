@@ -5,6 +5,12 @@ filtered_session = FILTER session BY elapsed_time != '' AND destination_ip == '$
 dump filtered_session 
 STORE filtered_session INTO '$DUMP.dump';
 
+filtered_session_all = Group filtered_session;
+filtered_session_avg = foreach filtered__session_all generate filtered_session.destination_ip, AVG(filtered_session.bytes);
+-- dump filtered_records;
+-- dump records_bytes_avg
+STORE filtered_session_avg INTO 'elapsed_time_avg_byte.dump';
+
 -- dump records
 -- STORE records INTO 'targeted.dump';
 -- alert_join = JOIN
