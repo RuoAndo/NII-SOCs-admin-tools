@@ -58,3 +58,21 @@ grunt> dump filtered_records
 # ./group3.sh tmp-1000
 <pre>
 
+# pig and distributed mode
+
+Be sure that JobHistoryServer is launched.
+
+<pre>
+9203 DataNode
+9492 SecondaryNameNode
+10276 NodeManager
+63815 Jps
+9005 NameNode
+9919 ResourceManager
+10703 JobHistoryServer
+</pre>
+
+<pre>
+mr-jobhistory-daemon.sh stop historyserver
+mr-jobhistory-daemon.sh start historyserver
+</pre>
