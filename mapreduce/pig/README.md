@@ -56,7 +56,7 @@ grunt> dump filtered_records
 <pre>
 # python csvfilter.py session-1000 > tmp-1000 
 # ./group3.sh tmp-1000
-<pre>
+</pre>
 
 # pig and distributed mode
 
