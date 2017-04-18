@@ -7,11 +7,8 @@ records = LOAD '$SRCS' USING PigStorage(',') AS (targeted_alarm_id:int, capture_
 records_group = GROUP records BY targeted_alarm_id;                                     
 
 addrpair = FOREACH records_group GENERATE                                                         
-	group as label,
 	records.destination_ip as destip,
-	records.source_ip as sourceip,
-	records.dest_university_name as destuniv,
-	records.src_university_name as srcuniv;
+	records.source_ip as sourceip;
 
 -- dump addrpair
 
