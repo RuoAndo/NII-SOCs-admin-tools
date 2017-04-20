@@ -79,5 +79,5 @@ mr-jobhistory-daemon.sh start historyserver
 
 # memory tuning
 
-<img src="mapred-site.png">
+<img src="mapred-sites.png">
 <img src="yarn-site.png">
