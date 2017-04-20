@@ -1,1 +1,1 @@
-pig -x local -param SRCS=$1 -param IP=$2 detect4.pig
+pig -param SRCS=$1 detect4.pig
