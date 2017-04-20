@@ -3,7 +3,7 @@ session = LOAD '$SRCS' USING PigStorage(',') AS (session_id:int,capture_time:cha
 
 filtered_session = FILTER session BY elapsed_time != '' AND destination_ip == '$IP';
 dump filtered_session 
-STORE filtered_session INTO 'detect4.dump';
+STORE filtered_session INTO 'detect5.dump';
 
 -- dump records
 -- STORE records INTO 'targeted.dump';
