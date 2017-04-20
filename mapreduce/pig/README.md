@@ -81,21 +81,13 @@ mr-jobhistory-daemon.sh start historyserver
 
 <pre><code>
 
-<configuration>                                                                                                
-  <property>												       
-     <name>mapreduce.framework.name</name>                                                                   
-     <value>yarn</value>        
-  </property>                                                                                               
+	<configuration>												
+		<property>											
+			<name>mapreduce.framework.name</name>                                                                            <value>yarn</value>        
+	</property>                                                                                               
                                                                            
-  <property>  
-     <name>mapreduce.map.memory.mb</name>                                                                    
-     <value>4096</value>                                                                                     
-  </property>                                                                                               
-                                                                                                               
-  <property>                                                                                                
-     <name>mapreduce.reduce.memory.mb</name>                                                                 
-     <value>8192</value>                                                                                     
-  </property>                                                                                               
-</configuration>                                                                                  
+	<property>  
+     		    <name>mapreduce.map.memory.mb</name>                                                                             <value>4096</value>                                                                                  </property>                                                                                               
+	<property>                                                                                                		     <name>mapreduce.reduce.memory.mb</name>                                                                	      <value>8192</value>                                                                                  </property>                                                                                                      </configuration>                                                                                  
                  
 </pre></code>
