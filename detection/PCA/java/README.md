@@ -1,3 +1,10 @@
+# PCA
+
+<pre>
+# javac Data.java Matrix.java
+# java Data 
+</pre>
+
 # Matrix Manipulation
 
 <pre>
