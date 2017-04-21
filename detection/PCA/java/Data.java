@@ -15,7 +15,7 @@ class Data {
 	}
 
     public static void main(String[] args) {
-	    double data3[][] = new double[3][9];
+	    double data3[][] = new double[1000][4];
 	    
 	    try{
 	    
@@ -29,7 +29,7 @@ class Data {
 		Integer count = 0;
 		for(String elem : data2){
 		    double tmp = Double.valueOf(elem);
-		    data3[count][row] = tmp;
+		    data3[row][count] = tmp;
 		    // System.out.println(elem);
 		    count++;
 		}
@@ -42,7 +42,6 @@ class Data {
 	    } catch (IOException e) {
 		System.out.println(e);
 	    }
-
 		
 	        double[][] data = {{4, 4.2, 3.9, 4.3, 4.1}, {2, 2.1, 2, 2.1, 2.2}, 
 				{0.6, 0.59, 0.58, 0.62, 0.63}};
@@ -59,10 +58,10 @@ class Data {
 		Matrix.print(vals);
 		System.out.println("Corresponding eigenvectors:");
 		Matrix.print(eigen.vectors);
-		System.out.println("Two principal components:");
-		Matrix.print(dat.buildPrincipalComponents(2, eigen));
-		System.out.println("Principal component transformation:");
-		Matrix.print(Data.principalComponentAnalysis(data, 2));
+		// System.out.println("Two principal components:");
+		// Matrix.print(dat.buildPrincipalComponents(2, eigen));
+		// System.out.println("Principal component transformation:");
+		// Matrix.print(Data.principalComponentAnalysis(data, 2));
 	}
 	
 	static double[][] PCANIPALS(double[][] input, int numComponents) {
