@@ -76,3 +76,8 @@ Be sure that JobHistoryServer is launched.
 mr-jobhistory-daemon.sh stop historyserver
 mr-jobhistory-daemon.sh start historyserver
 </pre>
+
+# memory tuning
+
+<img src="mapred-sites.png">
+<img src="yarn-site.png">
