@@ -18,3 +18,30 @@ optimization finished, #iter = 26451
 obj = -nan, rho = 0.567472
 nSV = 8837, nBSV = 0
 </pre>
+
+# PCA (power-method)
+
+<pre>
+# python power-pca.py tmp
+[[ -5.36883904e+08  -5.36883904e+08]
+ [ -4.07300670e+07  -4.07300670e+07]
+ [ -5.20165509e+08  -5.20165509e+08]
+ [ -1.32193959e+09  -1.32193959e+09]]
+<pre>
+
+CSV形式に変換
+<pre>
+# python 1.py tmp2 > tmp3
+</pre>
+
+<pre>
+# python plot.py tmp
+</pre>
+
+<img src="PCA-2017-05-02.png">
+
+<pre>
+# python one-class-svm.py tmp3
+</pre>
+
+<img src="1c-svm-2017-05-02.png">
