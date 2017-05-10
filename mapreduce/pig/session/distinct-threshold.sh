@@ -1,1 +1,1 @@
-pig -x local -param SRCS=$1 avg.pig
+pig -param SRCS=$1 distinct-threshold.pig
