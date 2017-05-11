@@ -7,7 +7,7 @@ records = LOAD '$SRCS' USING PigStorage(',') AS (session_id:int,capture_time:cha
 
 avg = FOREACH records GENERATE
       bytes_sent -  bytes_received as diff,
-      ABS(bytes_sent -  bytes_received) as abs,
+      -- ABS(bytes_sent -  bytes_received) as abs,
       bytes_sent as sent,
       bytes_received as received,
       capture_time as time,
@@ -17,5 +17,5 @@ avg = FOREACH records GENERATE
 -- dump avg;
 
 avg2 = FILTER avg BY diff < 0;
-avg2_sorted = ORDER avg2 BY abs DESC;
+avg2_sorted = ORDER avg2 BY diff;
 dump avg2_sorted;
