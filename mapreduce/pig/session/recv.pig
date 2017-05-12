@@ -18,4 +18,6 @@ avg = FOREACH records GENERATE
 
 avg2 = FILTER avg BY diff < 0;
 avg2_sorted = ORDER avg2 BY diff;
-dump avg2_sorted;
+limit_avg2 = LIMIT avg2_sorted 100;
+
+dump limit_avg2;
