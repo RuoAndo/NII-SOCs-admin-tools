@@ -14,13 +14,13 @@ avg = FOREACH session GENERATE
 avg_sorted = ORDER avg BY abs DESC;
 limit_avg = LIMIT avg_sorted 100;
 
-dump limit_avg
+-- dump limit_avg
 
-filtered_alarm = FILTER alarm BY severity > 0;
-dump filtered_alarm
+filtered_alarm = FILTER alarm BY severity > 300;
+-- dump filtered_alarm
 
 alert_join = JOIN
-	   filtered_alarm by dest_university_id,
-	   avg_sorted by did;
+	   limit_avg by did,
+	   filtered_alarm by dest_university_id;
 
 dump alert_join
