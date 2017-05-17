@@ -26,6 +26,7 @@ diff = FOREACH session_cross GENERATE
        	    label,
 	    capture_time, 
        	    bytes_sent - avg_sent,
-            bytes_received - avg_received;
+            bytes_received - avg_received,
+	    dest_university_nane;
 
 dump diff;
