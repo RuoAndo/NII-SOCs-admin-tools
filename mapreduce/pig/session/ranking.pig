@@ -40,6 +40,7 @@ avg = FOREACH session_group GENERATE
 diff = FOREACH avg GENERATE
      avg_label,
      avg_session_id,
+     avg_capture_time,
      avg_abs;
 
 diff_sorted = ORDER diff BY avg_abs DESC;
