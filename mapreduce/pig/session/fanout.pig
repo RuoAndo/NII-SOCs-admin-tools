@@ -32,9 +32,10 @@ fanout = FOREACH avg GENERATE
 	avg_destination_ip,
 	COUNT(avg_destination_ip) as fcount;
         
-
-dump fanout;
+-- dump fanout;
 
 fanout_sorted = ORDER fanout BY fcount DESC;
 limit_fanout_sorted = LIMIT fanout_sorted 10;
 dump limit_fanout_sorted;
+
+STORE limit_fanout_sorted INTO '$LOGDATE.dump';  
