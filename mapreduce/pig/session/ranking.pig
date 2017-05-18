@@ -47,6 +47,8 @@ diff_sorted = ORDER diff BY avg_abs DESC;
 limit_diff_sorted = LIMIT diff_sorted 10;
 dump limit_diff_sorted;
 
+STORE limit_fanout_sorted INTO 'ranking.$LOGDATE.dump';  
+
 /*
 diff_group = GROUP diff all;
 
