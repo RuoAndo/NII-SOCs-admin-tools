@@ -29,8 +29,9 @@ avg = FOREACH session_group GENERATE
 
 fanout = FOREACH avg GENERATE
 	avg_label,
-	COUNT(avg_destination_ip) as fcount,
-        avg_destination_ip;
+	avg_destination_ip,
+	COUNT(avg_destination_ip) as fcount;
+        
 
 dump fanout;
 
