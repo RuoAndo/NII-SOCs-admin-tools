@@ -11,3 +11,28 @@ building jar file
 
 pig -x local 1.pig
 
+<pre>
+# cd myudfs
+# javac -cp pig.jar UPPER.java
+# cd ..
+# jar -cf myudfs.jar myudfs
+</pre>
+
+
+<pre>
+# cd addr
+# javac -cp addr.jar ADDR.java
+# cd ..
+# jar -cf addr.jar addr
+</pre>
+
+<pre>
+REGISTER addr.jar;
+
+s_addr = FOREACH s_filtered GENERATE
+      sid,
+      ct,
+      addr.ADDR(dip),
+      addr.ADDR(sip);
+</pre>
+
