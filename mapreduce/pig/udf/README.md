@@ -36,3 +36,9 @@ s_addr = FOREACH s_filtered GENERATE
       addr.ADDR(sip);
 </pre>
 
+<pre>
+# cd date/
+# javac -cp pig-core.jar DATE.java
+# cd ..
+# jar -cf date.jar date
+</pre>
