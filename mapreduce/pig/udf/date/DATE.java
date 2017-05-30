@@ -31,15 +31,25 @@ public class DATE extends EvalFunc<String>
 
     // 2017-03-05 06:18:26
     
-    private static String dateToLong(String datestr) throws ParseException {
+    private static String dateToLong(String datestr) throws Exception {
 	
 	Date date = null;
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	ParsePosition pos = new ParsePosition(0);
+
+	long datelong = 0;
+
 	date = df.parse(datestr, pos);
 
-        long datelong = date.getTime();
-	
+	if(pos.getErrorIndex()==-1)
+	    {
+		datelong = date.getTime();
+	    }
+	else
+	    {
+	        datelong = 0;
+	    }
+
 	return String.valueOf(datelong);
     }
 }
