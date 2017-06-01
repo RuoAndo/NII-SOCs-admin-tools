@@ -27,8 +27,13 @@ addr_join = JOIN session_group by session_sourceip,
 --dump addr_join;
 
 ranking = ORDER addr_join BY $0 DESC;
-ranking_distinct = DISTINCT ranking;
-dump ranking_distinct;
+ranking_filtered = FOREACH ranking GENERATE
+		   	   sidcount,
+			   pair_destip,
+			   pair_sourceip;
+
+ranking_filtered_distinct = DISTINCT ranking_filtered;
+dump ranking_filtered_distinct;
 
 --addr_join = JOIN session_filtered by session_sourceip,
 --	    	 addrpair_distinct by pair_sourceip;
