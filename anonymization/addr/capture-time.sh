@@ -1,2 +1,3 @@
+hadoop fs -rmr stmp
 rm -rf stmp
-pig -x local -param SRCS=$1 capture-time.pig
+pig -param SRCS=$1 capture-time.pig
