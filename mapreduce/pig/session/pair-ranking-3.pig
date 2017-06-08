@@ -4,6 +4,11 @@ addrpair = FOREACH sessions GENERATE
 	destination_ip as pair_destip,
 	source_ip as pair_sourceip;
 
-addrpair_distinct = DISTINCT addrpair;
-dump addrpair_distinct;
+STORE addrpair INTO 'tmp-ap' USING PigStorage(',');
+addrpair2 = LOAD 'tmp-ap' USING PigStorage(',') AS (destination_ip:chararray, source_ip:chararray);
+
+addrpair_distinct = DISTINCT addrpair2;
+--addrpair_limit = LIMIT addrpair_distinct 100;
+--dump addrpair_distinct;
 STORE addrpair_distinct INTO 'tmp-ad' USING PigStorage(',');
+--STORE addrpair_distinct INTO 'tmp-ad' USING PigStorage(',');
