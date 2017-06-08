@@ -17,8 +17,9 @@ session_group = FOREACH session_filtered_group GENERATE
 --STORE session_group INTO 'stmp';
 
 ordered_session_group = ORDER session_group BY sidcount DESC;
---dump ordered_session_group;
-STORE ordered_session_group INTO 'tmp-osg' USING PigStorage(',');
+limit_session_group = DISTINCT ordered_session_group;
+final_session_group = ORDER limit_session_group BY sidcount DESC;
+STORE final_session_group INTO 'tmp-osg' USING PigStorage(',');
 
 
 
