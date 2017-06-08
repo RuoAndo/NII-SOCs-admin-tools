@@ -7,4 +7,4 @@ addrpair = FOREACH sessions GENERATE
 
 addrpair_distinct = DISTINCT addrpair;
 dump addrpair_distinct;
-STORE addrpair_distinct INTO 'tmp-ad';
+STORE addrpair_distinct INTO 'tmp-ad' USING PigStorage(',');
