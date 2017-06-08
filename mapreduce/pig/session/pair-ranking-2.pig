@@ -3,23 +3,22 @@ sessions = LOAD '$SRCS' USING PigStorage(',') AS (session_id:long,capture_time:c
 session_filtered = FOREACH sessions GENERATE
 	session_id as session_sessionid,
 	source_ip as session_sourceip;
---dump session_filtered;
---STORE session_filtered_group INTO 'stmp';
-
 session_filtered_group = GROUP session_filtered by session_sourceip;
---dump session_filtered_group;
---STORE session_filtered_group INTO 'stmp';
 
 session_group = FOREACH session_filtered_group GENERATE
 	      COUNT(session_filtered.session_sessionid) as sidcount,
 	      FLATTEN(session_filtered.session_sourceip);
 --dump session_group;
---STORE session_group INTO 'stmp';
 
-ordered_session_group = ORDER session_group BY sidcount DESC;
+STORE session_group INTO 'tmp-sg' USING PigStorage(',');;
+
+session_group_2 = LOAD 'tmp-sg' USING PigStorage(',') AS (sidcount:long, source_ip:chararray);
+ordered_session_group = ORDER session_group_2 BY sidcount DESC;
 limit_session_group = DISTINCT ordered_session_group;
 final_session_group = ORDER limit_session_group BY sidcount DESC;
-STORE final_session_group INTO 'tmp-osg' USING PigStorage(',');
+
+final_limit = LIMIT final_session_group 100; 
+STORE final_limit INTO 'tmp-osg' USING PigStorage(',');
 
 
 

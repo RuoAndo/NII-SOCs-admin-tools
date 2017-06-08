@@ -1,12 +1,10 @@
 session1 = LOAD 'tmp-osg' USING PigStorage(',') AS (sidcount:long, source_ip:chararray);
-
 -- dump session1
 
 --COUNT(session_filtered.session_sessionid) as sidcount,
 --FLATTEN(session_filtered.session_sourceip);
 
 session2 = LOAD 'tmp-ad' USING PigStorage(',') AS (destination_ip:chararray, source_ip:chararray);
-
 -- dump session2;
 
 session_join = JOIN session1 by source_ip, session2 by source_ip;
