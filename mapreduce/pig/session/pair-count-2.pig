@@ -28,8 +28,14 @@ addr_join = JOIN session_group_2 by sourceip,
 STORE addr_join INTO 'tmp-aj' USING PigStorage(',');
 
 addr_join_2 = LOAD 'tmp-aj' USING PigStorage(',') AS (sidcount:long, sourceip:chararray, pair_sessionid:long, pair_destip:chararray, pair_sourceip:chararray);
-ranking = ORDER addr_join_2 BY sidcount ASC;
-ranking_filtered = FOREACH ranking GENERATE
+addr_join_3 = DISTINCT addr_join_2;
+ranking = ORDER addr_join_3 BY $0 DESC;
+dump ranking;
+
+--STORE ranking INTO 'tmp-rk' USING PigStorage(',');
+
+ranking_2 = LOAD 'tmp-rk' USING PigStorage(',') AS (sidcount:long, sourceip:chararray, pair_sessionid:long, pair_destip:chararray, pair_sourceip:chararray);
+ranking_filtered = FOREACH ranking_2 GENERATE
 		   	   sidcount,
 			   pair_destip,
 			   pair_sourceip;
