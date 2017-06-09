@@ -1,3 +1,4 @@
+rm -rf pig_*
 hadoop fs -rmr tmp-sf
 hadoop fs -rmr tmp-sg
 hadoop fs -rmr tmp-ad

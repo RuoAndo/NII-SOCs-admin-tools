@@ -8,9 +8,13 @@ STORE session_filtered INTO 'tmp-sf' USING PigStorage(',');
 session_filtered_2 = LOAD 'tmp-sf' USING PigStorage(',') AS (sessionid:long, sourceip:chararray);
 session_filtered_group = GROUP session_filtered_2 by sourceip;
 session_group = FOREACH session_filtered_group GENERATE
-	      COUNT(session_filtered_2.sessionid),
+	      COUNT(session_filtered_2.sessionid) as sidcount,
 	      FLATTEN(session_filtered_2.sourceip);
-STORE session_group INTO 'tmp-sg' USING PigStorage(',');
+session_group_ordered = ORDER session_group BY sidcount DESC;
+session_group_limit = LIMIT session_group_ordered 100;
+
+STORE session_group_limit INTO 'tmp-sg' USING PigStorage(',');
+--STORE session_group INTO 'tmp-sg' USING PigStorage(',');
 
 addrpair = FOREACH sessions GENERATE
 	session_id as pair_sessionid,
@@ -21,7 +25,6 @@ addrpair_distinct = DISTINCT addrpair;
 STORE addrpair_distinct INTO 'tmp-ad' USING PigStorage(',');
 
 session_group_2 = LOAD 'tmp-sg' USING PigStorage(',') AS (sidcount:long, sourceip:chararray);
---dump session_group_2;
 addrpair_distinct_2 = LOAD 'tmp-ad' USING PigStorage(',') AS (sessionid:long, destinationip:chararray, sourceip:chararray);
 addr_join = JOIN session_group_2 by sourceip,
 	    	 addrpair_distinct_2 by sourceip;
@@ -29,10 +32,10 @@ STORE addr_join INTO 'tmp-aj' USING PigStorage(',');
 
 addr_join_2 = LOAD 'tmp-aj' USING PigStorage(',') AS (sidcount:long, sourceip:chararray, pair_sessionid:long, pair_destip:chararray, pair_sourceip:chararray);
 addr_join_3 = DISTINCT addr_join_2;
-ranking = ORDER addr_join_3 BY $0 DESC;
-dump ranking;
 
---STORE ranking INTO 'tmp-rk' USING PigStorage(',');
+ranking = ORDER addr_join_3 BY $0 DESC;
+--dump ranking;
+STORE ranking INTO 'tmp-rk' USING PigStorage(',');
 
 ranking_2 = LOAD 'tmp-rk' USING PigStorage(',') AS (sidcount:long, sourceip:chararray, pair_sessionid:long, pair_destip:chararray, pair_sourceip:chararray);
 ranking_filtered = FOREACH ranking_2 GENERATE
