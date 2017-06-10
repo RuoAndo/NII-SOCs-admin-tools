@@ -5,9 +5,9 @@ rm -rf tmp-sid
 hadoop fs -rmr tmp-pair
 hadoop fs -rmr tmp-sid
 
-pig -param SRCS=$1 sid.pig
-#pig -param SRCS=$1 avg-1.pig
-#pig avg-2.pig
+#pig -param SRCS=$1 sid.pig
+pig -param SRCS=$1 sid-1.pig
+pig sid-2.pig
 
 hadoop fs -get tmp-sid
 
