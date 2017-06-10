@@ -1,0 +1,2 @@
+pig -param $1
+
