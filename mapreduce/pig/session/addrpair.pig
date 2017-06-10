@@ -5,5 +5,5 @@ addrpair = FOREACH session GENERATE
 		   source_ip as sourceip;
 
 addrpair_distinct = DISTINCT addrpair;
-dump addrpair_distinct
+-- dump addrpair_distinct
 STORE addrpair_distinct INTO 'tmp-addrpair' USING PigStorage(',');
