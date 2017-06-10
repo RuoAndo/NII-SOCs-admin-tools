@@ -46,12 +46,12 @@ CR4 = FOREACH CR3 {
       	     result00 = ORDER CR2 BY norm ASC;
     	     result01 = LIMIT result00 1;
 	     GENERATE
-		      result01.label,
-		      result01.dip,
-		      result01.sip,
-		      result01.sid,
-		      result01.bytes,
-	     	      result01.norm;
+		      FLATTEN(result01.label),
+		      FLATTEN(result01.dip),
+		      FLATTEN(result01.sip),
+		      FLATTEN(result01.sid),
+		      FLATTEN(result01.bytes),
+	     	      FLATTEN(result01.norm);
              };
 dump CR4;
-
+STORE CR4 INTO 'tmp-label' USING PigStorage(',');
