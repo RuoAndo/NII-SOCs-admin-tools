@@ -11,8 +11,8 @@ session_group = FOREACH session_filtered_group GENERATE
 --dump session_group;
 
 STORE session_group INTO 'tmp-sg' USING PigStorage(',');;
-
 session_group_2 = LOAD 'tmp-sg' USING PigStorage(',') AS (sidcount:long, source_ip:chararray);
+
 ordered_session_group = ORDER session_group_2 BY sidcount DESC;
 limit_session_group = DISTINCT ordered_session_group;
 final_session_group = ORDER limit_session_group BY sidcount DESC;
