@@ -25,5 +25,5 @@ K = FOREACH J GENERATE
 	    $2,
 	    $5;
 
-dump K;
--- STORE J INTO 'addrpair-join' USING PigStorage(',');
+-- dump K;
+STORE K INTO '$OUTPUTDIR' USING PigStorage(',');
