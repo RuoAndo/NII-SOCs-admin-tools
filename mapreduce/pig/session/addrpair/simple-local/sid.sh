@@ -1,0 +1,15 @@
+rm -rf pig_*
+
+rm -rf tmp-sid
+rm -rf tmp-pair
+#hadoop fs -rmr tmp-pair
+#hadoop fs -rmr tmp-sid
+
+#pig -param SRCS=$1 sid.pig
+pig -x local -param SRCS=$1 sid-1.pig
+pig -x local sid-2.pig
+
+#hadoop fs -get tmp-sid
+
+#d=`date +"%Y_%m_%d_%I_%M_%S"`
+#mv tmp-addrpair-sid tmp-addrpair-sid-$d
