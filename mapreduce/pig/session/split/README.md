@@ -1,3 +1,3 @@
 <pre>
-time ./do.sh session-1000
+time ./do.sh list
 </pre>
