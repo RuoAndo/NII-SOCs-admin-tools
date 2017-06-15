@@ -23,7 +23,7 @@ hadoop fs -get addrpair-join-$1
 </pre>
 
 # ./cat.sh list
-generates addrpair-join-all from addrpair-join-$1.
+generates addrpair-join-all (from addrpair-join-$1).
 
 <pre>
 TESTFILE=$1
@@ -45,6 +45,7 @@ done < $1
 </pre>
 
 # ./label.sh addrpair-join-all
+generates tmp-cls-0
 
 # ./cat-cls.sh
 generates cat-cls-all
