@@ -4,13 +4,13 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define INPUTNO 10000
-#define HIDDENNO 10000
-#define OUTPUTNO 10000
+#define INPUTNO 50
+#define HIDDENNO 50
+#define OUTPUTNO 50
 #define ALPHA  0.2  
 #define SEED 65535  
 //#define SEED 7    
-#define MAXINPUTNO 10000 
+#define MAXINPUTNO 101 
 #define BIGNUM 100
 #define LIMIT 3   
 

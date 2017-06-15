@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define INPUTNO 12  
-#define HIDDENNO 12 
-#define OUTPUTNO 12 
+#define INPUTNO 10000
+#define HIDDENNO 10000
+#define OUTPUTNO 10000
 #define ALPHA  10  
 #define SEED 65535 
-#define MAXINPUTNO 100  
-#define BIGNUM 100   
+#define MAXINPUTNO 10000
+#define BIGNUM 10000   
 #define LIMIT 0.01  
 
 double f(double u) ; 
