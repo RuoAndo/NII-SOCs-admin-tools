@@ -1,4 +1,4 @@
-#time ./do.sh list
+# time ./do.sh list
 generates addrpair-join-$1.
 
 <pre>
