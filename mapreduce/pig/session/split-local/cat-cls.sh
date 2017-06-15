@@ -1,6 +1,7 @@
 TESTFILE=$1
 
-rm -rf cat-cls-*
+rm -rf cat-cls-all
+touch cat-cls-all
 
 a=0
 while [ $a -ne 5 ]
@@ -9,13 +10,13 @@ do
     ary=(`echo $fn`)  
     #echo ${#ary[@]}
 
-    touch cat-cls-$a
+    #touch cat-cls-$a
     
     for i in `seq 1 ${#ary[@]}`
     do
 	echo ${ary[$i-1]}
 	#wc -l ${ary[$i-1]}
-	cat ${ary[$i-1]} >> cat-cls-$a
+	cat ${ary[$i-1]} >> cat-cls-all
     done
 
     a=`expr $a + 1`
