@@ -18,6 +18,7 @@ a = zeros((5, 3))
 line = f.readline() 
 tmp = re.split(r",", line)
 #print tmp[0]
+#print tmp[0]
 a[0][0] =  int(tmp[0],10)
 a[0][1] =  double(tmp[1])
 a[0][2] =  double(tmp[2])
@@ -26,12 +27,16 @@ counter = 1
 while line:
     line = f.readline()
 
-    if counter < 5:
-        tmp = re.split(r",", line)
-        a[counter][0] =  int(tmp[0],10)
-        a[counter][1] =  double(tmp[1])
-        a[counter][2] =  double(tmp[2])
+    try:
+        if counter < 5:
+            tmp = re.split(r",", line)
+            a[counter][0] =  int(tmp[0],10)
+            a[counter][1] =  double(tmp[1])
+            a[counter][2] =  double(tmp[2])
 
+    except:
+        pass
+            
     counter = counter + 1
     
 #print a

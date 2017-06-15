@@ -1,3 +1,11 @@
+# do-all.sh
+
+<pre>
+./do.sh list
+./init.sh
+./repeat.sh
+</pre>
+
 # time ./do.sh list
 generates addrpair-join-$1.
 
@@ -53,7 +61,17 @@ generates cat-cls-all
 # ./cat-cat-avg.sh
 generates cat-avg-all
 
-# python 2.py cat-avg-all cat-cls-all
+# python 3.py cat-avg-all cat-cls-all > r
+
+-- repeat --
+
+# ./label2.sh repeat
+generates tmp-cls-0
+
+# ./cat-cls.sh
+generates cat-cls-all
+
+# ./cat-cat-avg.sh
+generates cat-avg-all
+
 # python 3.py cat-avg-all cat-cls-all
-
-
