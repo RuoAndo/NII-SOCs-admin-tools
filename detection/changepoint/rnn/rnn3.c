@@ -4,14 +4,20 @@
 #include <stdlib.h>
 #include <math.h>
 
+<<<<<<< HEAD
 #define INPUTNO 182
 #define HIDDENNO 182 
 #define OUTPUTNO 182
+=======
+#define INPUTNO 10000
+#define HIDDENNO 10000
+#define OUTPUTNO 10000
+>>>>>>> ea11183361ab9668678c93a66e1df34de648f099
 #define ALPHA  0.2  
 #define SEED 65535  
 //#define SEED 7    
-#define MAXINPUTNO 100 
-#define BIGNUM 100  
+#define MAXINPUTNO 10000 
+#define BIGNUM 100
 #define LIMIT 3   
 
 double f(double u) ; 

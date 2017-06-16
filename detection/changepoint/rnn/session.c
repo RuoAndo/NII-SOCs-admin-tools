@@ -1,32 +1,34 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-#define INPUTNO 10000
-#define HIDDENNO 10000
-#define OUTPUTNO 10000
-#define ALPHA  10  
-#define SEED 65535 
-#define MAXINPUTNO 10000
-#define BIGNUM 10000   
-#define LIMIT 0.01  
+#define INPUTNO 50
+#define HIDDENNO 50
+#define OUTPUTNO 50
+#define ALPHA  0.2  
+#define SEED 65535  
+//#define SEED 7    
+#define MAXINPUTNO 101 
+#define BIGNUM 100
+#define LIMIT 3   
 
 double f(double u) ; 
 void initwh(double wh[HIDDENNO][INPUTNO+1+HIDDENNO]) ;
-                  
 void initwo(double wo[HIDDENNO+1]) ;
 double drnd(void) ;
 void print(double wh[HIDDENNO][INPUTNO+1+HIDDENNO]
-          ,double wo[OUTPUTNO][HIDDENNO+1]) ;
+          ,double wo[OUTPUTNO][HIDDENNO+1]) ; 
 double forward(double wh[HIDDENNO][INPUTNO+1+HIDDENNO]
          ,double wo[HIDDENNO+1],double hi[]
-         ,double e[]) ;
+         ,double e[]) ; 
 void olearn(double wo[HIDDENNO+1],double hi[]
-         ,double e[],double o,int k) ;
+         ,double e[],double o,int k) ; 
 int getdata(double e[][INPUTNO+OUTPUTNO+HIDDENNO]) ; 
 void hlearn(double wh[HIDDENNO][INPUTNO+1+HIDDENNO]
          ,double wo[HIDDENNO+1],double hi[]
-         ,double e[],double o,int k) ;
+         ,double e[],double o,int k) ; 
 
 int main()
 {
@@ -45,10 +47,10 @@ int main()
 
  initwh(wh) ;
  for(i=0;i<OUTPUTNO;++i)
-  initwo(wo[i]) ; 
+  initwo(wo[i]) ;
 
  n_of_e=getdata(e) ;
- fprintf(stderr,"data size:%d\n",n_of_e) ;
+ fprintf(stderr,"data size %d\n",n_of_e) ;
 
  while(errsum>LIMIT){
   errsum=0 ;
@@ -57,38 +59,18 @@ int main()
    for(j=0;j<n_of_e;++j){
     for(i=0;i<HIDDENNO;++i)
       e[j][INPUTNO+i]=hi[i] ;
-
     o[k]=forward(wh,wo[k],hi,e[j]) ;
     olearn(wo[k],hi,e[j],o[k],k) ;
     hlearn(wh,wo[k],hi,e[j],o[k],k) ;
+
     err+=(o[k]-e[j][INPUTNO+k+HIDDENNO])*(o[k]-e[j][INPUTNO+k+HIDDENNO]) ;
    }
    ++count ;
 
    errsum+=err ;
-
   }
 
   fprintf(stderr,"%d\t%lf\n",count,errsum) ;  
- }
-
- print(wh,wo) ;
-
- for(i=0;i<n_of_e;++i){
-  fprintf(stderr,"%d:\n",i) ;
-  for(j=0;j<INPUTNO+HIDDENNO;++j)
-   fprintf(stderr,"%.3lf ",e[i][j]) ;
-  fprintf(stderr,"\n") ;
-  for(j=INPUTNO+HIDDENNO;j<INPUTNO+OUTPUTNO+HIDDENNO;++j)
-   fprintf(stderr,"%.3lf ",e[i][j]) ;
-  fprintf(stderr,"\n") ;
-  for(j=0;j<OUTPUTNO;++j)
-   fprintf(stderr,"%.3lf ",forward(wh,wo[j],hi,e[i])) ;
-
-  if(i<n_of_e-1)
-   for(j=0;j<HIDDENNO;++j)
-    e[i+1][INPUTNO+j]=hi[j] ;
-  fprintf(stderr,"\n") ;
  }
 
  return 0 ;
