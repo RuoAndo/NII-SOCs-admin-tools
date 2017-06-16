@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define INPUTNO 4
-#define HIDDENNO 4 
-#define OUTPUTNO 4 
+#define INPUTNO 182
+#define HIDDENNO 182 
+#define OUTPUTNO 182
 #define ALPHA  0.2  
 #define SEED 65535  
 //#define SEED 7    
