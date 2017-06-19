@@ -1,1 +1,3 @@
-head -$2 $1 | tail -1
+line=`expr $2 + 1`
+echo $line
+head -$line $1 | tail -1

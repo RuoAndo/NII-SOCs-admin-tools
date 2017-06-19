@@ -16,17 +16,19 @@ line = f.readline()
 
 labels = []
 
+counter = 0
+
 while line:
     tmp = line.split(",")
-
     labels.append(tmp[0])
+    counter = counter + 1
     line = f.readline()
 
-print "CLUTER0:" + labels.count("0")
-print "CLUTER1:" + labels.count("1")
-print "CLUTER2:" + labels.count("2")
-print "CLUTER3:" + labels.count("3")
-print "CLUTER4:" + labels.count("4")
+print "CLUTER0:" + str(labels.count("0"))
+print "CLUTER1:" + str(labels.count("1"))
+print "CLUTER2:" + str(labels.count("2"))
+print "CLUTER3:" + str(labels.count("3"))
+print "CLUTER4:" + str(labels.count("4"))
 
 f.close()
 

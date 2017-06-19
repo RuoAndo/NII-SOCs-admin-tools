@@ -11,6 +11,7 @@ argvs = sys.argv
 argc = len(argvs)
 
 f = open(argvs[1])
+clusterNo = argvs[2]
 
 line = f.readline() 
 
@@ -18,14 +19,12 @@ labels = []
 
 counter = 0
 
+print "searching cluster: " + clusterNo
 while line:
     tmp = line.split(",")
 
-    if int(tmp[0]) == "1":
-        print "1" + counter
-
-    if int(tmp[4]) == "4":
-        print "4" + counter
+    if int(tmp[0]) == int(clusterNo):
+        print clusterNo + ": " + str(counter)
 
     counter = counter + 1
     line = f.readline()
