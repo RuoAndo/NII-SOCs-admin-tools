@@ -1,4 +1,5 @@
-hadoop fs -put addrpair-join-all
+hadoop fs -rmr $1
+hadoop fs -put $1
 
 hadoop fs -rmr tmp-avg
 hadoop fs -rmr tmp-cls-0
