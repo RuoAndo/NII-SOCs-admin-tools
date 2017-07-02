@@ -1,4 +1,4 @@
 ./do.sh list
-./cat.sh
+./cat.sh list
 ./init.sh
 ./repeat.sh
