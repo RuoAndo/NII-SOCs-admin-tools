@@ -19,7 +19,7 @@ labels = []
 
 counter = 0
 
-print "searching cluster: " + clusterNo
+#print "searching cluster: " + clusterNo
 while line:
     tmp = line.split(",")
 
