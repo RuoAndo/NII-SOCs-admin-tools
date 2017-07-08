@@ -1,11 +1,12 @@
-sessiona = LOAD '$DIRAVG' USING PigStorage(',') AS (dip:chararray, sip:chararray, avg:long);
+sessiona = LOAD '$DIRAVG' USING PigStorage(',') AS (dip:chararray, sip:chararray, avg_bytes_sent:long, avg_bytes_received:long);
 
 sessions = LOAD '$DIRSID' USING PigStorage(',') AS (dip:chararray, sip:chararray, sid:long);
 
 A = FOREACH sessiona GENERATE                                    
 	   	   dip as dip,
 		   sip as sip,
-		   avg as avg;
+		   avg_bytes_sent as avg_sent,
+		   avg_bytes_received as avg_received;
 
 -- dump A; 
 
@@ -23,7 +24,8 @@ K = FOREACH J GENERATE
     	    $0,
 	    $1,
 	    $2,
-	    $5;
+            $3,
+	    $7;
 
 -- dump K;
 STORE K INTO '$OUTPUTDIR' USING PigStorage(',');

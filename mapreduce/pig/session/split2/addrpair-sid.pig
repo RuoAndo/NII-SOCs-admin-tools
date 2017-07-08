@@ -1,6 +1,6 @@
 -- STEP 2
 -- 8.8.4.4,202.245.103.10,1334,8.8.4.4,202.245.103.10
-J_2 = LOAD 'addrpair-join' USING PigStorage(',') AS (dip:chararray, sip:chararray, sid:long, bytes:long, dip2:chararray, sip2:chararray);
+J_2 = LOAD 'addrpair-join' USING PigStorage(',') AS (dip:chararray, sip:chararray, sid:long, bytes_sent:long, bytes_received:long, dip2:chararray, sip2:chararray);
 
 I = FOREACH J_2 GENERATE
     $0 as dip,    
