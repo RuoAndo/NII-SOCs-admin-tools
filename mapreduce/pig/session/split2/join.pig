@@ -25,7 +25,7 @@ K = FOREACH J GENERATE
 	    $1,
 	    $2,
             $3,
-	    $7;
+	    $6;
 
 -- dump K;
 STORE K INTO '$OUTPUTDIR' USING PigStorage(',');
