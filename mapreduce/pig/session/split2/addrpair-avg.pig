@@ -5,7 +5,8 @@ J_2 = LOAD 'addrpair-join' USING PigStorage(',') AS (dip:chararray, sip:chararra
 I = FOREACH J_2 GENERATE
     $0 as dip,    
     $1 as sip,
-    $3 as bytes;
+    $3 as bytes_sent,
+    $4 as bytes_received;
 
 H = GROUP I BY (dip, sip);
 -- dump H;
@@ -13,7 +14,7 @@ H = GROUP I BY (dip, sip);
 K = FOREACH H GENERATE    	   
     FLATTEN(I.dip),
     FLATTEN(I.sip),
-    AVG(I.bytes_sent);
+    AVG(I.bytes_sent),
     AVG(I.bytes_received);
 
 --dump K;
