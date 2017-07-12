@@ -50,16 +50,44 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
 int main(int argc, char *argv[])
 {
   int i, j;
-
-  // std::cout << atoi(argv[2]) << ":" << atoi(argv[3]) << std::endl;
- 
+  double distance_tmp = 1000000;
+  int counter = 0;
+  
   Eigen::MatrixXd res = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-  std::cout << res << std::endl;
 
-  /*
-  Eigen::MatrixXd res2 = readCSV(argv[4], atoi(argv[5]), atoi(argv[6]));
+  Eigen::MatrixXd res2 = res.rightCols(3);
   std::cout << res2 << std::endl;
-  */
+  
+  Eigen::MatrixXd res3 = readCSV(argv[4], atoi(argv[5]), atoi(argv[6]));
+  std::cout << res3 << std::endl;
+  
+  Eigen::MatrixXd res4 = res3.rightCols(3);
+  // std::cout << res4.rows() << std::endl;
+
+  for(i=0; i< res4.rows(); i++)
+    {
+      
+      
+      std::cout << res4.row(i) << std::endl;
+      
+      for(j=0; j< res2.rows(); j++)
+	{
+	  Eigen::VectorXd distance = (res4.row(i) - res2.row(j)).rowwise().norm();
+
+	  std::cout << res2.row(j) << ":" << distance << std::endl;
+
+	  if(distance(0) < distance_tmp)
+	    {
+	      distance_tmp = distance(0);
+	      counter = j;
+	    }
+	}
+
+      std::cout << distance_tmp << ":" << counter << std::endl;
+
+      std::cout << counter << "," << res3.row(i) << std::endl; 
+      
+    }
 }
 
   

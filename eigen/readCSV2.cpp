@@ -54,7 +54,9 @@ int main(int argc, char *argv[])
   // std::cout << atoi(argv[2]) << ":" << atoi(argv[3]) << std::endl;
  
   Eigen::MatrixXd res = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-  std::cout << res << std::endl;
+
+  Eigen::MatrixXd res2 = res.rightCols(3);
+  std::cout << res2 << std::endl;
 
   /*
   Eigen::MatrixXd res2 = readCSV(argv[4], atoi(argv[5]), atoi(argv[6]));
