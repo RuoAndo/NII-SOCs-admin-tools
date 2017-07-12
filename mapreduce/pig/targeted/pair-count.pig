@@ -11,15 +11,14 @@ FF = FILTER F BY (sip MATCHES '.\\d+\\.\\d+\\.\\d+\\.\\d+') OR (dip MATCHES '.\\
     
 H = GROUP FF BY (dip, sip);
 
-dump H;
--- dump FF;
-
 C = FOREACH H GENERATE
     	    COUNT(FF.tid) as tidcount,
-	    FF.dip,
-	    FF.sip;
+	    FLATTEN(FF.dip),
+	    FLATTEN(FF.sip);
 
-dump C;
+DC = DISTINCT C;
+
+dump DC;
 	    
 
 -- filtered_records = FILTER records BY severity > 300;
