@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
 
   for(i=0; i< res4.rows(); i++)
     {
-      std::cout << "-----" << std::endl;
-      std::cout << res3.row(i) << std::endl;
+      // std::cout << "-----" << std::endl;
+      // std::cout << res3.row(i) << std::endl;
       // std::cout << res4.row(i) << std::endl;
       
       for(j=0; j< res2.rows(); j++)
@@ -84,9 +84,11 @@ int main(int argc, char *argv[])
 	    }
 	}
 
-      // std::cout << distance_tmp << ":" << counter << std::endl;
-      std::cout << "relabel: " << counter << " " << res5.row(i) << std::endl; 
-      
+      if(counter != 1)
+	{
+	  // std::cout << distance_tmp << ":" << counter << std::endl;
+	  std::cout << counter << " " << res5.row(i) << std::endl; 
+	}
     }
 }
 

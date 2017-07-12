@@ -26,7 +26,7 @@ while line:
     tmp_int_1 = ip2int(tmp[1])
     tmp_int_2 = ip2int(tmp[2])
 
-    print tmp[0] + "," + tmp[1] + "," + tmp[2] + "," + tmp[3] + "," + tmp[4] + "," + tmp[5].rstrip()
+    print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4]) + "," + str(tmp[5].rstrip())
     
     #tmp_ip = int2ip(tmp_int)
 
