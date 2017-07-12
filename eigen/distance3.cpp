@@ -52,6 +52,10 @@ int main(int argc, char *argv[])
   int i, j;
   double distance_tmp = 1000000;
   int counter = 0;
+  int cluster_no[10];
+
+  for(i = 0; i < 10; i++)
+    cluster_no[i] = 0;
   
   Eigen::MatrixXd res = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
 
@@ -64,6 +68,7 @@ int main(int argc, char *argv[])
   Eigen::MatrixXd res4 = res3.rightCols(3);
   // std::cout << res4.rows() << std::endl;
   Eigen::MatrixXd res5 = res3.rightCols(5);
+
 
   for(i=0; i< res4.rows(); i++)
     {
@@ -83,12 +88,17 @@ int main(int argc, char *argv[])
 	    }
 	}
 
-      if(counter != 1)
-	{
-	  // std::cout << distance_tmp << ":" << counter << std::endl;
-	  std::cout << counter << " " << res5.row(i).col(1) << std::endl; 
-	}
+	// std::cout << distance_tmp << ":" << counter << std::endl;
+        std::cout << counter << "," << res5.row(i).col(0) << "," << res5.row(i).col(1) << ","
+		<< res5.row(i).col(2) << "," << res5.row(i).col(3) << "," << res5.row(i).col(4) << std::endl;
+
+	cluster_no[counter]++;
+       
     }
+
+  for(i = 0; i < 10; i++)
+    std::cout << "CLUSTER:" << i << ":" << cluster_no[i] << std::endl;
+					      
 }
 
   
