@@ -53,7 +53,9 @@ int main(int argc, char *argv[])
   double distance_tmp = 1000000;
   int counter = 0;
   int cluster_no[10];
-
+  long destIP = 0;
+  long srcIP = 0;
+  
   for(i = 0; i < 10; i++)
     cluster_no[i] = 0;
   
@@ -89,8 +91,12 @@ int main(int argc, char *argv[])
 	}
 
 	// std::cout << distance_tmp << ":" << counter << std::endl;
-        std::cout << counter << "," << res5.row(i).col(0) << "," << res5.row(i).col(1) << ","
-		<< res5.row(i).col(2) << "," << res5.row(i).col(3) << "," << res5.row(i).col(4) << std::endl;
+      destIP = res3.row(i).col(1)(0);
+      srcIP = res3.row(i).col(2)(0);
+      
+      std::cout << counter << "," << destIP << ","
+		<< srcIP << "," << res5.row(i).col(2) << "," << res5.row(i).col(3)
+		<< "," << res5.row(i).col(4) << std::endl;
 
 	cluster_no[counter]++;
        
