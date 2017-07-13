@@ -20,3 +20,8 @@
 <pre>
 time ./do.sh list
 </pre>
+
+<pre>
+12541   2017-07-13 10:25:28  python 5.py r 2 | tee tmp
+12546   2017-07-13 10:29:21  time ./head2.sh tmp r | tee tmp2
+</pre>
