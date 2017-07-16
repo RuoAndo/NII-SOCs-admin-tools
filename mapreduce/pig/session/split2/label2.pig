@@ -11,6 +11,14 @@ SPLIT S INTO
       S_error  IF dip is null,
       labeled IF dip is not null;
 
+labeled = FOREACH S GENERATE
+	       (int)FLOOR(RANDOM() * $CLUSTER_NUMBER) AS label,
+	       dip,
+	       sip,
+	       bytes_sent,
+	       bytes_received,
+	       sid;
+
 -- dump labeled
 
 gl = GROUP labeled by label;
