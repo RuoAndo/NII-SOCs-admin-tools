@@ -1,5 +1,5 @@
-echo "label.sh"
-./label.sh addrpair-join-all
+echo "label2.sh"
+./label2.sh addrpair-join-all
 echo "cat-cls.sh"
 ./cat-cls.sh
 echo "cat-avg.sh"
