@@ -10,6 +10,55 @@
 #include <alloca.h>
 #include "timer.h"
 
+#include <iostream>
+#include <fstream>
+#include <eigen3/Eigen/Dense>
+
+#include <eigen3/Eigen/Core>
+#include <eigen3/Eigen/SVD>
+
+using namespace Eigen;
+
+Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
+  
+  std::ifstream in(file.c_str());
+
+  std::string line;
+
+  int row = 0;
+  int col = 0;
+
+  // std::cout << rows << ";" << cols << std::endl;
+  
+  Eigen::MatrixXd res = Eigen::MatrixXd(rows, cols);
+
+  if (in.is_open()) {
+
+    while (std::getline(in, line)) {
+
+      char *ptr = (char *) line.c_str();
+      int len = line.length();
+
+      col = 0;
+
+      char *start = ptr;
+      for (int i = 0; i < len; i++) {
+
+	if (ptr[i] == ',') {
+	  res(row, col++) = atof(start);
+	  start = ptr + i + 1;
+	}
+      }
+      res(row, col) = atof(start);
+
+      row++;
+    }
+
+    in.close();
+  }
+  return res;
+}
+
 #define WORKER_THREAD_NUM (2)
 #define MAX_QUEUE_NUM (1024)
 #define END_MARK_FNAME   "///"
@@ -40,6 +89,7 @@ typedef struct _thread_arg {
     int filenum;
 } thread_arg_t;
 
+/*
 int traverse_buffer(char* a, char* b) {
     int i, j;
     int lena, lenb;
@@ -62,13 +112,17 @@ int traverse_buffer(char* a, char* b) {
 
     return n;
 }
+*/
 
 int traverse_file(char* filename, char* srchstr) {
     char buf[1024];
     int n = 0, sumn = 0;
 
     printf("%s \n", filename);
-    
+
+    Eigen::MatrixXd res = readCSV(filename, 100000, 5);
+    std::cout << res << std::endl;
+
     /*
     FILE* fd;
     if ((fd = fopen(filename, "r")) == NULL) {
