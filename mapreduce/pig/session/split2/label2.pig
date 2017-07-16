@@ -4,7 +4,7 @@ DEFINE SQRT org.apache.pig.piggybank.evaluation.math.SQRT();
 
 %default CLUSTER_NUMBER 5
 
-S = LOAD '$SRCS' USING PigStorage(',') AS (label:int, dip:chararray, sip:chararray, bytes_sent:long, bytes_received:long, sid:long);
+S = LOAD '$SRCS' USING PigStorage(',') AS (dip:chararray, sip:chararray, bytes_sent:long, bytes_received:long, sid:long);
 --dump S
 
 SPLIT S INTO
