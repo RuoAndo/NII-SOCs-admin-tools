@@ -29,3 +29,8 @@ sys     0m2.296s
   968 合計
 
 </pre>
+
+<pre>
+ 2015  ./pair-count-2.sh alarm-1000 > tmp
+ 2016  python pair-count-2.py tmp > tmp2
+</pre> 
