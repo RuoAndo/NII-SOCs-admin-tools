@@ -1,12 +1,12 @@
-alarm = LOAD '$SRCT' USING PigStorage(',') AS (targeted_alarm_id:int, capture_time:chararray, src_university_id:int, dest_university_id:int, mail_send_statusl:chararray, application_protocol:chararray, classification:chararray, client:chararray, dest_ip:chararray, dest_country_code:chararray, dest_port_or_icmp_code:chararray, intrusion_policy:chararray, alarm_name:chararray, network_analysis_policy:chararray, priority:chararray, protocol:chararray, generator_id:chararray, snort_id:chararray, revision:chararray, src_ip:chararray, src_country_code:chararray, src_port_or_icmp_code:chararray, src_univeristy_name:chararray, dest_university_name:chararray);
+alarm = LOAD '$SRCT' USING PigStorage(',') AS (targeted_alarm_id:int, capture_time:chararray, src_university_id:int, dest_university_id:int, mail_send_status:chararray ,subtype:chararray, generated_time:chararray, source_ip:chararray, src_country_code:chararray, destination_ip:chararray, dest_country_code:chararray, rule_name:chararray,source_user:chararray, destination_user:chararray, application:chararray, virtual_system:chararray, source_zone:chararray, destination_zone:chararray, log_forwarding_profile:chararray, repeat_cnt:int,source_port:int,destination_port:int, flags:chararray, protocol:chararray, action:chararray, alarm_name:chararray, threat_id:int, category:chararray, severity:int, direction:chararray, source_location:chararray, destination_location:chararray, content_type:chararray, file_digest:chararray, user_agent:chararray, file_type:chararray, x_forwarded_for:chararray, src_university_name:chararray, dest_university_name:chararray);  
 
 -- dump alarm
 
 F = FOREACH alarm GENERATE
     	    targeted_alarm_id as tid,
 	    alarm_name as aname,
-    	    dest_ip as dip,
-	    src_ip as sip;
+    	    destination_ip as dip,
+	    source_ip as sip;
 
 FF = FILTER F BY (sip MATCHES '.\\d+\\.\\d+\\.\\d+\\.\\d+') OR (dip MATCHES '.\\d+\\.\\d+\\.\\d+\\.\\d+');
     
