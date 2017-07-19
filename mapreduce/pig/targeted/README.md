@@ -33,4 +33,9 @@ sys     0m2.296s
 <pre>
  2015  ./pair-count-2.sh alarm-1000 > tmp
  2016  python pair-count-2.py tmp > tmp2
-</pre> 
+</pre>
+
+<pre>
+ 2032  time ./pair-count-2.sh target-1000 > tmp
+ 2034  python pair-count-5.py alarm-1000 tmp
+</pre>  

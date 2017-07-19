@@ -13,7 +13,6 @@ anames = []
 
 while line:
     tmp = line.split(",")
-
     anames.append(tmp[25])
     
     line = f.readline()
@@ -21,3 +20,4 @@ while line:
 count_dict = collections.Counter(anames)
 print count_dict.most_common(10)
 
+print count_dict["MAIL: User Login Brute Force Attempt(40007)"]
