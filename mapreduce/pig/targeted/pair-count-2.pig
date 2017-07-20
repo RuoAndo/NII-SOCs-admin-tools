@@ -13,7 +13,8 @@ FF = FILTER F BY (sip MATCHES '.\\d+\\.\\d+\\.\\d+\\.\\d+') OR (dip MATCHES '.\\
 H = GROUP FF BY (dip, sip);
 
 C = FOREACH H GENERATE
-    	    FF.aname,
+    	    -- FF.aname,
+	    FF.aname,
     	    COUNT(FF.tid) as tidcount,
 	    FLATTEN(FF.dip),
 	    FLATTEN(FF.sip);

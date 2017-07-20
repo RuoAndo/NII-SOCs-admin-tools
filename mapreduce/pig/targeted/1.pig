@@ -22,10 +22,3 @@ C = FOREACH H GENERATE
 dump C;
 	    
 
--- filtered_records = FILTER records BY severity > 300;
--- dump filtered_records
-
--- addrpair = FOREACH records_group GENERATE                                                         
---	filtered_records.destination_ip as destip,
---	filtered_records.source_ip as source_ip;
-
