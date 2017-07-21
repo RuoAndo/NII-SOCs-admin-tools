@@ -64,7 +64,9 @@ while line:
 
             m2 = re_addr.search(str(j))
             if m2 is None:
-                str2 = str(j)#.replace(")"," ").replace(")"," ").replace(":"," ").replace("."," ")
+                str2 = str(j)
+                #str3 = str2.replace("."," ").replace(":"," ")
+                #print "DEBUG" + str3
                 #print str2
                 matchedList = re.findall(pattern,str2)
 
@@ -79,22 +81,22 @@ while line:
 
                 tmpstr = tmpstr + "," + mlt + "," + cnt + ","
                 
-                kensaku1 = matchedList[0]
-                kensaku2 = matchedList[1]
-                #kensaku3 = matchedList[2]
-
                 counter = 0
                 for l in count_dict:
-                    #print "l:" + l + ":kensaku" + kensaku
+                    # print "l:" + l
 
                     flag = 0
+                    found_counter = 0
                     for mat in matchedList:
-                        if mat not in l:
-                            flag = 1
+                        #print "mat:" + mat + ":" + l
+                        if l.find(mat) == -1:
+                            flag = 1 
+                            found_counter = found_counter + 1
 
                     if flag == 0:
-                        hittmpstr = str(count_dict_list[counter]).split(",")
-                        tmpstr = tmpstr + "," +  "*" + hittmpstr[-1].replace(")","").lstrip()
+                        print "found_counter:" + str(found_counter) 
+                        hittmpstr = str(count_dict_list[counter])#.split(",")
+                        tmpstr = tmpstr + "," +  "*" + hittmpstr#[-1].replace(")","").lstrip()
                         
                     counter = counter + 1
                             
