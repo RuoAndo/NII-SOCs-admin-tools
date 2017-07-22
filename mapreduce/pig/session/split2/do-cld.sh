@@ -7,5 +7,8 @@ do
     ./addrpair-sid.sh $line
     ./addrpair-avg.sh $line
     ./join.sh $line
+    ./restart.sh
 done
+
+
 
