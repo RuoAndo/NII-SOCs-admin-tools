@@ -15,6 +15,8 @@ labeled = FOREACH S GENERATE
 	       (int)FLOOR(RANDOM() * $CLUSTER_NUMBER) AS label,
 	       dip,
 	       sip,
+	       -- (double)(bytes_sent * 100000) as bytes_sent,
+	       -- (double)(bytes_received * 100000) as bytes_received,
 	       bytes_sent,
 	       bytes_received,
 	       sid;

@@ -1,3 +1,5 @@
+cp /data1/piggybank.jar . 
+hadoop fs -rmr addrpair-join-all
 hadoop fs -put addrpair-join-all
 
 hadoop fs -rmr tmp-avg
