@@ -4,20 +4,13 @@ DEFINE SQRT org.apache.pig.piggybank.evaluation.math.SQRT();
 
 %default CLUSTER_NUMBER 5
 
-S = LOAD '$SRCS' USING PigStorage(',') AS (dip:chararray, sip:chararray, bytes_sent:long, bytes_received:long, sid:long);
+-- 133.5.1.1,142.54.179.94,132,1
+S = LOAD '$SRCS' USING PigStorage(',') AS (label:int, dip:chararray, sip:chararray, bytes:long, sid:long);
 --dump S
 
 SPLIT S INTO
       S_error  IF dip is null,
       labeled IF dip is not null;
-
-labeled = FOREACH S GENERATE
-	       (int)FLOOR(RANDOM() * $CLUSTER_NUMBER) AS label,
-	       dip,
-	       sip,
-	       bytes_sent,
-	       bytes_received,
-	       sid;
 
 -- dump labeled
 
@@ -25,9 +18,8 @@ gl = GROUP labeled by label;
 
 AVG = FOREACH gl GENERATE
       group as label,
-      AVG(labeled.bytes_sent) as avgbytes_sent,
-      AVG(labeled.bytes_received) as avgbytes_received,
-      AVG(labeled.sid) as avgsid;
+      AVG(labeled.sid) as avgsid,
+      AVG(labeled.bytes) as avgbytes;
 
 STORE AVG INTO 'tmp-avg' USING PigStorage(',');
 -- dump AVG
