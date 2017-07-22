@@ -6,5 +6,5 @@ echo "cat-cls.sh"
 echo "cat-avg.sh"
 ./cat-avg.sh
 echo "4.py"
-python three.py cat-avg-all cat-cls-all > r
-python time python 1.py r
+time python three.py cat-avg-all cat-cls-all > r
+time python 1.py r
