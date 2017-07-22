@@ -24,7 +24,7 @@ while line:
     tmp = line.split(",")
 
     if int(tmp[0]) == int(clusterNo):
-        print clusterNo + ": " + str(counter)
+        print clusterNo + ": " + tmp[1] + "," + tmp[2] 
 
     counter = counter + 1
     line = f.readline()
