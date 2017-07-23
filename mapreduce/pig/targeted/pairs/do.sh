@@ -10,5 +10,6 @@ while read line; do
     hadoop fs -put $line
     time ./pair-count-2.sh $line >> tmp
     #pig -param SRCS=$line addrpair.pig
+    ./restart.sh
 done < $TESTFILE
 
