@@ -3,5 +3,5 @@
 \cp ../date.jar .
 ./do.sh list
 ./cat.sh list
-./init.sh
+#./init.sh
 #./repeat.sh
