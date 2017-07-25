@@ -121,8 +121,9 @@ int traverse_file(char* filename, char* srchstr) {
     
     printf("%s \n", filename);
 
-    Eigen::MatrixXd res = readCSV(filename, 100000, 5);
-    // std::cout << res << std::endl;
+    
+    Eigen::MatrixXd res = readCSV(filename, 1000, 6);
+    std::cout << res << std::endl;
 
     std::string outputfname = filename + s1;
     std::cout << outputfname << std::endl;
@@ -132,7 +133,6 @@ int traverse_file(char* filename, char* srchstr) {
     outputfile<< res;
     outputfile.close();
     
-
     /*
     FILE* fd;
     if ((fd = fopen(filename, "r")) == NULL) {

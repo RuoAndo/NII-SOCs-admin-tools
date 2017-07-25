@@ -1,8 +1,8 @@
 TARGET	= traverse2
 OBJS	= traverse2.o
 
-CC		= gcc
-CFLAGS		= -O2
+CC		= g++
+CFLAGS		= -O2 -fpermissive
 LDFLAGS		=
 INCLUDES	= -I./
 LIBS		= -lm -lpthread
