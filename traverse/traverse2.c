@@ -117,22 +117,31 @@ int traverse_buffer(char* a, char* b) {
 int traverse_file(char* filename, char* srchstr) {
     char buf[1024];
     int n = 0, sumn = 0;
+    int i;
     std::string s1 = "-read";
     
     printf("%s \n", filename);
 
-    
     Eigen::MatrixXd res = readCSV(filename, 1000, 6);
-    std::cout << res << std::endl;
+    // std::cout << res << std::endl;
 
-    std::string outputfname = filename + s1;
-    std::cout << outputfname << std::endl;
-    
+    /*
+    std::string outputfname = filename + s1;    
     std::ofstream outputfile(outputfname.c_str());
 
-    outputfile<< res;
+    outputfile << res;
     outputfile.close();
+    */
+
+    Eigen::MatrixXd res2 = res.rightCols(3);                                 
+    // std::cout << res2 << std::endl; 
     
+    for(i=0; i< res2.rows(); i++)                                            
+      {                             
+	// printf("%d, %d \n", res2.col(0), res2.col(1));
+	std::cout << res2.row(i).col(0) << "," << res2.row(i).col(1) << "\n";
+      }
+
     /*
     FILE* fd;
     if ((fd = fopen(filename, "r")) == NULL) {
