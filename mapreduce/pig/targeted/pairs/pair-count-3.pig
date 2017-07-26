@@ -9,17 +9,6 @@ F = FOREACH alarm GENERATE
 	    source_ip as sip;
 
 FF = FILTER F BY (sip MATCHES '.\\d+\\.\\d+\\.\\d+\\.\\d+') OR (dip MATCHES '.\\d+\\.\\d+\\.\\d+\\.\\d+');
-    
-H = GROUP FF BY (dip, sip);
 
-dump H;
-
-C = FOREACH H GENERATE
-	    FF.aname,
-    	    COUNT(FF.tid) as tidcount,
-	    FLATTEN(FF.dip),
-	    FLATTEN(FF.sip);
-
--- DC = DISTINCT C;
--- dump C;
-	    
+STORE FF INTO 'tmp-FF' USING PigStorage(',');
+    	    
