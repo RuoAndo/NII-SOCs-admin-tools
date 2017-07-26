@@ -3,8 +3,8 @@
 rm -rf tmp
 touch tmp
 
-TESTFILE=$1
-while read line; do
+for line in `cat ${1}`
+do
     echo $line
     hadoop dfsadmin -safemode leave
     hadoop fs -rmr $line
@@ -13,5 +13,5 @@ while read line; do
     time ./pair-count-4.sh >> tmp
     #pig -param SRCS=$line addrpair.pig
     ./restart.sh
-done < $TESTFILE
+done
 
