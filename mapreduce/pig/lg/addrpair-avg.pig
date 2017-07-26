@@ -14,8 +14,8 @@ H = GROUP I BY (dip, sip);
 K = FOREACH H GENERATE    	   
     FLATTEN(I.dip),
     FLATTEN(I.sip),
-    (double)AVG(I.bytes_sent),
-    (double)AVG(I.bytes_received);
+    AVG(I.bytes_sent),
+    AVG(I.bytes_received);
 
 --dump K;
 
