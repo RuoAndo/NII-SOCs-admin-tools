@@ -20,3 +20,10 @@
 <pre>
 time ./do.sh list
 </pre>
+
+# cluster checking
+
+<pre>
+python 5.py r 2 | tee tmp
+time ./head2.sh tmp r | tee tmp2
+</pre>
