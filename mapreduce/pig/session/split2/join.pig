@@ -17,8 +17,9 @@ S = FOREACH sessions GENERATE
 
 -- dump S;
 
-J = join A by (dip, sip) LEFT OUTER, S by (dip, sip); 
--- dump J;
+J1 = join A by (dip, sip) LEFT OUTER, S by (dip, sip); 
+J2 = join A by (dip, sip) LEFT INNER, S by (dip, sip); 
+J = UNION J1, J2;
 
 K = FOREACH J GENERATE
     	    $0,

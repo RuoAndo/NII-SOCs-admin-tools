@@ -1,6 +1,7 @@
 for line in `cat ${1}`
 do
     echo $line
+    hadoop fs -rmr $line
     hadoop fs -put $line
     ./addrpair.sh $line
     ./addrpair-join.sh $line
