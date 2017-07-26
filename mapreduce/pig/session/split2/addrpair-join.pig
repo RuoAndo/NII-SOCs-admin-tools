@@ -10,7 +10,7 @@ P = FOREACH session GENERATE
 A = LOAD 'addrpair' USING PigStorage(',') AS (dip:chararray, sip:chararray);
 
 J1 = join P by (dip, sip) LEFT OUTER, A by (dip, sip); 
-J2 = join P by (dip, sip) LEFT INNER, A by (dip, sip); 
+J2 = join P by (dip, sip), A by (dip, sip); 
 
 J = UNION J1, J2;
 
