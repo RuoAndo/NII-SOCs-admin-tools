@@ -1,0 +1,5 @@
+python 1.py r
+python 5.py r 0 | tee c0
+./head2.sh c0 r | tee c0-r
+python grep.py c0-r TARGET | wc -l             
+

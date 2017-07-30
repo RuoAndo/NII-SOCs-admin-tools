@@ -15,9 +15,12 @@ labeled = FOREACH S GENERATE
 	       (int)FLOOR(RANDOM() * $CLUSTER_NUMBER) AS label,
 	       dip,
 	       sip,
-	       (double)(alert1 * 100000) as alert1,
-	       (double)(alert2 * 100000) as alert2,
-	       (double)(alert3 * 100000) as alert3;
+	       --(double)(alert1 * 100000) as alert1,
+	       --(double)(alert2 * 100000) as alert2,
+	       --(double)(alert3 * 100000) as alert3;
+	       (double)(alert1 * 1.0) as alert1,
+	       (double)(alert2 * 1.0) as alert2,
+	       (double)(alert3 * 1.0) as alert3;
 
 -- dump labeled
 
