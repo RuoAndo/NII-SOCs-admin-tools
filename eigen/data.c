@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 10
+#define THREAD_NUM 1
 
 using namespace Eigen;
 using namespace std;
@@ -79,7 +79,7 @@ void thread_func(void *arg) {
     string fname = std::to_string(targ->id);
     // std::cout << "file name:" << fname << std::endl;
 
-    // res = readCSV(fname, targ->rows,targ->columns);
+    res = readCSV(fname, targ->rows,targ->columns);
     // std::cout << res << std::endl;
     Eigen::MatrixXd res2 = res.rightCols(2);
     Eigen::MatrixXd res3 = res.rightCols(4);

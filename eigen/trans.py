@@ -4,6 +4,9 @@ import socket, struct
 import sys 
 from binascii import hexlify
 
+import re
+re_addr = re.compile("((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))")
+
 def ip2int(addr):
         return struct.unpack("!I", socket.inet_aton(addr))[0]
 
@@ -20,25 +23,20 @@ line = f.readline()
 
 while line:
 
-        try:
-                tmp = line.split(",")
-                #print tmp[1] + "," + tmp[2]
+        tmp = line.split(",")
 
-                #print tmp
+        m = re_addr.search(tmp[1])
+        n = re_addr.search(tmp[2])
+
+        if m is not None and n is not None:
+       
                 tmp_int_1 = ip2int(tmp[1])
                 tmp_int_2 = ip2int(tmp[2])
 
                 print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip()
 
-                #print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4]) + "," + str(tmp[5].rstrip())
-    
-                #tmp_ip = int2ip(tmp_int)
-
-                #print tmp_int
-                #print tmp_ip
-    
-        except:
-                print str(tmp[0]) + "," + "0.0.0.0" + "," + "0.0.0.0" + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip()
+        else:
+                print "0,0.0.0.0,0.0.0.0,0,0"
 
 
         line = f.readline()
