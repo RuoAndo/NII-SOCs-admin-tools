@@ -20,18 +20,26 @@ line = f.readline()
 
 while line:
 
-    tmp = line.split(",")
-    #print tmp[1] + "," + tmp[2]
+        try:
+                tmp = line.split(",")
+                #print tmp[1] + "," + tmp[2]
 
-    tmp_int_1 = ip2int(tmp[1])
-    tmp_int_2 = ip2int(tmp[2])
+                #print tmp
+                tmp_int_1 = ip2int(tmp[1])
+                tmp_int_2 = ip2int(tmp[2])
 
-    print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4]) + "," + str(tmp[5].rstrip())
+                print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip()
+
+                #print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4]) + "," + str(tmp[5].rstrip())
     
-    #tmp_ip = int2ip(tmp_int)
+                #tmp_ip = int2ip(tmp_int)
 
-    #print tmp_int
-    #print tmp_ip
+                #print tmp_int
+                #print tmp_ip
     
-    line = f.readline()
+        except:
+                print str(tmp[0]) + "," + "0.0.0.0" + "," + "0.0.0.0" + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip()
+
+
+        line = f.readline()
     

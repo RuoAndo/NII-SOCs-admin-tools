@@ -18,6 +18,7 @@ using namespace Eigen;
 using namespace std;
 
 Eigen::MatrixXd avg;
+Eigen::MatrixXd res;
 
 Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
   
@@ -78,9 +79,10 @@ void thread_func(void *arg) {
     string fname = std::to_string(targ->id);
     // std::cout << "file name:" << fname << std::endl;
 
-    Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
+    // res = readCSV(fname, targ->rows,targ->columns);
+    // std::cout << res << std::endl;
     Eigen::MatrixXd res2 = res.rightCols(2);
-    // std::cout << res2 << std::endl;
+    Eigen::MatrixXd res3 = res.rightCols(4);
 
     std::string ofname = fname + ".para";
     // std::cout << ofname << std::endl;
@@ -105,8 +107,8 @@ void thread_func(void *arg) {
 	    }
 	  
 	  outputfile << counter << ",";
-	  for(k=0;k<res2.row(i).cols();k++)
-	    outputfile << res2.row(i).col(k) << ","; 
+	  for(k=0;k<res3.row(i).cols();k++)
+	    outputfile << res3.row(i).col(k) << ","; 
 
 	  outputfile << std::endl;
 
