@@ -1,3 +1,5 @@
+./cat.sh list
+
  ./a.out sample 5 4 data-10 10 6
 
 # time ./a.out sample 5 4 cat-cls-all 8852374 6 > tmp
