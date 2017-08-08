@@ -1,37 +1,34 @@
-# python 1.py tools/libxl/libxl.c libxl 372
+import sys
+import re
+from numpy import *
 
-import socket, struct
-import sys 
-from binascii import hexlify
+#['1', '1.107591480065538', '706.4975423265975\n']
+#['2', '1.0778210116731517', '1846.2707059477486\n']
+#['3', '1.0812533191715348', '5335.106744556559\n']
+#['4', '1.1299060254284135', '1336.4262023217248\n']
 
-def ip2int(addr):
-        return struct.unpack("!I", socket.inet_aton(addr))[0]
-
-
-def int2ip(addr):
-        return socket.inet_ntoa(struct.pack("!I", addr))    
-
-argvs = sys.argv  
-argc = len(argvs) 
+argvs = sys.argv
+argc = len(argvs)
 
 f = open(argvs[1])
 
 line = f.readline() 
 
+labels = []
+
+counter = 0
+
 while line:
-
     tmp = line.split(",")
-    #print tmp[1] + "," + tmp[2]
-
-    tmp_int_1 = ip2int(tmp[1])
-    tmp_int_2 = ip2int(tmp[2])
-
-    print tmp[0] + "," + tmp[1] + "," + tmp[2] + "," + tmp[3] + "," + tmp[4] + "," + tmp[5].rstrip()
-    
-    #tmp_ip = int2ip(tmp_int)
-
-    #print tmp_int
-    #print tmp_ip
-    
+    labels.append(tmp[0])
+    counter = counter + 1
     line = f.readline()
-    
+
+print "CLUTER0:" + str(labels.count("0"))
+print "CLUTER1:" + str(labels.count("1"))
+print "CLUTER2:" + str(labels.count("2"))
+print "CLUTER3:" + str(labels.count("3"))
+print "CLUTER4:" + str(labels.count("4"))
+
+f.close()
+

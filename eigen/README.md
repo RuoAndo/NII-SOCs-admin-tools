@@ -1,3 +1,46 @@
+# clustering with data decomposition 
+
+setting thread number according to the number of split file.
+
+<pre>
+ 12#include <eigen3/Eigen/Core>                                               
+ 13#include <eigen3/Eigen/SVD>                                                
+ 14                                                                           
+ 15#define THREAD_NUM 10                                                      
+ 16                                                                           
+ 17using namespace Eigen;                                                     
+ 18using namespace std; 
+</pre>
+
+10 split files with 500,000 lines 
+
+<pre>
+# more list                                            
+outaa
+outab
+outac
+outad
+outae
+outaf
+outag
+outah
+outai
+outaj
+
+# wc -l outaa                                          
+500000 outaa
+</pre>
+
+concatenate.
+
+<pre>
+# ./cat.sh list
+
+# wc -l all
+5000000 all
+</pre>
+
+
 # reading CSV
 
 <pre>
