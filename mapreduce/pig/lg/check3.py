@@ -19,8 +19,8 @@ while line:
         #if int(float(tmp[2])) > 60:
             #print tmp
         #    tpl.append(tmp)
-        if int(float(tmp[3].strip())) > 0:
-            print tmp
+        if int(float(tmp[4].strip())) > 5:
+            #print tmp
             tpl.append(tmp)
 
     except:
@@ -28,7 +28,8 @@ while line:
 
     line = f.readline() 
 
-fl = list(sorted(tpl, key=lambda tpl: int(tpl[3]), reverse=True))
+#print tpl
+fl = list(sorted(tpl, key=lambda tpl: int(tpl[4].strip()), reverse=True))
 
 for i in fl:
     print i
