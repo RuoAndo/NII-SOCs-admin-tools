@@ -16,11 +16,11 @@ while line:
     try:
         #print tmp[3].strip()
         
-        if int(float(tmp[2])) > 60:
+        #if int(float(tmp[2])) > 60:
             #print tmp
-            tpl.append(tmp)
-        if int(float(tmp[3].strip())) > 0:
-            #print tmp
+        #    tpl.append(tmp)
+        if int(float(tmp[4].strip())) > 0:
+            print tmp
             tpl.append(tmp)
 
     except:
