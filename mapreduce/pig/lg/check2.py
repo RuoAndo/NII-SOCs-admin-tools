@@ -20,7 +20,7 @@ while line:
             #print tmp
         #    tpl.append(tmp)
         if int(float(tmp[3].strip())) > 0:
-            print tmp
+            #print tmp
             tpl.append(tmp)
 
     except:
@@ -31,4 +31,8 @@ while line:
 fl = list(sorted(tpl, key=lambda tpl: int(tpl[3]), reverse=True))
 
 for i in fl:
-    print i
+    comstr = ""
+    for j in list(i):
+        comstr = comstr + j.rstrip() + ","
+    
+    print comstr.rstrip()
