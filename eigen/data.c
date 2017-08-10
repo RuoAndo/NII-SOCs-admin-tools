@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 1
+#define THREAD_NUM 219
 
 using namespace Eigen;
 using namespace std;
