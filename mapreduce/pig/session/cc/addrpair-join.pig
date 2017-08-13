@@ -14,6 +14,7 @@ J2 = join P by (dip, sip), A by (dip, sip);
 
 J = UNION J1, J2;
 
+-- dump P
 -- dump J;
 
 STORE J INTO 'addrpair-join' USING PigStorage(',');
