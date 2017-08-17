@@ -11,7 +11,7 @@ data.sh  outab  outad  outaf  outah  outaj  outal  outan  outap  outar  outat  o
 
 </pre>
 
-# translating files
+# translating files (appending thread id).
 
 <pre>
 # ./rename.sh list
@@ -21,6 +21,7 @@ data.sh  outab  outad  outaf  outah  outaj  outal  outan  outap  outar  outat  o
 1  11  13  15  17  19  20  22  24  26  4  6  8 
 </pre>
 
+# modifying the number of threads.
 
 <pre>
 
