@@ -1,7 +1,7 @@
 COUNTER=0
 for line in `cat ${1}`
 do
-    echo "now processing " $line " ..."
+    echo "now processing " $line ":" $COUNTER " ..."
     python trans.py $line > tmp
     cp tmp $COUNTER
     COUNTER=`expr $COUNTER + 1`

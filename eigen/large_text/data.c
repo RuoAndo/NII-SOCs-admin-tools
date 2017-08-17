@@ -12,13 +12,13 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 219
+#define THREAD_NUM 3
 
 using namespace Eigen;
 using namespace std;
 
 Eigen::MatrixXd avg;
-Eigen::MatrixXd res;
+// Eigen::MatrixXd res;
 
 Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
   
@@ -30,7 +30,7 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
   int col = 0;
 
   // std::cout << rows << ";" << cols << std::endl;
-  
+
   Eigen::MatrixXd res = Eigen::MatrixXd(rows, cols);
 
   if (in.is_open()) {
@@ -77,26 +77,21 @@ void thread_func(void *arg) {
     std::cout << avg << std::endl;
       
     string fname = std::to_string(targ->id);
-    // std::cout << "file name:" << fname << std::endl;
 
-    res = readCSV(fname, targ->rows,targ->columns);
-    // std::cout << res << std::endl;
+    Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.rightCols(2);
     Eigen::MatrixXd res3 = res.rightCols(4);
 
     std::string ofname = fname + ".para";
-    // std::cout << ofname << std::endl;
       
     ofstream outputfile(ofname);
 
     for(i=0; i< res2.rows(); i++)
 	{
-	  // std::cout << "data:" << res2.row(i) << std::endl;
 
 	  for(j=0; j< avg.rows(); j++)
 	    {
 	      Eigen::VectorXd distance = (res2.row(i) - avg.row(j)).rowwise().norm();
-	      // std::cout << j << ":" << distance(0) << std::endl;
 
 	      if(distance(0) < distance_tmp)
 		{
@@ -112,7 +107,6 @@ void thread_func(void *arg) {
 
 	  outputfile << std::endl;
 
-	  // std::cout << counter << std::endl;
 	  cluster_no[counter]++;  
 	}
 
@@ -130,9 +124,10 @@ int main(int argc, char *argv[])
     thread_arg_t targ[THREAD_NUM];
     int i;
 
-    Eigen::MatrixXd res = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-    avg = res.rightCols(2);
-    // std::cout << avg << std::endl;      
+    Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
+    std::cout << restmp << std::endl;      
+    avg = restmp.rightCols(2);
+    std::cout << avg << std::endl;      
 
     /* ˆ—ŠJŽn */
     for (i = 0; i < THREAD_NUM; i++) {
