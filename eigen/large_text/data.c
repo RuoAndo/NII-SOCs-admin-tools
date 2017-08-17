@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 3
+#define THREAD_NUM 266
 
 using namespace Eigen;
 using namespace std;
@@ -74,7 +74,7 @@ void thread_func(void *arg) {
 
     double distance_tmp = 1000000; 
 
-    std::cout << avg << std::endl;
+    // std::cout << avg << std::endl;
       
     string fname = std::to_string(targ->id);
 
@@ -125,9 +125,9 @@ int main(int argc, char *argv[])
     int i;
 
     Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-    std::cout << restmp << std::endl;      
+    // std::cout << restmp << std::endl;      
     avg = restmp.rightCols(2);
-    std::cout << avg << std::endl;      
+    // std::cout << avg << std::endl;      
 
     /* ˆ—ŠJŽn */
     for (i = 0; i < THREAD_NUM; i++) {
