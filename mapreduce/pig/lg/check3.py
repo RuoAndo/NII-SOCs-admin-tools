@@ -32,4 +32,9 @@ while line:
 fl = list(sorted(tpl, key=lambda tpl: int(tpl[4].strip()), reverse=True))
 
 for i in fl:
-    print i
+    comstr = ""
+    for j in list(i):
+        comstr = comstr + j.rstrip() + ","
+    
+    print comstr.rstrip()
+
