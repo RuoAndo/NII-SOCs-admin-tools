@@ -7,4 +7,5 @@ python trans.py $1 > $1-trans
 cp $1-trans 0
 
 # 5 CLUSTER, 4 dimension, 500000 lines, 4 dimension + 1 label
-./a.out $1-avg-clean 3 4 500000 5 
+./a.out $1-avg-clean 10 4 500000 5 
+python cat.py 0.para $1-avg-clean
