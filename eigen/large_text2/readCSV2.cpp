@@ -52,12 +52,23 @@ int main(int argc, char *argv[])
   int i, j;
  
   Eigen::MatrixXd res = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-  std::cout << res << std::endl;
+  // std::cout << res << std::endl;
 
   // Eigen::MatrixXd res3 = res.rightCols(5);
 
+  /*
+  for(k=0;k<res.row(0).cols();k++)
+	    outputfile << res3.row(i).col(k) << ","; 
+  */
 
+  std::cout << res << std::endl;
+  std::cout << "#######" << std::endl;
+  // std::cout << res.topRows(2) << std::endl;
 
+  for(i=0;i<res.rows();i++)
+    {
+      std::cout << res.leftCols(1).row(i) << std::endl;
+    }
 }
 
   
