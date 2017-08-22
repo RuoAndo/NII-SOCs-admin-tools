@@ -50,8 +50,10 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
 int main(int argc, char *argv[])
 {
   int i, j, k;
+  int distance_tmp = 100000;
  
   Eigen::MatrixXd res = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
+  Eigen::MatrixXd replaced;
 
   std::cout << res << std::endl;
   std::cout << "#######" << std::endl;
@@ -65,15 +67,35 @@ int main(int argc, char *argv[])
       
       if(j == 0)
 	{
-	  Eigen::MatrixXd centroid = res.rightCols(3);
+	  Eigen::MatrixXd centroid = res.row(i).rightCols(3);
+	  // std::cout << "centroid:" << centroid << std::endl;
           //Eigen::MatrixXd sessiond = res.rightCols(3);
 	  // std::cout << res.row(i).rightCols(6) << std::endl;
+
 	  Eigen::MatrixXd res2 = readCSV("1", 500000, 5);
+	  distance_tmp = 100000000;
 
 	  for(k=0; k< res2.rows(); k++)
-	    std::cout << res2.row(k) << std::endl;
+	    {
+	      Eigen::MatrixXd sessiond = res2.row(k).rightCols(3);
+	      // std::cout << "sessiond:" << sessiond << std::endl;
 
-	  std::cout << res2.rightCols(3) << std::endl;
+	      Eigen::VectorXd distance = (sessiond - centroid).rowwise().norm();        
+	      // std::cout << "distance:" << distance << std::endl;
+
+	      if (distance(0) < distance_tmp)
+		{
+		  //std::cout << "distance:" << distance << std::endl;
+		  //std::cout << res2.row(k) << std::endl;
+		  replaced = res2.row(k);
+		  distance_tmp = distance(0);
+		}
+	    }
+
+	  // std::cout << res2.row(k) << std::endl;
+	  std::cout << replaced << std::endl;
+
+	  //std::cout << res2.rightCols(3) << std::endl;
 	}
 
     }
