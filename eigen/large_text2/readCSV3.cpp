@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
   int distance_tmp = 100000;
  
   Eigen::MatrixXd res = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
+  Eigen::MatrixXd replaced;
 
   std::cout << res << std::endl;
   std::cout << "#######" << std::endl;
@@ -84,12 +85,16 @@ int main(int argc, char *argv[])
 
 	      if (distance(0) < distance_tmp)
 		{
-		  std::cout << "distance:" << distance << std::endl;
-		  std::cout << res2.row(k) << std::endl;
+		  //std::cout << "distance:" << distance << std::endl;
+		  //std::cout << res2.row(k) << std::endl;
+		  replaced = res2.row(k);
 		  distance_tmp = distance(0);
 		}
-
 	    }
+
+	  // std::cout << res2.row(k) << std::endl;
+	  std::cout << replaced << std::endl;
+
 	  //std::cout << res2.rightCols(3) << std::endl;
 	}
 
