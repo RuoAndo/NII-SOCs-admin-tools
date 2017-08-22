@@ -68,6 +68,14 @@ int main(int argc, char *argv[])
   for(i=0;i<res.rows();i++)
     {
       std::cout << res.leftCols(1).row(i) << std::endl;
+     
+      j = res.leftCols(1).row(i)[0];
+      
+      if(j == 0)
+	{
+	  std::cout << res.row(i).rightCols(6) << std::endl;
+	}
+
     }
 }
 
