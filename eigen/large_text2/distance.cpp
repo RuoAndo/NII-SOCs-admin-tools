@@ -62,13 +62,28 @@ int main(int argc, char *argv[])
     {
 	  Eigen::MatrixXd sessiondd = sessiond.row(i).rightCols(3);
 
+	  int distance_tmp = 1000000;
+	  int counter = 0;
+
 	  for(j=0;j<centroid.rows();j++)
 	    {
 	    Eigen::MatrixXd centroidd = centroid.row(j).rightCols(3);
-            Eigen::VectorXd distancev = (sessiondd - centroidd).rowwise().norm
-();        
-	    std::cout << "distance:" << distancev(0) << std::endl;
-	    }	    
+            Eigen::VectorXd distancev = (sessiondd - centroidd).rowwise().norm();
+
+	    // std::cout << "distance:" << distancev(0) << std::endl;
+
+	    if(distancev(0) < distance_tmp) 
+	      {
+		//std::cout << "distance:" << distancev(0) << std::endl;
+		distance_tmp = distancev(0);
+		counter++;
+	      }
+	    
+	    }
+
+	    std::cout << "distance:" << distance_tmp << std::endl;
+	    std::cout << "counter:" << counter << std::endl;
+	    
     }
 
 }
