@@ -2,20 +2,12 @@ import sys
 import re
 from numpy import *
 
-#['1', '1.107591480065538', '706.4975423265975\n']
-#['2', '1.0778210116731517', '1846.2707059477486\n']
-#['3', '1.0812533191715348', '5335.106744556559\n']
-#['4', '1.1299060254284135', '1336.4262023217248\n']
-
 argvs = sys.argv
 argc = len(argvs)
 
 f = open(argvs[1])
-
 line = f.readline() 
-
 labels = []
-
 counter = 0
 
 while line:
@@ -24,11 +16,31 @@ while line:
     counter = counter + 1
     line = f.readline()
 
-print "CLUTER0:" + str(labels.count("0"))
-print "CLUTER1:" + str(labels.count("1"))
-print "CLUTER2:" + str(labels.count("2"))
-print "CLUTER3:" + str(labels.count("3"))
-print "CLUTER4:" + str(labels.count("4"))
+f2 = open(argvs[2])
+line2 = f2.readline() 
+labels2 = []
+
+while line2:
+    try:
+        tmp2 = line2.split(",")
+        labels2.append(tmp2[1])
+    except:
+        pass
+
+    line2 = f2.readline()
+
+print labels2
+
+print "CLUSTER0," + str(labels.count("0")) + "<" + labels2[0].strip()
+print "CLUSTER1," + str(labels.count("1")) + "<" + labels2[1].strip()
+print "CLUSTER2," + str(labels.count("2")) + "<" + labels2[2].strip()
+print "CLUSTER3," + str(labels.count("3")) + "<" + labels2[3].strip()
+print "CLUSTER4," + str(labels.count("4")) + "<" + labels2[4].strip()
+print "CLUSTER5," + str(labels.count("5")) + "<" + labels2[5].strip()
+print "CLUSTER6," + str(labels.count("6")) + "<" + labels2[6].strip()
+print "CLUSTER7," + str(labels.count("7")) + "<" + labels2[7].strip()
+print "CLUSTER8," + str(labels.count("8")) + "<" + labels2[8].strip()
+print "CLUSTER9," + str(labels.count("9")) + "<" + labels2[9].strip()
 
 f.close()
 

@@ -10,9 +10,8 @@ f = open(argvs[1])
 line = f.readline() 
 
 while line:
-    line2 = line[:-2]
-    tmp = line2.split
-    print tmp[1] + "," + tmp[2] + "," + tmp[3] + "," + tmp[4] + "," + tmp[5] 
+    tmp = line.split(" ")
+    print tmp
 
     line = f.readline() 
 

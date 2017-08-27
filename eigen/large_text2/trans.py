@@ -23,21 +23,27 @@ line = f.readline()
 
 while line:
 
-        tmp = line.split(",")
+        line2 = line.replace("(","").replace(")","")
+        #print line2
 
-        m = re_addr.search(tmp[1])
-        n = re_addr.search(tmp[2])
+        try:
+                tmp = line2.split(",")
 
-        if m is not None and n is not None:
+                m = re_addr.search(tmp[0])
+                n = re_addr.search(tmp[1])
+
+                if m is not None and n is not None:
        
-                tmp_int_1 = ip2int(tmp[1])
-                tmp_int_2 = ip2int(tmp[2])
+                        tmp_int_1 = ip2int(tmp[0])
+                        tmp_int_2 = ip2int(tmp[1])
 
-                print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip()
+                        print str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[2]) + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip()
 
-        else:
-                print "0,0.0.0.0,0.0.0.0,0,0"
+                else:
+                        print "0,0.0.0.0,0.0.0.0,0,0"
 
+        except:
+                pass
 
         line = f.readline()
     

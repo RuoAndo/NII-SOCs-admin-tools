@@ -2,7 +2,7 @@ REGISTER piggybank.jar;
 DEFINE POW org.apache.pig.piggybank.evaluation.math.POW();
 DEFINE SQRT org.apache.pig.piggybank.evaluation.math.SQRT();
 
-%default CLUSTER_NUMBER 3
+%default CLUSTER_NUMBER 10
 
 S = LOAD '$SRCS' USING PigStorage(',') AS (sip:chararray, dip:chararray, bytes_sent:double, bytes_received: double, sidcount:double);
 
