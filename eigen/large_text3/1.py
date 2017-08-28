@@ -48,3 +48,6 @@ print math.sqrt(SSE)
 
 f.close()
 
+f2 = open('SSE', 'a')
+f2.write(math.sqrt(SSE))
+f2.close()
