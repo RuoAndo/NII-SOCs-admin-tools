@@ -1,6 +1,7 @@
 import sys
 import re
 from numpy import *
+import math
 
 argvs = sys.argv
 argc = len(argvs)
@@ -41,6 +42,9 @@ print "CLUSTER6," + str(labels.count("6")) + "<" + labels2[6].strip()
 print "CLUSTER7," + str(labels.count("7")) + "<" + labels2[7].strip()
 print "CLUSTER8," + str(labels.count("8")) + "<" + labels2[8].strip()
 print "CLUSTER9," + str(labels.count("9")) + "<" + labels2[9].strip()
+
+SSE = pow((int(labels.count("0")) - int(labels2[0].strip())),2) + pow((int(labels.count("1")) - int(labels2[1].strip())),2) + pow((int(labels.count("2")) - int(labels2[2].strip())),2) + pow((int(labels.count("3")) - int(labels2[3].strip())),2) + pow((int(labels.count("4")) - int(labels2[5].strip())),2) + pow((int(labels.count("6")) - int(labels2[6].strip())),2) + pow((int(labels.count("7")) - int(labels2[7].strip())),2) + pow((int(labels.count("8")) - int(labels2[8].strip())),2) + pow((int(labels.count("9")) - int(labels2[9].strip())),2) 
+print math.sqrt(SSE)
 
 f.close()
 
