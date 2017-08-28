@@ -1,4 +1,4 @@
-time g++ core.cpp -o core -fpermissive -lpthread -std=c++11
-#time g++ second.cpp -o second -fpermissive -lpthread -std=c++11
-
-
+for i in `seq 1 10000000`
+do
+   ./repeat.sh
+done

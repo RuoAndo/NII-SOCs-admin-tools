@@ -8,6 +8,6 @@ python fill4.py c > c2
 ./first c3 10 4 500000 5
 ./cat.sh list2
 python 0.py all2 | tee nclstr
-python 1.py all2 nclstr.bak
+python 1.py all2 nclstr.bak 
 cat SSE
 \cp nclstr nclstr.bak
