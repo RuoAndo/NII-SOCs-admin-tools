@@ -14,13 +14,7 @@ while line:
     tmp = line.split(",")
     
     try:
-        #print tmp[3].strip()
-        
-        #if int(float(tmp[2])) > 60:
-            #print tmp
-        #    tpl.append(tmp)
-        if int(float(tmp[4].strip())) > 5:
-            #print tmp
+        if int(float(tmp[2].strip())) > 0:
             tpl.append(tmp)
 
     except:
@@ -28,8 +22,10 @@ while line:
 
     line = f.readline() 
 
-#print tpl
-fl = list(sorted(tpl, key=lambda tpl: int(tpl[4].strip()), reverse=True))
+fl = list(sorted(tpl, key=lambda tpl: int(tpl[2]), reverse=True))
+
+#for i in fl:
+#    print i
 
 for i in fl:
     comstr = ""
@@ -37,4 +33,3 @@ for i in fl:
         comstr = comstr + j.rstrip() + ","
     
     print comstr.rstrip()
-

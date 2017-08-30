@@ -1,0 +1,5 @@
+# g++ distance.cpp
+# ./a.out c3 10 5 1 500000 5
+
+./do.sh outaa
+./relabel.sh tmp-r.csv-avg-clean
