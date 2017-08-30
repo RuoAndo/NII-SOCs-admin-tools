@@ -1,23 +1,27 @@
 # python 1.py tools/libxl/libxl.c libxl 372
 
 import sys 
+argvs = sys.argv  
+argc = len(argvs) 
 
 ulist = []
 outdata = []
 
 tpl = []
 
-num = 10034
-while num < 10282:
-    ulist.append(num)
-    outdata.append(0)
+f2 = open(argvs[2])
+
+line2 = f2.readline() 
+
+while line2:
     
-    num=num+1
+    tmp = line2.split("\t")
+    ulist.append(tmp[0])
+    outdata.append(0)    
 
+    line2 = f2.readline()
+    
 #print ulist
-
-argvs = sys.argv  
-argc = len(argvs) 
 
 f = open(argvs[1])
 
@@ -30,6 +34,8 @@ while line:
 
     line = f.readline()
 
+#print tpl
+    
 fl = list(sorted(tpl, key=lambda tpl: int(tpl[2]), reverse=True))
 
 RANKING = 0
@@ -53,7 +59,7 @@ for i in fl:
 
 comstr = ""
 for k in outdata:
-    comstr = comstr + str(k) + ","
+    comstr = comstr + str(k) + " "
 
 print comstr
 
