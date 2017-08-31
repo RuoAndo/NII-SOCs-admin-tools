@@ -1,3 +1,6 @@
+cd ./traverse2
+make
+cd ..
 #time ./traverse2/traverse2 133.52.62.12 test > tmp
 time ./traverse2/traverse2 $1 $2 > tmp
 
