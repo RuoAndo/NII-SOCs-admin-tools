@@ -8,13 +8,15 @@ C = LOAD '$CENTROID' USING PigStorage(',') AS (cbytes_sent:double, cbytes_receiv
 dump C;
 
 D = FOREACH S GENERATE
+    	    sip,
+	    dip,
     	    bytes_sent,
     	    bytes_received,
     	    sidcount,
 	    SQRT(POW((bytes_sent - C.cbytes_sent),2) + POW((bytes_received - C.cbytes_received),2) + POW((sidcount - C.csidcount),2)) as norm;
 
-SS = ORDER D BY norm DESC;                                                                                  
-SSS = LIMIT SS 10000;                        
+SS = ORDER D BY norm ASC;                                                                                  
+SSS = LIMIT SS 10;                        
  
 dump SSS;
                                       

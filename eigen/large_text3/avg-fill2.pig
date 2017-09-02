@@ -13,8 +13,8 @@ D = FOREACH S GENERATE
     	    sidcount,
 	    SQRT(POW((bytes_sent - C.cbytes_sent),2) + POW((bytes_received - C.cbytes_received),2) + POW((sidcount - C.csidcount),2)) as norm;
 
-SS = ORDER D BY norm DESC;                                                                                  
-SSS = LIMIT SS 10000;                        
+SS = ORDER D BY norm ASC;                                                                                  
+SSS = LIMIT SS 1000;                        
  
 dump SSS;
                                       
