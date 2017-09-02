@@ -21,7 +21,7 @@ f.close()
 f = open(argvs[2])
 line = f.readline() 
 
-nlist = []
+olist = []
 
 while line:
     tmp = line.split(",")
