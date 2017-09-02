@@ -30,8 +30,21 @@ while line:
 
 f.close()
 
-print plist
-print olist
+plistsum = 0
+for i in plist:
+    plistsum = plistsum + double(i)
+
+comstr = ""
+for i in plist:
+    comstr = comstr + str(i) + "(" + str(round((double(i)/plistsum)*100,1)) + "%),"
+
+print "previous:" + comstr
+
+comstr = ""
+for i in olist:
+    comstr = comstr + str(i) + "(" + str(round((double(i)/plistsum)*100,1)) + "%),"
+
+print "current:" + comstr
 
 counter = 0
 dlist = []
@@ -47,7 +60,7 @@ print dlist
 print SSE
 
 f2 = open('SSE', 'a')
-f2.write(str(SSE))
+f2.write(str(SSE)+"\n")
 f2.close()
 
 
