@@ -7,7 +7,6 @@ python 0.py all2 | tee nclstr
 ./avg2.sh all2
 python concate2.py all2 avg-all2 c3 | tee c2
 
-
 #python file.py c4 c3 > c2
 #python 1.py all2 nclstr.bak 
 #cat SSE
