@@ -99,7 +99,7 @@ void thread_func(void *arg) {
 
 	      if(distance(0) < distance_tmp)
 		{
-		  std::cout << "distance:" << distance << std::endl;
+		  std::cout << "distance:" << distance(0) << std::endl;
 		  distance_tmp = distance(0);
 		  counter = j;
 		}

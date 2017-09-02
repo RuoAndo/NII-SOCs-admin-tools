@@ -1,6 +1,7 @@
 import sys
 import re
 from numpy import *
+import linecache
 
 argvs = sys.argv
 argc = len(argvs)
@@ -19,17 +20,14 @@ while line:
     line = f.readline()
 
 num = 0
+counter = 1
 while num < nCLUSTER:
   #print "CLUSTER" + str(num) + ":" + str(labels.count(str(num)))
+  if labels.count(str(num)) > 0:
+      target_line = linecache.getline(argvs[2], counter)
+      print str(labels.count(str(num))) + "," + target_line.strip()
+      counter = counter + 1
   num = num + 1
 
 f.close()
 
-f2 = open(argvs[2])
-line2 = f2.readline() 
-
-num = 0
-while line2:
-    print str(labels.count(str(num))) + "," + line2.replace("\n","")
-    num = num + 1
-    line2 = f2.readline()
