@@ -12,7 +12,3 @@ python comp.py c2.bak c2-sorted >> process
 echo "####" `date +%Y%m%d_%H-%M-%S` "####" >> process
 cat process
 
-#python file.py c4 c3 > c2
-#python 1.py all2 nclstr.bak 
-#cat SSE
-#\cp nclstr nclstr.bak
