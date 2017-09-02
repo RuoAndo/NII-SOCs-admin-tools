@@ -25,7 +25,7 @@ while num < nCLUSTER:
   #print "CLUSTER" + str(num) + ":" + str(labels.count(str(num)))
 
   if labels.count(str(num)) > 0:
-      target_line = linecache.getline(argvs[2], counter
+      target_line = linecache.getline(argvs[2], counter)
       print str(labels.count(str(num))) + "," + target_line.strip()
       counter = counter + 1
 
