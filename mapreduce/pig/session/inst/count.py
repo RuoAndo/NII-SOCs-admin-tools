@@ -10,7 +10,6 @@ outdata = []
 tpl = []
 
 f2 = open(argvs[2])
-
 line2 = f2.readline() 
 
 while line2:
