@@ -30,5 +30,24 @@ while line:
 
 f.close()
 
+print plist
 print olist
-print nlist
+
+counter = 0
+dlist = []
+SSE = 0
+for i in plist:
+    diff = float(olist[counter]) - float(plist[counter])
+    #print abs(diff)
+    SSE = SSE + abs(diff)
+    dlist.append(abs(diff))
+    counter = counter + 1
+
+print dlist
+print SSE
+
+f2 = open('SSE', 'a')
+f2.write(str(SSE))
+f2.close()
+
+

@@ -12,7 +12,7 @@ line = f.readline()
 while line:
     tmp = line.split(",")
 
-    if int(tmp[0]) < 0:        
+    if int(tmp[0]) == 0:        
         tmpstr = tmp[2] + "," + tmp[3] + "," + tmp[4].strip()
         f2 = open('tmp-c', 'w')
         f2.write(tmpstr)

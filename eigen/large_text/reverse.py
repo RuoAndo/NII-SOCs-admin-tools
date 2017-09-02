@@ -28,7 +28,7 @@ while line:
             
             #print tmp_int_1
             
-            print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4])
+            print str(tmp[0]) + "," + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip()
     
     except:
             pass

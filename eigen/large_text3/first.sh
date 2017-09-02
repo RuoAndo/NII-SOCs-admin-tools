@@ -1,3 +1,4 @@
+./piggybank.sh
 ./build.sh
 rm -rf nclstr.bak
 
