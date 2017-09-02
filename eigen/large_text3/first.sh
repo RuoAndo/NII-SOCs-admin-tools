@@ -1,3 +1,4 @@
+./build.sh
 rm -rf nclstr.bak
 
 python conv.py all > all-conv
