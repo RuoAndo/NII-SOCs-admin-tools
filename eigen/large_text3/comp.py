@@ -56,8 +56,8 @@ for i in plist:
     dlist.append(abs(diff))
     counter = counter + 1
 
-print dlist
-print SSE
+print "diff:" + str(dlist)
+print "SSE:" + str(SSE)
 
 f2 = open('SSE', 'a')
 f2.write(str(SSE)+"\n")
