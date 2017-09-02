@@ -10,6 +10,7 @@ python concate2.py all2 avg-all2 c3 | tee c2
 
 echo "####" `date +%Y%m%d_%H-%M-%S` "####" >> process
 python comp.py c2.bak c2-sorted >> process
+echo "## centdoid ##"  >> process
 cat c2-sorted >> process
 cat process
 
