@@ -47,7 +47,7 @@ print dlist
 print SSE
 
 f2 = open('SSE', 'a')
-f2.write(SSE)
+f2.write(str(SSE))
 f2.close()
 
 
