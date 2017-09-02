@@ -1,6 +1,7 @@
 ./piggybank.sh
 ./build.sh
 rm -rf nclstr.bak
+rm -rf process
 
 python conv.py all > all-conv
 split -l 500000 all-conv out
@@ -8,7 +9,6 @@ ls out* > list
 ./rename.sh list
 
 ./avg.sh all-conv # generates "avg-all-conv" and "c"
-
 ./core c 10 4 500000 5
 
 ls *.labeled > list2
