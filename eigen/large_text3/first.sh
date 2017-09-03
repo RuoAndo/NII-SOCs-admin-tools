@@ -6,7 +6,8 @@ rm -rf process
 python conv.py all > all-conv
 split -l 500000 all-conv out
 ls out* > list
-./rename.sh list
+head -n 75 list > list-tmp
+./rename.sh list-tmp
 
 ./avg.sh all-conv # generates "avg-all-conv" and "c"
 ./core c 10 4 500000 5
