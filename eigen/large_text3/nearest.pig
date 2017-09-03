@@ -1,7 +1,7 @@
 REGISTER piggybank.jar;
 DEFINE POW org.apache.pig.piggybank.evaluation.math.POW();
 
-S = LOAD '$ALL2' USING PigStorage(',') AS (label:int, sip:chararray, dip:chararray, bytes_sent:double, bytes_received:double, sidcount:double);
+S = LOAD '$ALL2' USING PigStorage(',') AS (sip:chararray, dip:chararray, bytes_sent:double, bytes_received:double, sidcount:double);
 
 C = LOAD '$CENTROID' USING PigStorage(',') AS (cbytes_sent:double, cbytes_received:double, csidcount:double);
 
