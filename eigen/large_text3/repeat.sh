@@ -1,3 +1,4 @@
+\cp c2 c2.org
 \cp c2-sorted c2.bak
 python fill5.py c2 | tee c3
 #python fill7.py c2 | tee c3
