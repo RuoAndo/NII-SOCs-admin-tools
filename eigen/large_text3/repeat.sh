@@ -6,7 +6,7 @@ python fill5.py c2 | tee c3
 ./cat.sh list2 # generates "all2"
 python 0.py all2 | tee nclstr
 ./avg2.sh all2
-python concate2.py all2 avg-all2 c3 | tee c2
+python concate.py all2 avg-all2 c3 | tee c2
 ./sort.pl c2 > c2-sorted
 
 echo " "
