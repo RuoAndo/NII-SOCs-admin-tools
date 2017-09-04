@@ -24,11 +24,12 @@ while line:
     counter = counter + 1
     line = f.readline()
 
-print "CLUTER0:" + str(labels.count("0"))
-print "CLUTER1:" + str(labels.count("1"))
-print "CLUTER2:" + str(labels.count("2"))
-print "CLUTER3:" + str(labels.count("3"))
-print "CLUTER4:" + str(labels.count("4"))
+print "CLUSTER0:" + str(labels.count("0"))
+print "CLUSTER1:" + str(labels.count("1"))
+print "CLUSTER2:" + str(labels.count("2"))
+print "CLUSTER3:" + str(labels.count("3"))
+print "CLUSTER4:" + str(labels.count("4"))
+
 
 f.close()
 
