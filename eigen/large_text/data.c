@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 266
+#define THREAD_NUM 3
 
 using namespace Eigen;
 using namespace std;
@@ -112,7 +112,7 @@ void thread_func(void *arg) {
 
       outputfile.close();
 
-      for(i = 0; i < 10; i++)                                               
+      for(i = 0; i < 4; i++)                                               
 	std::cout << "CLUSTER:" << i << ":" << cluster_no[i] << std::endl; 
 
     return;
