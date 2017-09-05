@@ -16,3 +16,4 @@ S = FOREACH S GENERATE
 SF = FILTER S BY source_port == 53;
 
 dump SF;
+STORE SF INTO 'dump-dns-$SRCS' USING PigStorage(',');   

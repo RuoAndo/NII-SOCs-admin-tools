@@ -1,4 +1,4 @@
-S = LOAD '$SRCS' USING PigStorage(',') AS (session_id:long,capture_time:chararray,sip:chararray,sport:int,dip:chararray, dport:int, bytes_sent:int, bytes_received:long);
+S = LOAD '$SRCS' AS (session_id:long,capture_time:chararray,sip:chararray,sport:int,dip:chararray, dport:int, bytes_sent:int, bytes_received:long);
 
 GL = GROUP S by (dip, sip);
 

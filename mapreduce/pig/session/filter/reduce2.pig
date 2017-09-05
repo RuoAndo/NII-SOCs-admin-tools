@@ -1,4 +1,4 @@
-A = LOAD 'reduce-dump' USING PigStorage(',') AS (dip:chararray, sip:chararray, dport:int, sport:int, bytes_sent:double, bytes_received:double, sidcount:long); 
+A = LOAD 'dump-dns' USING PigStorage(',') AS (dip:chararray, sip:chararray, dport:int, sport:int, bytes_sent:double, bytes_received:double, sidcount:long); 
 --dump A;
 
 gl = GROUP A by (dip, sip);
