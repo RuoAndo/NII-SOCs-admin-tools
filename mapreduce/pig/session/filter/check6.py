@@ -22,7 +22,7 @@ while line:
 
     line = f.readline() 
 
-fl = list(sorted(tpl, key=lambda tpl: float(tpl[4]), reverse=True))
+fl = list(sorted(tpl, key=lambda tpl: float(tpl[6]), reverse=True))
 
 #for i in fl:
 #    print i

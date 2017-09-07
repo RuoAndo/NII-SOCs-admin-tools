@@ -1,4 +1,4 @@
-S = LOAD '$SRCS' AS (session_id:long,capture_time:chararray,sip:chararray,sport:int,suid:int,dip:chararray,dport:int,duid:int,bytes_sent:int, bytes_received:long);
+S = LOAD '$SRCS' USING PigStorage(',') AS (session_id:long,capture_time:chararray,sip:chararray,sport:int,suid:int,dip:chararray,dport:int,duid:int,bytes_sent:int, bytes_received:long);
 
 GL = GROUP S by (dip, sip);
 
@@ -16,4 +16,5 @@ GLF = FOREACH GL GENERATE
 -- dump GLF;
 
 GLFD = DISTINCT GLF;
+STORE GLFD INTO 'dump-dns-$SRCS-reduced' USING PigStorage(',');   
 dump GLFD;
