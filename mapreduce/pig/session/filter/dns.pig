@@ -8,11 +8,14 @@ S = FOREACH S GENERATE
       capture_time,
       source_ip,
       source_port,
+      src_university_id,
       destination_ip,
       destination_port,
+      dest_university_id,
       bytes_sent,
       bytes_received;
   
 SF = FILTER S BY source_port == 53;
 
 dump SF;
+STORE SF INTO 'dump-dns-$SRCS' USING PigStorage(',');   
