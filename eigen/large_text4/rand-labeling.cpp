@@ -12,7 +12,9 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 719
+#include <random>
+
+#define THREAD_NUM 2
 #define CLUSTER_NUM 10
 
 static int cluster_no[CLUSTER_NUM];
@@ -69,7 +71,7 @@ typedef struct _thread_arg {
 void thread_func(void *arg) {
     thread_arg_t* targ = (thread_arg_t *)arg;
     int i, j, k;
-    int counter = 0;
+    int label = 0;
 
     double distance_tmp = 1000000; 
       
@@ -83,48 +85,44 @@ void thread_func(void *arg) {
     */
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.rightCols(3);
-    Eigen::MatrixXd res3 = res.rightCols(5);
+    Eigen::MatrixXd res2 = res.leftCols(5);
 
-    std::string ofname = fname + ".labeled";
-      
+    std::string ofname = fname + ".labeled";      
     ofstream outputfile(ofname);
 
+    std::random_device rnd;
+
+    /*
+    for (int i = 0; i < 10; ++i) {
+      tmp = rnd() % 10;
+      std::cout << tmp << "\n";
+    }
+    */
+    
     for(i=0; i< res2.rows(); i++)
 	{
 
-	  for(j=0; j< avg.rows(); j++)
+	  label = rnd() % 10;
+	  outputfile << label << ",";
+
+	  /* 1,2,3, */
+	  for(k=0;k<res2.row(i).cols()-1 ;k++)
 	    {
-	      Eigen::VectorXd distance = (res2.row(i) - avg.row(j)).rowwise().norm();
-
-	      if(distance(0) < distance_tmp)
-		{
-		  std::cout << "distance:" << distance(0) << std::endl;
-		  distance_tmp = distance(0);
-		  counter = j;
-		}
-
+	      outputfile << res2.row(i).col(k) << ",";
+	      // std::cout << res2.row(i).col(k) << std::endl; 
 	    }
-	  
-	  outputfile << counter << ",";
+	  /* 4 */
+	  outputfile << res2.row(i).col(k); 
 
-	  for(k=0;k<res3.row(i).cols()-1 ;k++)
-	    outputfile << res3.row(i).col(k) << ","; 
-
-	  outputfile << res3.row(i).col(k); 
-	  
+	  /* \n */
 	  outputfile << std::endl;
 
-	  cluster_no[counter]++;  
 	}
 
       outputfile.close();
 
-      /*
-      for(i = 0; i < CLUSTER_NUM; i++)
-	std::cout << "CLUSTER:" << i << ":" << cluster_no[i] << std::endl; 
-      */
-
+      std::cout << "thread ID: " << targ->id << " - done." << std::endl;
+      
     return;
 }
 
@@ -134,20 +132,11 @@ int main(int argc, char *argv[])
     thread_arg_t targ[THREAD_NUM];
     int i;
 
-    /* クラスタ初期化 */
-    for(i = 0; i < CLUSTER_NUM; i++)
-      cluster_no[i] = 0; 
-
-    /* 始めに重心を取り込む */
-    Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-    avg = restmp.rightCols(3);
-    std::cout << avg << std::endl;      
-
     /* 処理開始 */
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].id = i;
-        targ[i].rows = atoi(argv[4]);
-	targ[i].columns = atoi(argv[5]);
+        targ[i].rows = atoi(argv[1]);
+	targ[i].columns = atoi(argv[2]);
         pthread_create(&handle[i], NULL, (void*)thread_func, (void*)&targ[i]);
     }
 
