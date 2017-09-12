@@ -9,4 +9,5 @@ time pig reduce2.pig > tmp2
 python clean.py tmp2 > tmp3
 ./drem.pl tmp3 > tmp4
 
+cat tmp4
 python cut.py tmp4 $1
