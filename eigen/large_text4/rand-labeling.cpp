@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 20
+#define THREAD_NUM 2
 #define CLUSTER_NUM 10
 
 static int cluster_no[CLUSTER_NUM];
@@ -85,7 +85,7 @@ void thread_func(void *arg) {
     */
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.rightCols(5);
+    Eigen::MatrixXd res2 = res.leftCols(5);
 
     std::string ofname = fname + ".labeled";      
     ofstream outputfile(ofname);
@@ -107,8 +107,10 @@ void thread_func(void *arg) {
 
 	  /* 1,2,3, */
 	  for(k=0;k<res2.row(i).cols()-1 ;k++)
-	    outputfile << res2.row(i).col(k) << ","; 
-
+	    {
+	      outputfile << res2.row(i).col(k) << ",";
+	      // std::cout << res2.row(i).col(k) << std::endl; 
+	    }
 	  /* 4 */
 	  outputfile << res2.row(i).col(k); 
 
@@ -119,6 +121,8 @@ void thread_func(void *arg) {
 
       outputfile.close();
 
+      std::cout << "thread ID: " << targ->id << " - done." << std::endl;
+      
     return;
 }
 

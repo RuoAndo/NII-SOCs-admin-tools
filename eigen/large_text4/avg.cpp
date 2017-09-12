@@ -14,10 +14,8 @@
 
 #include <random>
 
-#define THREAD_NUM 1
+#define THREAD_NUM 2
 #define CLUSTER_NUM 10
-
-static int cluster_no[CLUSTER_NUM];
 
 using namespace Eigen;
 using namespace std;
@@ -63,7 +61,7 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
 }
 
 typedef struct _result {
-  int num;
+  int cluster_no[CLUSTER_NUM];
   pthread_mutex_t mutex;    
 } result_t;
 result_t result;
@@ -79,11 +77,15 @@ void thread_func(void *arg) {
     int i, j, k;
     int label = 0;
     int tmpNo;
+    int my_cluster_no[CLUSTER_NUM];
     
     double distance_tmp = 1000000; 
-      
-    string fname = std::to_string(targ->id);
+    
+    string fname = std::to_string(targ->id) + ".labeled";
 
+    for(i=0;i<CLUSTER_NUM;i++)
+      my_cluster_no[i]=0;
+    
     /*
         targ[i].id = i;
         targ[i].rows = atoi(argv[4]);
@@ -95,20 +97,25 @@ void thread_func(void *arg) {
     Eigen::MatrixXd res2 = res.leftCols(1);
     
     // for(i=0; i< res2.rows(); i++)
-    for(i=0; i< 50; i++)
+    for(i=0; i< res2.rows(); i++)
       {
 	tmpNo = res2.row(i).col(0)(0);
-	cluster_no[tmpNo]++;
+	my_cluster_no[tmpNo]++;
 	// std::cout << res2.row(i).col(0) << std::endl;
       }
 
-    for(i=0; i<CLUSTER_NUM; i++)
+    /*
+    for(i=0; i< CLUSTER_NUM; i++)
       {
-	std::cout << cluster_no[i] << std::endl;
+	std::cout << my_cluster_no[i] << std::endl;
       }
-    
-    pthread_mutex_lock(&result.mutex);
+    */    
 
+    pthread_mutex_lock(&result.mutex);
+      for(i=0; i<CLUSTER_NUM; i++)
+      {
+	result.cluster_no[i] += my_cluster_no[i];
+      }
     pthread_mutex_unlock(&result.mutex);
     
     /*
@@ -145,4 +152,13 @@ int main(int argc, char *argv[])
     /* I—¹‚ð‘Ò‚Â */
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
+    
+    std::cout << "RESULT:" << endl;
+    
+    for(i=0; i<CLUSTER_NUM; i++)
+      {
+	std::cout << result.cluster_no[i] << endl;
+      }
+    
+
 }
