@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <fstream>
 #include "KalmanFilter.h"
@@ -8,7 +7,7 @@ static float measure[288] = {0};
 
 void readFromFile()
 {
-  std::ifstream ifs("data");
+  std::ifstream ifs("data2");
   std::string str;
   int counter;
   

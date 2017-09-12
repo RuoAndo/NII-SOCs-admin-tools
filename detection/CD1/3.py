@@ -18,8 +18,8 @@ while line:
     
     line = f.readline()
 
-print instIDlist
-print instNamelist
+#print instIDlist
+#print instNamelist
 
 f.close()
 
@@ -32,7 +32,7 @@ while line:
     flist.append(line.strip())
     line = f.readline()
 
-print flist
+#print flist
 
 f.close()
 
@@ -50,7 +50,7 @@ for i in flist:
         #print tmp
         
         if len(tmp[1]) > 0 and int(tmp[1]) == 10180:
-            print "HIT"
+            #print "HIT"
             tmpseries.append(tmp[2].strip())
         
         if counter == 1:

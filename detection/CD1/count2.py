@@ -9,11 +9,14 @@ f = open(argvs[1])
 
 line = f.readline() 
 
+sum = 0
 while line:
-    
-    tmp = line.split("\t")
-    print tmp[0]
-
+    tmp = line.split(",")
+    sum = sum + int(tmp[2])
     line = f.readline()
+
+print sum
+
+
 
 
