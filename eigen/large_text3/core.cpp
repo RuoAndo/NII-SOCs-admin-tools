@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 3
+#define THREAD_NUM 719
 #define CLUSTER_NUM 10
 
 static int cluster_no[CLUSTER_NUM];
@@ -94,11 +94,11 @@ void thread_func(void *arg) {
 	  outputfile << counter << ",";
 
 	  /* 1,2,3, */
-	  for(k=0;k<res3.row(i).cols()-1 ;k++)
+	  for(k=0;k<res2.row(i).cols()-1 ;k++)
 	    outputfile << res2.row(i).col(k) << ","; 
 
 	  /* 4 */
-	  outputfile << res3.row(i).col(k); 
+	  outputfile << res2.row(i).col(k); 
 
 	  /* \n */
 	  outputfile << std::endl;
