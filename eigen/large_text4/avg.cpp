@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 20
+#define THREAD_NUM 1
 #define CLUSTER_NUM 10
 
 static int cluster_no[CLUSTER_NUM];
@@ -62,6 +62,12 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
   return res;
 }
 
+typedef struct _result {
+  int num;
+  pthread_mutex_t mutex;    
+} result_t;
+result_t result;
+
 typedef struct _thread_arg {
     int id;
     int rows;
@@ -72,7 +78,8 @@ void thread_func(void *arg) {
     thread_arg_t* targ = (thread_arg_t *)arg;
     int i, j, k;
     int label = 0;
-
+    int tmpNo;
+    
     double distance_tmp = 1000000; 
       
     string fname = std::to_string(targ->id);
@@ -85,12 +92,31 @@ void thread_func(void *arg) {
     */
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.rightCols(5);
+    Eigen::MatrixXd res2 = res.leftCols(1);
+    
+    // for(i=0; i< res2.rows(); i++)
+    for(i=0; i< 50; i++)
+      {
+	tmpNo = res2.row(i).col(0)(0);
+	cluster_no[tmpNo]++;
+	// std::cout << res2.row(i).col(0) << std::endl;
+      }
 
+    for(i=0; i<CLUSTER_NUM; i++)
+      {
+	std::cout << cluster_no[i] << std::endl;
+      }
+    
+    pthread_mutex_lock(&result.mutex);
+
+    pthread_mutex_unlock(&result.mutex);
+    
+    /*
     std::string ofname = fname + ".labeled";      
     ofstream outputfile(ofname);
 
     std::random_device rnd;
+    */
 
     /*
     for (int i = 0; i < 10; ++i) {
@@ -98,26 +124,6 @@ void thread_func(void *arg) {
       std::cout << tmp << "\n";
     }
     */
-    
-    for(i=0; i< res2.rows(); i++)
-	{
-
-	  label = rnd() % 10;
-	  outputfile << label << ",";
-
-	  /* 1,2,3, */
-	  for(k=0;k<res2.row(i).cols()-1 ;k++)
-	    outputfile << res2.row(i).col(k) << ","; 
-
-	  /* 4 */
-	  outputfile << res2.row(i).col(k); 
-
-	  /* \n */
-	  outputfile << std::endl;
-
-	}
-
-      outputfile.close();
 
     return;
 }
