@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 2
+#define THREAD_NUM 20
 #define CLUSTER_NUM 10
 
 using namespace Eigen;
@@ -62,6 +62,11 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
 
 typedef struct _result {
   int cluster_no[CLUSTER_NUM];
+  
+  long item3_sum[CLUSTER_NUM];
+  long item4_sum[CLUSTER_NUM];
+  long item5_sum[CLUSTER_NUM];
+  
   pthread_mutex_t mutex;    
 } result_t;
 result_t result;
@@ -76,8 +81,11 @@ void thread_func(void *arg) {
     thread_arg_t* targ = (thread_arg_t *)arg;
     int i, j, k;
     int label = 0;
-    int tmpNo;
+    long tmpNo;
     int my_cluster_no[CLUSTER_NUM];
+    long my_item3_sum = 0; 
+    long my_item4_sum = 0;
+    long my_item5_sum = 0;
     
     double distance_tmp = 1000000; 
     
@@ -95,13 +103,17 @@ void thread_func(void *arg) {
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.leftCols(1);
+    Eigen::MatrixXd res3 = res.leftCols(6);
     
     // for(i=0; i< res2.rows(); i++)
     for(i=0; i< res2.rows(); i++)
       {
 	tmpNo = res2.row(i).col(0)(0);
 	my_cluster_no[tmpNo]++;
-	// std::cout << res2.row(i).col(0) << std::endl;
+	
+	my_item3_sum += res3.row(i).col(3)(0);
+	my_item4_sum += res3.row(i).col(4)(0);
+	my_item5_sum += res3.row(i).col(5)(0);
       }
 
     /*
@@ -116,6 +128,17 @@ void thread_func(void *arg) {
       {
 	result.cluster_no[i] += my_cluster_no[i];
       }
+
+      	result.item3_sum[targ->id] = my_item3_sum;
+	result.item4_sum[targ->id] = my_item4_sum;
+	result.item5_sum[targ->id] = my_item5_sum;
+      
+      /*
+      	result.item3_sum += my_item3_sum;
+	result.item4_sum += my_item4_sum;
+	result.item5_sum += my_item5_sum;
+      */
+      
     pthread_mutex_unlock(&result.mutex);
     
     /*
@@ -140,6 +163,9 @@ int main(int argc, char *argv[])
     pthread_t handle[THREAD_NUM];
     thread_arg_t targ[THREAD_NUM];
     int i;
+    long sum3;
+    long sum4;
+    long sum5;
 
     /* ˆ—ŠJn */
     for (i = 0; i < THREAD_NUM; i++) {
@@ -153,12 +179,30 @@ int main(int argc, char *argv[])
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
     
-    std::cout << "RESULT:" << endl;
+    std::cout << "CLUSTER:" << endl;
     
     for(i=0; i<CLUSTER_NUM; i++)
       {
 	std::cout << result.cluster_no[i] << endl;
       }
-    
 
+    std::cout << "FILE:" << endl;
+
+    sum3 = 0;
+    sum4 = 0;
+    sum5 = 0;
+    
+    for(i=0; i<THREAD_NUM; i++)
+      {
+	sum3 = sum3 + result.item3_sum[i];
+	sum4 = sum4 + result.item4_sum[i];
+        sum5 = sum5 + result.item5_sum[i];
+      	// std::cout << result.item3_sum[i] << endl;
+      }
+    
+    std::cout << sum3 << endl;
+    std::cout << sum4 << endl;
+    std::cout << sum5 << endl;
+    
 }
+
