@@ -1,4 +1,9 @@
-#./do.sh IPADDR DIR
+# auto
+
+mkdir outs
+mv out* outs/
+
+./do.sh IPADDR DIR<outs>
 <pre>
 cd ./traverse2
 make
