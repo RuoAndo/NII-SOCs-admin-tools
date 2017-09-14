@@ -1,6 +1,4 @@
-./main data2 > out
-python diff1.py out > d1
-./sort.pl d1
-python std.py d1 > s1
-./sort.pl s1 > s2
-head -n 20 s2
+python cut.py $1 > $1-cut
+./main $1-cut > $1-out
+python diff1.py $1-out > $1-diff
+python std.py $1-diff $1 instlist > $1-std
