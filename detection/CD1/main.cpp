@@ -5,9 +5,9 @@
 using namespace std;
 static float measure[288] = {0};
 
-void readFromFile()
+void readFromFile(char *fname)
 {
-  std::ifstream ifs("data2");
+  std::ifstream ifs(fname);
   std::string str;
   int counter;
   
@@ -21,7 +21,7 @@ void readFromFile()
 
 int main(int argc, char const *argv[])
 {
-  readFromFile();
+  readFromFile(argv[1]);
 
   MatrixXf A(1, 1); A << 1;
   MatrixXf H(1, 1); H << 1;
