@@ -31,6 +31,8 @@ user    3m7.980s
 sys     0m11.260s
 </pre>
 
+# counting data per cluster 1
+<pre>
 # python 0.py all-labeled 
 CLUSTER0,1001317
 CLUSTER1,1000283
@@ -42,6 +44,7 @@ CLUSTER6,999997
 CLUSTER7,999324
 CLUSTER8,1001701
 CLUSTER9,999012
+</pre>
 
 # calculating centroid
 <pre>
@@ -68,7 +71,7 @@ user    6m55.716s
 sys     0m12.752s
 </pre>
 
-# counting data per cluster
+# counting data per cluster 2
 <pre>
 # ./cat-relabeled.sh list-relabeled 
 # python 0.py all-relabeled 
