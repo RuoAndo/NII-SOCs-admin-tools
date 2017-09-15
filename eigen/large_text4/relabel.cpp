@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 3
+#define THREAD_NUM 20
 #define CLUSTER_NUM 10
 
 static int cluster_no[CLUSTER_NUM];
@@ -73,14 +73,16 @@ void thread_func(void *arg) {
 
     double distance_tmp = 1000000; 
       
-    string fname = std::to_string(targ->id);
+    string fname = std::to_string(targ->id) + ".labeled";
 
+    std::cout << "reading " << fname << std::endl;
+    
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.rightCols(3);
     Eigen::MatrixXd res3 = res.rightCols(5);
 
     // 0,2.23391e+09,2.88497e+09,66,0,2
-    std::string ofname = fname + ".relabeled";
+    std::string ofname = std::to_string(targ->id) + ".relabeled";
       
     ofstream outputfile(ofname);
 
@@ -143,7 +145,6 @@ int main(int argc, char *argv[])
     std::cout << avg << std::endl;      
 
     /* ˆ—ŠJŽn */
-
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].id = i;
         targ[i].rows = atoi(argv[4]);
