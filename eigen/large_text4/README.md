@@ -1,22 +1,27 @@
+# converting data
+<pre>
+# more list
+outaa
+:
+:
+outat
+
+# time ./rename.sh list
+now processing  outaa : 0  ...
+now processing  outab : 1  ...
+now processing  outat : 19  ...
+
+real    0m57.583s
+user    0m50.116s
+sys     0m0.788s
+</pre>
+
+# init label
 <pre>
 # time ./rand-labeling 500000 5
 thread ID: 4 - done.
 thread ID: 2 - done.
 thread ID: 13 - done.
-thread ID: 17 - done.
-thread ID: 10 - done.
-thread ID: 16 - done.
-thread ID: 12 - done.
-thread ID: 9 - done.
-thread ID: 18 - done.
-thread ID: 19 - done.
-thread ID: 5 - done.
-thread ID: 3 - done.
-thread ID: 11 - done.
-thread ID: 7 - done.
-thread ID: 8 - done.
-thread ID: 0 - done.
-thread ID: 15 - done.
 thread ID: 6 - done.
 thread ID: 1 - done.
 thread ID: 14 - done.
@@ -26,6 +31,7 @@ user    3m7.980s
 sys     0m11.260s
 </pre>
 
+# calculating centroid
 <pre>
 # ./avg 500000 6
 924.294 11727.4 2.50272
@@ -41,7 +47,7 @@ sys     0m11.260s
 </pre>
 
 <pre>
-2274  split -l 500000 all-10000000 out
+ 2274  split -l 500000 all-10000000 out
  2276  ls -alh out* > list
  2277  wc -l list
 
