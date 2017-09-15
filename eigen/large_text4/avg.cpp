@@ -16,6 +16,7 @@
 
 #define THREAD_NUM 20
 #define CLUSTER_NUM 10
+#define ITEM_NUM 3
 
 using namespace Eigen;
 using namespace std;
@@ -63,9 +64,9 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
 typedef struct _result {
   int cluster_no[CLUSTER_NUM];
   
-  long item3_sum[CLUSTER_NUM];
-  long item4_sum[CLUSTER_NUM];
-  long item5_sum[CLUSTER_NUM];
+  double item3_sum[CLUSTER_NUM];
+  double item4_sum[CLUSTER_NUM];
+  double item5_sum[CLUSTER_NUM];
   
   pthread_mutex_t mutex;    
 } result_t;
@@ -83,17 +84,19 @@ void thread_func(void *arg) {
     int label = 0;
     long tmpNo;
     int my_cluster_no[CLUSTER_NUM];
-    long my_item3_sum = 0; 
-    long my_item4_sum = 0;
-    long my_item5_sum = 0;
-    
-    double distance_tmp = 1000000; 
+    double my_item3_sum[CLUSTER_NUM]; 
+    double my_item4_sum[CLUSTER_NUM]; 
+    double my_item5_sum[CLUSTER_NUM]; 
     
     string fname = std::to_string(targ->id) + ".labeled";
 
     for(i=0;i<CLUSTER_NUM;i++)
-      my_cluster_no[i]=0;
-    
+      {
+	my_cluster_no[i]=0;
+	my_item3_sum[i]=0;
+	my_item4_sum[i]=0;
+	my_item5_sum[i]=0;
+      }
     /*
         targ[i].id = i;
         targ[i].rows = atoi(argv[4]);
@@ -103,7 +106,7 @@ void thread_func(void *arg) {
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.leftCols(1);
-    Eigen::MatrixXd res3 = res.leftCols(6);
+    Eigen::MatrixXd res3 = res.rightCols(3);
     
     // for(i=0; i< res2.rows(); i++)
     for(i=0; i< res2.rows(); i++)
@@ -111,9 +114,9 @@ void thread_func(void *arg) {
 	tmpNo = res2.row(i).col(0)(0);
 	my_cluster_no[tmpNo]++;
 	
-	my_item3_sum += res3.row(i).col(3)(0);
-	my_item4_sum += res3.row(i).col(4)(0);
-	my_item5_sum += res3.row(i).col(5)(0);
+	my_item3_sum[tmpNo] += res3.row(i).col(0)(0);
+	my_item4_sum[tmpNo] += res3.row(i).col(1)(0);
+	my_item5_sum[tmpNo] += res3.row(i).col(2)(0);
       }
 
     /*
@@ -124,14 +127,14 @@ void thread_func(void *arg) {
     */    
 
     pthread_mutex_lock(&result.mutex);
-      for(i=0; i<CLUSTER_NUM; i++)
+
+    for(i=0; i<CLUSTER_NUM; i++)
       {
 	result.cluster_no[i] += my_cluster_no[i];
+	result.item3_sum[i] += my_item3_sum[i];
+	result.item4_sum[i] += my_item4_sum[i];
+	result.item5_sum[i] += my_item5_sum[i];
       }
-
-      	result.item3_sum[targ->id] = my_item3_sum;
-	result.item4_sum[targ->id] = my_item4_sum;
-	result.item5_sum[targ->id] = my_item5_sum;
       
       /*
       	result.item3_sum += my_item3_sum;
@@ -162,11 +165,11 @@ int main(int argc, char *argv[])
 {
     pthread_t handle[THREAD_NUM];
     thread_arg_t targ[THREAD_NUM];
-    int i;
-    long sum3;
-    long sum4;
-    long sum5;
+    int i,j;
 
+    double avg_item_tmp[ITEM_NUM];
+    MatrixXd centroid(CLUSTER_NUM,ITEM_NUM);
+    
     /* èàóùäJén */
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].id = i;
@@ -178,31 +181,18 @@ int main(int argc, char *argv[])
     /* èIóπÇë“Ç¬ */
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
-    
-    std::cout << "CLUSTER:" << endl;
-    
+        
     for(i=0; i<CLUSTER_NUM; i++)
       {
 	std::cout << result.cluster_no[i] << endl;
+	for(j=0; j<ITEM_NUM; j++)
+	  {
+	    avg_item_tmp[j] = result.item3_sum[i] / result.cluster_no[i];
+	    centroid(i,j) = avg_item_tmp[j];
+	    // centroid[i][j] = 1;
+	  }
       }
 
-    std::cout << "FILE:" << endl;
-
-    sum3 = 0;
-    sum4 = 0;
-    sum5 = 0;
-    
-    for(i=0; i<THREAD_NUM; i++)
-      {
-	sum3 = sum3 + result.item3_sum[i];
-	sum4 = sum4 + result.item4_sum[i];
-        sum5 = sum5 + result.item5_sum[i];
-      	// std::cout << result.item3_sum[i] << endl;
-      }
-    
-    std::cout << sum3 << endl;
-    std::cout << sum4 << endl;
-    std::cout << sum5 << endl;
-    
+    std::cout << centroid << endl;
 }
 
