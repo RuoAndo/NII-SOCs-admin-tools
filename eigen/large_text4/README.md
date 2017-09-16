@@ -1,4 +1,4 @@
-# converting data
+# step0: converting data
 <pre>
 # more list
 outaa
@@ -16,7 +16,7 @@ user    0m50.116s
 sys     0m0.788s
 </pre>
 
-# init label
+# step1: init label
 <pre>
 # time ./rand-labeling 500000 5
 thread ID: 4 - done.
@@ -31,7 +31,7 @@ user    3m7.980s
 sys     0m11.260s
 </pre>
 
-# counting data per cluster 1
+# step1.5: counting data per cluster 1
 <pre>
 # python 0.py all-labeled 
 CLUSTER0,1001317
@@ -46,7 +46,7 @@ CLUSTER8,1001701
 CLUSTER9,999012
 </pre>
 
-# calculating centroid
+# step2: calculating centroid on *.labeled
 <pre>
 string fname = std::to_string(targ->id) + ".labeled";
 
@@ -63,15 +63,17 @@ string fname = std::to_string(targ->id) + ".labeled";
 1437.14 17321.1 2.49817
 </pre>
 
-# relabeling data
+# step3: relabeling data on *.labeled, calculating norms (distance).
 <pre>
+string fname = std::to_string(targ->id) + ".labeled";
+
 # time ./relabel centroid 10 3 500000 6
 real    2m23.588s
 user    6m55.716s
 sys     0m12.752s
 </pre>
 
-# counting data per cluster 2
+# step3.5 cantatenating and counting data per cluster 2
 <pre>
 # ./cat-relabeled.sh list-relabeled 
 # python 0.py all-relabeled 
@@ -87,6 +89,19 @@ CLUSTER8,414409
 CLUSTER9,3316625
 </pre>
 
+# step4 copying *.relabed to *.labeled and back to step2.
+<pre>
+# # ./rename2.sh list-relabeled 
+
+for line in `cat ${1}`
+do
+    cut=`echo $line | cut -d "." -f1`
+    echo "now relabeling " $line ":" $cut".labeled" " ..."
+    \cp $line $cut.labeled
+done
+</pre>
+
+# misc
 <pre>
  2274  split -l 500000 all-10000000 out
  2276  ls -alh out* > list
