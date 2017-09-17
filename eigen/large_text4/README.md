@@ -1,5 +1,7 @@
 # step0: converting data
 <pre>
+# split -l 500000 out all
+# ls out* > list
 # more list
 outaa
 :
@@ -18,6 +20,7 @@ sys     0m0.788s
 
 # step1: init label
 <pre>
+# ./build.sh rand-labeling
 # time ./rand-labeling 500000 5
 thread ID: 4 - done.
 thread ID: 2 - done.
@@ -33,6 +36,8 @@ sys     0m11.260s
 
 # step1.5: counting data per cluster 1
 <pre>
+# ls *.labeled > list-labeled
+#  ./cat-labeled.sh list-labeled 
 # python 0.py all-labeled 
 CLUSTER0,1001317
 CLUSTER1,1000283
@@ -76,7 +81,7 @@ sys     0m12.752s
 # step3.5 cantatenating and counting data per cluster 2
 <pre>
 # ./cat-relabeled.sh list-relabeled 
-# python 0.py all-relabeled 
+# python 0.py all-relabeled | tee tmp-all-relabled
 CLUSTER0,2080538
 CLUSTER1,256980
 CLUSTER2,602390
@@ -91,7 +96,7 @@ CLUSTER9,3316625
 
 # step4 copying *.relabed to *.labeled and back to step2.
 <pre>
-# # ./rename2.sh list-relabeled 
+# ./rename2.sh list-relabeled 
 
 for line in `cat ${1}`
 do
@@ -99,6 +104,8 @@ do
     echo "now relabeling " $line ":" $cut".labeled" " ..."
     \cp $line $cut.labeled
 done
+
+# python result.py tmp-all-relabled centroid
 </pre>
 
 # misc
