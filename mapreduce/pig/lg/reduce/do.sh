@@ -11,5 +11,5 @@ python clean.py tmp2 > tmp3
 
 #cat tmp4
 python dir.py tmp4 $1 > tmp5
-python cut.py tmp4 $1 #| tee 1
+python cut.py tmp4 $1 > tmp6
 #./slmbr.sh 1 > tmp-s
