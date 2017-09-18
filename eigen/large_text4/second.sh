@@ -1,5 +1,5 @@
 NC=5
-LN=30000
+LN=300000
 
 rm -rf *.relabeled
 
