@@ -25,7 +25,7 @@ while line:
     if int(n1[counter]) == 0 and line.find("nan") == -1:
         argstr =  tmp[0] + " " + tmp[1] + " " + tmp[2].strip()
         #argstr =  "0" + " " + "0" + " " + "0".strip()
-        comstr = "./fill " + argstr + " 500000 5" 
+        comstr = "./fill2 " + argstr + " 500000 5" 
         check = commands.getoutput(comstr)
         # print chec
         #print n1[counter].strip() + "," + check.strip()
@@ -34,7 +34,7 @@ while line:
     if line.find("nan") > -1:
         #print "nan" + str(tmp)
         argstr =  "0" + " " + "0" + " " + "0".strip()
-        comstr = "./fill " + argstr + " 500000 5" 
+        comstr = "./fill2 " + argstr + " 500000 5" 
         #print "com:" + comstr
         check = commands.getoutput(comstr)
         #print check

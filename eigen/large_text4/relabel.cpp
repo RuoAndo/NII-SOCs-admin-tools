@@ -13,7 +13,7 @@
 #include <eigen3/Eigen/SVD>
 
 #define THREAD_NUM 20
-#define CLUSTER_NUM 10
+#define CLUSTER_NUM 5
 
 static int cluster_no[CLUSTER_NUM];
 
@@ -73,11 +73,13 @@ void thread_func(void *arg) {
 
     double distance_tmp = 1000000; 
       
-    string fname = std::to_string(targ->id) + ".labeled";
+    string fname = std::to_string(targ->id);
+    string fname_label = std::to_string(targ->id) + ".relabeled";
 
     std::cout << "reading " << fname << std::endl;
     
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
+    Eigen::MatrixXd res_label= readCSV(fname_label, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.rightCols(3);
     Eigen::MatrixXd res3 = res.rightCols(5);
 
@@ -85,38 +87,34 @@ void thread_func(void *arg) {
     std::string ofname = std::to_string(targ->id) + ".relabeled";
       
     ofstream outputfile(ofname);
-
-    /* 
-       avg:
-       924.294,11727.4,2.50272
-    */
     
     for(i=0; i< res2.rows(); i++)
 	{
 
-	  for(j=0; j< avg.rows(); j++)
+	  counter = 0;
+	  for(j=0; j < avg.rows(); j++)
 	    {
 	      Eigen::VectorXd distance = (res2.row(i) - avg.row(j)).rowwise().norm();
 
 	      if(distance(0) < distance_tmp)
 		{
-		  std::cout << "distance:" << distance(0) << std::endl;
+		  std::cout << "THREAD:" << targ->id << ":distance:" << distance(0) << "->" << j << std::endl;
 		  distance_tmp = distance(0);
 		  counter = j;
 		}
-
+	      
 	    }
-	  
-	  outputfile << counter << ",";
 
+	  outputfile << counter << endl;
+	  // outputfile << counter << ",";
+	    /*
 	  for(k=0;k<res3.row(i).cols()-1 ;k++)
 	    outputfile << res3.row(i).col(k) << ","; 
 
-	  outputfile << res3.row(i).col(k); 
-	  
+	  outputfile << res3.row(i).col(k);
 	  outputfile << std::endl;
-
 	  cluster_no[counter]++;  
+	    */
 	}
 
       outputfile.close();
@@ -143,6 +141,7 @@ int main(int argc, char *argv[])
     Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
     avg = restmp.rightCols(3);
     std::cout << avg << std::endl;      
+    std::cout << avg.rows() << std::endl;      
 
     /* ˆ—ŠJŽn */
     for (i = 0; i < THREAD_NUM; i++) {

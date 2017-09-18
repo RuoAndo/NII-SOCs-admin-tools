@@ -15,7 +15,7 @@
 #include <random>
 
 #define THREAD_NUM 20
-#define CLUSTER_NUM 10
+#define CLUSTER_NUM 5
 #define ITEM_NUM 3
 
 using namespace Eigen;
@@ -82,7 +82,8 @@ void thread_func(void *arg) {
     int my_cluster_no[CLUSTER_NUM];
     double my_item_sum[CLUSTER_NUM][ITEM_NUM]; 
     
-    string fname = std::to_string(targ->id) + ".labeled";
+    string fname = std::to_string(targ->id);
+    string fname_label = std::to_string(targ->id) + ".labeled";
 
     for(i=0;i<CLUSTER_NUM;i++)
       {
@@ -91,33 +92,22 @@ void thread_func(void *arg) {
 	  my_item_sum[i][j]=0;
       }
 
-    /*
-        targ[i].id = i;
-        targ[i].rows = atoi(argv[4]);
-	targ[i].columns = atoi(argv[5]);
-        pthread_create(&handle[i], NULL, (void*)thread_func, (void*)&targ[i]);
-    */
-
+    /* A, B, C, D, E */
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.leftCols(1);
+    /* L */
+    Eigen::MatrixXd res_label = readCSV(fname_label, targ->rows,targ->columns);
+
+    // Eigen::MatrixXd res2 = res.leftCols(1);
     Eigen::MatrixXd res3 = res.rightCols(3);
     
-    // for(i=0; i< res2.rows(); i++)
-    for(i=0; i< res2.rows(); i++)
+    for(i=0; i< res.rows(); i++)
       {
-	tmpNo = res2.row(i).col(0)(0);
+	tmpNo = res_label.row(i)(0);
 	my_cluster_no[tmpNo]++;
 
 	for(j=0; j < ITEM_NUM; j++)
 	  my_item_sum[tmpNo][j] += res3.row(i).col(j)(0);
       }
-
-    /*
-    for(i=0; i< CLUSTER_NUM; i++)
-      {
-	std::cout << my_cluster_no[i] << std::endl;
-      }
-    */    
 
     pthread_mutex_lock(&result.mutex);
 
@@ -128,29 +118,9 @@ void thread_func(void *arg) {
 	for(j=0; j < ITEM_NUM; j++)
 	  result.item_sum[i][j] += my_item_sum[i][j];
       }
-      
-      /*
-      	result.item3_sum += my_item3_sum;
-	result.item4_sum += my_item4_sum;
-	result.item5_sum += my_item5_sum;
-      */
-      
+            
     pthread_mutex_unlock(&result.mutex);
     
-    /*
-    std::string ofname = fname + ".labeled";      
-    ofstream outputfile(ofname);
-
-    std::random_device rnd;
-    */
-
-    /*
-    for (int i = 0; i < 10; ++i) {
-      tmp = rnd() % 10;
-      std::cout << tmp << "\n";
-    }
-    */
-
     return;
 }
 
