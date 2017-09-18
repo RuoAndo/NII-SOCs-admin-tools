@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 20
+#define THREAD_NUM 1190
 #define CLUSTER_NUM 5
 
 static int cluster_no[CLUSTER_NUM];

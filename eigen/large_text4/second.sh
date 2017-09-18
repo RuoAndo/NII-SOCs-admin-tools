@@ -18,7 +18,7 @@ time python 0.py all-labeled | tee tmp-all-labeled #test
 sleep 2s
 
 echo "STEP3: calculating centroid..."
-time ./avg $LN $NC # on *.labled # test
+time ./avg $LN $NC # on *.labled # yields file "centroid"
 #time ./avg 500000 6 # on *.labled
 sleep 2s
 
