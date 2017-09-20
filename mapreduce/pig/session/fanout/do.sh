@@ -1,3 +1,4 @@
 while read line; do
-    ./fanout1.sh $line
+    ./fanout.sh $line
+    ./restart.sh
 done < $1
