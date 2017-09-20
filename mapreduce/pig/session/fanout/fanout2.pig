@@ -1,7 +1,7 @@
 REGISTER piggybank.jar;
 DEFINE POW org.apache.pig.piggybank.evaluation.math.POW();
 
-S = LOAD '$SRCS' USING PigStorage(',') AS (session_id:long, capture_time:chararray, dip:chararray, sip:chararray, sport:int, dport:int, bsent:long, brecv:long);
+S = LOAD 'dump_fanout1_$SRCS' USING PigStorage(',') AS (session_id:long, capture_time:chararray, dip:chararray, sip:chararray, sport:int, dport:int, bsent:long, brecv:long);
 
 session_group = GROUP S BY sip; 
 
@@ -21,5 +21,5 @@ fanout = FOREACH avg GENERATE
 	AVG(bsent),
 	AVG(brecv);
 	
--- dump fanout;
-STORE fanout INTO 'dump_fanout_2-$SRCS'; 
+--dump fanout;
+STORE fanout INTO 'dump_fanout2_$SRCS' USING PigStorage(','); 

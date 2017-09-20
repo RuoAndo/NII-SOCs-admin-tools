@@ -13,5 +13,5 @@ R = FOREACH session GENERATE
       bytes_sent,
       bytes_received;
   
-STORE R INTO 'dump_fanout_$SRCS'; 
-
+-- STORE R INTO 'dump_fanout_$SRCS'; 
+STORE R INTO 'dump_fanout1_$SRCS' USING PigStorage(',');
