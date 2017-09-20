@@ -14,7 +14,6 @@ hadoop fs -get dump_fanout1_$1 #4
 
 ######## 2 ########
 
-/dump_fanout2_outaa 
 hadoop fs -rmr dump_fanout2_$1 #5
 ###
 pig -param SRCS=$1 fanout2.pig # STORE fanout INTO 'dump_fanout2-$SRCS';
