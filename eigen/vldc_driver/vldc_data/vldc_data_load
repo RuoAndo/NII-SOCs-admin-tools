@@ -1,0 +1,48 @@
+nDEVICES=20
+
+#!/bin/sh
+module="vldc_data"
+device="vldc_data"
+mode="664"
+
+# Group: since distributions do it differently, look for wheel or use staff
+if grep -q '^staff:' /etc/group; then
+    group="staff"
+else
+    group="wheel"
+fi
+
+# invoke insmod with all arguments we got
+# and use a pathname, as insmod doesn't look in . by default
+/sbin/insmod ./$module.ko $* || exit 1
+
+# retrieve major number
+major=$(awk "\$2==\"$module\" {print \$1}" /proc/devices)
+
+# Remove stale nodes and replace them, then give gid and perms
+# Usually the script is shorter, it's vldc_data that has several devices in it.
+
+rm -f /dev/${device}[0-$nDEVICES]
+
+a=0
+while [ $a -ne $nDEVICES ]
+do
+    mknod /dev/${device}$a c $major $a
+    mknod /dev/${device}$a.labeled c $major $a
+    a=`expr $a + 1`
+done
+
+#ln -sf ${device}0 /dev/${device}
+chgrp $group /dev/${device}[0-$nDEVICES]
+chmod $mode  /dev/${device}[0-$nDEVICES]
+chgrp $group /dev/${device}[0-$nDEVICES].labeled
+chmod $mode  /dev/${device}[0-$nDEVICES].labeled
+
+
+
+
+
+
+
+
+

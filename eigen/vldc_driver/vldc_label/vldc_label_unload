@@ -1,0 +1,24 @@
+nDEVICES=20
+
+#!/bin/sh
+module="vldc_label"
+device="vldc_label"
+
+# invoke rmmod with all arguments we got
+/sbin/rmmod $module $* || exit 1
+
+# Remove stale nodes
+
+rm -f /dev/${device} /dev/${device}[0-$nDEVICES]
+rm -f /dev/${device}*
+				    
+rm -f /dev/${device}priv
+rm -f /dev/${device}pipe /dev/${device}pipe[0-$nDEVICES]
+rm -f /dev/${device}single
+rm -f /dev/${device}uid
+rm -f /dev/${device}wuid
+
+
+
+
+
