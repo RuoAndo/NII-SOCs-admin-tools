@@ -1,0 +1,9 @@
+2035  rm rnn_10034; python 20.py in_10034 instlist 
+2039  rm rnn_10035; python 20.py in_10035 instlist 
+2042  cat rnn_10034 rnn_10035 > rnn-all
+2043  ./sort.pl rnn-all 
+2044  ./sort.pl rnn-all > tmp
+
+
+python 20.py in_10034 instlist 
+

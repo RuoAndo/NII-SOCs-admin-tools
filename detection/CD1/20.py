@@ -10,6 +10,9 @@ from sklearn.metrics import mean_squared_error
 
 import sys
 
+argvs = sys.argv
+argc = len(argvs)
+
 # convert an array of values into a dataset matrix
 def create_dataset(dataset, look_back=1):
 	dataX, dataY = [], []
@@ -23,7 +26,7 @@ def create_dataset(dataset, look_back=1):
 numpy.random.seed(7)
 
 # STEP1: reading dataset and split
-dataframe = read_csv('tmp0', usecols=[0], engine='python')
+dataframe = read_csv(argvs[1], usecols=[0], engine='python')
 dataset = dataframe.values
 dataset = dataset.astype('float32')
 
@@ -49,7 +52,7 @@ model = Sequential()
 model.add(LSTM(4, input_shape=(1, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, trainY, epochs=2000, batch_size=1, verbose=2)
+model.fit(trainX, trainY, epochs=200, batch_size=1, verbose=2)
 
 # STEP5: make predictions
 trainPredict = model.predict(trainX)
@@ -81,8 +84,6 @@ testPredictPlot[len(trainPredict)+(look_back*2)+1:len(dataset)-1, :] = testPredi
 
 allPlot = [trainPredictPlot, testPredictPlot]
 
-f = open('text.txt', 'a') 
-
 allPlot2 = []
 allPlot3 = {}
 
@@ -91,27 +92,59 @@ for i in allPlot:
         for j in i:
                 if 'nan' not in str(j):
                         allPlot2.append(str(abs(j)).replace("[","").replace("]","").strip())
-                        allPlot3[counter] = str(abs(j)).replace("[","").replace("]","").strip()
-                        f.write(str(abs(j)))
-                        f.write("\n")
+                        allPlot3[counter] = float(str(abs(j)).replace("[","").replace("]","").strip())
+                        #f.write(str(abs(j)))
+                        #f.write("\n")
                         counter = counter + 1
-f.close() 
+#f.close() 
 
-sorted = sorted(allPlot3.items(), key=lambda x: float(x[1]))
+print allPlot3
 
-counter = 0
-for i in sorted:
-        print i
+f = open(argvs[2])
+line = f.readline() 
 
-        if counter > 10:
-                break
+uName = []
+uID = []
+while line:
+    tmp = line.split("\t")
+    uName.append(str(tmp[1]))
+    uID.append(int(tmp[0]))
+    line = f.readline() 
+
+f.close()
+
+titlestr = ""
+plotstr = ""
+sorted2 = sorted(allPlot3.items(), key=lambda x: float(x[1]), reverse=True)
+counter2 = 0
+for i in sorted2:
+        tmp = argvs[1].split("_")
+
+        counter = 0
+        for j in uID:        
+                if int(str(tmp[1])) == j:
+                        titlestr = str(tmp[1]) + "," + uName[counter]
+                        plotstr = str(tmp[1])
+                        print str(i).replace("(","").replace(")","").strip() + "," + titlestr.strip()
+                        resultstr = str(i).replace("(","").replace(")","").strip() + "," + titlestr.strip()
+
+                        fname = "rnn_" + str(tmp[1])
+                        f2 = open(fname,'a')
+                        f2.write(resultstr)
+                        f2.write("\n")
+                        f2.close()
+                        
+                counter = counter + 1
         
-        counter = counter + 1
+        #if counter2 > 10:
+        #        break
         
+        counter2 = counter2 + 1
+
 plt.rc('font', family='serif')
 plt.figure()
+plt.title(plotstr)
 plt.plot(scaler.inverse_transform(dataset))
 plt.plot(trainPredictPlot)
 plt.plot(testPredictPlot)
-
 plt.show()
