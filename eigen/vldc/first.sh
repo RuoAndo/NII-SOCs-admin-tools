@@ -3,7 +3,7 @@ NC=5
 
 if [ "$1" = "" ]
 then
-    echo "argument required"
+    echo "argument required: ./first FILE_NAME"
     exit
 fi
 
