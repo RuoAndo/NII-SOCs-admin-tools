@@ -80,7 +80,7 @@ void thread_func(void *arg) {
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.leftCols(5);
 
-    std::string ofname = "/dev/vldc_label" + std::to_string(targ->id) +  ".labeled";      
+    std::string ofname = "/dev/vldc_label" + std::to_string(targ->id);      
     ofstream outputfile(ofname);
 
     std::random_device rnd;

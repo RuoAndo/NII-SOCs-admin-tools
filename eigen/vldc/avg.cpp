@@ -83,7 +83,7 @@ void thread_func(void *arg) {
     double my_item_sum[CLUSTER_NUM][ITEM_NUM]; 
 
     string fname = "/dev/vldc_data" + std::to_string(targ->id);
-    string fname_label = "/dev/vldc_label" + std::to_string(targ->id) +  ".labeled";      
+    string fname_label = "/dev/vldc_label" + std::to_string(targ->id);      
    
     for(i=0;i<CLUSTER_NUM;i++)
       {

@@ -1,5 +1,11 @@
-LN=300000
+LN=500000
 NC=5
+
+if [ "$1" = "" ]
+then
+    echo "argument required"
+    exit
+fi
 
 ./build.sh rand-labeling
 ./build.sh avg

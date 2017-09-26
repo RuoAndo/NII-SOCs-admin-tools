@@ -74,7 +74,7 @@ void thread_func(void *arg) {
     double distance_tmp = 1000000; 
 
     string fname = "/dev/vldc_data" + std::to_string(targ->id);
-    string fname_label = "/dev/vldc_relabel" + std::to_string(targ->id) +  ".relabeled";      
+    string fname_label = "/dev/vldc_label" + std::to_string(targ->id);      
 
     /*
     string fname = std::to_string(targ->id);
@@ -89,7 +89,7 @@ void thread_func(void *arg) {
     Eigen::MatrixXd res3 = res.rightCols(5);
 
     // 0,2.23391e+09,2.88497e+09,66,0,2
-    std::string ofname = std::to_string(targ->id) + ".relabeled";
+    std::string ofname = "/dev/vldc_relabel" + std::to_string(targ->id);
       
     ofstream outputfile(ofname);
     

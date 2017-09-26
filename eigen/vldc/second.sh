@@ -1,16 +1,9 @@
 NC=5
-LN=300000
+LN=500000
 
-rm -rf *.relabeled
-
-echo "STEP1: concatenating ..."
-ls *.labeled > list-labeled
-./sort.pl list-labeled > list-labeled-sorted
-
-#head -n 20 list-labeled-sorted > list-labeled-20
-#./cat-labeled.sh list-labeled-20 #test # yields all-labeled
-
-./cat-labeled.sh list-labeled-sorted # yields all-labeled
+echo "STEP1: concatenating label files ..." 
+ls /dev/vldc_label* > list-labeled
+./cat-labeled.sh list-labeled # yields all-labeled
 
 echo "STEP2: counting points per cluster..."
 time python 0.py all-labeled | tee tmp-all-labeled #test
@@ -29,16 +22,13 @@ cat tmp-centroid
 \cp tmp-centroid centroid
 sleep 4s
 
-# relabel
+echo "STEP5: relabeling ..."
 time ./relabel centroid $NC 3 $LN $NC # on *.labeled to *.relabeled
 
 # concatenate
-time ls *.relabeled > list-relabeled
-./sort.pl list-relabeled > list-relabeled-sorted 
-#head -n 20 list-relabeled-sorted > list-relabeled-20 #test
-#time ./cat-relabeled.sh list-relabeled-20 # test
-
-time ./cat-relabeled.sh list-relabeled-sorted
+time ls /dev/vldc_relabel* > list-relabeled
+#./sort.pl list-relabeled > list-relabeled-sorted 
+time ./cat-relabeled.sh list-relabeled # yields all-relabeled
 
 echo "STEP5: counting points per cluster..."
 time python 0.py all-relabeled | tee tmp-all-relabeled
@@ -46,7 +36,7 @@ sleep 2s
 
 echo "STEP6: converting *.labeled to *.relabeled..."
 #time ./rename2.sh list-relabeled-20 # test
-time ./rename2.sh list-relabeled-sorted
+time ./rename2.sh list-relabeled
 
 echo "STEP7: calculating SSE..."
 time python sse.py centroid tmp-all-relabeled tmp-all-labeled
