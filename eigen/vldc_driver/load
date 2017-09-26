@@ -1,10 +1,16 @@
+if [ "$1" = "" ]
+then
+    echo "argument required"
+    exit
+fi
+
 cd vldc_data 
-./vldc_data_load
+./vldc_data_load $1
 
 cd ..
 cd vldc_label
-./vldc_label_load
+./vldc_label_load $1
 
 cd ..
 cd vldc_relabel
-./vldc_relabel_load
+./vldc_relabel_load $1
