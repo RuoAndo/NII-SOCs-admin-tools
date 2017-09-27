@@ -1,4 +1,4 @@
-nDEVICES=20
+nDEVICES=$1
 
 #!/bin/sh
 module="vldc_relabel"
