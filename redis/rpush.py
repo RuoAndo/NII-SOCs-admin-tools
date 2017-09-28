@@ -1,5 +1,6 @@
 import sys 
 import redis
+from datetime import datetime
 
 r = redis.Redis(host='127.0.0.1', port=6379, db=0)
 
@@ -23,5 +24,8 @@ while line:
                 rvalue = i.replace("u'","").replace("'","").strip()
                 r.rpush(rkey,rvalue)  
 
+                datestr = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+                print datestr
+                
     line = f.readline()
 
