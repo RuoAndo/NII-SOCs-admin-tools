@@ -5,7 +5,10 @@ while read line; do
     echo $line
     cd $line
 
-    cp -r ../gendata . 
+    \cp ../gendata/*.py .
+    \cp ../gendata/*.pl .
+    \cp ../gendata/*.sh .
+    \cp ../instlist . 
 
     rm -rf in_*
     rm -rf out_*
@@ -28,10 +31,12 @@ while read line; do
 	cp $line2 ${line2}_${line}
 	cp ${line2}_${line} ../
     done < outlist
+
+    cd ..
     
 done < $1
 
-cd ..
+#cd ..
 
 while read line; do
     echo "ID: " ${line}
