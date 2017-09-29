@@ -52,7 +52,7 @@ model = Sequential()
 model.add(LSTM(4, input_shape=(1, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, trainY, epochs=200, batch_size=1, verbose=2)
+model.fit(trainX, trainY, epochs=50, batch_size=1, verbose=2)
 
 # STEP5: make predictions
 trainPredict = model.predict(trainX)
@@ -92,7 +92,7 @@ for i in allPlot:
         for j in i:
                 if 'nan' not in str(j):
                         allPlot2.append(str(abs(j)).replace("[","").replace("]","").strip())
-                        allPlot3[counter] = float(str(abs(j)).replace("[","").replace("]","").strip())
+                        allPlot3[counter] = float(str(abs(j)).strip().replace("[","").replace("]","").strip())
                         #f.write(str(abs(j)))
                         #f.write("\n")
                         counter = counter + 1
@@ -116,6 +116,11 @@ f.close()
 titlestr = ""
 plotstr = ""
 sorted2 = sorted(allPlot3.items(), key=lambda x: float(x[1]), reverse=True)
+
+print "sorted2"
+print sorted2
+
+
 counter2 = 0
 for i in sorted2:
         tmp = argvs[1].split("_")
@@ -128,7 +133,7 @@ for i in sorted2:
                         print str(i).replace("(","").replace(")","").strip() + "," + titlestr.strip()
                         resultstr = str(i).replace("(","").replace(")","").strip() + "," + titlestr.strip()
 
-                        fname = "rnn_" + str(tmp[1])
+                        fname = "rnn_" + str(tmp[0]) + "_" + str(tmp[1])
                         f2 = open(fname,'a')
                         f2.write(resultstr)
                         f2.write("\n")
