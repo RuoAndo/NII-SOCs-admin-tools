@@ -45,11 +45,11 @@
 #endif
 
 #ifndef VLDC_DATA_NR_DEVS
-#define VLDC_DATA_NR_DEVS 20    /* vldc_data0 through vldc_data3 */
+#define VLDC_DATA_NR_DEVS 2000    /* vldc_data0 through vldc_data3 */
 #endif
 
 #ifndef VLDC_DATA_P_NR_DEVS
-#define VLDC_DATA_P_NR_DEVS 20  /* vldc_datapipe0 through vldc_datapipe3 */
+#define VLDC_DATA_P_NR_DEVS 2000  /* vldc_datapipe0 through vldc_datapipe3 */
 #endif
 
 /*
