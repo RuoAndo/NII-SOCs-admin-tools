@@ -1,9 +1,8 @@
-LN=500000
-<<<<<<< HEAD
+# the number of clusters is hard-coded in *.cpp files.
+
+# row:nLines, col:nItems
+nLines=500000
 nItems=5
-=======
-Nitems=5
->>>>>>> 816c3d96107606a7228acd00dbba2a6b1699daef
 
 if [ "$1" = "" ]
 then
@@ -11,20 +10,17 @@ then
     exit
 fi
 
+echo "building executables ..."
 ./build.sh rand-labeling
 ./build.sh avg
 ./build.sh relabel
 
-#split -l $LN $1 out
+echo "now initlializing labels ..".
+split -l $LN $1 out
 ls out* > list
-#head -n 20 list > list-20
-#./rename.sh list-20
 time ./rename.sh list
-echo "now initlializing labels ..."
-<<<<<<< HEAD
-time ./rand-labeling $LN $nItems
-=======
 
-# data size is LN * Nitems (500000 * 5)
-time ./rand-labeling $LN $Nitems
->>>>>>> 816c3d96107606a7228acd00dbba2a6b1699daef
+echo "now initlializing labels ..."
+# data size is nLines * nItems (eg. 500000 * 5)
+time ./rand-labeling $nLines $Nitems
+

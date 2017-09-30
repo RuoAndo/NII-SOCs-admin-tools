@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 1
+#define THREAD_NUM 1588
 #define CLUSTER_NUM 20
 #define ITEM_NUM 3
 
