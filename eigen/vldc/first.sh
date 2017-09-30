@@ -15,8 +15,8 @@ echo "building executables ..."
 ./build.sh avg
 ./build.sh relabel
 
-echo "now initlializing labels ..".
-split -l $LN $1 out
+echo "now spliting files ..".
+split -l $nLines $1 out
 ls out* > list
 time ./rename.sh list
 
