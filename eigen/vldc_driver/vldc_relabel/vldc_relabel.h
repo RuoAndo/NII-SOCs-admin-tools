@@ -45,11 +45,11 @@
 #endif
 
 #ifndef VLDC_RELABEL_NR_DEVS
-#define VLDC_RELABEL_NR_DEVS 20    /* vldc_relabel0 through vldc_relabel3 */
+#define VLDC_RELABEL_NR_DEVS 1589    /* vldc_relabel0 through vldc_relabel3 */
 #endif
 
 #ifndef VLDC_RELABEL_P_NR_DEVS
-#define VLDC_RELABEL_P_NR_DEVS 20  /* vldc_relabelpipe0 through vldc_relabelpipe3 */
+#define VLDC_RELABEL_P_NR_DEVS 1589  /* vldc_relabelpipe0 through vldc_relabelpipe3 */
 #endif
 
 /*

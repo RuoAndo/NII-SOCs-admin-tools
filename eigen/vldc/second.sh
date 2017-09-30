@@ -1,5 +1,6 @@
-NC=5
+nItems=5
 LN=500000
+NC=20
 
 echo "STEP1: concatenating label files ..." 
 ls /dev/vldc_label* > list-labeled
@@ -11,7 +12,7 @@ time python 0.py all-labeled | tee tmp-all-labeled #test
 sleep 2s
 
 echo "STEP3: calculating centroid..."
-time ./avg $LN $NC # on *.labled # yields file "centroid"
+time ./avg $LN $nItems # on *.labled # yields file "centroid"
 #time ./avg 500000 6 # on *.labled
 sleep 2s
 
@@ -23,7 +24,7 @@ cat tmp-centroid
 sleep 4s
 
 echo "STEP5: relabeling ..."
-time ./relabel centroid $NC 3 $LN $NC # on *.labeled to *.relabeled
+time ./relabel centroid $NC 3 $LN $nItems # on *.labeled to *.relabeled
 
 # concatenate
 time ls /dev/vldc_relabel* > list-relabeled
