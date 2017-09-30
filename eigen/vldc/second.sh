@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+NC=20
+>>>>>>> 816c3d96107606a7228acd00dbba2a6b1699daef
 nItems=5
 LN=500000
 NC=20
@@ -11,9 +15,16 @@ time python 0.py all-labeled | tee tmp-all-labeled #test
 #time python 0.py all-labeled | tee tmp-all-labeled
 sleep 2s
 
+<<<<<<< HEAD
 echo "STEP3: calculating centroid..."
 time ./avg $LN $nItems # on *.labled # yields file "centroid"
 #time ./avg 500000 6 # on *.labled
+=======
+echo "STEP3: calculating centroid... "
+
+
+time ./avg $LN $NC # on *.labled # yields file "centroid"
+>>>>>>> 816c3d96107606a7228acd00dbba2a6b1699daef
 sleep 2s
 
 echo "STEP4: filling blank centroid..."
@@ -23,7 +34,11 @@ cat tmp-centroid
 \cp tmp-centroid centroid
 sleep 4s
 
+<<<<<<< HEAD
 echo "STEP5: relabeling ..."
+=======
+echo "STEP5: relabeling ... | centroid N*M data X*Y"
+>>>>>>> 816c3d96107606a7228acd00dbba2a6b1699daef
 time ./relabel centroid $NC 3 $LN $nItems # on *.labeled to *.relabeled
 
 # concatenate

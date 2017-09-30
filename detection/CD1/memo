@@ -7,3 +7,5 @@
 
 python 20.py in_10034 instlist 
 
+time ./auto.sh idlist
+

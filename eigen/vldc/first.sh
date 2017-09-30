@@ -1,5 +1,9 @@
 LN=500000
+<<<<<<< HEAD
 nItems=5
+=======
+Nitems=5
+>>>>>>> 816c3d96107606a7228acd00dbba2a6b1699daef
 
 if [ "$1" = "" ]
 then
@@ -17,4 +21,10 @@ ls out* > list
 #./rename.sh list-20
 time ./rename.sh list
 echo "now initlializing labels ..."
+<<<<<<< HEAD
 time ./rand-labeling $LN $nItems
+=======
+
+# data size is LN * Nitems (500000 * 5)
+time ./rand-labeling $LN $Nitems
+>>>>>>> 816c3d96107606a7228acd00dbba2a6b1699daef

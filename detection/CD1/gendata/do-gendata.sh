@@ -42,15 +42,26 @@ while read line; do
     echo "ID: " ${line}
     
     ls in_* | grep ${line} > inlist_${line}
-    rm -rf ${line}-all
-    touch ${line}-all
+    rm -rf in_${line}_all
+    touch in_${line}_all
 
     # in_10034_20170920
     
     while read line2; do
 	echo "cat " ${line2}
-	cat ${line2} >> ${line}-all
+	cat ${line2} >> in_${line}_all
     done < inlist_${line}
+
+    #####
+    
+    ls out_* | grep ${line} > outlist_${line}
+    rm -rf out_${line}_all
+    touch out_${line}_all
+    
+    while read line2; do
+	echo "cat " ${line2}
+	cat ${line2} >> out_${line}_all
+    done < outlist_${line}
 	
 done < $2
     
