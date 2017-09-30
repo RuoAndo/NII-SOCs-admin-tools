@@ -22,5 +22,6 @@ time ./rename.sh list
 
 echo "now initlializing labels ..."
 # data size is nLines * nItems (eg. 500000 * 5)
-time ./rand-labeling $nLines $Nitems
+# 引数はファイルを読むため col:nItems, row:nLInes
+time ./rand-labeling $nLines $nItems
 

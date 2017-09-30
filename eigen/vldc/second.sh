@@ -12,6 +12,7 @@ time python 0.py all-labeled | tee tmp-all-labeled #test
 sleep 2s
 
 echo "STEP3: calculating centroid..."
+# 引数はファイルを読むため col:nItems, row:nLInes
 time ./avg $nLines $nItems # on *.labled # yields file "centroid"
 sleep 2s
 
@@ -22,9 +23,8 @@ cat tmp-centroid
 \cp tmp-centroid centroid
 sleep 4s
 
-
 echo "STEP5: relabeling ..."
-time ./relabel centroid $NC 3 $LN $nItems 
+time ./relabel centroid $NC 3 $nLines $nItems 
 
 # concatenate
 time ls /dev/vldc_relabel* > list-relabeled
