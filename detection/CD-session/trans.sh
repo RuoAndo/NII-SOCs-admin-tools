@@ -1,7 +1,7 @@
 rm -rf *.trans
 
 ls 20*.csv > csvlist
-./sort.pl csvlist > csvlist-sorted
+./sort_hibetsu.pl csvlist > csvlist-sorted
 
 while read line; do
     echo $line

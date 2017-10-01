@@ -1,8 +1,10 @@
+# time ./do-gendata.sh daylist instIDlist  
+
 rm -rf in_*
 rm -rf out_*
 
 ls *.trans > translist
-./sort.pl translist > translist-sorted
+./sort_hibetsu.pl translist > translist-sorted
 
 while read line; do
     echo $line

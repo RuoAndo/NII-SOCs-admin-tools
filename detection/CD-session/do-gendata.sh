@@ -1,17 +1,33 @@
 rm -rf in_*
 rm -rf out_*
 
+cPWD=`pwd`
+echo $PWD
+
 while read line; do
     echo $line
+
+    cd $cPWD
     cd $line
 
-    \cp ../gendata/*.py .
-    \cp ../gendata/*.pl .
-    \cp ../gendata/*.sh .
-    \cp ../instlist . 
+    rm -rf *list*
 
     rm -rf in_*
     rm -rf out_*
+
+    rm -rf *.py .
+    rm -rf *.pl .
+    rm -rf *.sh .
+    rm -rf instlist
+
+    \cp $cPWD/gendata/*.py .
+    \cp $cPWD/gendata/*.pl .
+    \cp $cPWD/gendata/*.sh .
+    cp $cPWD/instlist . 
+
+    \cp $cPWD/*.py .
+    \cp $cPWD/*.pl .
+    \cp $cPWD/*.sh .
     
     ./trans.sh 
     ./gen-data2.sh # yields *_in and *_out
@@ -32,11 +48,11 @@ while read line; do
 	cp ${line2}_${line} ../
     done < outlist
 
-    cd ..
+    cd $cPWD
     
 done < $1
 
-#cd ..
+cd $cPWD
 
 while read line; do
     echo "ID: " ${line}
@@ -65,3 +81,5 @@ while read line; do
 	
 done < $2
     
+ls in*all
+ls out*all
