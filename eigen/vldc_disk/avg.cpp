@@ -14,8 +14,8 @@
 
 #include <random>
 
-#define THREAD_NUM 20
-#define CLUSTER_NUM 5
+#define THREAD_NUM 10
+#define CLUSTER_NUM 20
 #define ITEM_NUM 3
 
 using namespace Eigen;
@@ -82,8 +82,8 @@ void thread_func(void *arg) {
     int my_cluster_no[CLUSTER_NUM];
     double my_item_sum[CLUSTER_NUM][ITEM_NUM]; 
 
-    string fname = "vldc_data" + std::to_string(targ->id);
-    string fname_label = "vldc_label" + std::to_string(targ->id);      
+    string fname = std::to_string(targ->id);
+    string fname_label = std::to_string(targ->id) + ".lbl";      
    
     for(i=0;i<CLUSTER_NUM;i++)
       {
@@ -94,19 +94,28 @@ void thread_func(void *arg) {
 
     /* A, B, C, D, E */
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
+    // std::cout << "THEAD:" << targ->id << " reading " << fname << " with " << res.rows() << std::endl;
+    // std::cout << "res.row(1):" << res.row(1) << std::endl;
+
     /* L */
-    Eigen::MatrixXd res_label = readCSV(fname_label, targ->rows,targ->columns);
+    Eigen::MatrixXd res_label = readCSV(fname_label, targ->rows, targ->columns);
 
     // Eigen::MatrixXd res2 = res.leftCols(1);
     Eigen::MatrixXd res3 = res.rightCols(3);
-    
+
+    //  std::cout << "iteration:" << res.rows() << std::endl;
     for(i=0; i< res.rows(); i++)
       {
 	tmpNo = res_label.row(i)(0);
+	// std::cout << "tmpNo:" << tmpNo << std::endl;
 	my_cluster_no[tmpNo]++;
 
-	for(j=0; j < ITEM_NUM; j++)
+	for(j=0; j<ITEM_NUM; j++)
+	  {
 	  my_item_sum[tmpNo][j] += res3.row(i).col(j)(0);
+	  // std::cout << "res3.row(i).col(j)(0):" << res3.row(i).col(j)(0) << std::endl;
+	  // std::cout << "my_item_sum[tmpNo][j]:" << my_item_sum[tmpNo][j] << std::endl;
+	  }
       }
 
     pthread_mutex_lock(&result.mutex);
@@ -150,9 +159,10 @@ int main(int argc, char *argv[])
     
     for(i=0; i<CLUSTER_NUM; i++)
       {
-	// std::cout << result.cluster_no[i] << endl;
+	std::cout << "cluster:" << i << ":" << result.cluster_no[i] << endl;
 	for(j=0; j<ITEM_NUM-1; j++)
 	  {
+	    // std::cout << result.item_sum[i][j] << endl;
 	    avg_item_tmp[j] = result.item_sum[i][j] / result.cluster_no[i];
 	    centroid(i,j) = avg_item_tmp[j];    
 	    outputfile << avg_item_tmp[j] << ","; 

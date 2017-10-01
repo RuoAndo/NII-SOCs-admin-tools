@@ -16,7 +16,6 @@
 
 #define THREAD_NUM 3
 #define CLUSTER_NUM 20
-
 static int cluster_no[CLUSTER_NUM];
 
 using namespace Eigen;
@@ -114,6 +113,8 @@ int main(int argc, char *argv[])
 {
     pthread_t handle[THREAD_NUM];
     thread_arg_t targ[THREAD_NUM];
+
+
     int i;
 
     /* ˆ—ŠJn */

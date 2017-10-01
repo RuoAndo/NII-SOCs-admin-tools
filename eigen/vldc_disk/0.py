@@ -2,10 +2,12 @@ import sys
 import re
 from numpy import *
 
-CNO = 5
-
 argvs = sys.argv
 argc = len(argvs)
+
+CNO = int(argvs[2])
+
+#print "nClusters:" + str(CNO)
 
 f = open(argvs[1])
 line = f.readline() 
