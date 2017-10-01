@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 1588
+#define THREAD_NUM 100
 #define CLUSTER_NUM 20
 #define ITEM_NUM 3
 
@@ -94,11 +94,11 @@ void thread_func(void *arg) {
 
     /* A, B, C, D, E */
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    std::cout << "THEAD:" << targ->id << " reading " << fname << " with " << res.rows() << std::endl;
-    std::cout << "res.row(1):" << res.row(1) << std::endl;
+    // std::cout << "THEAD:" << targ->id << " reading " << fname << " with " << res.rows() << std::endl;
+    // std::cout << "res.row(1):" << res.row(1) << std::endl;
 
     /* L */
-    Eigen::MatrixXd res_label = readCSV(fname_label, targ->rows,targ->columns);
+    Eigen::MatrixXd res_label = readCSV(fname_label, targ->rows, targ->columns);
 
     // Eigen::MatrixXd res2 = res.leftCols(1);
     Eigen::MatrixXd res3 = res.rightCols(3);
@@ -110,7 +110,7 @@ void thread_func(void *arg) {
 	// std::cout << "tmpNo:" << tmpNo << std::endl;
 	my_cluster_no[tmpNo]++;
 
-	for(j=0; j < ITEM_NUM; j++)
+	for(j=0; j<ITEM_NUM; j++)
 	  {
 	  my_item_sum[tmpNo][j] += res3.row(i).col(j)(0);
 	  // std::cout << "res3.row(i).col(j)(0):" << res3.row(i).col(j)(0) << std::endl;
@@ -159,11 +159,10 @@ int main(int argc, char *argv[])
     
     for(i=0; i<CLUSTER_NUM; i++)
       {
-	std::cout << result.cluster_no[i] << endl;
+	std::cout << "cluster:" << i << ":" << result.cluster_no[i] << endl;
 	for(j=0; j<ITEM_NUM-1; j++)
 	  {
 	    // std::cout << result.item_sum[i][j] << endl;
-
 	    avg_item_tmp[j] = result.item_sum[i][j] / result.cluster_no[i];
 	    centroid(i,j) = avg_item_tmp[j];    
 	    outputfile << avg_item_tmp[j] << ","; 
