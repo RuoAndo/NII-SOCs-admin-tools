@@ -22,14 +22,15 @@ f = open(argvs[2])
 line = f.readline() 
 while line:
     tmp = line.split(",")
-    if int(n1[counter]) == 0 and line.find("nan") == -1:
-        argstr =  tmp[0] + " " + tmp[1] + " " + tmp[2].strip()
+    #if int(n1[counter]) == 0 or line.find("nan") == -1:
+    if line.find("nan") == -1:
+        #argstr =  tmp[0] + " " + tmp[1] + " " + tmp[2].strip()
         #argstr =  "0" + " " + "0" + " " + "0".strip()
-        comstr = "./fill2 " + argstr + " 500000 5" 
-        check = commands.getoutput(comstr)
+        #comstr = "./fill2 " + argstr + " 500000 5" 
+        #check = commands.getoutput(comstr)
         # print chec
         #print n1[counter].strip() + "," + check.strip()
-        print check.strip()
+        print line.strip()
 
     if line.find("nan") > -1:
         #print "nan" + str(tmp)
@@ -41,9 +42,9 @@ while line:
         #print n1[counter].strip() + "," + check.strip()
         print check.strip()
 
-    if int(n1[counter]) > 0:
+    #if int(n1[counter]) > 0:
         #print n1[counter].strip() + "," + line.strip()
-        print line.strip()
+        #print line.strip()
 
     line = f.readline()
     counter = counter + 1
