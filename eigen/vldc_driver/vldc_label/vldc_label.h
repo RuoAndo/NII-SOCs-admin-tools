@@ -45,19 +45,11 @@
 #endif
 
 #ifndef VLDC_LABEL_NR_DEVS
-<<<<<<< HEAD
-#define VLDC_LABEL_NR_DEVS 1589    /* vldc_label0 through vldc_label3 */
-#endif
-
-#ifndef VLDC_LABEL_P_NR_DEVS
-#define VLDC_LABEL_P_NR_DEVS 1589  /* vldc_labelpipe0 through vldc_labelpipe3 */
-=======
-#define VLDC_LABEL_NR_DEVS 2000   /* vldc_label0 through vldc_label3 */
+#define VLDC_LABEL_NR_DEVS 2000    /* vldc_label0 through vldc_label3 */
 #endif
 
 #ifndef VLDC_LABEL_P_NR_DEVS
 #define VLDC_LABEL_P_NR_DEVS 2000  /* vldc_labelpipe0 through vldc_labelpipe3 */
->>>>>>> 816c3d96107606a7228acd00dbba2a6b1699daef
 #endif
 
 /*
