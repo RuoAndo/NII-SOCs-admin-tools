@@ -1,27 +1,32 @@
 # the number of clusters is hard-coded in *.cpp files.
 
-# row:nLines, col:nItems
+# data seize: row:nLines, col:nDimensions
 nLines=500000
-nItems=5
+nDimensions=5
+
+nThreads=10
 
 if [ "$1" = "" ]
 then
-    echo "argument required: ./first FILE_NAME"
+    echo "argument required: ./first DATA_FILE_NAME"
     exit
 fi
 
-echo "building executables ..."
-./build.sh rand-labeling
+echo "STEP1: building executables ..."
+./build.sh init-label
 ./build.sh avg
 ./build.sh relabel
+./build.sh fill2
 
-echo "now spliting files ..".
-split -l $nLines $1 out
-ls out* > list
+echo "STEP2: now spliting files ..".
+
+headLine=`expr $nLines \* $nThreads` 
+head -n $headLine $1 > $1.headed
+
+split -l $nLines $1.headed hout
+ls hout* > list
 time ./rename.sh list
 
-echo "now initlializing labels ..."
-# data size is nLines * nItems (eg. 500000 * 5)
-# 引数はファイルを読むため col:nItems, row:nLInes
-time ./rand-labeling $nLines $nItems
+echo "STEP3: now initlializing labels ..."
+time ./init-label $nLines $nDimensions
 

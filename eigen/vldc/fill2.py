@@ -15,8 +15,6 @@ while line:
     line = f.readline()
 f.close()
 
-#print n1
-
 counter = 0
 f = open(argvs[2])
 line = f.readline() 
