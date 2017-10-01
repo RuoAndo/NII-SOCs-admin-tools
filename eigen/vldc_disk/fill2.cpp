@@ -12,8 +12,8 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 20
-#define CLUSTER_NUM 10
+#define THREAD_NUM 3
+#define CLUSTER_NUM 20
 #define ITEM_NUM 3
 
 static int cluster_no[CLUSTER_NUM];
@@ -90,7 +90,6 @@ void thread_func(void *arg) {
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.rightCols(3);
     double my_items[ITEM_NUM];
-
     
     for(i=0; i< res2.rows(); i++)
 	{
