@@ -2,7 +2,7 @@
 nClusters=20
 
 # data size
-nLines=500000
+nLines=1000000
 nDimensions=5
 
 nThreads=100
@@ -18,7 +18,8 @@ echo "STEP1: building executables ..."
 
 echo "STEP1: concatenating label files ..." 
 ls /dev/vldc_label* > label_file_list
-head -n $nThreads label_file_list > label_file_list.h
+./sort_label_file_list.pl label_file_list > label_file_list_sorted
+head -n $nThreads label_file_list_sorted > label_file_list.h
 ./cat-labeled.sh label_file_list.h # yields all-labeled
 
 echo "STEP2: counting points per cluster..."
@@ -40,7 +41,8 @@ time ./relabel centroid $nClusters $nItems $nLines $nDimensions
 
 echo "STEP6: concatenating relabel files ..."
 time ls /dev/vldc_relabel* > list-relabeled
-head -n $nThreads list-relabeled > list-relabeled.h
+./sort_label_file_list.pl list-relabeled > list-relabeled-sorted
+head -n $nThreads list-relabeled-sorted > list-relabeled.h
 time ./cat-relabeled.sh list-relabeled.h # yields all-relabeled
 
 echo "STEP7: counting points per cluster..."
