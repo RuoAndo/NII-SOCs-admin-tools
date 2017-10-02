@@ -1,10 +1,10 @@
 # the number of clusters is hard-coded in *.cpp files.
 
 # data seize: row:nLines, col:nDimensions
-nLines=500000
+nLines=1000000
 nDimensions=5
 
-nThreads=10
+nThreads=100
 
 if [ "$1" = "" ]
 then
@@ -19,7 +19,7 @@ echo "STEP1: building executables ..."
 ./build.sh fill2
 
 echo "STEP2: now spliting files ..".
-
+rm -rf hout*
 headLine=`expr $nLines \* $nThreads` 
 head -n $headLine $1 > $1.headed
 
