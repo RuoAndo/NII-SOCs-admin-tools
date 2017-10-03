@@ -11,3 +11,5 @@ yum install -y python-devel
 pip install matplotlib
 yum install -y python34-tkinter
 pip install tensorflow
+
+
