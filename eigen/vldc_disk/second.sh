@@ -3,12 +3,13 @@ nClusters=20
 
 # data size
 nLines=1000000
+
 nDimensions=5
+nItems=3 # nDimensions-2 / items: src dst n[* * *] 
 
 nThreads=100
 
-# items: src dst n[* * *] 
-nItems=3 # nDimensions-2
+
 
 echo "STEP0: building executables ..."
 ./build.sh init-label
@@ -32,7 +33,7 @@ time ./avg $nLines $nDimensions #yields centroid
 sleep 2s
 
 echo "STEP4: filling blank centroid rows..."
-python fill2.py tmp-all-labeled centroid > tmp-centroid
+python fill2.py tmp-all-labeled centroid $nLines $nClusters > tmp-centroid
 cat tmp-centroid
 \cp tmp-centroid centroid
 sleep 4s
