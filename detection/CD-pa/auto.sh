@@ -1,6 +1,7 @@
 if [ "$1" = "" ]
 then
     echo "no argument: ./auto.sh yyyy mm dd"
+    exit
 fi
 
 ls *csv > csvlist
