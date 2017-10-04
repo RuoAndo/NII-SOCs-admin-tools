@@ -115,8 +115,8 @@ for i in testPredictPlot:
         
 f.close() 
         
-plt.rc('font', family='serif')
-plt.figure()
+#plt.rc('font', family='serif')
+#plt.figure()
 
 #plt.subplot(2, 1, 1)
 #plt.plot(scaler.inverse_transform(data_org))
@@ -125,6 +125,6 @@ plt.figure()
 
 #plt.plot(trainPredictPlot)
 #plt.plot(testPredictPlot)
-
 #plt.plot()
+
 #plt.show()

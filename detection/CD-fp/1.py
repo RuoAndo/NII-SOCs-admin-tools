@@ -55,45 +55,41 @@ for i in wList_uniq:
         pass
     
     counter = counter + 1
-    
+
+fcounter = 0
 for j in fList:
 
     f = open(j)
     line = f.readline() 
-    
+
     while line:
+        #print line.strip() + ":" + str(j)
         tmp = line.split(",")
-
-        fpairfile = "pair"
-        os.remove(fpairfile)
         
-        constr=""
-        counter = 0 
-        for i in wList_uniq:
-            fname= "fp-" + str(counter)
-            
-            if str(i) == str(tmp[0]):
-                constr = constr + tmp[1].strip() + ","
+        wcounter = 0 
 
+        flag = 0
+        for i in wList_uniq:
+            fname= "fp-" + str(wcounter)
+
+            if str(i) == str(tmp[0]):
+                print str(i) + "," + str(tmp[1]).strip() + " to " + fname + " at " + str(fcounter)
                 f2 = open(fname, 'a') 
                 f2.write(tmp[1]) 
                 f2.close()
-
-            else:
-                constr = constr + "0" + ","
-
+                flag = 1
+                
+            if flag == 0:
+                print "0" + " to " + fname + " at " + str(fcounter)
                 f2 = open(fname, 'a') 
-                f2.write("0\n") 
+                f2.write("0" + "\n") 
                 f2.close()
 
-            f2 = open(fpairfile, 'a') 
-            f2.write(str(counter) + "," + str(i) + "\n") 
-            f2.close()
-                
-            counter = counter + 1
-                
-        print constr
+            wcounter = wcounter + 1
+
         line = f.readline() 
+
+        fcounter = fcounter + 1
 
     f.close()
 
