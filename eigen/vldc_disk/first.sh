@@ -12,6 +12,10 @@ then
     exit
 fi
 
+rm -rf process
+rm -rf process2
+rm -rf SSE
+
 echo "STEP1: building executables ..."
 ./build.sh init-label
 ./build.sh avg
