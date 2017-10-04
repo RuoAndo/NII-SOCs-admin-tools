@@ -1,6 +1,7 @@
 import sys
 import re
 from numpy import *
+from datetime import datetime
 
 argvs = sys.argv
 argc = len(argvs)
@@ -42,8 +43,14 @@ for i in n1:
 counter = 0
 sse = 0
 
+strdatetime = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+
 f = open('process', 'a')
-f.write("### ###" +"\n") 
+f.write("### " + strdatetime + " ###" +"\n") 
+f.close() 
+
+f = open('process2', 'a')
+f.write("### " + strdatetime + " ###" +"\n") 
 f.close() 
 
 for i in n1:
@@ -54,6 +61,13 @@ for i in n1:
 
     f = open('process', 'a')
     f.write(tmpstr1+tmpstr2+tmpstr3+"\n") 
+    f.close() 
+
+    tmpstr4 = str(i).strip() + "," 
+    tmpstr5 = centroids[counter]
+
+    f = open('process2', 'a')
+    f.write(tmpstr4+tmpstr5+"\n") 
     f.close() 
 
     diffabs = abs(int(i)-int(n2[counter]))
