@@ -4,7 +4,7 @@
 nLines=1000000
 nDimensions=5
 
-nThreads=700
+nThreads=3
 
 if [ "$1" = "" ]
 then
@@ -26,11 +26,12 @@ echo "STEP2: now spliting files ..".
 rm -rf hout*
 headLine=`expr $nLines \* $nThreads` 
 echo "data size:" $headLine 
-
 head -n $headLine $1 > $1.headed
+
 split -l $nLines $1.headed hout
+
 ls hout* > list
-time ./rename.sh list
+time ./rename.sh list # converting hout* to $counter
 
 echo "STEP3: now initlializing labels ..."
 time ./init-label $nLines $nDimensions

@@ -6,6 +6,9 @@ import commands
 argvs = sys.argv
 argc = len(argvs)
 
+nLines = argvs[3]
+nDimensions = argvs[4]
+
 f = open(argvs[1])
 line = f.readline() 
 n1 = []
@@ -33,7 +36,7 @@ while line:
     if line.find("nan") > -1:
         #print "nan" + str(tmp)
         argstr =  "0" + " " + "0" + " " + "0".strip()
-        comstr = "./fill2 " + argstr + " 500000 5" 
+        comstr = "./fill2 " + argstr + " " + nLines + " " + nDimensions 
         #print "com:" + comstr
         check = commands.getoutput(comstr)
         #print check
