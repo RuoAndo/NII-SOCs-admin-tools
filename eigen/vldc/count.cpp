@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 1
+#define THREAD_NUM 3
 #define CLUSTER_NUM 20
 static int cluster_no[CLUSTER_NUM];
 
@@ -65,21 +65,41 @@ typedef struct _thread_arg {
     int columns;
 } thread_arg_t;
 
+typedef struct _result {
+  int cluster_no[CLUSTER_NUM];  
+  pthread_mutex_t mutex;    
+} result_t;
+result_t result;
+
+
 void thread_func(void *arg) {
     thread_arg_t* targ = (thread_arg_t *)arg;
     int i, j, k;
     int counter = 0;
-
-    // string fname_label = "/dev/vldc_label_" + std::to_string(targ->id);
-    string fname_label = "vldc_label_" + std::to_string(targ->id);      
+    long tmpNo;
+    int my_cluster_no[CLUSTER_NUM];
     
+    string fname_label = "/dev/vldc_label_" + std::to_string(targ->id);      
     Eigen::MatrixXd res_label= readCSV(fname_label, targ->rows,targ->columns);
+
+    for(i = 0; i < CLUSTER_NUM; i++)
+      my_cluster_no[i] = 0; 
     
     for(i=0; i< res_label.rows(); i++)
 	{
-	  std::cout << res_label.row(i)(0) << std::endl;
+	  tmpNo = res_label.row(i)(0);
+	  my_cluster_no[tmpNo]++;
 	}
 
+    pthread_mutex_lock(&result.mutex);
+
+    for(i=0; i<CLUSTER_NUM; i++)
+      {
+	result.cluster_no[i] += my_cluster_no[i];
+      }
+            
+    pthread_mutex_unlock(&result.mutex);
+    
     return;
 }
 
@@ -91,23 +111,23 @@ int main(int argc, char *argv[])
 
     /* クラスタ初期化 */
     for(i = 0; i < CLUSTER_NUM; i++)
-      cluster_no[i] = 0; 
-
-    /* 始めに重心を取り込む */
-    Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-    avg = restmp.rightCols(3);
-    std::cout << avg << std::endl;      
-    std::cout << avg.rows() << std::endl;      
+      result.cluster_no[i] = 0; 
 
     /* 処理開始 */
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].id = i;
-        targ[i].rows = atoi(argv[4]);
-	targ[i].columns = atoi(argv[5]);
+        targ[i].rows = atoi(argv[1]);
+	targ[i].columns = atoi(argv[2]);
         pthread_create(&handle[i], NULL, (void*)thread_func, (void*)&targ[i]);
     }
     
     /* 終了を待つ */
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
+    
+    for(i=0; i<CLUSTER_NUM; i++)
+      {
+	std::cout << "CLUSTER" << i << "," << result.cluster_no[i] << endl;
+      }
+
 }

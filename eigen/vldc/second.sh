@@ -15,6 +15,7 @@ echo "STEP0: building executables ..."
 ./build.sh avg
 ./build.sh relabel
 ./build.sh fill2
+./build.sh count
 
 echo "STEP1: concatenating label files ..." 
 ls /dev/vldc_label_* > label_file_list
@@ -23,7 +24,8 @@ head -n $nThreads label_file_list_sorted > label_file_list.h
 ./cat-labeled.sh label_file_list.h # yields all-labeled
 
 echo "STEP2: counting points per cluster..."
-time python 0.py all-labeled $nClusters | tee tmp-all-labeled 
+#time python 0.py all-labeled $nClusters | tee tmp-all-labeled 
+time ./count $nLines 1 | tee tmp-all-labeled 
 sleep 2s
 
 echo "STEP3: calculating centroid..."
@@ -45,12 +47,13 @@ time ls /dev/vldc_relabel_* > list-relabeled
 head -n $nThreads list-relabeled-sorted > list-relabeled.h
 time ./cat-relabeled.sh list-relabeled.h # yields all-relabeled
 
-echo "STEP7: counting points per cluster..."
-time python 0.py all-relabeled $nClusters | tee tmp-all-relabeled
-sleep 2s
-
 echo "STEP8: converting *.labeled to *.relabeled..."
 time ./rename2.sh list-relabeled.h # from STEP6
+
+echo "STEP7: counting points per cluster..."
+#time python 0.py all-relabeled $nClusters | tee tmp-all-relabeled
+time ./count $nLines 1 | tee tmp-all-relabeled 
+sleep 2s
 
 # comparing STEP2 with STEP7
 echo "STEP7: calculating SSE..."
