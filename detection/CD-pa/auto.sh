@@ -14,4 +14,4 @@ ls rnn_* > rnnlist
 ./cat.sh rnnlist
 ./sort-rnn.pl rnn-all > rnn-all-sorted
 python addWarn.py warnlist rnn-all-sorted > rnn-all-sorted-warned
-python date-trans.py rnn-all-sorted-warned 2017 09 20 > rnn-all-sorted-warned-dated
+python date-trans.py rnn-all-sorted-warned $1 $2 $3 > rnn-all-sorted-warned-dated
