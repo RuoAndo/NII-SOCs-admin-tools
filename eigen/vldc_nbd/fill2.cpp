@@ -85,7 +85,7 @@ void thread_func(void *arg) {
     srand((unsigned int)time(NULL));
 
     id = targ->id;
-    string fname = "/dev/vldc_data_" + std::to_string(targ->id);
+    string fname = "/mnt/vldc_data_" + std::to_string(targ->id);
     
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.rightCols(3);
