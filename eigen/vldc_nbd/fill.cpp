@@ -12,8 +12,8 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 3
-#define CLUSTER_NUM 20
+#define THREAD_NUM 20
+#define CLUSTER_NUM 10
 #define ITEM_NUM 3
 
 static int cluster_no[CLUSTER_NUM];
@@ -77,15 +77,17 @@ void thread_func(void *arg) {
     thread_arg_t* targ = (thread_arg_t *)arg;
     int id;
     int i,j;
-    int counter = 0;
     double distance_tmp = 0;
-
-    long sum_item[ITEM_NUM];
 
     srand((unsigned int)time(NULL));
 
     id = targ->id;
-    string fname = "/dev/vldc_data_" + std::to_string(targ->id);
+    // std::cout << avg << std::endl;
+
+    // string fname_labeled = std::to_string(targ->id) + ".labeled";
+    string fname = std::to_string(targ->id);
+
+    // std::cout << "reading " << fname << "..." << std::endl;
     
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.rightCols(3);
@@ -93,37 +95,33 @@ void thread_func(void *arg) {
     
     for(i=0; i< res2.rows(); i++)
 	{
-	  if((rand()*1000) %100 > 95) 
+	  if((rand()*1000) % 100 > 3) 
 	    {
-
 	      Eigen::VectorXd res2vec = res2.row(i);
-
-	      counter = 0;
-	      for(j=0; j < ITEM_NUM; j++)
+	      Eigen::VectorXd distance = (res2vec - avg).colwise().squaredNorm();
+	  
+	      if(distance(0) > distance_tmp)
 		{
-		  sum_item[j] =+ res2vec(j);
-		  counter =+ 1;
+		  distance_tmp = distance(0);
+		  my_items[0] = res2vec(0);
+		  my_items[1] = res2vec(1);
+		  my_items[2] = res2vec(2);
 		}
-
-	      // Eigen::VectorXd distance = (res2vec - avg).colwise().squaredNorm();
-
-		  distance_tmp = 0;
-		  my_items[0] = sum_item[0]/counter;
-		  my_items[1] = sum_item[1]/counter;
-		  my_items[2] = sum_item[2]/counter;
-
 	    }
 	}
 
     pthread_mutex_lock(&result.mutex);
-
+    if(distance_tmp > result.distance) {
+            // std::cout << "updated:" << distance_tmp << std::endl;
             result.distance = distance_tmp;
+
 	    int x = rand() % 201 - 100;
 	    result.items[0] = my_items[0] + (my_items[0] / x);
 	    x = rand() % 201 - 100;
 	    result.items[1] = my_items[1] + (my_items[1] / x);
 	    result.items[2] = my_items[2];
 	    
+    }
     pthread_mutex_unlock(&result.mutex);
 
     /*

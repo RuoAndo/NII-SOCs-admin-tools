@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 3
+#define THREAD_NUM 10
 #define CLUSTER_NUM 20
 static int cluster_no[CLUSTER_NUM];
 
@@ -72,12 +72,12 @@ void thread_func(void *arg) {
     int i, j, k;
     int label = 0;
       
-    string fname = "/dev/vldc_data_" + std::to_string(targ->id);
+    string fname = "/mnt/vldc_data_" + std::to_string(targ->id);
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.leftCols(5);
 
-    std::string ofname = "/dev/vldc_label_" + std::to_string(targ->id);      
+    std::string ofname = "/mnt/vldc_label_" + std::to_string(targ->id);      
     ofstream outputfile(ofname);
 
     std::random_device rnd;

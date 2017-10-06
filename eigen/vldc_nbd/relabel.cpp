@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 3
+#define THREAD_NUM 10
 #define CLUSTER_NUM 20
 
 static int cluster_no[CLUSTER_NUM];
@@ -73,8 +73,8 @@ void thread_func(void *arg) {
 
     double distance_tmp = 1000000; 
 
-    string fname = "/dev/vldc_data_" + std::to_string(targ->id);
-    string fname_label = "/dev/vldc_label_" + std::to_string(targ->id);      
+    string fname = "/mnt/vldc_data_" + std::to_string(targ->id);
+    string fname_label = "/mnt/vldc_label_" + std::to_string(targ->id);      
 
     /*
     string fname = std::to_string(targ->id);
@@ -89,7 +89,7 @@ void thread_func(void *arg) {
     Eigen::MatrixXd res3 = res.rightCols(5);
 
     // 0,2.23391e+09,2.88497e+09,66,0,2
-    std::string ofname = "/dev/vldc_relabel_" + std::to_string(targ->id);
+    std::string ofname = "/mnt/vldc_relabel_" + std::to_string(targ->id);
       
     ofstream outputfile(ofname);
     

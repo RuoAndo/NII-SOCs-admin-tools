@@ -5,7 +5,7 @@ nClusters=20
 nLines=1000000
 nDimensions=5
 
-nThreads=3
+nThreads=10
 
 # items: src dst n[* * *] 
 nItems=3 # nDimensions-2
@@ -17,7 +17,7 @@ echo "STEP0: building executables ..."
 ./build.sh fill2
 
 echo "STEP1: concatenating label files ..." 
-ls /dev/vldc_label_* > label_file_list
+ls /mnt/vldc_label_* > label_file_list
 ./sort_label_file_list.pl label_file_list > label_file_list_sorted
 head -n $nThreads label_file_list_sorted > label_file_list.h
 ./cat-labeled.sh label_file_list.h # yields all-labeled
@@ -40,7 +40,7 @@ echo "STEP5: relabeling ..."
 time ./relabel centroid $nClusters $nItems $nLines $nDimensions 
 
 echo "STEP6: concatenating relabel files ..."
-time ls /dev/vldc_relabel_* > list-relabeled
+time ls /mnt/vldc_relabel_* > list-relabeled
 ./sort_label_file_list.pl list-relabeled > list-relabeled-sorted
 head -n $nThreads list-relabeled-sorted > list-relabeled.h
 time ./cat-relabeled.sh list-relabeled.h # yields all-relabeled

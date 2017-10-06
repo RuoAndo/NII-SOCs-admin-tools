@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 3
+#define THREAD_NUM 10
 #define CLUSTER_NUM 20
 #define ITEM_NUM 3
 
@@ -82,8 +82,8 @@ void thread_func(void *arg) {
     int my_cluster_no[CLUSTER_NUM];
     double my_item_sum[CLUSTER_NUM][ITEM_NUM]; 
 
-    string fname = "/dev/vldc_data_" + std::to_string(targ->id);
-    string fname_label = "/dev/vldc_label_" + std::to_string(targ->id);      
+    string fname = "/mnt/vldc_data_" + std::to_string(targ->id);
+    string fname_label = "/mnt/vldc_label_" + std::to_string(targ->id);      
    
     for(i=0;i<CLUSTER_NUM;i++)
       {

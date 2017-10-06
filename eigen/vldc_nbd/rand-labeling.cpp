@@ -16,6 +16,7 @@
 
 #define THREAD_NUM 3
 #define CLUSTER_NUM 20
+
 static int cluster_no[CLUSTER_NUM];
 
 using namespace Eigen;
@@ -72,12 +73,12 @@ void thread_func(void *arg) {
     int i, j, k;
     int label = 0;
       
-    string fname = "/dev/vldc_data_" + std::to_string(targ->id);
+    string fname = "/dev/vldc_data" + std::to_string(targ->id);
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.leftCols(5);
 
-    std::string ofname = "/dev/vldc_label_" + std::to_string(targ->id);      
+    std::string ofname = "/dev/vldc_label" + std::to_string(targ->id);      
     ofstream outputfile(ofname);
 
     std::random_device rnd;
@@ -113,7 +114,6 @@ int main(int argc, char *argv[])
 {
     pthread_t handle[THREAD_NUM];
     thread_arg_t targ[THREAD_NUM];
-
     int i;
 
     /* ˆ—ŠJn */

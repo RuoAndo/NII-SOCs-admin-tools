@@ -16,3 +16,5 @@ cd vldc_label
 cd ..
 cd vldc_relabel
 ./vldc_relabel_unload $nMOD
+
+rm -rf /dev/vldc*
