@@ -7,7 +7,7 @@ nLines=1000000
 nDimensions=5
 nItems=3 # nDimensions-2 / items: src dst n[* * *] 
 
-nThreads=3
+nThreads=1000
 
 echo "STEP0: building executables ..."
 ./build.sh init-label
@@ -60,3 +60,6 @@ echo "STEP7: calculating SSE..."
 time python sse.py centroid tmp-all-relabeled tmp-all-labeled
 #cat SSE
 sleep 2s
+
+./build.sh pickup; ./pickup centroid $nClusters $nItems $nLines $nDimensions | tee tmp
+python reverse.py tmp

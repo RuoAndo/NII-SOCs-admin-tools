@@ -4,7 +4,7 @@
 nLines=1000000
 nDimensions=5
 
-nThreads=3
+nThreads=1000
 
 if [ "$1" = "" ]
 then
