@@ -1,11 +1,5 @@
-#!/bin/sh
-
-if [ "$1" = "" ]
-then
-    echo "no argument"
-fi
-
-iostat 1 -x -t /dev/$1 awk '
+iostat 1 -x -t /dev/sda |
+  awk '
   BEGIN {
     print "time %user %nice %system %iowait %steal %idle Device rrqm/s wrqm/s r/s w/s rsec/s wsec/s avgrq-sz avgqu-sz await svctm %util "
   }
@@ -30,7 +24,7 @@ iostat 1 -x -t /dev/$1 awk '
     $1=$1;
     # avp-cpuの値の後ろにデバイスの値をくっつける
     l=l " " $0;
-    #l=$0;
-    #print l;
+    print l;
     fflush(); 
   }'
+
