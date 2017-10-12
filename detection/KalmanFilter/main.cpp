@@ -3,12 +3,14 @@
 #include <fstream>
 #include "KalmanFilter.h"
 
-using namespace std;
-static float measure[288] = {0};
+// #define LINE_NUM 5000
 
-void readFromFile()
+using namespace std;
+// static float measure[LINE_NUM] = {0};
+
+void readFromFile(char *fname, int nData, float *measure)
 {
-  std::ifstream ifs("data");
+  std::ifstream ifs(fname);
   std::string str;
   int counter;
   
@@ -22,8 +24,19 @@ void readFromFile()
 
 int main(int argc, char const *argv[])
 {
-  readFromFile();
+  int i;
+  int nData;
 
+  nData = atoi(argv[2]);
+  float* measure = new float[atoi(argv[2])];
+
+  readFromFile(argv[1], int(argv[2]), measure);
+
+  for(i=0;i<nData;i++)
+    {
+      cout << measure[i] << endl;
+    }
+  
   MatrixXf A(1, 1); A << 1;
   MatrixXf H(1, 1); H << 1;
   MatrixXf Q(1, 1); Q << 0;
@@ -38,14 +51,20 @@ int main(int argc, char const *argv[])
 
   VectorXf Z(1);
 
-  for (int i = 0; i < 288; ++i)
+  ofstream outputfile("tmp");
+  
+  for (int i = 0; i < nData; ++i)
   {
     filter1.predict(); 
     Z << measure[i];
     filter1.correct( Z ); 
   
     cout << measure[i] << "," << filter1.X << endl;
+    outputfile<< filter1.X << endl;
+  
   }
 
-	return 0;
+  outputfile.close();
+
+  return 0;
 }

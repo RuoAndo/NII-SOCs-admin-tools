@@ -1,4 +1,15 @@
-for line in `cat ${1}`
-do
-    ./iostat.sh $line > $line &
-done
+#!/bin/bash
+hander()
+{
+ #echo "recv!!"
+./aggregate.sh tmp
+ exit 
+}
+
+trap hander SIGINT
+
+./iostat.sh $line | tee tmp
+while /bin/true; do    :    ; done
+
+
+
