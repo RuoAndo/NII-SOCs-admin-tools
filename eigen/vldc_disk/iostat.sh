@@ -1,4 +1,4 @@
-iostat 1 -x -t /dev/sda |
+iostat 1 -x -t $1 |
   awk '
   BEGIN {
     print "time %user %nice %system %iowait %steal %idle Device rrqm/s wrqm/s r/s w/s rsec/s wsec/s avgrq-sz avgqu-sz await svctm %util "

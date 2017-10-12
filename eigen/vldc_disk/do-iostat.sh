@@ -8,7 +8,7 @@ hander()
 
 trap hander SIGINT
 
-./iostat.sh $line | tee tmp
+./iostat.sh $1 | tee tmp
 while /bin/true; do    :    ; done
 
 
