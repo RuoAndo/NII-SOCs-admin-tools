@@ -14,8 +14,11 @@ fi
 ./listup.pl | grep HIBETSU > csvlist
 python trans-sort.py csvlist 
 ls *csv > csvlist
-./sort-csvlist.pl csvlist > csvlist-sorted
+echo "sorting csvlist..."
+./sort-csvlist.pl csvlist > csvlist-sorte
+echo "generating warnlist..."
 python gen-wList.py csvlist-sorted > warnlist
+echo "generating pa* files..."
 rm -rf pa-*; python 3.py warnlist csvlist-sorted > tmp
 ls pa-* > palist
 time ./do.sh palist
