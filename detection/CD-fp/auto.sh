@@ -3,6 +3,7 @@
 if [ "$1" = "" ]
 then
     echo "no argument. ./a.out yyyy mm dd"
+    exit
 fi
 
 # ls
