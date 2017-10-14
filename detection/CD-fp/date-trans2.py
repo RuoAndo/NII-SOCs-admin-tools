@@ -16,6 +16,7 @@ argc = len(argvs)
 f = open(argvs[1])
 line = f.readline() 
 
+counter = 0
 while line:
     #print line.strip()
     tmp = line.split(",")
@@ -28,6 +29,8 @@ while line:
     epoch2 = epoch + diff
     d2 = epoch_to_datetime(epoch2)
 
-    print str(d2) + "," + str(tmp[1]).strip() + "," + str(tmp[2]).strip()
-    
+    print str(counter) + "," + str(d2) + "," + str(tmp[1]).strip() + "," + str(tmp[2]).strip()
+
+    counter = counter + 1
     line = f.readline() 
+
