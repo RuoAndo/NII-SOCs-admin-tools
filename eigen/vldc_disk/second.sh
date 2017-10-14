@@ -7,7 +7,7 @@ nLines=1000000
 nDimensions=5
 nItems=3 # nDimensions-2 / items: src dst n[* * *] 
 
-nThreads=1000
+nThreads=700
 
 echo "STEP0: building executables ..."
 ./build.sh init-label

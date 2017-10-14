@@ -2,7 +2,7 @@
 hander()
 {
  #echo "recv!!"
-./aggregate.sh tmp
+./aggregate-iostat.sh tmp
  exit 
 }
 
