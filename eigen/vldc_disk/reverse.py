@@ -32,7 +32,7 @@ while line:
                     ipList.append(tmp_int_1)
                     ipList.append(tmp_int_2)
  
-                    print str(tmp[1]) + ","  + str(tmp[3]) + ","  + str(tmp[5]) + ","  + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[13]) + ","  + str(tmp[15]) + ","  + str(tmp[17]);
+                    #print str(tmp[1]) + ","  + str(tmp[3]) + ","  + str(tmp[5]) + ","  + str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[13]) + ","  + str(tmp[15]) + ","  + str(tmp[17]);
     
             except:
                     pass
