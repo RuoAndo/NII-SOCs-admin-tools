@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 700
+#define THREAD_NUM 3
 #define CLUSTER_NUM 20
 
 static int cluster_no[CLUSTER_NUM];
@@ -60,6 +60,19 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
   return res;
 }
 
+typedef struct _result {
+  double distance[CLUSTER_NUM];  
+  int threadID[CLUSTER_NUM];
+  int line[CLUSTER_NUM];
+  long sip[CLUSTER_NUM];
+  long dip[CLUSTER_NUM];
+  double item1[CLUSTER_NUM];
+  double item2[CLUSTER_NUM];
+  double item3[CLUSTER_NUM];
+  pthread_mutex_t mutex;    
+} result_t;
+result_t result;
+
 typedef struct _thread_arg {
     int id;
     int rows;
@@ -71,63 +84,52 @@ void thread_func(void *arg) {
     int i, j, k;
     int counter = 0;
 
-    double distance_tmp = 1000000; 
+    double distance_tmp = 0; 
+    double distance_all_cluster = 0; 
+    double counter_all = 0;
+    double cluster_no = 0;
 
-    string fname = "/mnt/vldc_data_" + std::to_string(targ->id);
-    string fname_label = "/mnt/vldc_label_" + std::to_string(targ->id);      
-
-    /*
     string fname = std::to_string(targ->id);
-    string fname_label = std::to_string(targ->id) + ".relabeled";
-    */
-
-    // std::cout << "reading " << fname << std::endl;
-    
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res_label= readCSV(fname_label, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.rightCols(3);
-    Eigen::MatrixXd res3 = res.rightCols(5);
 
-    // 0,2.23391e+09,2.88497e+09,66,0,2
-    std::string ofname = "/mnt/vldc_relabel_" + std::to_string(targ->id);
-      
-    ofstream outputfile(ofname);
-    
-    for(i=0; i< res2.rows(); i++)
-	{
-
-	  counter = 0;
-	  for(j=0; j < avg.rows(); j++)
-	    {
+    counter_all = 0;
+    cluster_no = 0;
+    for(j=0; j < avg.rows(); j++)
+         {
+	   counter = 0;
+	   distance_tmp = 10000000;
+	   for(i=0; i < res.rows(); i++)
+	     {
 	      Eigen::VectorXd distance = (res2.row(i) - avg.row(j)).rowwise().norm();
 
+	      // std::cout << distance(0) << std::endl;
 	      if(distance(0) < distance_tmp)
 		{
-		  std::cout << "THREAD:" << targ->id << ":distance:" << distance(0) << "->" << j << std::endl;
 		  distance_tmp = distance(0);
-		  counter = j;
+		  counter = i;		  
 		}
-	      
 	    }
 
-	  outputfile << counter << endl;
-	  // outputfile << counter << ",";
-	    /*
-	  for(k=0;k<res3.row(i).cols()-1 ;k++)
-	    outputfile << res3.row(i).col(k) << ","; 
+	   std::cout << "threadID:" << targ->id << ":clusterNo:" << j << ":line:" << counter << ":distance:" << distance_tmp << std::endl; 
 
-	  outputfile << res3.row(i).col(k);
-	  outputfile << std::endl;
-	  cluster_no[counter]++;  
-	    */
-	}
+	   pthread_mutex_lock(&result.mutex);
 
-      outputfile.close();
-
-      /*
-      for(i = 0; i < CLUSTER_NUM; i++)
-	std::cout << "CLUSTER:" << i << ":" << cluster_no[i] << std::endl; 
-      */
+	   if(result.distance[j] > distance_tmp)
+	     {
+	       result.distance[j] = distance_tmp;
+	       result.threadID[j] = (int)targ->id;
+	       result.line[j] = counter;
+	       result.sip[j] = res.row(counter).col(0)(0);
+	       result.dip[j] = res.row(counter).col(1)(0);
+	       result.item1[j] = res.row(counter).col(2)(0);
+	       result.item2[j] = res.row(counter).col(3)(0);
+	       result.item3[j] = res.row(counter).col(4)(0);
+	     }
+            
+	   pthread_mutex_unlock(&result.mutex);
+   
+	 }
 
     return;
 }
@@ -141,6 +143,9 @@ int main(int argc, char *argv[])
     /* クラスタ初期化 */
     for(i = 0; i < CLUSTER_NUM; i++)
       cluster_no[i] = 0; 
+
+    for (i = 0; i < CLUSTER_NUM; i++) 
+      result.distance[i] = 10000000000;
 
     /* 始めに重心を取り込む */
     Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
@@ -159,4 +164,9 @@ int main(int argc, char *argv[])
     /* 終了を待つ */
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
+
+    for (i = 0; i < CLUSTER_NUM; i++) 
+      {
+	std::cout << "clusterNo:" << i << ":threadID:" << result.threadID[i] << ":line:" << result.line[i] << ":distance:" << result.distance[i] << ":sip:" << result.sip[i] << ":dip:" << result.dip[i] << ":1:" << result.item1[i] << ":2:" << result.item2[i] << ":3:" << result.item3[i] << std::endl;
+      }
 }
