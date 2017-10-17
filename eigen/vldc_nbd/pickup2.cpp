@@ -106,7 +106,7 @@ void thread_func(void *arg) {
     double counter_all = 0;
     double cluster_no = 0;
 
-    string fname = std::to_string(targ->id);
+    string fname =  "/mnt/vldc_data_" + std::to_string(targ->id);
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res2 = res.rightCols(3);
 
