@@ -15,8 +15,9 @@
 #include <list>
 #include <vector>
 
-#define THREAD_NUM 3
+#define THREAD_NUM 700
 #define CLUSTER_NUM 20
+#define PICKUP_DEPTH 10
 
 static int cluster_no[CLUSTER_NUM];
 
@@ -163,7 +164,7 @@ void thread_func(void *arg) {
 		   result.item3[j].push_back(res.row(counter).col(4)(0));
 	      }
 	   
-	   if(result.distance[j].size() > 5)
+	   if(result.distance[j].size() > PICKUP_DEPTH)
 	      {
 		   result.distance[j].pop_front();
 		   result.threadID[j].pop_front();
