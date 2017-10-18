@@ -16,6 +16,7 @@ echo "STEP0: building executables ..."
 ./build.sh relabel
 ./build.sh fill2
 ./build.sh count
+./build.sh pickup2
 
 echo "STEP1: concatenating label files ..." 
 ls /mnt/vldc_label_* > label_file_list
@@ -60,3 +61,5 @@ echo "STEP7: calculating SSE..."
 time python sse.py centroid tmp-all-relabeled tmp-all-labeled
 #cat SSE
 sleep 2s
+
+./build.sh pickup2; ./pickup2 centroid $nClusters $nItems $nLines $nDimensions | tee tmp                                    python reverse.py tmp  
