@@ -1,0 +1,1 @@
+select src_university_id,dest_university_id,count(capture_time) from session_info_YYYYMMDD 
