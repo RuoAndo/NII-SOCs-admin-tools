@@ -35,7 +35,7 @@ while line:
     epoch2 = epoch + diff
     d2 = epoch_to_datetime(epoch2)
 
-    print counter + "," + str(d2) + "," + str(tmp[1]) + "," + str(tmp[2]) + "," + str(tmp[3]).strip()
+    print str(counter) + "," + str(d2) + "," + str(tmp[1]) + "," + str(tmp[2]) + "," + str(tmp[3]).strip()
     
     counter = counter + 1
 
