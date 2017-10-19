@@ -15,7 +15,7 @@ fi
 python trans-sort.py csvlist 
 ls *csv > csvlist
 echo "sorting csvlist..."
-./sort-csvlist.pl csvlist > csvlist-sorte
+./sort-csvlist.pl csvlist > csvlist-sorted
 echo "generating warnlist..."
 python gen-wList.py csvlist-sorted > warnlist
 echo "generating pa* files..."
