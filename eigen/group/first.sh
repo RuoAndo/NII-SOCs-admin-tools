@@ -1,5 +1,5 @@
 nLines=1000000
-nThreads=10
+nThreads=300
 
 if [ "$1" = "" ]
 then
@@ -13,6 +13,7 @@ head -n $headLine $1 > $1.headed
 
 split -l $nLines $1.headed hout
 ls hout* > list
-time ./rename.sh list
+#time ./rename.sh list
+time ./cp.sh list
 
 
