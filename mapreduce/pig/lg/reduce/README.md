@@ -20,3 +20,21 @@ python clean.py tmp2 > tmp3
 python cut.py tmp4 $1
 
 </pre>
+
+<pre>
+if [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" == "" ];
+then
+    echo "argument required: ./do-list.sh listfile dir title"
+fi
+
+while read line; do
+    echo "searching " $line "..." 
+    ./do.sh $line $2 $3
+done < $1
+</pre>
+
+<pre>
+ls list-* > listlist
+time ./cat-list.sh listlist
+more list-all 
+</pre>
