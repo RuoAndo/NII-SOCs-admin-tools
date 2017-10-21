@@ -1,4 +1,4 @@
-# seminar 2017-12
+# usage
 
 <pre>
 ./geoip.sh list > 1

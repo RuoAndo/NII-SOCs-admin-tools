@@ -1,4 +1,5 @@
 while read line; do
     # echo $line
-    geoiplookup -f GeoLiteCity.dat $line
+    result=`geoiplookup -f GeoLiteCity.dat $line`
+    echo $result,$line
 done < $1

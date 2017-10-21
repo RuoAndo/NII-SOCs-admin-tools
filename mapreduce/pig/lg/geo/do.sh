@@ -1,0 +1,1 @@
+python dailyReport.py scout.cfg NII hc_tags.csv
