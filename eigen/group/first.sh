@@ -1,5 +1,7 @@
 nLines=1000000
-nThreads=300
+nThreads=30
+
+time ./build.sh group3
 
 if [ "$1" = "" ]
 then
