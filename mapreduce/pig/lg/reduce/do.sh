@@ -1,8 +1,7 @@
 if [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" == "" ];
 then
-    echo "argument required"
+    echo "argument required: ./do.sh ipaddress dir title"
 fi
-
 
 cd ./traverse2
 make
@@ -19,10 +18,13 @@ python clean.py tmp2 > tmp3
 python dir.py tmp4 $1 > tmp5
 python cut.py tmp4 $1 > tmp6
 
-python dir.py tmp4 $1 > reduce-$1-$3-`date +%Y%m%d_%H-%M-%S`
-\cp reduce-$1-$3-`date +%Y%m%d_%H-%M-%S` /data1/reduced-data/
+python dir.py tmp4 $1 > reduce-$3-$1-$4-`date +%Y%m%d_%H-%M`
+\cp reduce-$3-$1-$4-`date +%Y%m%d_%H-%M` /data1/reduced-data/
 
-python cut.py tmp4 $1 > reduce-$1-$3-list-`date +%Y%m%d_%H-%M-%S`
-\cp reduce-$1-$3-list-`date +%Y%m%d_%H-%M-%S` /data1/reduced-data/
+#python cut.py tmp4 $1 > reduce-$3-$1-$4-list-`date +%Y%m%d_%H-%M`
+#\cp reduce-$3-$1-$4-list-`date +%Y%m%d_%H-%M` /data1/reduced-data/
+
+python cut.py tmp4 $1 > list-reduce-$3-$1-$4-`date +%Y%m%d_%H-%M`
+\cp list-reduce-$3-$1-$4-`date +%Y%m%d_%H-%M` /data1/reduced-data/
 
 #./slmbr.sh 1 > tmp-s
