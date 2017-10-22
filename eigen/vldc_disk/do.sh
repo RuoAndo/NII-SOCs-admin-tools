@@ -1,6 +1,7 @@
 ./iostat.sh /dev/mapper/iST_nls-data1 > tmp2 &
 vmstat 1 > tmp &
-sleep 2s
+
+time ./second.sh
 
 echo "### vmstat ###"
 ./aggregate-vmstat.sh tmp

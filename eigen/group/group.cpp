@@ -15,7 +15,7 @@
 #include <random>
 #include <map>
 
-#define THREAD_NUM 1
+#define THREAD_NUM 100
 
 using namespace Eigen;
 using namespace std;
@@ -97,8 +97,7 @@ void thread_func(void *arg) {
     unsigned int value = 0;
     
     string fname = std::to_string(targ->id);
-    
-    // std::cout << "thread ID: " << targ->id << " - start." << std::endl;
+    std::cout << "thread ID: " << targ->id << " - start." << std::endl;
 
     Eigen::MatrixXd res = load_csv<MatrixXd>(fname);
     
