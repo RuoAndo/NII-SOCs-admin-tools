@@ -1,5 +1,5 @@
 nLines=1000000
-nThreads=300
+nThreads=100
 
 if [ "$1" = "" ]
 then
