@@ -15,6 +15,9 @@ done < $1
 
 ./sort.pl rnn_all_in > tmp_in
 
+# output: timeslot, score,     ID,   name
+#              17, 0.00717402,XXXX, YYYY
+
 while read line; do
     echo $line
     rm -rf rnn_out_${line}

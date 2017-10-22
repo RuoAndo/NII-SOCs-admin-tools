@@ -19,3 +19,10 @@
 15324   2017-09-27 10:25:54  yum install python34-tkinter
 15339   2017-09-27 10:30:19  pip install tensorflow
 
+20.py [in_XXXX_all] instlist
+	input: 1 dimensiondal data and <ID,name>
+	
+	intermediate: 1 dimensional predict
+	
+	output: timeslot, score, ID, name
+	17, 0.00717402,XXXX,YYYY

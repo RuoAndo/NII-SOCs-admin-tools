@@ -32,10 +32,12 @@ int main(int argc, char const *argv[])
 
   readFromFile(argv[1], int(argv[2]), measure);
 
+  /*
   for(i=0;i<nData;i++)
     {
       cout << measure[i] << endl;
     }
+  */
   
   MatrixXf A(1, 1); A << 1;
   MatrixXf H(1, 1); H << 1;
@@ -58,8 +60,10 @@ int main(int argc, char const *argv[])
     filter1.predict(); 
     Z << measure[i];
     filter1.correct( Z ); 
-  
-    cout << measure[i] << "," << filter1.X << endl;
+    
+    cout << measure[i] << "," << filter1.X << endl;    
+    // cout << filter1.X << endl;
+    
     outputfile<< filter1.X << endl;
   
   }
