@@ -67,13 +67,16 @@ while line:
 all = split_1_list + split_2_list
 #print all
 
-#x = np.array( [] )
-#for i in all:
-#    x = np.append( x, i )
+x = np.array( [] )
+for i in all:
+    x = np.append( x, i )
 
-#print x
-#y = normalize(x)
-#all2 = y.tolist()
+print x
+y = normalize(x)
+all2 = y.tolist()
+
+#for i in all:
+#    print i
 
 f = open('data2', 'w')
 counter = 0
@@ -87,7 +90,7 @@ allPlot2 = []
 allPlot3 = {}
 
 counter = 0
-for i in all:
+for i in all2:
     allPlot3[counter] = i
     counter = counter + 1
 

@@ -9,7 +9,7 @@ touch rnn_all_out
 while read line; do
     echo $line
     rm -rf rnn_in_${line}
-    python kf2.py in_${line}_all instlist
+    python kf2-norm.py in_${line}_all instlist
     cat rnn_in_${line} >> rnn_all_in
 done < $1
 
@@ -21,7 +21,7 @@ done < $1
 while read line; do
     echo $line
     rm -rf rnn_out_${line}
-    python kf2.py out_${line}_all instlist
+    python kf2-norm.py out_${line}_all instlist
     cat rnn_out_${line} >> rnn_all_out
 done < $1
 
