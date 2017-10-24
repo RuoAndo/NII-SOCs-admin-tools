@@ -1,4 +1,5 @@
 setenforce permissive
+
 ./stop-hadoop.sh
 jps
 sleep 2s
