@@ -19,12 +19,12 @@ python dir.py tmp4 $1 > tmp5
 python cut.py tmp4 $1 > tmp6
 
 python dir.py tmp4 $1 > reduce-$3-$1-$4-`date +%Y%m%d_%H-%M`
-\cp reduce-$3-$1-$4-`date +%Y%m%d_%H-%M` /data1/reduced-data/
+\cp reduce-$3-$1-$4-`date +%Y%m%d_%H-%M` ./reduced-data/
 
 #python cut.py tmp4 $1 > reduce-$3-$1-$4-list-`date +%Y%m%d_%H-%M`
 #\cp reduce-$3-$1-$4-list-`date +%Y%m%d_%H-%M` /data1/reduced-data/
 
 python cut.py tmp4 $1 > list-reduce-$3-$1-$4-`date +%Y%m%d_%H-%M`
-\cp list-reduce-$3-$1-$4-`date +%Y%m%d_%H-%M` /data1/reduced-data/
+\cp list-reduce-$3-$1-$4-`date +%Y%m%d_%H-%M` ./reduced-data/
 
 #./slmbr.sh 1 > tmp-s
