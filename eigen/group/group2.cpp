@@ -69,6 +69,45 @@ void thread_func(void *arg) {
     }
 }
 
+void thread_func2(void *arg) {
+    thread_arg_t* targ = (thread_arg_t *)arg;
+    int i, j, k;
+    int label = 0;
+    unsigned int key = 0;
+    unsigned int value = 0;
+    int counter = 0;
+    string src;
+    string dst;
+    
+    string fname = std::to_string(targ->id);
+
+    ifstream ifs(fname);
+ 
+    string str;
+    while(getline(ifs,str)){
+      string token;
+      istringstream stream(str);
+      counter = 0;
+      while(getline(stream,token,',')){
+      std::cout<< token << "(" << counter << "),";
+
+      if(counter==7)
+	src = token;
+
+      if(counter==9)
+	dst = token;
+      
+      counter = counter + 1;
+      }
+
+      pthread_mutex_lock(&result.mutex);
+      result.m.insert(pair<string, string>(src,dst));
+      pthread_mutex_unlock(&result.mutex);
+      
+    cout<<endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     pthread_t handle[THREAD_NUM];

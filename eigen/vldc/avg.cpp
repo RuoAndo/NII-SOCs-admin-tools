@@ -47,11 +47,11 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
       for (int i = 0; i < len; i++) {
 
 	if (ptr[i] == ',') {
-	  res(row, col++) = atof(start);
+	  res(row, col++) = atoi(start);
 	  start = ptr + i + 1;
 	}
       }
-      res(row, col) = atof(start);
+      res(row, col) = atoi(start);
 
       row++;
     }
