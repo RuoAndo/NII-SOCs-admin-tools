@@ -15,7 +15,7 @@
 #include <random>
 #include <map>
 
-#define THREAD_NUM 1
+#define THREAD_NUM 100
 
 using namespace Eigen;
 using namespace std;
@@ -41,6 +41,7 @@ void thread_func(void *arg) {
     string dst;
     
     string fname = std::to_string(targ->id);
+    std::cout << "thread ID: " << targ->id << " - start." << std::endl;
 
     ifstream ifs(fname);
  
@@ -50,7 +51,7 @@ void thread_func(void *arg) {
       istringstream stream(str);
       counter = 0;
       while(getline(stream,token,',')){
-      std::cout<< token << "(" << counter << "),";
+	// std::cout<< token << "(" << counter << "),";
 
       if(counter==7)
 	src = token;
@@ -65,8 +66,11 @@ void thread_func(void *arg) {
       result.m.insert(pair<string, string>(src,dst));
       pthread_mutex_unlock(&result.mutex);
       
-    cout<<endl;
+      // cout<<endl;
     }
+
+    std::cout << "thread ID: " << targ->id << " - done." << std::endl;
+    return;
 }
 
 void thread_func2(void *arg) {

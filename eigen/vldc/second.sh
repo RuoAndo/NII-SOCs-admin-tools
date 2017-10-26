@@ -5,7 +5,7 @@ nClusters=20
 nLines=1000000
 nDimensions=5
 
-nThreads=1000
+nThreads=700
 
 # items: src dst n[* * *] 
 nItems=3 # nDimensions-2

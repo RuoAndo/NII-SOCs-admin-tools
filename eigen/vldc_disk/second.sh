@@ -15,6 +15,7 @@ echo "STEP0: building executables ..."
 ./build.sh relabel
 ./build.sh fill2
 ./build.sh count
+./build.sh pickup2
 
 echo "STEP1: concatenating label files ..." 
 ls *.lbl > label_file_list
@@ -61,5 +62,5 @@ time python sse.py centroid tmp-all-relabeled tmp-all-labeled
 #cat SSE
 sleep 2s
 
-./build.sh pickup; ./pickup centroid $nClusters $nItems $nLines $nDimensions | tee tmp
+./build.sh pickup2; ./pickup2 centroid $nClusters $nItems $nLines $nDimensions | tee tmp
 python reverse.py tmp

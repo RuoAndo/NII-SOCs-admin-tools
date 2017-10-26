@@ -1,6 +1,6 @@
 modprobe nbd
 a=0
-while [ $a -ne 900 ]
+while [ $a -ne 1100 ]
 do
     echo "nbd"$a
     ./busexmp /dev/nbd$a &
