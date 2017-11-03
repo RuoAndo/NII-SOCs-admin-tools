@@ -10,10 +10,13 @@ ls list-reduce* > list-list
 
 today=$(date "+%Y%m%d")
 
-rm -rf list_all_$1_$today
-touch list_all_$1_$today
+rm -rf iplist_all_$1_$today
+touch iplist_all_$1_$today
 
 while read line; do
     echo $line
-    cat $line >> list_all_$1_$today
+    cat $line >> iplist_all_$1_$today
 done < list-list
+
+\cp -r iplist_all_$1_$today ./reduced
+\cp -r iplist_all_$1_$today iplist-all

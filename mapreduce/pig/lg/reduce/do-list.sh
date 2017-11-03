@@ -15,3 +15,7 @@ while read line; do
     echo "searching " $line "..." 
     ./do.sh $line $2 $3
 done < $1
+
+./cat-list.sh $3 # yields list_all_$1_$today  
+./cat-reduce.sh $3 # yields reduce_all
+./iplist.sh reduce_all

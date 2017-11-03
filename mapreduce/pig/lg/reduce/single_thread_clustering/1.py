@@ -6,21 +6,24 @@ argvs = sys.argv
 argc = len(argvs)
 
 f = open(argvs[1])
-
 line = f.readline() 
 
-ips = []
+labels = []
+
+counter = 0
+
+ipList = []
 while line:
     tmp = line.split(",")
-    if tmp[2] == "0":
-        print "INWARD," + line.strip()
-    if tmp[3] == "0":
-        print "OUTWARD," + line.strip()
-    else:
-        print "TWO-WAY," + line.strip()
-
+    ipList.append(tmp[1])
+    ipList.append(tmp[2])
 
     line = f.readline() 
+
+ipList_uniq = list(set(ipList))
+
+for i in ipList_uniq:
+    print i
 
 f.close()
 
