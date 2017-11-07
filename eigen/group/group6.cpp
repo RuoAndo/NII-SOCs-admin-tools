@@ -21,6 +21,7 @@
 
 #define N_LINES 100000
 #define N_SPLIT_LINES 1000
+#define N_DISPLAY 50
 
 using namespace Eigen;
 using namespace std;
@@ -40,7 +41,9 @@ result_t result;
 
 /* dataNo(counter), bytes */
 typedef struct _result2 {
-  map<int, int> m;
+  map<int, int> bytes_all;
+  map<int, int> bytes_sent;
+  map<int, int> bytes_recv;
   pthread_mutex_t mutex;
 } result2_t;
 result2_t result2;
@@ -108,10 +111,14 @@ void thread_func1(void *arg) {
     
     string src;
     string dst;
-    int bytes;
+    int bytes_all = 0;
+    int bsent = 0;
+    int brecv = 0;
 
-    int byte_sum_tmp = 0;
-
+    int bytes_sum = 0;
+    int bsent_sum = 0;
+    int brecv_sum = 0;
+    
     unsigned int t, travdirtime;  
     
     map<string, string> myAddrPair;
@@ -120,11 +127,7 @@ void thread_func1(void *arg) {
     pthread_mutex_lock(&result.mutex);    
     myAddrPair = result.m;
     pthread_mutex_unlock(&result.mutex);
-
-    /*
-    std::cout << "map size() is " << myAddrPair.size() << std::endl;
-    */
-
+        
     string fname = std::to_string(targ->id);
     ifstream ifs(fname);
 
@@ -148,7 +151,15 @@ void thread_func1(void *arg) {
 	  }
 	if(counter==25)
 	  {
-	    bytes =  std::atoi(token.c_str());
+	    bytes_all =  std::atoi(token.c_str());
+	  }
+	if(counter==26)
+	  {
+	    bsent =  std::atoi(token.c_str());
+	  }
+	if(counter==27)
+	  {
+	    brecv =  std::atoi(token.c_str());
 	  }
 	
         counter = counter + 1;
@@ -156,44 +167,69 @@ void thread_func1(void *arg) {
       
       map<string, string>::iterator itr;
 
-      // myAddrPair = result.m;
-      
+      map_counter = 0;  
       for (itr = myAddrPair.begin(); itr != myAddrPair.end(); itr++)
 	{
 	  if(src == itr->first && dst == itr->second) {
-
-	    myBytePair.insert(pair<int, int>(map_counter,bytes)); 
-
+	    
 	    pthread_mutex_lock(&result2.mutex);
-	    
-	    byte_sum_tmp = result2.m[map_counter];
-	    byte_sum_tmp = byte_sum_tmp + bytes;
-	    result2.m[map_counter] = byte_sum_tmp;
 
-	    // std::cout << "MACTH:" << map_counter << ":" << byte_sum_tmp << ":" << bytes << std::endl;
-	    
-	    // result2.m.insert(pair<int, int>(map_counter,byte_sum_tmp));   
+	    std::map<int, int>::iterator it;
 
-	    // std::cout << "MACTH2:" << result2.m[map_counter] << std::endl;
-	    
-	    /*
-            map<int, int>::iterator p;
-	    p = result2.m.find(map_counter);
-
-	    if(p != result2.m.end())
+	    /* bytes */
+	    it = result2.bytes_all.find(map_counter);
+	    if(it == result2.bytes_all.end())
 	      {
-		byte_sum_tmp = p->second;
-		byte_sum_tmp = byte_sum_tmp + bytes;
-		result2.m.insert(pair<int, int>(map_counter,byte_sum_tmp));   
+		result2.bytes_all.insert(std::make_pair(map_counter, bytes_all));
 	      }
-	    */
+	    else
+	      {
+	        bytes_sum = 0;
+		bytes_sum = (int)it->second + bytes_all;
+		// std::cout << "HIT:" << it->second << ":" << bytes << ":" << bytes_sum << std::endl;
+		result2.bytes_all.erase(map_counter);
+		result2.bytes_all.insert(std::make_pair(map_counter, bytes_sum));
+	      }
+
+	    /* bsent */
+	    std::map<int, int>::iterator it2;
+	    it2 = result2.bytes_sent.find(map_counter);
+
+	    if(it2 == result2.bytes_sent.end())
+	      {
+		result2.bytes_sent.insert(std::make_pair(map_counter, bsent));
+	      }
+	    else
+	      {
+		bsent_sum = 0;
+		bsent_sum = (int)it2->second + bsent;
+		// std::cout << "HIT:" << it->second << ":" << bytes << ":" << bytes_sum << std::endl;
+		result2.bytes_sent.erase(map_counter);
+		result2.bytes_sent.insert(std::make_pair(map_counter, bsent_sum));
+	      }
+
+	    /* brecv */
+	    std::map<int, int>::iterator it3;
+	    it3 = result2.bytes_recv.find(map_counter);
+
+	    if(it3 == result2.bytes_recv.end())
+	      {
+		result2.bytes_recv.insert(std::make_pair(map_counter, brecv));
+	      }
+	    else
+	      {
+		brecv_sum = 0;
+		brecv_sum = (int)it3->second + brecv;
+		// std::cout << "HIT:" << it->second << ":" << bytes << ":" << bytes_sum << std::endl;
+		result2.bytes_recv.erase(map_counter);
+		result2.bytes_recv.insert(std::make_pair(map_counter, brecv_sum));
+	      }
 	    
 	    pthread_mutex_unlock(&result2.mutex);
 	    
 	  } // if(src == itr->first && dst == itr->second) {
 
-	  map_counter++;
-	  
+	  map_counter++;	  
       }
 
       if(counter2 % N_SPLIT_LINES ==0)
@@ -287,17 +323,43 @@ int main(int argc, char *argv[])
     // std::cout << "reduce" << std::endl;
     
     map<int, int>::iterator itr2;
-    std::vector<int> v;
+    std::vector<int> vbytes;
+    std::vector<int> bsent;
+    std::vector<int> brecv;
 
     counter = 0;
 
-    for (itr2 = result2.m.begin(); itr2 != result2.m.end(); itr2++)
-      {
-	// std::cout << itr2->second << std::endl;
-	
-	v.push_back(itr2->second);
+    for (itr2 = result2.bytes_all.begin(); itr2 != result2.bytes_all.end(); itr2++)
+      {	
+	vbytes.push_back(itr2->second);
 
-	if(counter==30)
+	if(counter==50)
+	  break;
+
+	counter = counter + 1;
+      }
+
+    map<int, int>::iterator itr3;
+
+    counter = 0;
+    for (itr3 = result2.bytes_sent.begin(); itr3 != result2.bytes_sent.end(); itr3++)
+      {	
+	bsent.push_back(itr3->second);
+
+	if(counter==N_DISPLAY)
+	  break;
+
+	counter = counter + 1;
+      }
+
+    map<int, int>::iterator itr4;
+
+    counter = 0;
+    for (itr4 = result2.bytes_recv.begin(); itr4 != result2.bytes_recv.end(); itr4++)
+      {	
+	brecv.push_back(itr4->second);
+
+	if(counter==N_DISPLAY)
 	  break;
 
 	counter = counter + 1;
@@ -308,17 +370,9 @@ int main(int argc, char *argv[])
     counter = 0;
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
+	std::cout << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  std::endl;
 
-	/*
-	int last = v.back();
-	v.pop_back();
-	*/
-
-	// std::cout << itr->first << "," << itr->second << "," << last << std::endl;
-	std::cout << itr->first << "," << itr->second << "," << v[counter] << std::endl;
-	// std::cout << itr->first << "," << itr->second << std::endl;
-
-	if(counter==30)
+	if(counter==N_DISPLAY)
 	  break;
 
 	counter = counter + 1;
