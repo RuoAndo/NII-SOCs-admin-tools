@@ -15,7 +15,7 @@
 #include <random>
 #include <map>
 
-#define THREAD_NUM 100
+#define THREAD_NUM 1
 
 using namespace Eigen;
 using namespace std;

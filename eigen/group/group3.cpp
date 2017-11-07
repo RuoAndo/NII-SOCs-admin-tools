@@ -26,12 +26,14 @@ typedef struct _thread_arg {
     int id;
 } thread_arg_t;
 
+/* srcIP, destIP */
 typedef struct _result {
   map<string, string> m;
   pthread_mutex_t mutex;
 } result_t;
 result_t result;
 
+/* dataNo(counter), bytes */
 typedef struct _result2 {
   map<int, int> m;
   pthread_mutex_t mutex;
@@ -62,13 +64,13 @@ void thread_func(void *arg) {
       while(getline(stream,token,',')){
 	// std::cout<< token << "(" << counter << "),";
 
-      if(counter==7)
-	src = token;
+	if(counter==7)
+	  src = token;
 
-      if(counter==9)
-	dst = token;
+	if(counter==9)
+	  dst = token;
       
-      counter = counter + 1;
+	counter = counter + 1;
       }
 
       pthread_mutex_lock(&result.mutex);
@@ -110,20 +112,20 @@ void thread_func2(void *arg) {
       while(getline(stream,token,',')){
 	// std::cout<< token << "(" << counter << "),";
 
-      if(counter==7)
+	if(counter==7)
+	  {
+	    src = token;
+	  }
+	if(counter==9)
 	{
-	src = token;
-	}
-      if(counter==9)
-	{
-	dst = token;
+	  dst = token;
 	}
 
-      if(counter==25)
-	{
-	bytes =  std::atoi(token.c_str());
-	}
-      
+	if(counter==25)
+	  {
+	    bytes =  std::atoi(token.c_str());
+	  }
+	
         counter = counter + 1;
       }
       
@@ -133,6 +135,7 @@ void thread_func2(void *arg) {
       for (itr = m2.begin(); itr != m2.end(); itr++)
 	{
 	  if(src == itr->first) {
+	    
 	    //std::cout << "MATCH" << std::endl;
 	    //std::cout << src << ":" << dst << ":" << bytes << std::endl;
 
@@ -155,7 +158,6 @@ void thread_func2(void *arg) {
 	    pthread_mutex_unlock(&result2.mutex);
 	    
 	}
-
         counter2 = counter2 + 1;
       }
       
@@ -188,19 +190,6 @@ int main(int argc, char *argv[])
 
     std::cout << "map size() is " << result.m.size() << std::endl;
 
-    map<string, string>::iterator itr;
-
-    counter = 0;
-    for (itr = result.m.begin(); itr != result.m.end(); itr++)
-      {
-	std::cout << itr->first << "," << itr->second << std::endl;
-
-	if(counter==10)
-	  break;
-	
-	counter = counter + 1;
-      }
-
     m2 = result.m;
 
     /* ˆ—ŠJn */
@@ -213,11 +202,26 @@ int main(int argc, char *argv[])
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
 
+    /* srcIP, destIP */
+    map<string, string>::iterator itr;
+
+    counter = 0;
+    for (itr = result.m.begin(); itr != result.m.end(); itr++)
+      {
+	std::cout << itr->first << "," << itr->second << std::endl;
+
+	if(counter==10)
+	  break;
+	
+	counter = counter + 1;
+      }
+    
     map<int, int>::iterator itr2;
 
     counter = 0;
     for (itr2 = result2.m.begin(); itr2 != result2.m.end(); itr2++)
       {
+	/* first is counter */
 	std::cout << (unsigned int)itr2->first << "," << (unsigned int)itr2->second << std::endl;
 
 	if(counter==10)
