@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 2
+#define THREAD_NUM 10
 
 #define N_LINES 100000
 #define N_SPLIT_LINES 1000
