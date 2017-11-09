@@ -19,8 +19,8 @@
 
 #define THREAD_NUM 10
 
-#define N_LINES 100000
-#define N_SPLIT_LINES 1000
+#define N_LINES 1000000
+#define N_SPLIT_LINES 10000
 #define N_DISPLAY 50
 
 using namespace Eigen;
@@ -333,8 +333,10 @@ int main(int argc, char *argv[])
       {	
 	vbytes.push_back(itr2->second);
 
-	if(counter==50)
+	/*
+	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }
@@ -346,8 +348,10 @@ int main(int argc, char *argv[])
       {	
 	bsent.push_back(itr3->second);
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }
@@ -359,11 +363,16 @@ int main(int argc, char *argv[])
       {	
 	brecv.push_back(itr4->second);
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }                    
+
+
+    std::cout << "map size() is " << result.m.size() << std::endl; 
 
     map<string, string>::iterator itr;
 
@@ -372,8 +381,10 @@ int main(int argc, char *argv[])
       {
 	std::cout << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  std::endl;
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }
