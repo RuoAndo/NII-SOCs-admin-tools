@@ -377,6 +377,14 @@ int main(int argc, char *argv[])
     map<string, string>::iterator itr;
 
     counter = 0;
+
+    // std::string filename = "reduced";
+    // std::ofstream writing_file;
+    // writing_file.open(filename, std::ios::out);
+
+    ofstream outputfile("reduced");
+    // outputfile<<"test";
+
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
 	std::cout << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  std::endl;
@@ -386,7 +394,14 @@ int main(int argc, char *argv[])
 	  break;
 	*/
 
+	/*
+	writing_file << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  std::endl;
+	*/
+
+	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  std::endl;
+
 	counter = counter + 1;
       }
     
+    outputfile.close();
 }
