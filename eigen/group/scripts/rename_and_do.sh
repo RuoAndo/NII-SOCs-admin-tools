@@ -1,3 +1,5 @@
+./build.sh group6
+
 ls 2017* > list
 
 COUNTER=0
