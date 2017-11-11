@@ -17,10 +17,10 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 2
+#define THREAD_NUM 100
 
-#define N_LINES 30000
-#define N_SPLIT_LINES 1000
+#define N_LINES 1000000
+#define N_SPLIT_LINES 10000
 #define N_DISPLAY 50
 
 using namespace Eigen;
