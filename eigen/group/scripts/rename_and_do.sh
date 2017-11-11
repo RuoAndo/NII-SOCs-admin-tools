@@ -1,4 +1,4 @@
-./build.sh group6
+./build.sh group7
 
 ls 2017* > list
 
@@ -11,4 +11,4 @@ do
     COUNTER=`expr $COUNTER + 1`
 done
 
-./group6
+./group7
