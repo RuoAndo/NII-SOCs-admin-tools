@@ -19,8 +19,12 @@
 
 #define THREAD_NUM 100
 
-#define N_LINES 1000000
-#define N_SPLIT_LINES 10000
+/* the number of lines splited */
+#define N_LINES 100000
+
+/* the number of lines splited */
+#define N_PERCENT_LINES 1000
+
 #define N_DISPLAY 50
 
 using namespace Eigen;
@@ -251,9 +255,9 @@ void thread_func1(void *arg) {
 	  map_counter++;	  
       }
 
-      if(counter2 % N_SPLIT_LINES ==0)
+      if(counter2 % N_PERCENT_LINES ==0)
 	{
-	  std::cout << "thread:" << targ->id << ": " << counter2/N_SPLIT_LINES << "% - done." << std::endl;
+	  std::cout << "thread:" << targ->id << ": " << counter2/N_PERCENT_LINES << "% - done." << std::endl;
 
 	  travdirtime = stop_timer(&t);
 	  print_timer(travdirtime);      
