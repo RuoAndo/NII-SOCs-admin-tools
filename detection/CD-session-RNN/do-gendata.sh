@@ -2,7 +2,7 @@ rm -rf in_*
 rm -rf out_*
 
 while read line; do
-    \cp /data1/count-session/$line .
+    \cp -r /data1/count-session/$line .
 
     echo $line
     cd $line
