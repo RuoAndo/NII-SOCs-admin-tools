@@ -1,3 +1,10 @@
+pip install pandas
+pip install numpy
+pip install keras
+pip install sklearn
+pip install matplotlib
+pip install tensorflow
+
 rm -rf rnn_*
 
 rm -rf rnn_all_in
