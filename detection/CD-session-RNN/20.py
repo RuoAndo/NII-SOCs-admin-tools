@@ -1,10 +1,3 @@
-# RNN
-# inputs: one dimensional time series in in_XXXXX_all or out_XXXXX_all.
-# 2706
-# 4165
-# 3760
-# 4103
-
 import numpy
 #import matplotlib.pyplot as plt
 from pandas import read_csv
@@ -59,7 +52,7 @@ model = Sequential()
 model.add(LSTM(4, input_shape=(1, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, trainY, epochs=50, batch_size=1, verbose=2)
+model.fit(trainX, trainY, epochs=200, batch_size=1, verbose=2)
 
 # STEP5: make predictions
 trainPredict = model.predict(trainX)
@@ -91,8 +84,6 @@ testPredictPlot[len(trainPredict)+(look_back*2)+1:len(dataset)-1, :] = testPredi
 
 allPlot = [trainPredictPlot, testPredictPlot]
 
-##### generating list [] and dic {} of allPlot
-
 allPlot2 = []
 allPlot3 = {}
 
@@ -101,15 +92,13 @@ for i in allPlot:
         for j in i:
                 if 'nan' not in str(j):
                         allPlot2.append(str(abs(j)).replace("[","").replace("]","").strip())
-                        allPlot3[counter] = float(str(abs(j)).strip().replace("[","").replace("]","").strip())
+                        allPlot3[counter] = float(str(abs(j)).replace("[","").replace("]","").strip())
                         #f.write(str(abs(j)))
                         #f.write("\n")
                         counter = counter + 1
 #f.close() 
 
 print allPlot3
-
-# {0: 0.01867965, 1: 0.01747091, 2: 0.01849424, 3: 0.00999011, 4: 0.0077619, 5: 0.01119683, 6: 0.01369398, 7: 0.0170306, 8: 0.0146284, 9: 0.01357669, 10: 0.02029388, 11: 0.02022467, 12: 0.01947055, 13: 0.01798655, 
 
 f = open(argvs[2])
 line = f.readline() 
@@ -124,34 +113,22 @@ while line:
 
 f.close()
 
-# STEPA: sorting 
-
 titlestr = ""
 plotstr = ""
 sorted2 = sorted(allPlot3.items(), key=lambda x: float(x[1]), reverse=True)
-
-print "sorted2"
-print sorted2
-
-# [(441, 0.22961418), (442, 0.20929933), (443, 0.18425828), (501, 0.17270921), (504, 0.15555623), (438, 0.15329841), (463, 0.15283744), (437, 0.15053701), (439, 0.14936578), (444, 0.14911133), (518, 0.14466564),
-
-# STEPB: associating in_XXXXX_all and XXXXX.
-# outputs: rnn_XXXXX_in
-
 counter2 = 0
 for i in sorted2:
         tmp = argvs[1].split("_")
 
         counter = 0
-        for j in uID:
-
+        for j in uID:        
                 if int(str(tmp[1])) == j:
                         titlestr = str(tmp[1]) + "," + uName[counter]
                         plotstr = str(tmp[1])
                         print str(i).replace("(","").replace(")","").strip() + "," + titlestr.strip()
                         resultstr = str(i).replace("(","").replace(")","").strip() + "," + titlestr.strip()
 
-                        fname = "rnn_" + str(tmp[0]) + "_" + str(tmp[1])
+                        fname = "rnn_" + str(tmp[1])
                         f2 = open(fname,'a')
                         f2.write(resultstr)
                         f2.write("\n")
@@ -164,10 +141,10 @@ for i in sorted2:
         
         counter2 = counter2 + 1
 
-#plt.rc('font', family='serif')
-#plt.figure()
-#plt.title(plotstr)
-#plt.plot(scaler.inverse_transform(dataset))
-#plt.plot(trainPredictPlot)
-#plt.plot(testPredictPlot)
-#plt.show()
+plt.rc('font', family='serif')
+plt.figure()
+plt.title(plotstr)
+plt.plot(scaler.inverse_transform(dataset))
+plt.plot(trainPredictPlot)
+plt.plot(testPredictPlot)
+plt.show()
