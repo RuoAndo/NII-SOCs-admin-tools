@@ -1,3 +1,10 @@
+#!/bin/sh
+
+if [ "$1" = "" ]
+then
+    echo "no argument: time ./do-gendata.sh list instIDlist"
+    fi
+
 rm -rf in_*
 rm -rf out_*
 
