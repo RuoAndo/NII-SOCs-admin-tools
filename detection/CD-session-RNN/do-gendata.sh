@@ -1,15 +1,31 @@
 #!/bin/sh
 
-if [ "$1" = "" ]
+if [ "$2" = "" ]
 then
     echo "no argument: time ./do-gendata.sh list instIDlist"
-    fi
+    exit
+fi
+
+if [ ! -e instIDlist ]; then
+
+    echo "no instIDlist. copy..."
+    loc=`locate instIDlist`
+    cp $loc .
+    echo "no instlist. copy..."
+    loc=`locate instlist`
+    cp $loc .
+    
+    exit
+fi
+
+pyenv local system
 
 rm -rf in_*
 rm -rf out_*
 
 while read line; do
-    \cp -r /data1/count-session/$line .
+    #\cp -r /data1/count-session/$line .
+    \cp -r /root/$line .
 
     echo $line
     cd $line
