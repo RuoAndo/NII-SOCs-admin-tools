@@ -1,33 +1,42 @@
+#!/bin/sh
+
+if [ "$2" = "" ]
+then
+    echo "no argument: time ./do-gendata.sh list instIDlist"
+    exit
+fi
+
+if [ ! -e instIDlist ]; then
+
+    echo "no instIDlist. copy..."
+    loc=`locate instIDlist`
+    cp $loc .
+    echo "no instlist. copy..."
+    loc=`locate instlist`
+    cp $loc .
+    
+    exit
+fi
+
+pyenv local system
+
 rm -rf in_*
 rm -rf out_*
 
-cPWD=`pwd`
-echo $PWD
-
 while read line; do
-    echo $line
+    #\cp -r /data1/count-session/$line .
+    \cp -r /root/$line .
 
-    cd $cPWD
+    echo $line
     cd $line
 
-    rm -rf *list*
+    \cp ../gendata/*.py .
+    \cp ../gendata/*.pl .
+    \cp ../gendata/*.sh .
+    \cp ../instlist . 
 
     rm -rf in_*
     rm -rf out_*
-
-    rm -rf *.py .
-    rm -rf *.pl .
-    rm -rf *.sh .
-    rm -rf instlist
-
-    \cp $cPWD/gendata/*.py .
-    \cp $cPWD/gendata/*.pl .
-    \cp $cPWD/gendata/*.sh .
-    cp $cPWD/instlist . 
-
-    \cp $cPWD/*.py .
-    \cp $cPWD/*.pl .
-    \cp $cPWD/*.sh .
     
     ./trans.sh 
     ./gen-data2.sh # yields *_in and *_out
@@ -48,11 +57,11 @@ while read line; do
 	cp ${line2}_${line} ../
     done < outlist
 
-    cd $cPWD
+    cd ..
     
 done < $1
 
-cd $cPWD
+#cd ..
 
 while read line; do
     echo "ID: " ${line}
@@ -81,5 +90,3 @@ while read line; do
 	
 done < $2
     
-ls in*all
-ls out*all
