@@ -1,3 +1,6 @@
+t1=`date "+%Y-%m-%d %H:%M:%S"`
+echo "START at:"$t1 
+
 ./build.sh group7
 
 ls 2017* > list
@@ -12,3 +15,9 @@ do
 done
 
 ./group7
+
+t2=`date "+%Y-%m-%d %H:%M:%S"`
+echo "FINISHED at:"$t2
+
+diff=$(expr `date -d"$t2" +%s` - `date -d"$t1" +%s`)
+echo "$diff"sec
