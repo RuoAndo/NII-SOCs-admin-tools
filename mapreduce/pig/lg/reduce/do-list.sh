@@ -1,6 +1,7 @@
 if [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" == "" ];
 then
     echo "argument required: ./do-list.sh listfile dir title"
+    exit
 fi
 
 mkdir reduced
