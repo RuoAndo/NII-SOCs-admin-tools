@@ -17,6 +17,8 @@
 
 #include "timer.h"
 
+/* 100 * 10,0000 */
+
 #define THREAD_NUM 100
 
 #define N_LINES 100000
@@ -332,8 +334,10 @@ int main(int argc, char *argv[])
       {	
 	bsent.push_back(itr3->second);
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }
@@ -345,8 +349,10 @@ int main(int argc, char *argv[])
       {	
 	brecv.push_back(itr4->second);
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }                    
@@ -358,8 +364,10 @@ int main(int argc, char *argv[])
       {	
 	nsess.push_back(itr5->second);
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }                    
@@ -367,14 +375,23 @@ int main(int argc, char *argv[])
     map<string, string>::iterator itr;
 
     counter = 0;
+
+    ofstream outputfile("reduced");
+
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
 	std::cout << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  "," << nsess[counter] << std::endl;
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
+
+	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  std::endl;
 
 	counter = counter + 1;
       }
+
+    outputfile.close();
     
 }
