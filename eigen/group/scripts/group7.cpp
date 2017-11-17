@@ -17,10 +17,12 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 100
+/* 1000 * 1,0000 */
 
-#define N_LINES 1000000
-#define N_SPLIT_LINES 10000
+#define THREAD_NUM 1000
+
+#define N_LINES 10000
+#define N_PERCENT_LINES 100
 #define N_DISPLAY 50
 
 using namespace Eigen;
@@ -251,9 +253,9 @@ void thread_func1(void *arg) {
 	  map_counter++;	  
       }
 
-      if(counter2 % N_SPLIT_LINES ==0)
+      if(counter2 % N_PERCENT_LINES ==0)
 	{
-	  std::cout << "thread:" << targ->id << ": " << counter2/N_SPLIT_LINES << "% - done." << std::endl;
+	  std::cout << "thread:" << targ->id << ": " << counter2/N_PERCENT_LINES << "% - done." << std::endl;
 
 	  travdirtime = stop_timer(&t);
 	  print_timer(travdirtime);      
@@ -332,8 +334,10 @@ int main(int argc, char *argv[])
       {	
 	bsent.push_back(itr3->second);
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }
@@ -345,8 +349,10 @@ int main(int argc, char *argv[])
       {	
 	brecv.push_back(itr4->second);
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }                    
@@ -358,8 +364,10 @@ int main(int argc, char *argv[])
       {	
 	nsess.push_back(itr5->second);
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
 
 	counter = counter + 1;
       }                    
@@ -367,14 +375,24 @@ int main(int argc, char *argv[])
     map<string, string>::iterator itr;
 
     counter = 0;
+
+    ofstream outputfile("reduced");
+
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
+
 	std::cout << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  "," << nsess[counter] << std::endl;
 
+	/*
 	if(counter==N_DISPLAY)
 	  break;
+	*/
+
+	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] << "," << nsess[counter] << std::endl;
 
 	counter = counter + 1;
       }
+
+    outputfile.close();
     
 }

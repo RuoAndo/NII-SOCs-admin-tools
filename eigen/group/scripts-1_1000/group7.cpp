@@ -380,6 +380,7 @@ int main(int argc, char *argv[])
 
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
+
 	std::cout << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  "," << nsess[counter] << std::endl;
 
 	/*
@@ -387,7 +388,7 @@ int main(int argc, char *argv[])
 	  break;
 	*/
 
-	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  std::endl;
+	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] << "," << nsess[counter] << std::endl;
 
 	counter = counter + 1;
       }

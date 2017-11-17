@@ -17,12 +17,12 @@
 
 #include "timer.h"
 
-/* 200 * 5,0000 */
+/* 1000 * 1,0000 */
 
-#define THREAD_NUM 200
+#define THREAD_NUM 1000
 
-#define N_LINES 50000
-#define N_PERCENT_LINES 500
+#define N_LINES 10000
+#define N_PERCENT_LINES 100
 #define N_DISPLAY 50
 
 using namespace Eigen;
@@ -380,6 +380,7 @@ int main(int argc, char *argv[])
 
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
+
 	std::cout << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  "," << nsess[counter] << std::endl;
 
 	/*
@@ -387,7 +388,7 @@ int main(int argc, char *argv[])
 	  break;
 	*/
 
-	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] <<  std::endl;
+	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] << "," << nsess[counter] << std::endl;
 
 	counter = counter + 1;
       }
