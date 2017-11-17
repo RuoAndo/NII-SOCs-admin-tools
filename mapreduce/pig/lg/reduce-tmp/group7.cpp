@@ -62,7 +62,7 @@ void thread_func0(void *arg) {
     
     map<string, string> myAddrPair;
 
-    std::cout << "FUNC0:thread ID: " << targ->id << " - start." << std::endl; 
+    // std::cout << "FUNC0:thread ID: " << targ->id << " - start." << std::endl; 
     
     string fname = std::to_string(targ->id);
     ifstream ifs(fname);
@@ -92,7 +92,7 @@ void thread_func0(void *arg) {
       
     } // while(getline(ifs,str)){
 
-    std::cout << "FUNC1:thread ID: " << targ->id << " - done." << std::endl;
+    // std::cout << "FUNC1:thread ID: " << targ->id << " - done." << std::endl;
 }
 
 void thread_func1(void *arg) {
@@ -263,7 +263,7 @@ void thread_func1(void *arg) {
       
     } // while(getline(ifs,str)){
 
-    std::cout << "FUNC1:thread ID: " << targ->id << " - done." << std::endl; 
+    // std::cout << "FUNC1:thread ID: " << targ->id << " - done." << std::endl; 
     
 }
 
@@ -288,7 +288,7 @@ int main(int argc, char *argv[])
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
 
-    std::cout << "map size() is " << result.m.size() << std::endl; 
+    // std::cout << "map size() is " << result.m.size() << std::endl; 
 
     /* ˆ—ŠJŽn */
     for (i = 0; i < THREAD_NUM; i++) {
