@@ -3,16 +3,22 @@ then
     echo "argument required: ./do.sh ipaddress dir title"
 fi
 
+./build.sh group7
+
 cd ./traverse2
 make
 cd ..
 time ./traverse2/traverse2 $1 $2 > tmp
 
-time ./reduce.sh tmp
-time pig reduce2.pig > tmp2
+\cp tmp 0
+./group7 > tmp4
 
-python clean.py tmp2 > tmp3
-./drem.pl tmp3 > tmp4
+### HDFS ###
+#time ./reduce.sh tmp
+#time pig reduce2.pig > tmp2
+#python clean.py tmp2 > tmp3
+#./drem.pl tmp3 > tmp4
+### HDFS###
 
 #cat tmp4
 python dir.py tmp4 $1 > tmp5

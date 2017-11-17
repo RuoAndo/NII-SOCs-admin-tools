@@ -14,6 +14,7 @@ mkdir reduced
 
 while read line; do
     echo "searching " $line "..." 
+    sleep 1s
     ./do.sh $line $2 $3
 done < $1
 
