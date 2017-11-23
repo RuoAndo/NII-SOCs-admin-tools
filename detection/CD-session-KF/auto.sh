@@ -9,7 +9,8 @@ touch kf_all_out
 while read line; do
     echo $line
     rm -rf kf_in_${line}
-    python kf2.py in_${line}_all instlist
+    #python kf2.py in_${line}_all instlist
+    python kf4.py in_${line}_all instlist
     cat kf_in_${line} >> kf_all_in
 done < $1
 
