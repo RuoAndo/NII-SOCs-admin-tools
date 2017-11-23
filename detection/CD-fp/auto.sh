@@ -13,9 +13,11 @@ fi
 # 20171002_30  20171007_30  20.py        cat.sh      gen-warnlist.sh  rnn.py           trans-sort.py
 # 20171003_30  20171008_30  2.py         csvlist     gen-wList.py     sort-csvlist.pl  
 
-./listup.pl | grep HIBETSU > csvlist
-python trans-sort.py csvlist 
-ls *csv > csvlist
+##./listup.pl | grep HIBETSU > csvlist
+##python trans-sort.py csvlist 
+
+#ls *csv > csvlist
+find . -name \*.csv | xargs ls > csvlist 
 echo "sorting csvlist..."  
 ./sort-csvlist.pl csvlist > csvlist-sorted
 echo "sorting warnlist..."  
