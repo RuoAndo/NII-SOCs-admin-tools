@@ -1,14 +1,8 @@
 #!/bin/sh
 
-if [ "$1" = "" ]
-then
-    echo "no argument. ./a.out yyyy mm dd"
-    exit
-fi
-
 ./listup.pl | grep HIBETSU > csvlist
 python trans-sort.py csvlist 
-ls *csv > csvlist
+#ls *csv > csvlist
 echo "sorting csvlist..."  
 ./sort-csvlist.pl csvlist > csvlist-sorted
 echo "sorting warnlist..."  
