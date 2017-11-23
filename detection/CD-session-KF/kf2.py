@@ -128,7 +128,7 @@ for i in sorted2:
                         print str(i).replace("(","").replace(")","").strip() + "," + titlestr.strip()
                         resultstr = str(i).replace("(","").replace(")","").strip() + "," + titlestr.strip()
 
-                        fname = "rnn_" + str(tmp[0]) + "_" + str(tmp[1])
+                        fname = "kf_" + str(tmp[0]) + "_" + str(tmp[1])
                         f2 = open(fname,'a')
                         f2.write(resultstr)
                         f2.write("\n")
