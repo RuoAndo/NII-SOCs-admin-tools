@@ -2,11 +2,68 @@ import sys
 import commands
 import numpy as np
 
+#import matplotlib.pyplot as plt
+
+
 def normalize(v, axis=-1, order=2):
     l2 = np.linalg.norm(v, ord = order, axis=axis, keepdims=True)
     l2[l2==0] = 1
     return v/l2
 
+def test(measured):
+    max_index = max(xrange(len(measured)), key=lambda i: measured[i])
+
+    split_1 = measured[0:max_index]
+    split_2 = measured[max_index+1:-1]
+
+    ## A : [A|B]
+    
+    f = open('split_1', 'w')
+    linecounter = 0
+    for i in split_1:
+        f.write(str(i) + "\n")
+        linecounter = linecounter + 1
+    f.close() 
+    
+    check = commands.getoutput("./main split_1 " + str(linecounter) + " > split_1_filtered")
+        #print check
+
+    split_1_KF = []
+
+    f = open('split_1_filtered')
+    line = f.readline() 
+    while line:
+        tmp = line.split(",")
+        split_1_KF.append(float(tmp[0]))
+        line = f.readline() 
+    f.close()
+
+    ## B : [A|B]
+
+    f = open('split_2', 'w')
+    linecounter = 0
+    for i in split_2:
+        f.write(str(i) + "\n")
+        linecounter = linecounter + 1
+    f.close() 
+    
+    check = commands.getoutput("./main split_2 " + str(linecounter) + " > split_2_filtered")
+        #print check
+        
+    split_2_KF = []
+
+    f = open('split_2_filtered')
+    line = f.readline() 
+    while line:
+        tmp = line.split(",")
+        split_2_KF.append(float(tmp[0]))
+        line = f.readline() 
+    f.close()
+    
+    split_KF = split_1_KF +  split_2_KF
+
+    return split_KF
+    
 argvs = sys.argv  
 argc = len(argvs) 
 
@@ -19,80 +76,38 @@ while line:
     measured.append(float(tmp[0].strip()))
     line = f.readline()
 
-#print len(measured)
-#print max(measured)
-max_index = max(xrange(len(measured)), key=lambda i: measured[i])
-
-split_1 = measured[0:max_index]
-split_2 = measured[max_index+1:-1]
-
-f = open('split_1', 'w')
-linecounter = 0
-for i in split_1:
-    f.write(str(i) + "\n")
-    linecounter = linecounter + 1
-f.close() 
-
-check = commands.getoutput("./main split_1 " + str(linecounter))
-#print check
-
-split_1_list = []
-
-f = open('tmp')
-line = f.readline() 
-while line:
-    tmp = line.split(",")
-    split_1_list.append(float(tmp[0]))
-    line = f.readline() 
-    
-f = open('split_2', 'w')
-linecounter = 0
-for i in split_2:
-    f.write(str(i) + "\n")
-    linecounter = linecounter + 1
 f.close()
 
-check = commands.getoutput("./main split_2 " + str(linecounter))
-#print check
+KF = measured
 
-split_2_list = []
+num = 0
+while num < 200:
+      KF = test(KF)
+      num += 1
 
-f = open('tmp')
-line = f.readline() 
-while line:
-    tmp = line.split(",")
-    split_2_list.append(float(tmp[0]))
-    line = f.readline() 
+KF2 = KF
+      
+num = 0
+while num < 200:
+      KF = test(KF2)
+      num += 1
 
-all = split_1_list + split_2_list
-#print all
+KF3 = KF2
+      
+num = 0
+while num < 200:
+      KF3 = test(KF3)
+      num += 1
 
-#x = np.array( [] )
-#for i in all:
-#    x = np.append( x, i )
-
-#print x
-#y = normalize(x)
-#all2 = y.tolist()
-
-f = open('data2', 'w')
-counter = 0
-for i in all:
-    f.write(str(measured[counter]) + "," + str(i) + "\n")
-    #print str(i)
-    counter = counter + 1
-f.close()
-
-allPlot2 = []
 allPlot3 = {}
 
 counter = 0
-for i in all:
+for i in KF3:
     allPlot3[counter] = i
     counter = counter + 1
 
 print allPlot3
-
+      
 f = open(argvs[2])
 line = f.readline() 
 

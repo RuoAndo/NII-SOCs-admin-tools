@@ -13,7 +13,8 @@ fi
 
 ./listup.pl | grep HIBETSU > csvlist
 python trans-sort.py csvlist 
-ls *csv > csvlist
+#ls *csv > csvlist
+find . -name \*.csv | xargs ls > csvlist 
 echo "sorting csvlist..."
 ./sort-csvlist.pl csvlist > csvlist-sorted
 echo "generating warnlist..."
