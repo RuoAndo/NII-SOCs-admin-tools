@@ -390,8 +390,6 @@ int main(int argc, char *argv[])
 	  break;
 	*/
 
-	# 99.7.231.85,157.19.59.211,808594476,74,0,1
-
 	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] << "," << nsess[counter] << std::endl;
 
 	counter = counter + 1;

@@ -320,6 +320,12 @@ int main(int argc, char *argv[])
     for (itr2 = result2.bytes_all.begin(); itr2 != result2.bytes_all.end(); itr2++)
       {	
 	vbytes.push_back(itr2->second);
+
+	/*
+	if(counter==50)
+	  break;
+	*/
+
 	counter = counter + 1;
       }
 
