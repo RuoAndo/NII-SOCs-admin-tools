@@ -6,17 +6,18 @@ then
     exit
 fi
 
-if [ ! -e instIDlist ]; then
+#if [ ! -e instIDlist ]; then
+#    echo "no instIDlist. copy..."
+#    loc=`locate instIDlist`
+#    cp $loc .
+#    echo "no instlist. copy..."
+#    loc=`locate instlist`
+#    cp $loc .    
+#    exit
+#fi
 
-    echo "no instIDlist. copy..."
-    loc=`locate instIDlist`
-    cp $loc .
-    echo "no instlist. copy..."
-    loc=`locate instlist`
-    cp $loc .
-    
-    exit
-fi
+cp /root/instIDlist .
+cp /root/instlist .
 
 pyenv local system
 
