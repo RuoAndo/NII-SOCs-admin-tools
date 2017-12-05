@@ -6,15 +6,14 @@ then
     exit
 fi
 
-#if [ ! -e instIDlist ]; then
-#    echo "no instIDlist. copy..."
-#    loc=`locate instIDlist`
-#    cp $loc .
-#    echo "no instlist. copy..."
-#    loc=`locate instlist`
-#    cp $loc .    
-#    exit
-#fi
+if [ ! -e instIDlist ]; then
+    echo "no instIDlist. copy..."
+    loc=`locate instIDlist`
+    cp $loc .
+    echo "no instlist. copy..."
+    loc=`locate instlist`
+    cp $loc .    
+fi
 
 cp /root/instIDlist .
 cp /root/instlist .
