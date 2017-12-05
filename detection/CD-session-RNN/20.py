@@ -13,6 +13,11 @@ import sys
 argvs = sys.argv
 argc = len(argvs)
 
+def normalize(v, axis=-1, order=2):
+    l2 = np.linalg.norm(v, ord = order, axis=axis, keepdims=True)
+    l2[l2==0] = 1
+    return v/l2
+
 # convert an array of values into a dataset matrix
 def create_dataset(dataset, look_back=1):
 	dataX, dataY = [], []
@@ -30,7 +35,8 @@ dataframe = read_csv(argvs[1], usecols=[0], engine='python')
 dataset = dataframe.values
 dataset = dataset.astype('float32')
 
-dataset = dataset / numpy.linalg.norm(dataset) 
+dataset = normalize(dataset)
+#dataset = dataset / numpy.linalg.norm(dataset) 
 scaler = MinMaxScaler(feature_range=(0, 1))
 dataset = scaler.fit_transform(dataset)
 
