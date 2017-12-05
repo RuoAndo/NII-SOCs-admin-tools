@@ -1,4 +1,5 @@
 import numpy
+import numpy as np
 #import matplotlib.pyplot as plt
 from pandas import read_csv
 import math
