@@ -24,7 +24,7 @@ done < $1
 while read line; do
     echo $line
     rm -rf kf_out_${line}
-    python kf2.py out_${line}_all instlist
+    python kf4.py out_${line}_all instlist
     cat kf_out_${line} >> kf_all_out
 done < $1
 
