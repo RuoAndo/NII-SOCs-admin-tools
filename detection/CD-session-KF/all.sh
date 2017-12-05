@@ -1,4 +1,5 @@
 make
+cp -r /mnt/count-session /root/
 ./cp.sh
 #time ./install.sh
 time ./do-gendata.sh list instIDlist  
