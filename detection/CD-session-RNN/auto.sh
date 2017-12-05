@@ -1,3 +1,9 @@
+if [ "$1" = "" ]
+then
+    echo "no argument: ./auto.sh epoch"
+    exit
+fi
+
 pip install pandas
 pip install numpy
 pip install keras
@@ -16,7 +22,7 @@ touch rnn_all_out
 while read line; do
     echo $line
     rm -rf rnn_in_${line}
-    python 20.py in_${line}_all instlist
+    python 20.py in_${line}_all instlist $1
     #cat rnn_in_${line} >> rnn_all_in
     cat rnn_${line} >> rnn_all_in
 done < $1
@@ -26,7 +32,7 @@ done < $1
 while read line; do
     echo $line
     rm -rf rnn_out_${line}
-    python 20.py out_${line}_all instlist
+    python 20.py out_${line}_all instlist $1
     #cat rnn_out_${line} >> rnn_all_out
     cat rnn_${line} >> rnn_all_out
 done < $1
