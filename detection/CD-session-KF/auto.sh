@@ -6,6 +6,8 @@ touch kf_all_in
 rm -rf kf_all_out
 touch kf_all_out
 
+pyenv local system
+
 while read line; do
     echo $line
     rm -rf kf_in_${line}
