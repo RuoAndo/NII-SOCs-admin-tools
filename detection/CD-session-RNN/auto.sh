@@ -1,6 +1,6 @@
 if [ "$1" = "" ]
 then
-    echo "no argument: ./auto.sh instIDlist epoch"
+    echo "no argument: ./auto.sh instIDlist epoch 2017 10 15" 
     exit
 fi
 
@@ -25,8 +25,8 @@ while read line; do
     python 20.py in_${line}_all instlist $2
     #cat rnn_in_${line} >> rnn_all_in
 
-    python date-trans-2.py in_${line}_all $2 $3 $4 > in_${line}_all_dated
-    python date-trans-2.py rnn_in_${line} $2 $3 $4 > kf_in_${line}_dated
+    python date-trans-2.py in_${line}_all $3 $4 $5 > in_${line}_all_dated
+    python date-trans-2.py rnn_in_${line} $3 $4 $5 > kf_in_${line}_dated
 
     cat rnn_${line} >> rnn_all_in
 done < $1
@@ -40,16 +40,16 @@ while read line; do
     python 20.py out_${line}_all instlist $2
     #cat rnn_out_${line} >> rnn_all_out
 
-    python date-trans-2.py out_${line}_all $2 $3 $4 > out_${line}_all_dated
+    python date-trans-2.py out_${line}_all $3 $4 $5 > out_${line}_all_dated
 
-    python date-trans-2.py rnn_out_${line} $2 $3 $4 > rnn_out_${line}_dated
+    python date-trans-2.py rnn_out_${line} $3 $4 $5 > rnn_out_${line}_dated
 
 
     cat rnn_${line} >> rnn_all_out
 done < $1
 
 ./sort.pl rnn_all_out > tmp_out
-python date-trans-2.py tmp_out $2 $3 $4 > tmp_out_dated
+python date-trans-2.py tmp_out $3 $4 $5 > tmp_out_dated
 
 
 
