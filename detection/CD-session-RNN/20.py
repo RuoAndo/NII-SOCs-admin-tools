@@ -141,10 +141,10 @@ for i in sorted2:
         
         counter2 = counter2 + 1
 
-plt.rc('font', family='serif')
-plt.figure()
-plt.title(plotstr)
-plt.plot(scaler.inverse_transform(dataset))
-plt.plot(trainPredictPlot)
-plt.plot(testPredictPlot)
-plt.show()
+#plt.rc('font', family='serif')
+#plt.figure()
+#plt.title(plotstr)
+#plt.plot(scaler.inverse_transform(dataset))
+#plt.plot(trainPredictPlot)
+#plt.plot(testPredictPlot)
+#plt.show()
