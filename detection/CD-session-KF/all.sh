@@ -1,3 +1,4 @@
+make
 ./cp.sh
 #time ./install.sh
 time ./do-gendata.sh list instIDlist  
