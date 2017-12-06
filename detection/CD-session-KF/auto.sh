@@ -20,7 +20,7 @@ while read line; do
     #python kf2.py in_${line}_all instlist
     python kf4.py in_${line}_all instlist
 
-    python date-trans-2.py in_${line}_all $2 $3 $4 > in_${line}_all_dated
+    #python date-trans-2.py in_${line}_all $2 $3 $4 > in_${line}_all_dated
     python date-trans-2.py kf_in_${line} $2 $3 $4 > kf_in_${line}_dated
     
     cat kf_in_${line} >> kf_all_in
@@ -37,7 +37,7 @@ while read line; do
     rm -rf kf_out_${line}
     python kf4.py out_${line}_all instlist
 
-    python date-trans-2.py out_${line}_all $2 $3 $4 > out_${line}_all_dated
+    #python date-trans-2.py out_${line}_all $2 $3 $4 > out_${line}_all_dated
 
     python date-trans-2.py kf_out_${line} $2 $3 $4 > kf_out_${line}_dated
 
