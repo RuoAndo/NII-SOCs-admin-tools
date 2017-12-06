@@ -15,7 +15,6 @@ if [ ! -e instIDlist ]; then
     loc=`locate instlist`
     cp $loc .
     
-    exit
 fi
 
 pyenv local system

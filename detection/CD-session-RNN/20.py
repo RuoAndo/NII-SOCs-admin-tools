@@ -1,4 +1,5 @@
 import numpy
+import numpy as np
 #import matplotlib.pyplot as plt
 from pandas import read_csv
 import math
@@ -12,6 +13,11 @@ import sys
 
 argvs = sys.argv
 argc = len(argvs)
+
+def normalize(v, axis=-1, order=2):
+    l2 = np.linalg.norm(v, ord = order, axis=axis, keepdims=True)
+    l2[l2==0] = 1
+    return v/l2
 
 # convert an array of values into a dataset matrix
 def create_dataset(dataset, look_back=1):
@@ -30,7 +36,9 @@ dataframe = read_csv(argvs[1], usecols=[0], engine='python')
 dataset = dataframe.values
 dataset = dataset.astype('float32')
 
-dataset = dataset / numpy.linalg.norm(dataset) 
+#dataset = normalize(dataset)
+#dataset = dataset / numpy.linalg.norm(dataset) 
+
 scaler = MinMaxScaler(feature_range=(0, 1))
 dataset = scaler.fit_transform(dataset)
 
@@ -52,7 +60,8 @@ model = Sequential()
 model.add(LSTM(4, input_shape=(1, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, trainY, epochs=200, batch_size=1, verbose=2)
+
+model.fit(trainX, trainY, epochs=int(argvs[3]), batch_size=1, verbose=2)
 
 # STEP5: make predictions
 trainPredict = model.predict(trainX)
@@ -141,10 +150,10 @@ for i in sorted2:
         
         counter2 = counter2 + 1
 
-plt.rc('font', family='serif')
-plt.figure()
-plt.title(plotstr)
-plt.plot(scaler.inverse_transform(dataset))
-plt.plot(trainPredictPlot)
-plt.plot(testPredictPlot)
-plt.show()
+#plt.rc('font', family='serif')
+#plt.figure()
+#plt.title(plotstr)
+#plt.plot(scaler.inverse_transform(dataset))
+#plt.plot(trainPredictPlot)
+#plt.plot(testPredictPlot)
+#plt.show()
