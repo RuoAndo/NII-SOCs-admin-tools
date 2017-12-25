@@ -11,8 +11,22 @@ def normalize(v, axis=-1, order=2):
     return v/l2
 
 def test(measured):
-    max_index = max(xrange(len(measured)), key=lambda i: measured[i])
+    #max_index = measured.index(max(measured))
+    #max_index = max(xrange(len(measured)), key=lambda i: measured[i])
 
+    tmp = 0
+    local_counter = 0
+    max_index = 0
+    for x in measured:
+        if x > tmp:
+            tmp = x
+            max_index = local_counter
+        local_counter = local_counter + 1
+
+    max_index = local_counter
+
+    #print max_index
+    
     split_1 = measured[0:max_index]
     split_2 = measured[max_index+1:-1]
 
@@ -72,37 +86,27 @@ line = f.readline()
 measured = []
 
 while line:
-    tmp = line.split(",")
-    measured.append(float(tmp[0].strip()))
+    #tmp = line.split(",")
+    #measured.append(float(tmp[0].strip()))
+    measured.append(float(line))
     line = f.readline()
 
 f.close()
 
+#print measured
+
 KF = normalize(measured)
+#KF = measured
 
 num = 0
-while num < 100:
+while num < 5:
       KF = test(KF)
       num += 1
-
-KF2 = KF
-      
-num = 0
-while num < 100:
-      KF = test(KF2)
-      num += 1
-
-KF3 = KF2
-      
-#num = 0
-#while num < 200:
-#      KF3 = test(KF3)
-#      num += 1
 
 allPlot3 = {}
 
 counter = 0
-for i in KF3:
+for i in KF:
     allPlot3[counter] = i
     counter = counter + 1
 
