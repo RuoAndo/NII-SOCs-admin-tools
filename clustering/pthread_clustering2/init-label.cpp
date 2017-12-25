@@ -45,12 +45,12 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
 
       char *start = ptr;
       for (int i = 0; i < len; i++) {
-
-	if (ptr[i] == ',') {
-	  res(row, col++) = atof(start);
-	  start = ptr + i + 1;
-	}
+	    if (ptr[i] == ',') {
+	      res(row, col++) = atof(start);
+	      start = ptr + i + 1;
+	    }
       }
+
       res(row, col) = atof(start);
 
       row++;
@@ -75,29 +75,21 @@ void thread_func(void *arg) {
     string fname = std::to_string(targ->id);
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.leftCols(6);
+    Eigen::MatrixXd res2 = res.rightCols(6);
 
+    // std::cout << res << std::endl;
+    
     std::string ofname = std::to_string(targ->id) + ".lbl";      
     ofstream outputfile(ofname);
 
     std::random_device rnd;
-    
+
     for(i=0; i< res2.rows(); i++)
 	{
 
 	  label = rnd() % CLUSTER_NUM;
 	  
-	  outputfile << label;
-
-	  /*
-	  for(k=0;k<res2.row(i).cols()-1 ;k++)
-	    {
-	      outputfile << res2.row(i).col(k) << ",";
-	    }
-	  
-	  outputfile << res2.row(i).col(k); 
-	  */
-      
+	  outputfile << label;      
 	  outputfile << std::endl;
 
 	}
@@ -105,7 +97,7 @@ void thread_func(void *arg) {
       outputfile.close();
 
       std::cout << "thread ID: " << targ->id << " - done." << std::endl;
-      
+
     return;
 }
 
@@ -113,7 +105,6 @@ int main(int argc, char *argv[])
 {
     pthread_t handle[THREAD_NUM];
     thread_arg_t targ[THREAD_NUM];
-
 
     int i;
 

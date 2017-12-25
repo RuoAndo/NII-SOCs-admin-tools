@@ -12,12 +12,12 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 3
-#define CLUSTER_NUM 20
-#define ITEM_NUM 3
+#define THREAD_NUM CONST
+#define CLUSTER_NUM CONST
+#define ITEM_NUM CONST
 
 static int cluster_no[CLUSTER_NUM];
-Eigen::VectorXd avg(3);
+Eigen::VectorXd avg(CONST);
 
 using namespace Eigen;
 using namespace std;
@@ -88,7 +88,7 @@ void thread_func(void *arg) {
     string fname = std::to_string(targ->id);
     
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.rightCols(3);
+    Eigen::MatrixXd res2 = res.rightCols(ITEM_NUM);
     double my_items[ITEM_NUM];
     
     for(i=0; i< res2.rows(); i++)
