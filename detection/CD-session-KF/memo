@@ -1,5 +1,6 @@
-15606   2017-09-29 20:07:57  time ./auto.sh instIDlist 
-15598   2017-09-29 20:02:51  time ./do-gendata.sh list instIDlist  
+./genlist.sh 20171015 20171224 > list   
+time ./do-gendata.sh list instIDlist  
+time ./auto.sh instIDlist 
 
 # more list                                                                                            
 20170920
