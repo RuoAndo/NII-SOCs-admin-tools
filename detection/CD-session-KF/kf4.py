@@ -81,18 +81,18 @@ f.close()
 KF = normalize(measured)
 
 num = 0
-while num < 200:
+while num < 100:
       KF = test(KF)
       num += 1
 
 KF2 = KF
       
-#num = 0
-#while num < 200:
-#      KF = test(KF2)
-#      num += 1
+num = 0
+while num < 100:
+      KF = test(KF2)
+      num += 1
 
-#KF3 = KF2
+KF3 = KF2
       
 #num = 0
 #while num < 200:
@@ -102,7 +102,7 @@ KF2 = KF
 allPlot3 = {}
 
 counter = 0
-for i in KF:
+for i in KF3:
     allPlot3[counter] = i
     counter = counter + 1
 

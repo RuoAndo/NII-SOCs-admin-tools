@@ -19,6 +19,8 @@ fi
 
 pyenv local system
 
+HOME=`pwd`
+
 rm -rf in_*
 rm -rf out_*
 
@@ -56,7 +58,7 @@ while read line; do
 	cp ${line2}_${line} ../
     done < outlist
 
-    cd ..
+    cd $HOME
     
 done < $1
 
