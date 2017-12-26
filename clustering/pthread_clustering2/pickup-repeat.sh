@@ -1,4 +1,4 @@
-nClusters=2
+nClusters=20
 
 COUNTER=0
 COUNTER_BAK=0
@@ -14,9 +14,13 @@ do
     a=`expr $a + 1`
 done
 
+echo "done"
+wc -l all
+
 a=1
 while [ $a -ne $nClusters ]
 do
-    ./pickup.sh $a
+    #echo "processing " $a " cluster..."
+    ./pickup2.sh $a
     a=`expr $a + 1`
 done
