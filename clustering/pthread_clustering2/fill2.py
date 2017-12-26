@@ -38,7 +38,7 @@ while line:
     if line.find("nan") > -1:
         #print "nan" + str(tmp)
         argstr =  "0" + " " + "0" + " " + "0".strip()
-        comstr = "./fill2 " + argstr + " " + nLines + " " + nClusters #" 1000000 5" 
+        comstr = "./fill2.re " + argstr + " " + nLines + " " + nClusters #" 1000000 5" 
         #print "com:" + comstr
         check = commands.getoutput(comstr)
         #print check

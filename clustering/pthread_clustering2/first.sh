@@ -4,7 +4,7 @@
 
 nLines=1000000
 nDimensions=6
-nThreads=2
+nThreads=30
 nClusters=20
 
 if [ "$1" = "" ]
@@ -35,17 +35,17 @@ echo "STEP1: building executables ..."
 #./build.sh relabel
 #./build.sh fill2
 
-#echo "STEP2: now spliting files ..".
-#rm -rf hout*
-#headLine=`expr $nLines \* $nThreads`
+echo "STEP2: now spliting files ..".
+rm -rf hout*
+headLine=`expr $nLines \* $nThreads`
 
-#head -n $headLine $1 > $1.headed
-#split -l $nLines $1.headed hout
+head -n $headLine $1 > $1.headed
+split -l $nLines $1.headed hout
 
-#pyenv local system
+pyenv local system
 
-#ls hout* > list
-#time ./rename.sh list
+ls hout* > list
+time ./rename.sh list
 
 echo "STEP3: now initlializing labels ..."
 time ./init-label.re $nLines $nDimensions

@@ -1,6 +1,6 @@
 nLines=1000000
 nDimensions=6
-nThreads=2
+nThreads=30
 nClusters=20
 nItems=4 # nDimensions-2 / items: src dst n[* * *] 
 
