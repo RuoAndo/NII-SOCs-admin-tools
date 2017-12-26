@@ -4,7 +4,6 @@ import numpy as np
 
 #import matplotlib.pyplot as plt
 
-
 def normalize(v, axis=-1, order=2):
     l2 = np.linalg.norm(v, ord = order, axis=axis, keepdims=True)
     l2[l2==0] = 1
@@ -23,9 +22,9 @@ def test(measured):
             max_index = local_counter
         local_counter = local_counter + 1
 
-    max_index = local_counter
+    #max_index = local_counter
 
-    #print max_index
+    #print "max:index" + str(max_index)
     
     split_1 = measured[0:max_index]
     split_2 = measured[max_index+1:-1]
@@ -47,8 +46,9 @@ def test(measured):
     f = open('split_1_filtered')
     line = f.readline() 
     while line:
-        tmp = line.split(",")
-        split_1_KF.append(float(tmp[0]))
+        #tmp = line.split(",")
+        #split_1_KF.append(float(tmp[0]))
+        split_1_KF.append(line.strip())
         line = f.readline() 
     f.close()
 
@@ -70,11 +70,26 @@ def test(measured):
     line = f.readline() 
     while line:
         tmp = line.split(",")
-        split_2_KF.append(float(tmp[0]))
+        #split_2_KF.append(float(tmp[0]))
+        split_2_KF.append(line.strip())
         line = f.readline() 
     f.close()
     
     split_KF = split_1_KF +  split_2_KF
+
+    sum = 0
+    len = 0
+    for i in split_KF:
+        # print float(i)
+        sum = sum + float(i)
+        len = len + float(1)
+
+    mean = sum / len
+
+    num = -5
+    while num < 40:
+        split_KF[max_index + num] = mean
+        num += 1
 
     return split_KF
     
@@ -95,29 +110,26 @@ f.close()
 
 #print measured
 
-#KF = normalize(measured)
-KF = measured
+KF = normalize(measured)
+#KF = measured
 
-num2 = 0
-while num2 < 5:
+KF_tmp = test(KF)
+allPlot = []
 
-    num = 0
-    while num < 100:
-        KF_tmp = test(KF)
-        num += 1
-
-    KF=KF_tmp
-
-    num2 += 1
+#print KF_tmp
 
 allPlot3 = {}
 
 counter = 0
-for i in KF:
-    allPlot3[counter] = i
+for i in KF_tmp:
+    #print i
+    allPlot3[counter] = float(i)
     counter = counter + 1
 
-print allPlot3
+#measured = normalize(measured)
+#allPlot3 = allPlot2
+
+#print allPlot3
       
 f = open(argvs[2])
 line = f.readline() 
