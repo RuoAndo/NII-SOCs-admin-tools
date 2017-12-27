@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 30
+#define THREAD_NUM 66
 #define CLUSTER_NUM 20
 static int cluster_no[CLUSTER_NUM];
 
