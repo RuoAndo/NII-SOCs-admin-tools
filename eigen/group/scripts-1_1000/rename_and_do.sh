@@ -3,7 +3,7 @@ echo "START at:"$t1
 
 ./build.sh group7
 
-ls 2017* > list
+ls 2018* > list
 
 COUNTER=0
 for line in `cat list`

@@ -2,7 +2,7 @@ SPLIT_LINES=10000
 
 ./build.sh group7
 
-ls 2017* > list
+ls 2018* > list
 
 while read line; do
     echo $line
