@@ -25,9 +25,9 @@ while line:
     print line.strip()
 
 
-    fpList = {}
+    paList = {}
     for i in wList:
-        fpList[i] = 0
+        paList[i] = 0
     
     ### csv ###
     f2 = open(line.strip())
@@ -41,17 +41,17 @@ while line:
         for i in wList:
             if tmp[0] == wList[i]:
                 print "--" + tmp[0] + "," + str(i)
-                fpList[i] = tmp[1].strip()
+                paList[i] = tmp[1].strip()
          
         line2 = f2.readline() 
         counter = counter + 1
 
-    print fpList
+    print paList
 
-    for i in fpList:
-        fname = "fp-" + str(i)
+    for i in paList:
+        fname = "pa-" + str(i)
         f3 = open(fname,'a')
-        f3.write(str(fpList[i]) + "\n")
+        f3.write(str(paList[i]) + "\n")
         f3.close()
 
     tcounter = tcounter + 1

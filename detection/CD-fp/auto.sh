@@ -1,8 +1,6 @@
-#!/bin/sh
-
 if [ "$1" = "" ]
 then
-    echo "no argument. ./a.out yyyy mm dd"
+    echo "no argument: ./auto.sh yyyy mm dd"
     exit
 fi
 
@@ -13,21 +11,24 @@ fi
 # 20171002_30  20171007_30  20.py        cat.sh      gen-warnlist.sh  rnn.py           trans-sort.py
 # 20171003_30  20171008_30  2.py         csvlist     gen-wList.py     sort-csvlist.pl  
 
-##./listup.pl | grep HIBETSU > csvlist
-##python trans-sort.py csvlist 
-
+./listup.pl | grep HIBETSU > csvlist
+python trans-sort.py csvlist 
 #ls *csv > csvlist
 find . -name \*.csv | xargs ls > csvlist 
-echo "sorting csvlist..."  
+echo "sorting csvlist..."
 ./sort-csvlist.pl csvlist > csvlist-sorted
-echo "sorting warnlist..."  
+echo "generating warnlist..."
 python gen-wList.py csvlist-sorted > warnlist
-echo "generating fp* files..."  
-rm -rf fp-*; python 3.py warnlist csvlist-sorted > tmp
-ls fp-* > fplist
-time ./do.sh fplist
-ls rnn_* > rnnlist
-./cat.sh rnnlist
-./sort-rnn.pl rnn-all > rnn-all-sorted
-python addWarn.py warnlist rnn-all-sorted > rnn-all-sorted-warned
-python date-trans.py rnn-all-sorted-warned $1 $2 $3 > rnn-all-sorted-warned-dated
+
+echo "generating pa* files..."
+python arrange.py csvlist-sorted > csvlist-sorted2   
+grep -v "\:" warnlist > warnlist2  
+
+time rm -rf pa-*; python 3.py warnlist2 csvlist-sorted2 > tmp 
+#ls pa-* > palist
+#time ./do.sh palist
+#ls rnn_* > rnnlist
+#./cat.sh rnnlist
+#./sort-rnn.pl rnn-all > rnn-all-sorted
+#python addWarn.py warnlist rnn-all-sorted > rnn-all-sorted-warned
+#python date-trans.py rnn-all-sorted-warned $1 $2 $3 > rnn-all-sorted-warned-dated
