@@ -1,0 +1,3 @@
+ 385  python include.py tmp-lg-2 reduced-all 2.csv > tmp2
+  416  ./wordcount.pl tmp2  > tmp2-wc
+  417  ./sort.pl tmp2-wc 
