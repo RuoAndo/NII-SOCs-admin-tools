@@ -113,6 +113,8 @@ f.close()
 KF = normalize(measured)
 #KF = measured
 
+print KF
+
 KF_tmp = test(KF)
 allPlot = []
 

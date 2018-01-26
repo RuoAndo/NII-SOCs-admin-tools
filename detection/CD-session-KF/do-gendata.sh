@@ -1,5 +1,8 @@
 #!/bin/sh
 
+date8=`date --date '8 day ago' +%Y%m%d`
+date1=`date --date '1 day ago' +%Y%m%d`
+
 if [ "$2" = "" ]
 then
     echo "no argument: time ./do-gendata.sh list instIDlist"
@@ -78,6 +81,8 @@ while read line; do
 	cat ${line2} >> in_${line}_all
     done < inlist_${line}
 
+    \cp in_${line}_all in_${line}_all_${date8}_${date1}
+
     #####
     
     ls out_* | grep ${line} > outlist_${line}
@@ -88,6 +93,8 @@ while read line; do
 	echo "cat " ${line2}
 	cat ${line2} >> out_${line}_all
     done < outlist_${line}
+
+    \cp out_${line}_all out_${line}_all_${date8}_${date1}
 	
 done < $2
     

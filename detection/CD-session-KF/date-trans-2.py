@@ -29,13 +29,13 @@ while line:
     #print tmp[0]
 
     d1 = datetime(int(argvs[2]), int(argvs[3]), int(argvs[4]))
-    diff = int(tmp[0]) * 300
+    diff = int(tmp[0]) * 60
 
     epoch = datetime_to_epoch(d1)
     epoch2 = epoch + diff
     d2 = epoch_to_datetime(epoch2)
 
-    print str(counter) + "," + str(d2) + "," + str(tmp[1]) + "," + str(tmp[2]) + "," + str(tmp[3]).strip()
+    print str(d2) + "," + str(counter) + "," + str(tmp[1]) + "," + str(tmp[2]) + "," + str(tmp[3]).strip()
     
     counter = counter + 1
 

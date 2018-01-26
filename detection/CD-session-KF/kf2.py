@@ -23,8 +23,11 @@ while line:
 #print max(measured)
 max_index = max(xrange(len(measured)), key=lambda i: measured[i])
 
-split_1 = measured[0:max_index]
-split_2 = measured[max_index+1:-1]
+#split_1 = measured[0:max_index]
+#split_2 = measured[max_index+1:-1]
+
+split_1 = normalize(measured[0:max_index])
+split_2 = normalize(measured[max_index+1:-1])
 
 f = open('split_1', 'w')
 linecounter = 0
