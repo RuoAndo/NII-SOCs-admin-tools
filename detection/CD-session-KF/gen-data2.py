@@ -1,4 +1,5 @@
 import sys 
+import re
 
 argvs = sys.argv  
 argc = len(argvs) 
@@ -10,12 +11,11 @@ ID = []
 Name = []
 
 while line:
-    tmp = line.split("\t")
+    tmp = re.split('\s+', line)
+    print tmp
     ID.append(tmp[0])
     Name.append(tmp[1])
-
     line = f.readline()
-
 f.close()
 
 #print ID
