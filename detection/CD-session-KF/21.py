@@ -41,7 +41,7 @@ test_size = len(dataset) - train_size
 train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
 
 # STEP2: reshape into X=t and Y=t+1
-look_back = 200
+look_back = 1
 trainX, trainY = create_dataset(train, look_back)
 testX, testY = create_dataset(test, look_back)
 
@@ -54,7 +54,7 @@ model = Sequential()
 model.add(LSTM(4, input_shape=(1, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, trainY, epochs=5, batch_size=1, verbose=2)
+model.fit(trainX, trainY, epochs=1, batch_size=1, verbose=2)
 
 # STEP5: make predictions
 trainPredict = model.predict(trainX)
@@ -83,41 +83,58 @@ testPredictPlot[:, :] = numpy.nan
 testPredictPlot[len(trainPredict)+(look_back*2)+1:len(dataset)-1, :] = testPredict
 
 # STEP10: plot baseline and predictions
+        
+ftmp = str(argvs[1]).split("_")
 
-allPlot = [trainPredictPlot, testPredictPlot]
+fname = "lstm_" + ftmp[1] + "_" + str(argvs[2])
 
-os.remove('predict')
-f = open('predict', 'a')
+try:
+        os.remove(fname)
+except:
+        pass
 
-wstr = ""
-for x in allPlot:
+f = open(fname, 'a')
+
+allPlot = []
+allPlot2 = []
+
+for x in dataset_bk:
+        allPlot.append("0")
+
+counter = 0
+for x in trainPredictPlot:
         for y in x:
-                for z in y:
-                        #print str(z)
-                        if str(z) == "nan":
-                                print 0
-                                wstr = wstr + "0" + "\n"
-                                f.write("0" + "\n")
-                        else:
-                                print str(z)
-                                f.write(str(z) + "\n")
-                                wstr = wstr + str(int(z)) + "\n"
+                if str(y) != "nan":
+                        #print(y)
+                        allPlot[counter] = str(y)
+        counter = counter + 1
 
-#f.write(wstr)
+counter = 0
+for x in testPredictPlot:
+        for y in x:
+                if allPlot[counter] == 0:
+                        allPlot[counter] = y
+        counter = counter + 1
+
+counter = 0
+for x in allPlot:
+        f.write(str(counter) + "," + str(ftmp[1]) + "," + str(x) + "\n")
+        counter = counter + 1
+
+print("len:" + str(len(allPlot)))
+
 f.close()
 
-plt.rc('font', family='serif')
-plt.figure()
+#plt.rc('font', family='serif')
+#plt.figure()
 
-plt.subplot(2, 1, 1)
-plt.plot(scaler.inverse_transform(dataset_bk))
-plt.subplot(2, 1, 2)
+#plt.subplot(2, 1, 1)
+#plt.plot(scaler.inverse_transform(dataset_bk))
 
+#plt.subplot(2, 1, 2)
 #plt.plot(allPlot2)
+#plt.plot(trainPredictPlot)
+#plt.plot(testPredictPlot)
 
-plt.plot(trainPredictPlot)
-plt.plot(testPredictPlot)
-
-plt.show()
-
+#plt.show()
 

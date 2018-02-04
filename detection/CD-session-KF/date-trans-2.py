@@ -10,12 +10,6 @@ def datetime_to_epoch(d):
 def epoch_to_datetime(epoch):
     return datetime(*time.localtime(epoch)[:6])
 
-#d1 = datetime(2017, 9, 20)
-#epoch = datetime_to_epoch(d1)
-#print epoch
-#epoch2 = epoch + 300
-#print epoch_to_datetime(epoch2)
-
 argvs = sys.argv  
 argc = len(argvs) 
 
@@ -24,19 +18,28 @@ line = f.readline()
 
 counter = 0
 while line:
-    #print line.strip()
     tmp = line.split(",")
-    #print tmp[0]
 
     d1 = datetime(int(argvs[2]), int(argvs[3]), int(argvs[4]))
-    diff = int(tmp[0]) * 60
+    diff = int(tmp[0]) * 1
 
     epoch = datetime_to_epoch(d1)
     epoch2 = epoch + diff
     d2 = epoch_to_datetime(epoch2)
 
-    print str(d2) + "," + str(counter) + "," + str(tmp[1]) + "," + str(tmp[2]) + "," + str(tmp[3]).strip()
-    
+    f2 = open(argvs[5])
+    line2 = f2.readline() 
+
+    counter = 0
+    while line2:
+        tmp2 = line2.split("\t")
+        #print(tmp2)
+        if str(tmp[1]).strip() == str(tmp2[0]).strip():
+            print(str(d2) + "," + str(counter) + "," + str(tmp[1]) + "," + str(tmp2[1]).strip() + "," + str(tmp[2]).strip())
+        line2 = f2.readline() 
+
+    f2.close()
+
     counter = counter + 1
 
     line = f.readline() 

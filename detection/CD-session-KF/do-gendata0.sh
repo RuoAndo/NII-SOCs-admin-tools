@@ -12,15 +12,15 @@ date1=`date --date '1 day ago' +%Y%m%d`
 rm -rf list
 touch list
 
-ls -L1 | grep 201 > list0
+tree -d | grep 201 | cut -d " " -f2 > list0
 cat list0
 
-grep $date8 list0 >> list
-grep $date7 list0 >> list
-grep $date6 list0 >> list
-grep $date5 list0 >> list
-grep $date4 list0 >> list
-grep $date3 list0 >> list
+#grep $date8 list0 >> list
+#grep $date7 list0 >> list
+#grep $date6 list0 >> list
+#grep $date5 list0 >> list
+#grep $date4 list0 >> list
+#grep $date3 list0 >> list
 grep $date2 list0 >> list
 grep $date1 list0 >> list
 
@@ -42,6 +42,8 @@ if [ ! -e instIDlist ]; then
     cp $loc .
     
 fi
+
+###############################
 
 pyenv local system
 
@@ -88,36 +90,26 @@ while read line; do
     
 done < list
 
-#cd ..
-
 while read line; do
     echo "ID: " ${line}
-    
-    ls in_* | grep ${line} > inlist_${line}
-    rm -rf in_${line}_all
-    touch in_${line}_all
 
-    # in_10034_20170920
-    
+    ls in_${line}* > inlist_${line}
+
     while read line2; do
 	echo "cat " ${line2}
 	cat ${line2} >> in_${line}_all
     done < inlist_${line}
 
-    \cp in_${line}_all in_${line}_all_${date8}_${date1}
+done < instIDlist
 
-    #####
-    
-    ls out_* | grep ${line} > outlist_${line}
-    rm -rf out_${line}_all
-    touch out_${line}_all
-    
+while read line; do
+    echo "ID: " ${line}
+
+    ls out_${line}* > outlist_${line}
+
     while read line2; do
 	echo "cat " ${line2}
 	cat ${line2} >> out_${line}_all
     done < outlist_${line}
 
-    \cp out_${line}_all out_${line}_all_${date8}_${date1}
-	
 done < instIDlist
-    
