@@ -14,8 +14,8 @@
 
 #include <random>
 
-#define THREAD_NUM N
-#define CLUSTER_NUM N
+#define THREAD_NUM 1
+#define CLUSTER_NUM 2
 // static int cluster_no[3];
 
 using namespace Eigen;
@@ -77,7 +77,7 @@ void thread_func(void *arg) {
     std::cout << "reading CSV:" << fname << std::endl;
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.leftCols(N);
+    Eigen::MatrixXd res2 = res.leftCols(2);
 
     std::string ofname = std::to_string(targ->id) + ".lbl";      
     ofstream outputfile(ofname);

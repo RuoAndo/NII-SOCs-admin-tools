@@ -14,8 +14,8 @@
 
 #include <random>
 
-#define THREAD_NUM N
-#define CLUSTER_NUM N
+#define THREAD_NUM 1
+#define CLUSTER_NUM 2
 // static int cluster_no[3];
 
 using namespace Eigen;
