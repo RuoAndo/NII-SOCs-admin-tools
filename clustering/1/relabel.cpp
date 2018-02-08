@@ -95,13 +95,14 @@ void thread_func(void *arg) {
 	    {
 	      Eigen::VectorXd distance = (res2.row(i) - avg.row(j)).rowwise().norm();
 
-	      std::cout << "THREAD:" << targ->id << ":point" << i << ":distance:" << distance(0) << "->" << j << std::endl;
+	      // std::cout << "THREAD:" << targ->id << ":point" << i << ":distance:" << distance(0) << "->" << j << std::endl;
 	      v.push_back(distance(0));
 	    }
 
 	  std::vector<int>::iterator iter = std::min_element(v.begin(), v.end());
 	  int index = std::distance(v.begin(), iter);
-	  std::cout << "Index of min element: " << index << std::endl;
+
+	  // std::cout << "Index of min element: " << index << std::endl;
 	  
 	  outputfile << index << endl;
 	}
