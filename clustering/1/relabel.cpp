@@ -118,17 +118,17 @@ int main(int argc, char *argv[])
     thread_arg_t targ[THREAD_NUM];
     int i;
 
-    /* クラスタ初期化 */
+    /* init  */
     for(i = 0; i < CLUSTER_NUM; i++)
       cluster_no[i] = 0; 
 
-    /* 始めに重心を取り込む */
+    /* reading centroid */
     Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
     avg = restmp.rightCols(N);
     std::cout << avg << std::endl;      
     std::cout << avg.rows() << std::endl;      
 
-    /* 処理開始 */
+    /* scatter */
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].id = i;
         targ[i].rows = atoi(argv[4]);
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
         pthread_create(&handle[i], NULL, (void*)thread_func, (void*)&targ[i]);
     }
     
-    /* 終了を待つ */
+    /* join */
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
 }
