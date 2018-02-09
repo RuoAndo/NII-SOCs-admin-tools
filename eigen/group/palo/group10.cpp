@@ -177,25 +177,25 @@ int main(int argc, char *argv[])
 
     std::vector<string> alerts;
     
-    /* 処理開始 */
+    /* scatter */
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].id = i;
         pthread_create(&handle[i], NULL, (void*)thread_func_IP, (void*)&targ[i]);
     }
 
-    /* 終了を待つ */
+    /* join */
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
 
     std::cout << "map size() is " << result.m.size() << std::endl; 
 
-    /* 処理開始 */
+    /* scatter */
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].id = i;
         pthread_create(&handle[i], NULL, (void*)thread_func1, (void*)&targ[i]);
     }
 
-    /* 終了を待つ */
+    /* join */
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
 
