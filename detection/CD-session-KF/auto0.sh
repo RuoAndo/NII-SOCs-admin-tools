@@ -1,6 +1,23 @@
 date8=`date --date '8 day ago' +%Y%m%d`
 date1=`date --date '1 day ago' +%Y%m%d`
 
+year=2018
+month=01
+day=16
+
+recent=2
+
+wll=`wc -l list | cut -d " " -f 1`  
+#echo $wll
+span1=`expr $wll \* 60 \* 24`
+#echo $span1
+span2=`expr 1440 \* $recent`
+#echo $span2
+span3=`expr $span1 - $span2`
+#echo $span3
+
+#exit
+
 #if [ "$2" = "" ]
 #then
 #    echo "no argument: time ./auto.sh FILENAME 2017 10 15"
@@ -21,7 +38,8 @@ while read line; do
 done < $1
 
 ./sort-lstm.pl lstm_in_all > lstm_in_all_sorted 
-python date-trans-2.py lstm_in_all_sorted 2018 02 01 instlist > lstm_in_labeled
+python date-trans-2.py lstm_in_all_sorted $year $month $day instlist > lstm_in_labeled
+python date-trans-3.py lstm_in_all_sorted $year $month $day instlist $span3 > lstm_in_labeled_recent
 
 #########################################
 
@@ -37,5 +55,5 @@ while read line; do
 done < $1
 
 ./sort-lstm.pl lstm_out_all > lstm_out_all_sorted 
-python date-trans-2.py lstm_out_all_sorted 2018 02 01 instlist > lstm_out_labeled
-
+python date-trans-2.py lstm_out_all_sorted $year $month $day instlist > lstm_out_labeled
+python date-trans-3.py lstm_out_all_sorted $year $month $day instlist $span3 > lstm_out_labeled_recent

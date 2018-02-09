@@ -17,6 +17,7 @@ f = open(argvs[1])
 line = f.readline() 
 
 counter = 0
+counter2 = 0
 while line:
     tmp = line.split(",")
 
@@ -33,9 +34,12 @@ while line:
     while line2:
         tmp2 = line2.split("\t")
         #print(tmp2)
-        if str(tmp[1]).strip() == str(tmp2[0]).strip():
-            print(str(counter) + "," + str(d2) + "," + str(tmp[1]) + "," + str(tmp2[1]).strip() + "," + str(tmp[2]).strip())
-    
+
+        if int(tmp[0]) > int(argvs[6]):
+            if str(tmp[1]).strip() == str(tmp2[0]).strip():
+                print(str(counter2) + "," + str(counter) + "," + str(d2) + "," + str(tmp[1]) + "," + str(tmp2[1]).strip() + "," + str(tmp[2]).strip())
+                counter2 = counter2 + 1
+
         line2 = f2.readline() 
 
     counter = counter + 1
