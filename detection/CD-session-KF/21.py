@@ -36,7 +36,7 @@ dataset = dataset / numpy.linalg.norm(dataset)
 scaler = MinMaxScaler(feature_range=(0, 1))
 dataset = scaler.fit_transform(dataset)
 
-train_size = int(len(dataset) * 0.90)
+train_size = int(len(dataset) * 0.95)
 test_size = len(dataset) - train_size
 train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
 

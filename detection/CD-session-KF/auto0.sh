@@ -1,19 +1,23 @@
-date8=`date --date '8 day ago' +%Y%m%d`
-date1=`date --date '1 day ago' +%Y%m%d`
+#three=`date --date '3 day ago' +%Y-%m-%d`
+#echo $three
+#lstm_in_labeled 
 
 year=2018
 month=01
 day=16
 
-recent=2
+grepdate=`date --date '4 day ago' +%Y-%m-%d` 
+grepdate2=`date --date '5 day ago' +%Y-%m-%d` 
 
-wll=`wc -l list | cut -d " " -f 1`  
+#recent=2
+
+#wll=`wc -l list | cut -d " " -f 1`  
 #echo $wll
-span1=`expr $wll \* 60 \* 24`
+#span1=`expr $wll \* 60 \* 24`
 #echo $span1
-span2=`expr 1440 \* $recent`
+#span2=`expr 1440 \* $recent`
 #echo $span2
-span3=`expr $span1 - $span2`
+#span3=`expr $span1 - $span2`
 #echo $span3
 
 #exit
@@ -39,7 +43,11 @@ done < $1
 
 ./sort-lstm.pl lstm_in_all > lstm_in_all_sorted 
 python date-trans-2.py lstm_in_all_sorted $year $month $day instlist > lstm_in_labeled
-python date-trans-3.py lstm_in_all_sorted $year $month $day instlist $span3 > lstm_in_labeled_recent
+#python date-trans-3.py lstm_in_all_sorted $year $month $day instlist $span3 > lstm_in_labeled_recent
+
+grep $grepdate lstm_in_labeled > lstm_in_labeled_tmp
+grep $grepdate2 lstm_in_labeled >> lstm_in_labeled_tmp
+./sort-recent.pl lstm_in_labeled_tmp > lstm_in_labeled_recent
 
 #########################################
 
@@ -56,4 +64,8 @@ done < $1
 
 ./sort-lstm.pl lstm_out_all > lstm_out_all_sorted 
 python date-trans-2.py lstm_out_all_sorted $year $month $day instlist > lstm_out_labeled
-python date-trans-3.py lstm_out_all_sorted $year $month $day instlist $span3 > lstm_out_labeled_recent
+#python date-trans-3.py lstm_out_all_sorted $year $month $day instlist $span3 > lstm_out_labeled_recent
+
+grep $grepdate lstm_out_labeled > lstm_out_labeled_tmp
+grep $grepdate2 lstm_out_labeled >> lstm_out_labeled_tmp
+./sort-recent.pl lstm_out_labeled_tmp > lstm_out_labeled_recent
