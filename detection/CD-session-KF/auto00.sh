@@ -27,5 +27,6 @@ grep $grepdate2 lstm_in_labeled >> lstm_in_labeled_tmp
 #python date-trans-2.py lstm_out_all_sorted $year $month $day instlist > lstm_out_labeled
 #python date-trans-3.py lstm_out_all_sorted $year $month $day instlist $span3 > lstm_out_labeled_recent
 
-grep $grepdate lstm_out_labeled > lstm_out_labeled_recent
+grep $grepdate lstm_out_labeled > lstm_out_labeled_tmp
+grep $grepdate2 lstm_out_labeled >> lstm_out_labeled_tmp
 ./sort-recent.pl lstm_out_labeled_tmp > lstm_out_labeled_recent
