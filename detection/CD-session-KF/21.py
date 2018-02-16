@@ -41,7 +41,7 @@ test_size = len(dataset) - train_size
 train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
 
 # STEP2: reshape into X=t and Y=t+1
-look_back = 25
+look_back = 250
 trainX, trainY = create_dataset(train, look_back)
 testX, testY = create_dataset(test, look_back)
 
@@ -51,10 +51,10 @@ testX = numpy.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
 
 # STEP4: create and fit the LSTM network
 model = Sequential()
-model.add(LSTM(4, input_shape=(1, look_back)))
+model.add(LSTM(2000, input_shape=(1, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, trainY, epochs=5, batch_size=1, verbose=2)
+model.fit(trainX, trainY, epochs=4, batch_size=100, verbose=1)
 
 # STEP5: make predictions
 trainPredict = model.predict(trainX)
@@ -125,16 +125,16 @@ print("len:" + str(len(allPlot)))
 
 f.close()
 
-#plt.rc('font', family='serif')
-#plt.figure()
+plt.rc('font', family='serif')
+plt.figure()
 
-#plt.subplot(2, 1, 1)
-#plt.plot(scaler.inverse_transform(dataset_bk))
+plt.subplot(2, 1, 1)
+plt.plot(scaler.inverse_transform(dataset_bk))
 
-#plt.subplot(2, 1, 2)
+plt.subplot(2, 1, 2)
 #plt.plot(allPlot2)
-#plt.plot(trainPredictPlot)
-#plt.plot(testPredictPlot)
+plt.plot(trainPredictPlot)
+plt.plot(testPredictPlot)
 
-#plt.show()
+plt.show()
 
