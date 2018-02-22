@@ -12,9 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#include <random>
-
-#define THREAD_NUM 3
+#define THREAD_NUM 2
 #define CLUSTER_NUM 3
 static int cluster_no[CLUSTER_NUM];
 
@@ -45,12 +43,12 @@ Eigen::MatrixXd readCSV(std::string file, int rows, int cols) {
 
       char *start = ptr;
       for (int i = 0; i < len; i++) {
-	    if (ptr[i] == ',') {
-	      res(row, col++) = atof(start);
-	      start = ptr + i + 1;
-	    }
-      }
 
+	if (ptr[i] == ',') {
+	  res(row, col++) = atof(start);
+	  start = ptr + i + 1;
+	}
+      }
       res(row, col) = atof(start);
 
       row++;
@@ -67,37 +65,42 @@ typedef struct _thread_arg {
     int columns;
 } thread_arg_t;
 
+typedef struct _result {
+  int cluster_no[CLUSTER_NUM];  
+  pthread_mutex_t mutex;    
+} result_t;
+result_t result;
+
+
 void thread_func(void *arg) {
     thread_arg_t* targ = (thread_arg_t *)arg;
     int i, j, k;
-    int label = 0;
-      
-    string fname = std::to_string(targ->id);
-
-    Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.rightCols(2);
-
-    // std::cout << res << std::endl;
+    int counter = 0;
+    long tmpNo;
+    int my_cluster_no[CLUSTER_NUM];
     
-    std::string ofname = std::to_string(targ->id) + ".lbl";      
-    ofstream outputfile(ofname);
+    string fname_label = std::to_string(targ->id) + ".lbl";      
+    
+    Eigen::MatrixXd res_label= readCSV(fname_label, targ->rows,targ->columns);
 
-    std::random_device rnd;
-
-    for(i=0; i< res2.rows(); i++)
+    for(i = 0; i < CLUSTER_NUM; i++)
+      my_cluster_no[i] = 0; 
+    
+    for(i=0; i< res_label.rows(); i++)
 	{
-
-	  label = rnd() % CLUSTER_NUM;
-	  
-	  outputfile << label;      
-	  outputfile << std::endl;
-
+	  tmpNo = res_label.row(i)(0);
+	  my_cluster_no[tmpNo]++;
 	}
 
-      outputfile.close();
+    pthread_mutex_lock(&result.mutex);
 
-      std::cout << "thread ID: " << targ->id << " - done." << std::endl;
-
+    for(i=0; i<CLUSTER_NUM; i++)
+      {
+	result.cluster_no[i] += my_cluster_no[i];
+      }
+            
+    pthread_mutex_unlock(&result.mutex);
+    
     return;
 }
 
@@ -105,19 +108,27 @@ int main(int argc, char *argv[])
 {
     pthread_t handle[THREAD_NUM];
     thread_arg_t targ[THREAD_NUM];
-
     int i;
+
+    /* クラスタ初期化 */
+    for(i = 0; i < CLUSTER_NUM; i++)
+      result.cluster_no[i] = 0; 
 
     /* 処理開始 */
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].id = i;
-	/* size of data */
         targ[i].rows = atoi(argv[1]);
 	targ[i].columns = atoi(argv[2]);
         pthread_create(&handle[i], NULL, (void*)thread_func, (void*)&targ[i]);
     }
-
+    
     /* 終了を待つ */
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
+    
+    for(i=0; i<CLUSTER_NUM; i++)
+      {
+	std::cout << "CLUSTER" << i << "," << result.cluster_no[i] << endl;
+      }
+
 }

@@ -1,9 +1,8 @@
-
 # the number of clusters is hard-coded in *.cpp files.
 # data seize: row:nLines, col:nDimensions
 
 nLines=1000
-nThreads=2
+nThreads=3
 allLine=`expr $nLines \* $nThreads`
 
 nDimensions=2
@@ -36,3 +35,5 @@ time ./rename.sh list
 echo "STEP3: now initlializing labels ..."
 time ./init-label.re $nLines $nDimensions
 
+\cp count-start count-now
+rm -rf SSE
