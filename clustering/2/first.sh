@@ -1,4 +1,3 @@
-
 # the number of clusters is hard-coded in *.cpp files.
 # data seize: row:nLines, col:nDimensions
 
