@@ -1,12 +1,14 @@
 # the number of clusters is hard-coded in *.cpp files.
 # data seize: row:nLines, col:nDimensions
 
-nLines=1000
-nThreads=3
-allLine=`expr $nLines \* $nThreads`
+#nLines=1000
+#nThreads=3
+#nDimensions=2
+#nClusters=3
 
-nDimensions=2
-nClusters=3
+source parameter.txt
+
+allLine=`expr $nLines \* $nThreads`
 
 if [ "$1" = "" ]
 then
