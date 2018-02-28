@@ -1,0 +1,4 @@
+nDimensions=6
+nItems=6
+nThreads=1
+nClusters=3
