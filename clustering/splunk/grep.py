@@ -2,7 +2,6 @@
 
 import sys 
 
-
 argvs = sys.argv  
 argc = len(argvs) 
 
@@ -12,6 +11,12 @@ line = f.readline()
     
 while line:
     tmp = line.split(",")
-    print str(tmp[-4]) + "," + str(tmp[-3]).replace("\"","") + "," + str(tmp[-2]) + "," + str(tmp[-1]).strip()
+
+    try:
+        if int(tmp[0]) == int(argvs[2]):
+            print line.strip()
+    except:
+        pass
+
     line = f.readline() 
 
