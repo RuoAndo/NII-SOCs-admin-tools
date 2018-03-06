@@ -19,6 +19,8 @@ if __name__ == '__main__':
 
     f2 = []
 
+    points = int(argvs[2])
+    
     fl = open(argvs[1])
     line = fl.readline() 
 
@@ -47,7 +49,7 @@ if __name__ == '__main__':
     tmp2 = sorted(tmp.items(), key=lambda x: x[1], reverse=True)
 
     tmp3 = []
-    for var in range(0, 4):
+    for var in range(0, points):
         tmp3.append(tmp2[var][0])
 
     #print tmp3
