@@ -6,7 +6,7 @@
 #nThreads=1
 #nClusters=2
 
-source ../parameter.txt
+source parameter.txt
 source nThreads.txt
 
 if [ "$1" = "" ]

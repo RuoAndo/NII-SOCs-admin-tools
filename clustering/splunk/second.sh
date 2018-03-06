@@ -6,7 +6,7 @@
 
 # nItems=4 # nDimensions-2 / items: src dst n[* * * *]
 
-source ../parameter.txt
+source parameter.txt
 source nThreads.txt
 
 nLines=`wc -l 0 | cut -d " " -f 1` 
@@ -52,6 +52,9 @@ while [ $COUNT -lt 1000 ]; do
    rm -rf centroid
    ./avg.re $nLines $nDimensions #yields centroid
 
+   python fill.py 0 centroid | tee centroid-tmp
+   cp centroid-tmp centroid
+   
    echo "STEP2: relabeling ..." # input: 0, centroid # output: 0.rlbl
 
    #cat relabel.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > relabel.tmp.cpp
@@ -75,6 +78,8 @@ while [ $COUNT -lt 1000 ]; do
       
    COUNT=`expr $COUNT + 1`
 done
+
+./count.re $nLines 1 | tee tmp-all-labeled 
 
 echo "done."
 echo "iteration:"$COUNT

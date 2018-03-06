@@ -12,6 +12,6 @@ line = f.readline()
     
 while line:
     tmp = line.split(",")
-    print str(tmp[-5]) + "," + str(tmp[-4]).replace("\"","") + "," + str(tmp[3]) + "," + str(tmp[-2]) + "," + str(tmp[-1]).strip()
+    print str(tmp[-3]) + "," + str(tmp[-2]).replace("\"","") + "," + str(tmp[-1]).strip() # + "," + str(tmp[-2]) + "," + str(tmp[-1]).strip()
     line = f.readline() 
 
