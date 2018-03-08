@@ -2,6 +2,8 @@
 # input file: 0 (nDimensions * nLines)
 # output file: 0.lbl
 
+pyenv local system
+
 d=6
 n=1000000
 
