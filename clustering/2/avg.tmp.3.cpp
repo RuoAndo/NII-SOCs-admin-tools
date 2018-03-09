@@ -16,7 +16,7 @@
 
 #define THREAD_NUM 3
 #define CLUSTER_NUM 3
-#define ITEM_NUM 2
+#define ITEM_NUM 6
 
 using namespace Eigen;
 using namespace std;

@@ -16,7 +16,7 @@
 
 #define THREAD_NUM 3
 #define CLUSTER_NUM 3
-#define ITEM_NUM 2
+#define ITEM_NUM 6
 
 using namespace Eigen;
 using namespace std;
@@ -101,7 +101,7 @@ void thread_func(void *arg) {
     Eigen::MatrixXd res_label = readCSV(fname_label, targ->rows, targ->columns);
 
     // Eigen::MatrixXd res2 = res.leftCols(1);
-    Eigen::MatrixXd res4 = res.rightCols(2);
+    Eigen::MatrixXd res4 = res.rightCols(6);
 
     //  std::cout << "iteration:" << res.rows() << std::endl;
     for(i=0; i< res.rows(); i++)
