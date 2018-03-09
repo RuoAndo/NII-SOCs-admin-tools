@@ -53,32 +53,37 @@ f = open('process2', 'a')
 f.write("### " + strdatetime + " ###" +"\n") 
 f.close() 
 
-for i in n1:
-    tmpstr1 = str(i).strip() + ":(" + str(float(float(i)/float(sum1))*100).strip() + "%)" 
-    tmpstr2 = " < " + str(int(n2[counter])).strip() + ":(" + str(float(float(n2[counter])/float(sum2))*100).strip() + "%)"
-    tmpstr3 = ":" + centroids[counter]
-    print tmpstr1 + tmpstr2 + tmpstr3
 
-    f = open('process', 'a')
-    f.write(tmpstr1+tmpstr2+tmpstr3+"\n") 
-    f.close() 
+try:
+    for i in n1:
+        tmpstr1 = str(i).strip() + ":(" + str(float(float(i)/float(sum1))*100).strip() + "%)" 
+        tmpstr2 = " < " + str(int(n2[counter])).strip() + ":(" + str(float(float(n2[counter])/float(sum2))*100).strip() + "%)"
+        tmpstr3 = ":" + centroids[counter]
+        print tmpstr1 + tmpstr2 + tmpstr3
 
-    tmpstr4 = str(i).strip() + "," 
-    tmpstr5 = centroids[counter]
+        f = open('process', 'a')
+        f.write(tmpstr1+tmpstr2+tmpstr3+"\n") 
+        f.close() 
 
-    f = open('process2', 'a')
-    f.write(tmpstr4+tmpstr5+"\n") 
-    f.close() 
+        tmpstr4 = str(i).strip() + "," 
+        tmpstr5 = centroids[counter]
 
-    diffabs = abs(int(i)-int(n2[counter]))
-    sse = sse + diffabs
-    #print "SSE:" + str(sse)
-    counter = counter + 1
+        f = open('process2', 'a')
+        f.write(tmpstr4+tmpstr5+"\n") 
+        f.close() 
 
-print "SSE:" + str(sse)
-f = open('SSE', 'a') 
-f.write(str(sse)+"\n") 
-f.close() 
+        diffabs = abs(int(i)-int(n2[counter]))
+        sse = sse + diffabs
+        #print "SSE:" + str(sse)
+        counter = counter + 1
+
+    print "SSE:" + str(sse)
+    f = open('SSE', 'a') 
+    f.write(str(sse)+"\n") 
+    f.close()
+
+except:
+    pass
 
 
     
