@@ -75,7 +75,7 @@ void thread_func(void *arg) {
     string fname = std::to_string(targ->id);
 
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.rightCols(2);
+    Eigen::MatrixXd res2 = res.rightCols(6);
 
     // std::cout << res << std::endl;
     
