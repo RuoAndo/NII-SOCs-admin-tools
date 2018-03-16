@@ -1,0 +1,6 @@
+source="/home/flare/alerts/target" | stats count by source_ip | outputcsv target.csv
+
+ 2047  time python map.py attack.csv target.csv > tmp
+ 2048  ./sort.pl tmp
+ 2049  ./sort.pl tmp > tmp-sorted
+
