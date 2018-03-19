@@ -12,9 +12,9 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM CONST
-#define CLUSTER_NUM CONST
-#define ITEM_NUM CONST
+#define THREAD_NUM N
+#define CLUSTER_NUM N
+#define ITEM_NUM N
 
 static int cluster_no[CLUSTER_NUM];
 Eigen::VectorXd avg(CONST);

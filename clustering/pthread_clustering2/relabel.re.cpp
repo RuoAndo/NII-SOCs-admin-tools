@@ -12,8 +12,10 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 66
-#define CLUSTER_NUM 20
+#define THREAD_NUM 10
+#define CLUSTER_NUM 10
+
+#define DISPLAY_RATIO 1000
 
 static int cluster_no[CLUSTER_NUM];
 
@@ -76,6 +78,8 @@ void thread_func(void *arg) {
     string fname = std::to_string(targ->id);
     string fname_label = std::to_string(targ->id) + ".lbl";      
 
+    int DISPLAY_COUNTER = 0;
+    
     /*
     string fname = std::to_string(targ->id);
     string fname_label = std::to_string(targ->id) + ".relabeled";
@@ -96,30 +100,26 @@ void thread_func(void *arg) {
     for(i=0; i< res2.rows(); i++)
 	{
 
-	  counter = 0;
+	  std::vector<double> v(0, avg.rows());
+
 	  for(j=0; j < avg.rows(); j++)
 	    {
 	      Eigen::VectorXd distance = (res2.row(i) - avg.row(j)).rowwise().norm();
-
-	      if(distance(0) < distance_tmp)
-		{
-		  std::cout << "THREAD:" << targ->id << ":distance:" << distance(0) << "->" << j << std::endl;
-		  distance_tmp = distance(0);
-		  counter = j;
-		}
-	      
+	      // std::cout << "point:" << i << ":clusterNo:" << j << ":" << distance(0) << std::endl;
+	      v.push_back(distance(0));
 	    }
 
-	  outputfile << counter << endl;
-	  // outputfile << counter << ",";
-	    /*
-	  for(k=0;k<res3.row(i).cols()-1 ;k++)
-	    outputfile << res3.row(i).col(k) << ","; 
+	  std::vector<double>::iterator iter = std::min_element(v.begin(), v.end());
+	  size_t index = std::distance(v.begin(), iter);
 
-	  outputfile << res3.row(i).col(k);
-	  outputfile << std::endl;
-	  cluster_no[counter]++;  
-	    */
+	  if(DISPLAY_COUNTER/DISPLAY_RATIO==0 && (int)res_label(0) != int(index))
+	    {
+	      std::cout << "threadID:" << targ->id << ":" << res_label(0) << ":" << v[index] << "->" << index << std::endl;
+	    }
+
+	  DISPLAY_COUNTER++;
+	  
+	  outputfile << index << endl;
 	}
 
       outputfile.close();

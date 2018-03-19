@@ -14,9 +14,9 @@
 
 #include <random>
 
-#define THREAD_NUM 15
-#define CLUSTER_NUM 20
-#define ITEM_NUM 4
+#define THREAD_NUM 10
+#define CLUSTER_NUM N
+#define ITEM_NUM N
 
 using namespace Eigen;
 using namespace std;

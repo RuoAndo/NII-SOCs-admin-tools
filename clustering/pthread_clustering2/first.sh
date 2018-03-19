@@ -4,8 +4,8 @@
 
 nLines=1000000
 nDimensions=6
-nThreads=66
-nClusters=20
+nThreads=10
+nClusters=10
 
 if [ "$1" = "" ]
 then

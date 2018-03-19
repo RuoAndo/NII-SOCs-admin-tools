@@ -1,16 +1,42 @@
 nLines=1000000
 nDimensions=6
-nThreads=66
-nClusters=20
+nThreads=10
+nClusters=10
 nItems=4 # nDimensions-2 / items: src dst n[* * *] 
 
 echo "STEP0: building executables ..."
+
+cat count.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > count.tmp.cpp
+cat count.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > count.tmp.2.cpp
+cat count.tmp.2.cpp | sed "s/res.rightCols(6)/res.rightCols($nDimensions)/" > count.re.cpp 
+./build.sh count.re
+
+cat avg.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > avg.tmp.cpp
+cat avg.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > avg.tmp.2.cpp
+cat avg.tmp.2.cpp | sed "s/#define ITEM_NUM N/#define ITEM_NUM $nItems/" > avg.re.cpp
+./build.sh avg.re
+
+cat fill2.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > fill2.tmp.cpp
+cat fill2.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > fill2.tmp.2.cpp
+cat fill2.tmp.2.cpp | sed "s/#define ITEM_NUM N/#define ITEM_NUM $nItems/" > fill2.tmp.3.cpp
+cat fill2.tmp.3.cpp | sed "s/ avg(CONST);/ avg($nItems);/" > fill2.re.cpp
+./build.sh fill2.re
+
+cat relabel.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > relabel.tmp.cpp
+cat relabel.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > relabel.re.cpp
+./build.sh relabel.re
+
 #./build.sh init-label
 #./build.sh avg
 #./build.sh relabel
 #./build.sh fill2
 #./build.sh count
 #./build.sh pickup2
+
+ssetail=10000000000000
+
+while [ $ssetail -gt 10000 ]
+do
 
 echo "STEP1: [REDUCE] concatenating label files ..." 
 ls *.lbl > label_file_list
@@ -25,11 +51,6 @@ wc -l all-labeled # could be size of all data
 sleep 2s
 
 echo "STEP2: counting points per cluster..."
-# conversing count.cpp 
-cat count.cpp | sed "s/#define THREAD_NUM 15/#define THREAD_NUM $nThreads/" > count.tmp.cpp
-cat count.tmp.cpp | sed "s/#define CLUSTER_NUM 20/#define CLUSTER_NUM $nClusters/" > count.tmp.2.cpp
-cat count.tmp.2.cpp | sed "s/res.rightCols(6)/res.rightCols($nDimensions)/" > count.re.cpp 
-./build.sh count.re
 
 # reading *.lbl ( 1* nLines)
 time ./count.re $nLines 1 | tee tmp-all-labeled 
@@ -37,31 +58,17 @@ sleep 2s
 
 echo "STEP3: calculating centroid..."
 # conversing avg.cpp 
-cat avg.cpp | sed "s/#define THREAD_NUM CONST/#define THREAD_NUM $nThreads/" > avg.tmp.cpp
-cat avg.tmp.cpp | sed "s/#define CLUSTER_NUM CONST/#define CLUSTER_NUM $nClusters/" > avg.tmp.2.cpp
-cat avg.tmp.2.cpp | sed "s/#define ITEM_NUM CONST/#define ITEM_NUM $nItems/" > avg.re.cpp
-./build.sh avg.re
 rm -rf centroid
 time ./avg.re $nLines $nDimensions #yields centroid
 sleep 2s
 
 echo "STEP4: filling blank centroid rows..."
-cat fill2.cpp | sed "s/#define THREAD_NUM CONST/#define THREAD_NUM $nThreads/" > fill2.tmp.cpp
-cat fill2.tmp.cpp | sed "s/#define CLUSTER_NUM CONST/#define CLUSTER_NUM $nClusters/" > fill2.tmp.2.cpp
-cat fill2.tmp.2.cpp | sed "s/#define ITEM_NUM CONST/#define ITEM_NUM $nItems/" > fill2.tmp.3.cpp
-cat fill2.tmp.3.cpp | sed "s/ avg(CONST);/ avg($nItems);/" > fill2.re.cpp
-./build.sh fill2.re
-
 python fill2.py tmp-all-labeled centroid $nLines $nDimensions > tmp-centroid
 cat tmp-centroid
 \cp tmp-centroid centroid
 sleep 4s
 
 echo "STEP5: relabeling ..."
-
-cat relabel.cpp | sed "s/#define THREAD_NUM CONST/#define THREAD_NUM $nThreads/" > relabel.tmp.cpp
-cat relabel.tmp.cpp | sed "s/#define CLUSTER_NUM CONST/#define CLUSTER_NUM $nClusters/" > relabel.re.cpp
-./build.sh relabel.re
 time ./relabel.re centroid $nClusters $nItems $nLines $nDimensions 
 
 echo "STEP6: [reduce] concatenating relabel files ..."
@@ -83,8 +90,30 @@ sleep 2s
 # comparing STEP2 with STEP7
 echo "STEP7: calculating SSE..."
 time python sse.py centroid tmp-all-relabeled tmp-all-labeled
-cat SSE
-sleep 2s
+#cat SSE
+
+ssetail=`tail -n 1 SSE`
+ssetail=`echo $ssetail`
+
+echo "current sse:"$ssetail
+sleep 3s
+
+done
 
 #./build.sh pickup2; ./pickup2 centroid $nClusters $nItems $nLines $nDimensions | tee tmp
 #python reverse.py tmp
+
+time ./count.re $nLines 1 
+
+COUNT=0
+
+rm -rf result-all
+touch result-all
+
+while [ $COUNT -lt $nThreads ]; do
+    paste ${COUNT}.lbl ${COUNT} -d"," > ${COUNT}.result
+    cat ${COUNT}.result >> result-all
+    COUNT=$(( COUNT + 1 )) 
+done
+
+
