@@ -1,6 +1,6 @@
 nLines=1000000
 nDimensions=6
-nThreads=10
+nThreads=96
 nClusters=10
 nItems=4 # nDimensions-2 / items: src dst n[* * *] 
 
@@ -116,4 +116,5 @@ while [ $COUNT -lt $nThreads ]; do
     COUNT=$(( COUNT + 1 )) 
 done
 
-
+./count.re $nLines 1 > count-result                                                                                           
+python count-percent.py count-result   
