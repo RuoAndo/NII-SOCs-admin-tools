@@ -117,4 +117,5 @@ while [ $COUNT -lt $nThreads ]; do
 done
 
 ./count.re $nLines 1 > count-result                                                                                           
-python count-percent.py count-result   
+python count-percent.py count-result 
+time python count-grep.py count-result result-all
