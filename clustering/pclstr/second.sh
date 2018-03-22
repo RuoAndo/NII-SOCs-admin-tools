@@ -120,5 +120,7 @@ done
 today=$(date "+%Y%m%d")
 hostname=`hostname`
 
-python count-percent.py count-result | count-percent-$hostname-$today
-time python count-grep.py count-result result-all | iplist-$hostname-$today
+python count-percent.py count-result > count-percent-$hostname-$today
+tail count-percent-$hostname-$today
+time python count-grep.py count-result result-all > iplist-$hostname-$today
+tail iplist-$hostname-$today
