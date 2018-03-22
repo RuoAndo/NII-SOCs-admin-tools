@@ -1,6 +1,6 @@
 nLines=1000000
 nDimensions=6
-nThreads=96
+nThreads=180
 nClusters=10
 nItems=4 # nDimensions-2 / items: src dst n[* * *] 
 
@@ -117,5 +117,8 @@ while [ $COUNT -lt $nThreads ]; do
 done
 
 ./count.re $nLines 1 > count-result                                                                                           
-python count-percent.py count-result 
-time python count-grep.py count-result result-all
+today=$(date "+%Y%m%d")
+hostname=`hostname`
+
+python count-percent.py count-result | count-percent-$hostname-$today
+time python count-grep.py count-result result-all | iplist-$hostname-$today
