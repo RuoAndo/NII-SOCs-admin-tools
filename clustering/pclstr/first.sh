@@ -1,17 +1,21 @@
 # the number of clusters is hard-coded in *.cpp files.
-
 # data seize: row:nLines, col:nDimensions
 
-nLines=1000000
-nDimensions=6
-nThreads=96
-nClusters=10
-
-if [ "$1" = "" ]
+if [ "$2" = "" ]
 then
-    echo "argument required: ./first DATA_FILE_NAME"
+    echo "argument required: ./first file nThreads"
     exit
 fi
+
+allnLines=`wc -l $1 | cut -d " " -f 1`
+echo $allnLines
+nThreads=$2
+
+nLines=`expr $allnLines / $2`
+echo $nLines
+#nLines=1000000
+nDimensions=6
+nClusters=10
 
 rm -rf process
 rm -rf process2

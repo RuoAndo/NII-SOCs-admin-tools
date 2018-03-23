@@ -1,8 +1,21 @@
-nLines=1000000
+if [ "$2" = "" ]
+then
+    echo "argument required: ./second file nThreads"
+    exit
+fi
+
+
+allnLines=`wc -l $1 | cut -d " " -f 1`
+echo $allnLines
+nThreads=$2
+
+nLines=`expr $allnLines / $2`
 nDimensions=6
-nThreads=180
 nClusters=10
 nItems=4 # nDimensions-2 / items: src dst n[* * *] 
+
+threshold=`expr $allnLines / 100`
+echo "threshold:"$threshold
 
 echo "STEP0: building executables ..."
 
@@ -35,7 +48,7 @@ cat relabel.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nCluster
 
 ssetail=10000000000000
 
-while [ $ssetail -gt 10000 ]
+while [ $ssetail -gt $threshold ]
 do
 
 echo "STEP1: [REDUCE] concatenating label files ..." 

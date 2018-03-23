@@ -31,11 +31,11 @@ while line:
     line = f.readline()
 f.close()
  
-print number
+#print number
 
 #sorted = sorted(number.values())
 s =  sorted(number.items(), key=lambda x: int(x[1]))
-print s
+#print s
 
 #for x in s:
 #    print x[0]
@@ -47,8 +47,8 @@ ipList = []
 for x in s:
     if counter < 4:
 
-        print x
-        print argvs[2]
+        #print x
+        #print argvs[2]
         f = open(argvs[2])
         line = f.readline() 
         while line:
@@ -58,7 +58,7 @@ for x in s:
             try:
                 if int(tmp[0]) == int(x[0]):
                     #print line.strip()
-                    print str(tmp[0]) + "," + str(int2ip(int(tmp[1]))) + "," + str(int2ip(int(tmp[2]))) + "," + str(tmp[3]) + "," + str(tmp[4]) + "," + str(tmp[5])
+                    #print str(tmp[0]) + "," + str(int2ip(int(tmp[1]))) + "," + str(int2ip(int(tmp[2]))) + "," + str(tmp[3]) + "," + str(tmp[4]) + "," + str(tmp[5])
                     ipList.append(int2ip(int(tmp[1])))
                     ipList.append(int2ip(int(tmp[2])))
 
