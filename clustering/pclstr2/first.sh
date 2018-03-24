@@ -3,7 +3,7 @@
 
 if [ "$2" = "" ]
 then
-    echo "argument required: ./first file nThreads"
+    echo "argument required: ./first file nThreads nDimensions nClusters"
     exit
 fi
 
@@ -14,8 +14,8 @@ nThreads=$2
 nLines=`expr $allnLines / $2`
 echo $nLines
 #nLines=1000000
-nDimensions=5
-nClusters=10
+nDimensions=$3
+nClusters=$4
 
 rm -rf process
 rm -rf process2
