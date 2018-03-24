@@ -4,15 +4,14 @@ then
     exit
 fi
 
-
 allnLines=`wc -l $1 | cut -d " " -f 1`
 echo $allnLines
 nThreads=$2
 
 nLines=`expr $allnLines / $2`
-nDimensions=6
+nDimensions=5
 nClusters=10
-nItems=4 # nDimensions-2 / items: src dst n[* * *] 
+nItems=3 # nDimensions-2 / items: src dst n[* * *] 
 
 threshold=`expr $allnLines / 100`
 echo "threshold:"$threshold

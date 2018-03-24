@@ -14,7 +14,7 @@ nThreads=$2
 nLines=`expr $allnLines / $2`
 echo $nLines
 #nLines=1000000
-nDimensions=6
+nDimensions=5
 nClusters=10
 
 rm -rf process
