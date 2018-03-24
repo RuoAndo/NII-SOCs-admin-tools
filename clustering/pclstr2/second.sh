@@ -104,13 +104,13 @@ sleep 2s
 # comparing STEP2 with STEP7
 echo "STEP7: calculating SSE..."
 time python sse.py centroid tmp-all-relabeled tmp-all-labeled
-#cat SSE
+cat SSE
 
 ssetail=`tail -n 1 SSE`
 ssetail=`echo $ssetail`
 
 echo "current sse:"$ssetail
-sleep 3s
+sleep 5s
 
 done
 
@@ -130,7 +130,8 @@ while [ $COUNT -lt $nThreads ]; do
     COUNT=$(( COUNT + 1 )) 
 done
 
-./count.re $nLines 1 > count-result                                                                                           
+./count.re $nLines 1 > count-result                                                                                      
+     
 today=$(date "+%Y%m%d")
 hostname=`hostname`
 
