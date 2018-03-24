@@ -12,7 +12,7 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 10
+#define THREAD_NUM 10000
 #define CLUSTER_NUM N
 
 #define DISPLAY_RATIO 1000
@@ -89,8 +89,8 @@ void thread_func(void *arg) {
     
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res_label= readCSV(fname_label, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.rightCols(4);
-    Eigen::MatrixXd res3 = res.rightCols(6);
+    Eigen::MatrixXd res2 = res.rightCols(N);
+    Eigen::MatrixXd res3 = res.rightCols(N);
 
     // 0,2.23391e+09,2.88497e+09,66,0,2
     std::string ofname = std::to_string(targ->id) + ".rlbl";
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 
     /* n‚ß‚ÉdS‚ğæ‚è‚Ş */
     Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-    avg = restmp.rightCols(4);
+    avg = restmp.rightCols(N);
     std::cout << avg << std::endl;      
     std::cout << avg.rows() << std::endl;      
 

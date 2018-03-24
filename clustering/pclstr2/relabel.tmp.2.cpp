@@ -12,8 +12,8 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM N
-#define CLUSTER_NUM N
+#define THREAD_NUM 10000
+#define CLUSTER_NUM 10
 
 #define DISPLAY_RATIO 1000
 

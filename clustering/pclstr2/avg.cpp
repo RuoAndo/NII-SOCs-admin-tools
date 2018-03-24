@@ -101,7 +101,7 @@ void thread_func(void *arg) {
     Eigen::MatrixXd res_label = readCSV(fname_label, targ->rows, targ->columns);
 
     // Eigen::MatrixXd res2 = res.leftCols(1);
-    Eigen::MatrixXd res4 = res.rightCols(4);
+    Eigen::MatrixXd res4 = res.rightCols(N);
 
     //  std::cout << "iteration:" << res.rows() << std::endl;
     for(i=0; i< res.rows(); i++)

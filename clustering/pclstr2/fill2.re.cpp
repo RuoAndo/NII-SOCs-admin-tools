@@ -12,12 +12,12 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/SVD>
 
-#define THREAD_NUM 10
+#define THREAD_NUM 10000
 #define CLUSTER_NUM 10
-#define ITEM_NUM 4
+#define ITEM_NUM 3
 
 static int cluster_no[CLUSTER_NUM];
-Eigen::VectorXd avg(4);
+Eigen::VectorXd avg(3);
 
 using namespace Eigen;
 using namespace std;

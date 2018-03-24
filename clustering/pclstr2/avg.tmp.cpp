@@ -14,7 +14,7 @@
 
 #include <random>
 
-#define THREAD_NUM 10
+#define THREAD_NUM 10000
 #define CLUSTER_NUM N
 #define ITEM_NUM N
 
@@ -101,7 +101,7 @@ void thread_func(void *arg) {
     Eigen::MatrixXd res_label = readCSV(fname_label, targ->rows, targ->columns);
 
     // Eigen::MatrixXd res2 = res.leftCols(1);
-    Eigen::MatrixXd res4 = res.rightCols(4);
+    Eigen::MatrixXd res4 = res.rightCols(N);
 
     //  std::cout << "iteration:" << res.rows() << std::endl;
     for(i=0; i< res.rows(); i++)
