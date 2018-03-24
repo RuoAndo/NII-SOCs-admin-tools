@@ -1,7 +1,7 @@
 # the number of clusters is hard-coded in *.cpp files.
 # data seize: row:nLines, col:nDimensions
 
-if [ "$2" = "" ]
+if [ "$4" = "" ]
 then
     echo "argument required: ./first file nThreads nDimensions nClusters"
     exit
