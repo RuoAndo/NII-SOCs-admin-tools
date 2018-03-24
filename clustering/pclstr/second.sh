@@ -1,6 +1,6 @@
-if [ "$2" = "" ]
+if [ "$5" = "" ]
 then
-    echo "argument required: ./second file nThreads"
+    echo "argument required: ./second.sh file nThreads nDimensions nClusters nItems"
     exit
 fi
 
@@ -10,9 +10,9 @@ echo $allnLines
 nThreads=$2
 
 nLines=`expr $allnLines / $2`
-nDimensions=6
-nClusters=10
-nItems=4 # nDimensions-2 / items: src dst n[* * *] 
+nDimensions=$3
+nClusters=$4
+nItems=$5 # nDimensions-2 / items: src dst n[* * *] 
 
 threshold=`expr $allnLines / 100`
 echo "threshold:"$threshold
