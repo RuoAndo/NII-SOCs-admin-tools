@@ -25,11 +25,13 @@ if __name__ == '__main__':
     line = fl.readline() 
 
     while line:
-        f2.append(abs(int(line)))
+        f2.append(abs(float(line.strip())))
         line = fl.readline() 
 
     fl.close()
-        
+
+    #print f2
+    
     #for x in f:
     #    f2.append(abs(x))
     
@@ -38,14 +40,14 @@ if __name__ == '__main__':
 
     #counter = 0
     for i in range(len(f2)):
-        # print np.argsort(f)[::-1][i], np.sort(f)[::-1][i]
+        print np.argsort(f2)[::-1][i], np.sort(f2)[::-1][i]
         tmp[np.argsort(f2)[::-1][i]] = np.sort(f2)[::-1][i]
     #    tmp2[counter] = np.argsort(f2)[::-1][i]
         
         #counter = counter + 1
         
-    #print tmp
-    #print tmp2.sort()
+    print tmp
+    # print tmp2.sort()
     tmp2 = sorted(tmp.items(), key=lambda x: x[1], reverse=True)
 
     tmp3 = []
