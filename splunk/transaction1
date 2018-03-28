@@ -1,0 +1,3 @@
+| transaction source_ip maxspan=1m 
+| table source_ip alarm_name eventcount duration 
+| sort by eventcount desc
