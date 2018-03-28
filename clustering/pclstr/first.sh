@@ -21,6 +21,10 @@ rm -rf process
 rm -rf process2
 rm -rf SSE
 
+rm -rf *lbl
+rm -rf *rlbl
+rm -rf hout*
+
 grep THREAD_NUM init-label.cpp | grep define
 echo "the numbers of threads\:"$nThreads
 
