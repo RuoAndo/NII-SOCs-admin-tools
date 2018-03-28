@@ -142,3 +142,5 @@ time python count-grep.py count-result result-all > iplist-$hostname-$today
 wl=`wc -l all | cut -d " " -f 1`
 \cp iplist-$hostname-$today iplist-$hostname-$today-${wc}-${allnLines}
 tail iplist-$hostname-$today-${wc}-${allnLines}
+
+scp iplist-$hostname-$today-${wc}-${allnLines} 192.168.72.5:/mnt/sdc/es/batch/
