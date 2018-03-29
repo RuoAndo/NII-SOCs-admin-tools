@@ -139,7 +139,7 @@ python count-percent.py count-result > count-percent-$hostname-$today
 tail count-percent-$hostname-$today
 time python count-grep.py count-result result-all > iplist-$hostname-$today
 
-wl=`wc -l all | cut -d " " -f 1`
+wl=`wc -l $1 | cut -d " " -f 1`
 \cp iplist-$hostname-$today iplist-$hostname-$today-${wc}-${allnLines}
 tail iplist-$hostname-$today-${wc}-${allnLines}
 
