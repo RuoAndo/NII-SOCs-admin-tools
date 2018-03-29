@@ -25,6 +25,7 @@ rm -rf *lbl
 rm -rf *rlbl
 rm -rf hout*
 rm -rf iplist*
+rm -rf count-percent*
 
 grep THREAD_NUM init-label.cpp | grep define
 echo "the numbers of threads\:"$nThreads
