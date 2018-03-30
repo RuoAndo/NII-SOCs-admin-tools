@@ -14,6 +14,6 @@ do:
 <pre>
 # ./first.sh
 argument required: ./first file nThreads nClusters
-1# ./second.sh
+# ./second.sh
 argument required: ./second file nThreads nClusters
 </pre>
