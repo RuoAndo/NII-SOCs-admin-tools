@@ -1,58 +1,59 @@
 # the number of clusters is hard-coded in *.cpp files.
 # data seize: row:nLines, col:nDimensions
 
-#nLines=1000
-#nThreads=3
-#nDimensions=2
-#nClusters=3
+if [ "$4" = "" ]
+then
+    echo "argument required: ./first file nThreads nDimensions nClusters nItems"
+    exit
+fi
 
-source ../parameter.txt
-\cp ../tmp tmp
+allnLines=`wc -l $1 | cut -d " " -f 1`
+echo $allnLines
+nThreads=$2
 
-allLine=`expr $nLines \* $nThreads`
+nLines=`expr $allnLines / $2`
+echo $nLines
+#nLines=1000000
+nDimensions=$3
+nClusters=$4
+nItems=$5
 
-#if [ "$1" = "" ]
-#then
-#    echo "argument required: ./first DATA_FILE_NAME"
-#    exit
-#fi
+rm -rf process
+rm -rf process2
+rm -rf SSE
 
+rm -rf *lbl
+rm -rf *rlbl
+rm -rf hout*
+rm -rf iplist*
+rm -rf count-percent-*
+
+grep THREAD_NUM init-label.cpp | grep define
 echo "the numbers of threads\:"$nThreads
-
-echo "STEP1: building executables ..."
 
 # conversing init-label.cpp 
 cat init-label.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > init-label.tmp.cpp
 cat init-label.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > init-label.tmp.2.cpp
-cat init-label.tmp.2.cpp | sed "s/rightCols(N)/rightCols($nDimensions)/" > init-label.re.cpp 
+cat init-label.tmp.2.cpp | sed "s/res.rightCols(N)/res.rightCols($nItems)/" > init-label.re.cpp 
 
+echo "STEP1: building executables ..."
 ./build.sh init-label.re
 
-    #\cp count-now count-previous
-cat count.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > count.tmp.cpp
-cat count.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > count.re.cpp
-    #cat count.tmp.2.cpp | sed "s/rightCols(N)/rightCols($nDimensions)/" > count.re.cpp 
-./build.sh count.re 
+#./init-label.re $1
 
-cat avg.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > avg.tmp.cpp
-cat avg.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > avg.tmp.2.cpp
-cat avg.tmp.2.cpp | sed "s/#define ITEM_NUM N/#define ITEM_NUM $nItems/" > avg.tmp.3.cpp
-cat avg.tmp.3.cpp | sed "s/rightCols(N)/rightCols($nDimensions)/" > avg.re.cpp 
-./build.sh avg.re
+#./build.sh init-label
+#./build.sh avg
+#./build.sh relabel
+#./build.sh fill2
 
-cat relabel.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > relabel.tmp.cpp
-cat relabel.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > relabel.tmp.2.cpp
-cat relabel.tmp.2.cpp | sed "s/rightCols(N)/rightCols($nDimensions)/" > relabel.re.cpp 
-./build.sh relabel.re
-    
-echo "STEP2: spliting files ..".
+echo "STEP2: now spliting files ..".
 rm -rf hout*
+headLine=`expr $nLines \* $nThreads`
 
-#head -n $allLine $1 > $1.headed
-#split -l $nLines $1.headed hout
+head -n $headLine $1 > $1.headed
+split -l $nLines $1.headed hout
 
-head -n $allLine tmp > tmp.headed
-split -l $nLines tmp.headed hout
+pyenv local system
 
 ls hout* > list
 time ./rename.sh list
@@ -60,5 +61,3 @@ time ./rename.sh list
 echo "STEP3: now initlializing labels ..."
 time ./init-label.re $nLines $nDimensions
 
-\cp count-start count-now
-rm -rf SSE
