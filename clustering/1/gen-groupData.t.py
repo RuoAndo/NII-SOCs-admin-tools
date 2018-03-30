@@ -3,26 +3,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.random import *
-import sys
-
-argvs = sys.argv
-argc = len(argvs) 
-
-if (argc != 3): 
-    print 'Usage: # python d N for ex, 6 * 1000 / 2 = 3000'
-    quit()    
 
 rng = np.random.RandomState(123)
 
-# 6 * 1000 /2 = 3000 tmp
+#d = 6
+#N = 10000000
 
-d = int(argvs[1])
-N = int(argvs[2])
+d = 6
+N = 10000000
 
-dN = d * N
+TOTAL = d * N
 
-SRC = rand(dN) * 40 + 30 # 30?70の乱数を100個生成
-DST = rand(dN) * 40 + 30 # 30?70の乱数を100個生成
+#rand(100) * 40 + 30 # 30?70の乱数を100個生成
+SRC = rand(TOTAL) * 100 + 1 # 30-70の乱数を100個生成
+DST = rand(TOTAL) * 100 + 1 # 30-70の乱数を100個生成
+
+#SRC = random_integers(50, TOTAL)# * 20 + 30 # 30-70の乱数を100個生成
+#DST = random_integers(50, TOTAL)# * 20 + 30 # 30-70の乱数を100個生成
 
 src = []
 for x in SRC:
@@ -34,9 +31,9 @@ for x in DST:
     
 mean = 5
 
-x1 = rng.randn(N, d) + np.array([0,0,0,0,0,0])
-x2 = rng.randn(N, d) + np.array([mean*2, mean, mean*2, mean, mean*2, mean])
-x3 = rng.randn(N, d) + np.array([mean, mean*2, mean, mean*2, mean, mean*2])
+x1 = rng.randn(N, d) * 100 + np.array([0,0,0,0,0,0])
+x2 = rng.randn(N, d) * 100 + np.array([mean*2, mean, mean*2, mean, mean*2, mean])
+x3 = rng.randn(N, d) * 100 + np.array([mean, mean*2, mean, mean*2, mean, mean*2])
 
 x = np.concatenate((x1, x2, x3), axis=0)
 
