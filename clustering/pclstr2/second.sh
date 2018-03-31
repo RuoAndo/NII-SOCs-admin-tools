@@ -140,7 +140,7 @@ tail count-percent-$hostname-$today
 time python count-grep.py count-result result-all > iplist-$hostname-$today
 
 wl=`wc -l $1 | cut -d " " -f 1`
-\cp iplist-$hostname-$today iplist-$hostname-$today-${wc}-${allnLines}
+\cp iplist-$hostname-$today iplist-$hostname-$today-${1}-${allnLines}
 tail iplist-$hostname-$today-${1}-${allnLines}
 
 scp iplist-$hostname-$today-${1}-${allnLines} 192.168.72.5:/mnt/sdc/es/batch/
