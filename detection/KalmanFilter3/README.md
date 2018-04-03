@@ -9,4 +9,4 @@
 # head -n 275 tmp2 > tmp2-cut 
 </pre>
 
-<img src="kf-sample.png">
+<img src="kf-sample-1.png">
