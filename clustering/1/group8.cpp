@@ -19,8 +19,8 @@
 
 #define THREAD_NUM 1
 
-#define N_LINES N
-#define N_PERCENT_LINES N
+#define N_LINES 3000
+#define N_PERCENT_LINES 30
 #define N_DISPLAY 50
 
 using namespace Eigen;
@@ -299,6 +299,7 @@ void thread_func1(void *arg) {
 	  map_counter++;	  
       }
 
+      /*
       if(counter2 % N_PERCENT_LINES ==0)
 	{
 	  std::cout << "thread:" << targ->id << ": " << counter2/N_PERCENT_LINES << "% - done." << std::endl;
@@ -308,6 +309,7 @@ void thread_func1(void *arg) {
 
 	  start_timer(&t);   
 	}
+      */
 
       counter2 = counter2 + 1;
       
