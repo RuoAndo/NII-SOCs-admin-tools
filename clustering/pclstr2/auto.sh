@@ -7,5 +7,24 @@ fi
 date=`date --date '2 day ago' +%Y%m%d`
 echo $date
 
+date_now=`date "+%Y%m%d-%H%M%S"`
+date_start=`date "+%s"`
+
+echo "started at:"$date_now
+
 time ./first.sh all-${date} $1 $2 $3
 time ./second.sh all-${date} $1 $2 $3 $4 
+sleep 5s
+
+date_now=`date "+%Y%m%d-%H%M%S"`
+echo "finished at:"$date_now
+date_end=`date "+%s"`
+
+#echo $date_start
+#echo $date_end
+
+diff=`echo $((date_end-date_start))`
+div=`echo $((diff/60))`
+echo "proc time:"$diff"sec"
+echo "proc time:"$div"min"
+
