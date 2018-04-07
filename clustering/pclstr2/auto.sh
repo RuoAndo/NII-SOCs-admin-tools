@@ -12,8 +12,11 @@ date_start=`date "+%s"`
 
 echo "started at:"$date_now
 
-time ./first.sh all-${date} $1 $2 $3
-time ./second.sh all-${date} $1 $2 $3 $4 
+#time ./first.sh all-${date} $1 $2 $3
+#time ./second.sh all-${date} $1 $2 $3 $4
+
+time ./first.sh all $1 $2 $3
+time ./second.sh all $1 $2 $3 $4 
 sleep 5s
 
 date_now=`date "+%Y%m%d-%H%M%S"`
