@@ -1,7 +1,7 @@
 # requires: scr-interval.py
 # comstr="timeout $INTERVAL python scr-interval.py \"$dsrc\" \"$d\" > $dtrack"
 
-if [ "$3" = "" ]
+if [ "$1" = "" ]
 then
     echo "./scatter4.sh interval"
     exit
