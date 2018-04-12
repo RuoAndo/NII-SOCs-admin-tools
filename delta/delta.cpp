@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 3
+#define THREAD_NUM 1000
 
 #define N_LINES N
 #define N_PERCENT_LINES N
@@ -61,7 +61,25 @@ void thread_func(void *arg) {
 
     string fname;
 
-    fname = "x0" + std::to_string(targ->id);
+    // fname = "x0" + std::to_string(targ->id);
+
+    if(targ->id < 10)
+      {
+	fname = "x0000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 100)
+      {
+	fname = "x000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 1000)
+      {
+	fname = "x00" + std::to_string(targ->id);
+      }
+    else
+      {
+	fname = "x0" + std::to_string(targ->id);
+      }
+
     
     std::cout << "FUNC0:thread ID: " << fname << " - reading." << std::endl; 
 
@@ -110,8 +128,25 @@ void thread_func1(void *arg) {
     unsigned int t, travdirtime;         
     string fname;
 
-    fname = "x0" + std::to_string(targ->id);
+    // fname = "x0" + std::to_string(targ->id);
 
+    if(targ->id < 10)
+      {
+	fname = "x0000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 100)
+      {
+	fname = "x000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 1000)
+      {
+	fname = "x00" + std::to_string(targ->id);
+      }
+    else
+      {
+	fname = "x0" + std::to_string(targ->id);
+      }
+    
     vector<string> myV;
     vector<string> myV2;
     
