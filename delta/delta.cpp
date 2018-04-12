@@ -162,7 +162,9 @@ void thread_func1(void *arg) {
 	
 	size_t index = std::distance(myV.begin(), cIter);
 
+	/*
 	std::cout << "FOUND at index:" << index << ":" << myV[index] << std::endl;
+	*/
 
 	pthread_mutex_lock(&result2.mutex);    
 	result2.previous[index].push_back(myValue);
@@ -241,7 +243,8 @@ int main(int argc, char *argv[])
     for (itr2 = result2.previous.begin(); itr2 != result2.previous.end(); itr2++)
       {
 	myV = result2.previous[counter];
-	
+
+	/*
 	std::cout << counter << ":" << result.v[counter] << ":";
 	
 	std::for_each(myV.begin(), myV.end(), [](const std::string& y) {
@@ -249,10 +252,12 @@ int main(int argc, char *argv[])
       });
 
 	std::cout << std::endl;
+	*/
 
 	string out_fname = "t" + std::to_string(counter);
 	ofstream outputfile(out_fname);
 
+	std::cout << "now wrting file " << counter << "..." << std::endl;
 	outputfile << counter << ":" << result.v[counter] << ":";
 
 	string constr;
