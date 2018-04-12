@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 1
+#define THREAD_NUM 3
 
 #define N_LINES N
 #define N_PERCENT_LINES N
@@ -25,8 +25,6 @@
 
 using namespace Eigen;
 using namespace std;
-
-map<string, string> m2;
 
 typedef struct _thread_arg {
     int id;
@@ -63,7 +61,7 @@ void thread_func(void *arg) {
 
     string fname;
 
-    fname = std::to_string(targ->id);
+    fname = "x0" + std::to_string(targ->id);
     
     std::cout << "FUNC0:thread ID: " << fname << " - reading." << std::endl; 
 
@@ -112,7 +110,7 @@ void thread_func1(void *arg) {
     unsigned int t, travdirtime;         
     string fname;
 
-    fname = std::to_string(targ->id);
+    fname = "x0" + std::to_string(targ->id);
 
     vector<string> myV;
     vector<string> myV2;
@@ -239,10 +237,11 @@ int main(int argc, char *argv[])
 
     map<int, vector<string> >::iterator itr2;
     counter = 0;
+    
     for (itr2 = result2.previous.begin(); itr2 != result2.previous.end(); itr2++)
       {
 	myV = result2.previous[counter];
-
+	
 	std::cout << counter << ":" << result.v[counter] << ":";
 	
 	std::for_each(myV.begin(), myV.end(), [](const std::string& y) {
@@ -250,14 +249,27 @@ int main(int argc, char *argv[])
       });
 
 	std::cout << std::endl;
+
+	string out_fname = "t" + std::to_string(counter);
+	ofstream outputfile(out_fname);
+
+	outputfile << counter << ":" << result.v[counter] << ":";
+
+	string constr;
+
+	for(i = 0; i < myV.size(); i++)
+	  {
+	    outputfile << myV[i] << ","; // << std::endl;
+	  }
+
+	outputfile << std::endl;
+
+	outputfile.close();
 	
 	counter = counter + 1;
       }
 
-    /*
-    std::for_each(result.v.begin(), result.v.end(), [](const std::string& x) {
-	std::cout << x << std::endl;	
-      });
-    */
+    std::cout << "map (IPs) is:" << result.v.size() << std::endl;
+    
 }
 	  
