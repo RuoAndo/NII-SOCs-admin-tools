@@ -249,17 +249,19 @@ int main(int argc, char *argv[])
 	
 	std::for_each(myV.begin(), myV.end(), [](const std::string& y) {
 	    std::cout << y << ","; // std::endl;	
-      });
+	    });
 
 	std::cout << std::endl;
 	*/
 
-	string out_fname = "t" + std::to_string(counter);
+	string out_fname = "s" + std::to_string(counter);
 	ofstream outputfile(out_fname);
 
 	std::cout << "now wrting file " << counter << "..." << std::endl;
 	outputfile << counter << ":" << result.v[counter] << ":";
 
+	std::sort(myV.begin(), myV.end() );
+	
 	string constr;
 
 	for(i = 0; i < myV.size(); i++)
@@ -268,13 +270,33 @@ int main(int argc, char *argv[])
 	  }
 
 	outputfile << std::endl;
-
 	outputfile.close();
+
+	/* diff */
+
+	string out_fname2 = "d" + std::to_string(counter);
+	ofstream outputfile2(out_fname2);
+	
+	std::cout << "now wrting file " << counter << "..." << std::endl;
+	outputfile2 << counter << ":" << result.v[counter] << ":";
+
+	std::sort(myV.begin(), myV.end() );
+	
+	long diff;
+
+	for(i = 1; i < myV.size(); i++)
+	  {
+	    diff = std::stol(myV[i]) - std::stol(myV[i-1]);
+	    outputfile2 << diff << ","; // << std::endl;
+	  }
+
+	outputfile2 << std::endl;
+	outputfile2.close();
 	
 	counter = counter + 1;
       }
 
-    std::cout << "map (IPs) is:" << result.v.size() << std::endl;
+    std::cout << "map size (IPs) is:" << result.v.size() << std::endl;
     
 }
 	  
