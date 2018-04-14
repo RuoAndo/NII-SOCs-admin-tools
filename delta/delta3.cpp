@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 48
+#define THREAD_NUM 480
 
 #define DISPLAY_RATIO 100
 
@@ -205,7 +205,7 @@ void thread_func1(void *arg) {
       }
       
       else {
-	std::cout << "not FOUND" << std::endl;
+	// std::cout << "not FOUND" << std::endl;
       }
       
     } // while(getline(ifs,str)){
