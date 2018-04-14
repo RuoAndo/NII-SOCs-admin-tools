@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 2100
+#define THREAD_NUM 48
 
 #define DISPLAY_RATIO 100
 
@@ -225,17 +225,6 @@ int main(int argc, char *argv[])
     vector<string> myV;
     vector<int> myDiff;
     
-    /*
-    if (argc != 2){
-      std::cout << "./group PROC_NO" << std::endl;
-      exit(1);
-    }
-    */
-
-    /*
-    PROC_NO = atoi(argv[1]);
-    */
-
     int i;
 
     /* ˆ—ŠJŽn */
@@ -330,9 +319,14 @@ int main(int argc, char *argv[])
 	outputfile2 << std::endl;
 	outputfile2.close();
 
+	vector<int> myDiff_org = myDiff;
+
+	std::sort(myDiff.begin(), myDiff.end());
+	myDiff.erase(std::unique(myDiff.begin(), myDiff.end()), myDiff.end());
+	
 	for(i = 1; i < myDiff.size(); i++)
 	  {
-	    size_t n_count = std::count(myDiff.begin(), myDiff.end(), myDiff[i]);
+	    size_t n_count = std::count(myDiff_org.begin(), myDiff_org.end(), myDiff[i]);
 
 	    if(n_count > 1)
 	      {
