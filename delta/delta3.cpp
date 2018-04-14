@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 480
+#define THREAD_NUM 212
 
 #define DISPLAY_RATIO 100
 
@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
     thread_arg_t targ[THREAD_NUM];
     int counter = 0;
     
-    int PROC_NO = 0;
+    int map_size = 0;
 
     vector<string> myV;
     vector<int> myDiff;
@@ -264,6 +264,8 @@ int main(int argc, char *argv[])
     string out_fname_delta = "delta";
     ofstream outputfile_delta(out_fname_delta);
     
+    map_size = result.v.size();
+
     counter = 0;    
     for (itr2 = result2.previous.begin(); itr2 != result2.previous.end(); itr2++)
       {
@@ -274,7 +276,7 @@ int main(int argc, char *argv[])
 
 	if(counter % DISPLAY_RATIO == 0)
 	  {
-	    std::cout << "now wrting file " << counter << "..." << std::endl;
+	    std::cout << map_size << ":" << "now wrting file " << counter << "..." << std::endl;
 	  }
 	outputfile << counter << ":" << result.v[counter] << ":";
 
@@ -297,7 +299,7 @@ int main(int argc, char *argv[])
 
 	if(counter % DISPLAY_RATIO == 0)
 	  {
-	    std::cout << "now wrting file " << counter << "..." << std::endl;
+	    std::cout << map_size << ":" << "now wrting file " << counter << "..." << std::endl;
 	  }
 	
 	outputfile2 << counter << ":" << result.v[counter] << ":";
