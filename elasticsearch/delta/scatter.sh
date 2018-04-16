@@ -60,4 +60,6 @@ while read line; do
     COUNT=`expr $COUNT + 1`
 done < list
 
+cp all ../../../delta/
+cp all ../../../delta/all-${storedir}
 #cp all ../../../clustering/pclstr2 
