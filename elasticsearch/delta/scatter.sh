@@ -1,3 +1,9 @@
+if [ "$1" = "" ]
+then
+    echo "./scatter.sh interval"
+    exit
+fi
+
 INTERVAL=$1
 
 date7=`date --date '2 day ago' +%Y/%m/%d`
