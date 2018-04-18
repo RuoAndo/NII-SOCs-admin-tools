@@ -4,7 +4,6 @@ then
     exit
 fi
 
-
 allnLines=`wc -l $1 | cut -d " " -f 1`
 echo $allnLines
 nThreads=$2
@@ -27,7 +26,7 @@ cat count.tmp.2.cpp | sed "s/res.rightCols(N)/res.rightCols($nDimensions)/" > co
 cat avg.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > avg.tmp.cpp
 cat avg.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > avg.tmp.2.cpp
 cat avg.tmp.2.cpp | sed "s/#define ITEM_NUM N/#define ITEM_NUM $nItems/" > avg.tmp.3.cp
-cat avg.tmp.3.cpp | sed "s/res.rightCols(N)/res.rightCols($nDimensions)/" > avg.re.cpp 
+cat avg.tmp.3.cpp | sed "s/res.rightCols(N)/res.rightCols($nItems)/" > avg.re.cpp 
 ./build.sh avg.re
 
 cat fill2.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > fill2.tmp.cpp
