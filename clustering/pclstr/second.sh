@@ -21,12 +21,13 @@ echo "STEP0: building executables ..."
 
 cat count.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > count.tmp.cpp
 cat count.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > count.tmp.2.cpp
-cat count.tmp.2.cpp | sed "s/res.rightCols(6)/res.rightCols($nDimensions)/" > count.re.cpp 
+cat count.tmp.2.cpp | sed "s/res.rightCols(N)/res.rightCols($nDimensions)/" > count.re.cpp 
 ./build.sh count.re
 
 cat avg.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > avg.tmp.cpp
 cat avg.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > avg.tmp.2.cpp
-cat avg.tmp.2.cpp | sed "s/#define ITEM_NUM N/#define ITEM_NUM $nItems/" > avg.re.cpp
+cat avg.tmp.2.cpp | sed "s/#define ITEM_NUM N/#define ITEM_NUM $nItems/" > avg.tmp.3.cpp
+cat avg.tmp.3.cpp | sed "s/res.rightCols(N)/res.rightCols($nDimensions)/" > avg.re.cpp 
 ./build.sh avg.re
 
 cat fill2.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > fill2.tmp.cpp
