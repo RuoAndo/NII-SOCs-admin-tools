@@ -34,8 +34,8 @@ while [ $COUNT -lt 24 ]; do
     #comstr="time /usr/local/pyenv/shims/python scr-interval.py \"$dsrc\" \"$d\" > $dtrack"
     #comstr="timeout 1200 /usr/local/pyenv/shims/python scr-interval.py \"$dsrc\" \"$d\" > $dtrack"
     #comstr="timeout 1200 python scr-interval.py \"$dsrc\" \"$d\" > $dtrack"
-    comstr="timeout $INTERVAL python scr-interval.py \"$dsrc\" \"$d\" > $dtrack"
-    #comstr="timeout 1200 /usr/bin/python scr-interval.py \"$dsrc\" \"$d\" > $dtrack"
+    comstr="timeout $INTERVAL python scr-interval-2.py \"$dsrc\" \"$d\" > $dtrack"
+    #comstr="timeout 1200 /usr/bin/python scr-interval-2.py \"$dsrc\" \"$d\" > $dtrack"
 
     #comstr="timeout 3550 python scr-interval.py \"$dsrc\" \"$d\" > $dtrack"
     # 15 minutes
