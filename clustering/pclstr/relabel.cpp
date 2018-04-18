@@ -89,8 +89,8 @@ void thread_func(void *arg) {
     
     Eigen::MatrixXd res = readCSV(fname, targ->rows,targ->columns);
     Eigen::MatrixXd res_label= readCSV(fname_label, targ->rows,targ->columns);
-    Eigen::MatrixXd res2 = res.rightCols(4);
-    Eigen::MatrixXd res3 = res.rightCols(6);
+    Eigen::MatrixXd res2 = res.rightCols(N);
+    Eigen::MatrixXd res3 = res.rightCols(N);
 
     // 0,2.23391e+09,2.88497e+09,66,0,2
     std::string ofname = std::to_string(targ->id) + ".rlbl";
