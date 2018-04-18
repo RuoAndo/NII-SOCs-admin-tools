@@ -271,7 +271,7 @@ int main(int argc, char *argv[])
       {
 	myV = result2.previous[counter];
 
-	string out_fname = "s" + std::to_string(counter);
+	string out_fname = "stamp" + std::to_string(counter);
 	ofstream outputfile(out_fname);
 
 	if(counter % DISPLAY_RATIO == 0)
@@ -294,7 +294,7 @@ int main(int argc, char *argv[])
 
 	/* diff */
 
-	string out_fname2 = "d" + std::to_string(counter);
+	string out_fname2 = "diff" + std::to_string(counter);
 	ofstream outputfile2(out_fname2);
 
 	if(counter % DISPLAY_RATIO == 0)
