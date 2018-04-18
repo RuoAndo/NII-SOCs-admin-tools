@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 212
+#define THREAD_NUM 2
 
 #define DISPLAY_RATIO 100
 
