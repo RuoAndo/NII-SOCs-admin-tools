@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 
     /* n‚ß‚ÉdS‚ğæ‚è‚Ş */
     Eigen::MatrixXd restmp = readCSV(argv[1], atoi(argv[2]), atoi(argv[3]));
-    avg = restmp.rightCols(4);
+    avg = restmp.rightCols(N);
     std::cout << avg << std::endl;      
     std::cout << avg.rows() << std::endl;      
 
