@@ -1,6 +1,6 @@
 echo x* | xargs rm
-echo d* | xargs rm
-echo s* | xargs rm
+echo diff* | xargs rm
+echo stamp* | xargs rm
 
 rm -rf delta
 rm -rf delta-sorted
