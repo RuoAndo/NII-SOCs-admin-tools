@@ -144,3 +144,4 @@ wl=`wc -l $1 | cut -d " " -f 1`
 tail iplist-$hostname-$today-${1}-${allnLines}
 
 scp iplist-$hostname-$today-${1}-${allnLines} 192.168.72.5:/mnt/sdc/es/batch/iplist/
+cp iplist-$hostname-$today-${1}-${allnLines} /mnt/sdc/es/batch/iplist/
