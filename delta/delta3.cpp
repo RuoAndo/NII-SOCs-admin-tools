@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 2
+#define THREAD_NUM 2000
 
 #define DISPLAY_RATIO 100
 
@@ -265,7 +265,9 @@ int main(int argc, char *argv[])
     ofstream outputfile_delta(out_fname_delta);
     
     map_size = result.v.size();
-
+    
+    std::cout << "result2:" << result2.previous.size() << std::endl;
+    
     counter = 0;    
     for (itr2 = result2.previous.begin(); itr2 != result2.previous.end(); itr2++)
       {
