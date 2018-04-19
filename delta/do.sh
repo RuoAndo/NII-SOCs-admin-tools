@@ -1,10 +1,14 @@
+echo x* | xargs rm
+echo d* | xargs rm
+echo s* | xargs rm
+
 rm -rf delta
 rm -rf delta-sorted
 
 ./build.sh delta3
 
 echo "now splitting file..."
-split -l 100000 all -d -a 5
+#split -l 100000 all -d -a 5
 date_now=`date "+%Y%m%d-%H%M%S"`
 date_start=`date "+%s"`
 
