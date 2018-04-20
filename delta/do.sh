@@ -34,7 +34,7 @@ echo "now sorting..."
 
 ./sort.pl delta > delta-sorted
 
-today=`date "+%Y%m%d`
+today=`date "+%Y%m%d"`
 cp delta dalta-${today}
 cp delta-sorted dalta-sorted-${today}
 cp procTime procTime-${today}
