@@ -27,7 +27,7 @@ while line:
     #print sum
     percent = float(tmp[1].replace("\n",""))/float(sum) 
     p2 = round(percent*100,5)
-    print line.strip() + ",(" + str(p2) + "%)"
+    print(line.strip() + ",(" + str(p2) + "%)")
     line = f.readline()
 
 f.close()

@@ -74,4 +74,4 @@ for x in s:
 ipList_uniq = list(set(ipList)) 
 
 for x in ipList_uniq:
-        print x
+        print(x)
