@@ -33,10 +33,10 @@ while line:
                 tmp_int_1 = ip2int(tmp[0])
                 tmp_int_2 = ip2int(tmp[1])
 
-                print str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[2]) + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip()
+                print(str(tmp_int_1) + "," + str(tmp_int_2) + "," + str(tmp[2]) + "," + str(tmp[3]) + "," + str(tmp[4]).rstrip())
 
         else:
-                print "0,0,0,0,0"
+                print("0,0,0,0,0")
 
 
         line = f.readline()
