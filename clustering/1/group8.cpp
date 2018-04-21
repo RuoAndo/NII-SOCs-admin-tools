@@ -355,7 +355,7 @@ int main(int argc, char *argv[])
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
 
-    // std::cout << "reduce" << std::endl;
+    std::cout << "reduce" << std::endl;
    
     std::vector<int> item1;
     std::vector<int> item2;
@@ -412,13 +412,11 @@ int main(int argc, char *argv[])
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
 	std::cout << itr->first << "," << itr->second << "," << item1[counter] << "," << item2[counter] << "," << item3[counter]<< "," << item4[counter]<< "," << item5[counter] << "," << item6[counter] << std::endl;
-	
-	/*
-	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] << "," << nsess[counter] << std::endl;
-	*/
+
+	outputfile::cout << itr->first << "," << itr->second << "," << item1[counter] << "," << item2[counter] << "," << item3[counter]<< "," << item4[counter]<< "," << item5[counter] << "," << item6[counter] << std::endl;
 	
 	counter = counter + 1;
       }
 
-    // outputfile.close();
+    outputfile.close();
 }
