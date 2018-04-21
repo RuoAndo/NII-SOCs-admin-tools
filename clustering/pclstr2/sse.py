@@ -57,7 +57,7 @@ for i in n1:
     tmpstr1 = str(i).strip() + ":(" + str(float(float(i)/float(sum1))*100).strip() + "%)" 
     tmpstr2 = " < " + str(int(n2[counter])).strip() + ":(" + str(float(float(n2[counter])/float(sum2))*100).strip() + "%)"
     tmpstr3 = ":" + centroids[counter]
-    print tmpstr1 + tmpstr2 + tmpstr3
+    print(tmpstr1 + tmpstr2 + tmpstr3)
 
     f = open('process', 'a')
     f.write(tmpstr1+tmpstr2+tmpstr3+"\n") 
