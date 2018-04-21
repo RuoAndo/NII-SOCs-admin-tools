@@ -79,12 +79,12 @@ time ./avg.re $nLines $nDimensions #yields centroid
 sleep 2s
 
 echo "STEP4: filling blank centroid rows..."
-python fill-ws.py centroid $1 | tee centroid-tmp
+#python fill-ws.py centroid $1 | tee centroid-tmp
 
-#python fill2.py tmp-all-labeled centroid $nLines $nDimensions > tmp-centroid
-#cat tmp-centroid
-#\cp tmp-centroid centroid
-#sleep 4s
+python fill2.py tmp-all-labeled centroid $nLines $nDimensions > tmp-centroid
+cat tmp-centroid
+\cp tmp-centroid centroid
+sleep 4s
 
 echo "STEP5: relabeling ..."
 time ./relabel.re centroid $nClusters $nItems $nLines $nDimensions 
