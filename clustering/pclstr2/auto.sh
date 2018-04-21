@@ -16,7 +16,7 @@ echo "started at:"$date_now > procTime
 #time ./first.sh all-${date} $1 $2 $3
 #time ./second.sh all-${date} $1 $2 $3 $4
 
-time ./first.sh all $1 $2 $3
+time ./first-ws.sh all $1 $2 $3
 time ./second-ws.sh all $1 $2 $3 $4 
 sleep 5s
 
