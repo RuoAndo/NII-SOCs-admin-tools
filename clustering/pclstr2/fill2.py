@@ -33,7 +33,7 @@ while line:
         #check = commands.getoutput(comstr)
         # print chec
         #print n1[counter].strip() + "," + check.strip()
-        print line.strip()
+        print(line.strip())
 
     if line.find("nan") > -1:
         #print "nan" + str(tmp)
@@ -43,7 +43,7 @@ while line:
         check = commands.getoutput(comstr)
         #print check
         #print n1[counter].strip() + "," + check.strip()
-        print check.strip()
+        print(check.strip())
 
     #if int(n1[counter]) > 0:
         #print n1[counter].strip() + "," + line.strip()
