@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 30
+#define THREAD_NUM N
 
 #define N_LINES 1000
 #define N_PERCENT_LINES 10
@@ -447,18 +447,19 @@ int main(int argc, char *argv[])
 	counter = counter + 1;
       }
 
+    std::string ofname = "reduced";
+    ofstream outputfile(ofname);
+    
     map<string, string>::iterator itr;
     counter = 0;
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
 	std::cout << itr->first << "," << itr->second << "," << item1[counter] << "," << item2[counter] << "," << item3[counter]<< "," << item4[counter]<< "," << item5[counter] << "," << item6[counter] << std::endl;
-	
-	/*
-	outputfile << itr->first << "," << itr->second << "," << vbytes[counter] << "," << bsent[counter] << "," << brecv[counter] << "," << nsess[counter] << std::endl;
-	*/
-	
+
+	outputfile << itr->first << "," << itr->second << "," << item1[counter] << "," << item2[counter] << "," << item3[counter]<< "," << item4[counter]<< "," << item5[counter] << "," << item6[counter] << std::endl;
+		
 	counter = counter + 1;
       }
 
-    // outputfile.close();
+    outputfile.close();
 }
