@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM 3
+#define THREAD_NUM 30
 
 #define N_LINES 1000
 #define N_PERCENT_LINES 10
@@ -72,7 +72,28 @@ void thread_func0(void *arg) {
 
     std::cout << "FUNC0:thread ID: " << targ->id << " - start." << std::endl; 
 
-    fname = std::to_string(targ->id);
+    // fname = std::to_string(targ->id);
+    
+    if(targ->id < 10)
+      {
+	fname = "x00000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 100)
+      {
+	fname = "x0000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 1000)
+      {
+	fname = "x000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 10000)
+      {
+	fname = "x00" + std::to_string(targ->id);
+      }
+    else
+      {
+	fname = "x0" + std::to_string(targ->id);
+      }
 
     std::cout << "FUNC0:thread ID: " << fname << " - reading." << std::endl; 
 
@@ -145,8 +166,29 @@ void thread_func1(void *arg) {
        
     string fname;
 
-    fname = std::to_string(targ->id);
+    // fname = std::to_string(targ->id);
 
+    if(targ->id < 10)
+      {
+	fname = "x00000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 100)
+      {
+	fname = "x0000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 1000)
+      {
+	fname = "x000" + std::to_string(targ->id);
+      }
+    else if(targ->id < 10000)
+      {
+	fname = "x00" + std::to_string(targ->id);
+      }
+    else
+      {
+	fname = "x0" + std::to_string(targ->id);
+      }
+    
     std::cout << "FUNC0:thread ID: " << fname << " - reading." << std::endl; 
 
     ifstream ifs(fname);
