@@ -1,4 +1,28 @@
 dataset:
+
+<pre>
+
+# time python rand-3g-6d.py 6 10000000 > 0
+real    5m25.927s
+user    5m11.516s
+sys     0m8.728s
+
+# wc -l 0
+3000,0000 0
+
+# ls -alh 0
+-rw-r--r-- 1 root root 3.4G  4月 21 17:43 0
+
+root@flare-Precision-Tower-7910:~/nii-cyber-security-admin/clustering/1# time ./group8 > tmp
+real    3m59.022s
+user    3m56.872s
+sys     0m2.100s
+
+# wc -l tmp
+106 tmp
+
+</pre>
+
 <pre>
 # python rand6.py 6 1000 > tmp
 # wc -l tmp
