@@ -45,7 +45,7 @@ counter = 0
 ipList = []
 
 for x in s:
-    if counter < 8:
+    if counter < 16:
 
         #print x
         #print argvs[2]
