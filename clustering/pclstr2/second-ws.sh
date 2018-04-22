@@ -4,7 +4,8 @@ then
     exit
 fi
 
-pyenv local 2.7
+/home/flare/.pyenv/bin/pyenv local system
+python version
 
 allnLines=`wc -l $1 | cut -d " " -f 1`
 echo $allnLines
@@ -14,6 +15,14 @@ nLines=`expr $allnLines / $2`
 nDimensions=$3
 nClusters=$4
 nItems=$5 # nDimensions-2 / items: src dst n[* * *] 
+
+echo "allnLines:"$allnLines
+echo "nLines:"$nLines
+echo "nThreads:"$nThreads
+echo "nClusters:"$nClusters
+echo "nItems:"$nItems
+
+sleep 5s
 
 threshold=`expr $allnLines / 100`
 echo "threshold:"$threshold
@@ -81,7 +90,7 @@ sleep 2s
 echo "STEP4: filling blank centroid rows..."
 #python fill-ws.py centroid $1 | tee centroid-tmp
 
-python fill2.py tmp-all-labeled centroid $nLines $nDimensions > tmp-centroid
+/home/flare/.pyenv/shims/python fill2.py tmp-all-labeled centroid $nLines $nDimensions > tmp-centroid
 cat tmp-centroid
 \cp tmp-centroid centroid
 sleep 4s
@@ -107,7 +116,7 @@ sleep 2s
 
 # comparing STEP2 with STEP7
 echo "STEP7: calculating SSE..."
-time python sse.py centroid tmp-all-relabeled tmp-all-labeled
+time /home/flare/.pyenv/shims/python sse.py centroid tmp-all-relabeled tmp-all-labeled
 cat SSE
 
 ssetail=`tail -n 1 SSE`
@@ -139,9 +148,9 @@ done
 today=$(date "+%Y%m%d")
 hostname=`hostname`
 
-python count-percent.py count-result > count-percent-$hostname-$today
+/home/flare/.pyenv/shims/python count-percent.py count-result > count-percent-$hostname-$today
 tail count-percent-$hostname-$today
-time python count-grep.py count-result result-all > iplist-$hostname-$today
+time /home/flare/.pyenv/shims/python count-grep.py count-result result-all > iplist-$hostname-$today
 
 wl=`wc -l $1 | cut -d " " -f 1`
 \cp iplist-$hostname-$today iplist-$hostname-$today-${1}-${allnLines}

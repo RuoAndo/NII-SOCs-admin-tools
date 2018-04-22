@@ -52,10 +52,11 @@ headLine=`expr $nLines \* $nThreads`
 head -n $headLine $1 > $1.headed
 split -l $nLines $1.headed hout
 
-pyenv local 2.7
+#/home/flare/.pyenv/bin/pyenv install 2.7
+/home/flare/.pyenv/bin/pyenv local system
 
 ls hout* > list
-time ./rename.sh list
+time ./rename-ws.sh list
 
 echo "STEP3: now initlializing labels ..."
 time ./init-label.re $nLines $nDimensions
