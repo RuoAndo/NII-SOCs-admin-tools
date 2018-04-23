@@ -6,11 +6,11 @@ fi
 
 INTERVAL=$1
 
-date7=`date --date '2 day ago' +%Y/%m/%d`
+date7=`date --date '1 day ago' +%Y/%m/%d`
 dsrc="$date7 00:00:00" 
 echo $dsrc
 
-date7_track=`date --date '2 day ago' +%Y%m%d`
+date7_track=`date --date '1 day ago' +%Y%m%d`
 
 d0=`date "+%s" --date "${dsrc}"`
 d=`date "+%Y/%m/%d %T" -d @"$d0"`
