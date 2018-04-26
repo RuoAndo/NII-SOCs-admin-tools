@@ -1,4 +1,21 @@
 <pre>
+# time python rand7.py 6 1000000 10000 > tmp
+real    0m34.492s
+user    0m33.536s
+sys     0m3.296s
+
+# time ./zero.sh tmp 100000
+9997,9863,117,117,47,170,17,117
+9998,8966,66,66,39,-44,169,66
+9999,4370,132,132,188,114,113,132
+
+real    1m55.356s
+user    50m23.360s
+sys     0m37.648s
+
+</pre>
+
+<pre>
 
 # python rand6.py 6 1000 > tmp
 
