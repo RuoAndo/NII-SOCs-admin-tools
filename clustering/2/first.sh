@@ -8,7 +8,7 @@ then
 fi
 
 allnLines=`wc -l $1 | cut -d " " -f 1`
-echo $allnLines
+echo "allLines:"$allnLines
 nThreads=$2
 
 nLines=`expr $allnLines / $2`
@@ -40,7 +40,6 @@ echo "STEP1: building executables ..."
 ./build.sh init-label.re
 
 #./init-label.re $1
-
 #./build.sh init-label
 #./build.sh avg
 #./build.sh relabel
@@ -52,6 +51,8 @@ headLine=`expr $nLines \* $nThreads`
 
 head -n $headLine $1 > $1.headed
 split -l $nLines $1.headed hout
+
+sleep 3s
 
 pyenv local system
 

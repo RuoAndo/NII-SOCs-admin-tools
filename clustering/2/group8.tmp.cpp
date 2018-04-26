@@ -17,7 +17,7 @@
 
 #include "timer.h"
 
-#define THREAD_NUM N
+#define THREAD_NUM 30
 
 #define N_LINES N
 #define N_PERCENT_LINES N
