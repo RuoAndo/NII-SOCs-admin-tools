@@ -19,8 +19,8 @@
 
 #define THREAD_NUM N
 
-#define N_LINES 1000
-#define N_PERCENT_LINES 10
+#define N_LINES N
+#define N_PERCENT_LINES N
 #define N_DISPLAY 50
 
 using namespace Eigen;

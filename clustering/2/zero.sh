@@ -14,7 +14,11 @@ echo $allnLines
 nThreads=`expr $allnLines / $2`
 echo "nThreads:"$nThreads
 
-cat group8.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > group8.re.cpp
+nPerLines=`expr $nLines / 100`
+
+cat group8.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > group8.tmp.cpp
+cat group8.tmp.cpp | sed "s/#define N_LINES N/#define N_LINES $nLines/" > group8.tmp.2.cpp
+cat group8.tmp.2.cpp | sed "s/#define N_PERCENT_LINES N/#define N_PERCENT_LINES $nPerLines/" > group8.re.cpp
 
 ./build.sh group8.re
 ./group8.re
