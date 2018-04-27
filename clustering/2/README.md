@@ -1,4 +1,25 @@
 <pre>
+
+# time python rand7.py 6 10000000 10000 > tmp-1000-10
+
+real    5m33.331s
+user    5m19.784s
+sys     0m10.952s
+
+# time ./zero.sh tmp-1000-1 10000 # 1000 Thread
+real    7m32.362s
+user    197m45.132s
+sys     2m0.188s
+
+# time ./zero.sh tmp-1000-1 100000 # 100 Thread
+real    21m45.517s
+user    610m38.468s
+sys     5m57.712s
+
+</pre>
+
+
+<pre>
 # time python rand7.py 6 1000000 10000 > tmp
 real    0m34.492s
 user    0m33.536s
