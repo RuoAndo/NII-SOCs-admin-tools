@@ -6,6 +6,11 @@ real    5m33.331s
 user    5m19.784s
 sys     0m10.952s
 
+# time ./zero.sh tmp-1000-1 5000  # 2000 Thread
+real    4m5.337s
+user    94m19.180s
+sys     1m5.388s
+
 # time ./zero.sh tmp-1000-1 10000 # 1000 Thread
 real    7m32.362s
 user    197m45.132s
