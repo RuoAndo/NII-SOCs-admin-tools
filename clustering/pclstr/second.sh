@@ -136,7 +136,11 @@ hostname=`hostname`
 
 python count-percent.py count-result > count-percent-$hostname-$today
 tail count-percent-$hostname-$today
-time python count-grep.py count-result result-all > iplist-reduced-$hostname-$today
-tail iplist-reduced-$hostname-$today
 
-scp iplist-reduced-$hostname-$today socadmin@10.224.253.54:/home/socadmin/nii/ip_details/iplist/
+# iplist-h-app07-20180410-all-160733487
+time python count-grep.py count-result result-all > iplist-$hostname-$today-reduced-$allnLines
+tail iplist-$hostname-$today-reduced-$allnLines
+
+scp iplist-$hostname-$today-${1}-${allnLines} 192.168.72.5:/mnt/sdc/es/batch/iplist/
+cp iplist-$hostname-$today-${1}-${allnLines} /mnt/sdc/es/batch/iplist/
+
