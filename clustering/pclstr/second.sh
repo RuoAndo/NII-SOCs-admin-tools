@@ -141,6 +141,6 @@ tail count-percent-$hostname-$today
 time python count-grep.py count-result result-all > iplist-$hostname-$today-reduced-$allnLines
 tail iplist-$hostname-$today-reduced-$allnLines
 
-scp iplist-$hostname-$today-${1}-${allnLines} 192.168.72.5:/mnt/sdc/es/batch/iplist/
-cp iplist-$hostname-$today-${1}-${allnLines} /mnt/sdc/es/batch/iplist/
+scp iplist-$hostname-$today-reduced-$allnLines 192.168.72.5:/mnt/sdc/es/batch/iplist/
+cp iplist-$hostname-$today-reduced-$allnLines /mnt/sdc/es/batch/iplist/
 
