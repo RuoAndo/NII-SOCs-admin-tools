@@ -29,9 +29,9 @@ grep THREAD_NUM init-label.cpp | grep define
 echo "the numbers of threads\:"$nThreads
 
 # conversing init-label.cpp 
-cat init-label.cpp | sed "s/#define THREAD_NUM 15/#define THREAD_NUM $nThreads/" > init-label.tmp.cpp
-cat init-label.tmp.cpp | sed "s/#define CLUSTER_NUM 20/#define CLUSTER_NUM $nClusters/" > init-label.tmp.2.cpp
-cat init-label.tmp.2.cpp | sed "s/res.rightCols(6)/res.rightCols($nDimensions)/" > init-label.re.cpp 
+cat init-label.cpp | sed "s/#define THREAD_NUM N/#define THREAD_NUM $nThreads/" > init-label.tmp.cpp
+cat init-label.tmp.cpp | sed "s/#define CLUSTER_NUM N/#define CLUSTER_NUM $nClusters/" > init-label.tmp.2.cpp
+cat init-label.tmp.2.cpp | sed "s/res.rightCols(N)/res.rightCols($nDimensions)/" > init-label.re.cpp 
 
 echo "STEP1: building executables ..."
 ./build.sh init-label.re
