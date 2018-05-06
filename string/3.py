@@ -36,6 +36,12 @@ min_word_freq = 10
 learning_rate = 0.0005
 dropout_keep_prob = tf.placeholder(tf.float32)
 
+# Download or open data
+data_dir = 'temp'
+data_file = 'text_data.txt'
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+
 f = open(argvs[1])
 line = f.readline() 
 
@@ -44,7 +50,9 @@ text_data = []
 while line:
     text_data.append(line.replace("."," "))
     line = f.readline()
-    
+
+text_data = [x.split('\t') for x in text_data if len(x)>=1]
+
 [text_data_label, text_data_train] = [list(x) for x in zip(*text_data)]
 
 def clean_text(text_string):
