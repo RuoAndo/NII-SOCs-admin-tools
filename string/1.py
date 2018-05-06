@@ -50,7 +50,7 @@ while line:
             for x in tmp[2:-1]:
                 constr = constr + x
 
-                print "spam" + "\t" + random.choice(source_str) + constr
+                print "tagged" + "\t" + random.choice(source_str) + constr
                 count_1 = count_1 + 1
                 constr_bak = constr
                 
@@ -61,7 +61,7 @@ while line:
             for x in tmp[2:-1]:
                 constr = constr + x
                 
-                print "ham" + "\t" + random.choice(source_str) + constr
+                print "unlabeled" + "\t" + random.choice(source_str) + constr
                 count_0 = count_0 + 1
 
     except:

@@ -21,9 +21,13 @@ from datetime import datetime
 argvs = sys.argv  
 argc = len(argvs) 
 
+if (argc != 3):   
+    print 'Usage: # python %s filename epoch' % argvs[0]
+    quit()         
+
 sess = tf.Session()
 
-epochs = 10
+epochs = int(argvs[2])
 batch_size = 250
 max_sequence_length = 25
 rnn_size = 10
@@ -70,7 +74,7 @@ text_processed = np.array(list(vocab_processor.fit_transform(text_data_train)))
 #  [  0  40 474 ...   0   0   0]]
 
 text_processed = np.array(text_processed)
-text_data_label = np.array([1 if x=='ham' else 0 for x in text_data_label])
+text_data_label = np.array([1 if x=='tagged' else 0 for x in text_data_label])
 
 shuffled_ix = np.random.permutation(np.arange(len(text_data_label)))
 x_shuffled = text_processed[shuffled_ix]
@@ -134,7 +138,7 @@ for epoch in range(epochs):
     y_train = y_train[shuffled_ix]
     num_batches = int(len(x_train)/batch_size) + 1
 
-　　# batch
+    # batch
     for i in range(num_batches):
 
         min_ix = i * batch_size
