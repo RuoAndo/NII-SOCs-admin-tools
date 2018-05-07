@@ -1,28 +1,90 @@
+
 <pre>
 
-# time python rand7.py 6 10000000 10000 > tmp-1000-10
+# time python rand7.py 6 10000000 10000 > tmp-1000-1
 
 real    5m33.331s
 user    5m19.784s
 sys     0m10.952s
 
-# time ./zero.sh tmp-1000-1 5000  # 2000 Thread
+# time ./zero.sh tmp-1000-1 2500
+
+thread:11545: 99% - done.
+time of travdirtime:13.353000[msec]
+FUNC1:thread ID: 11545 - done.
+./zero.sh: 24 行: 19189 Segmentation fault      (コアダンプ) ./group8.re
+
+real    3m33.488s
+user    80m27.700s
+sys     0m43.028s
+
+# time ./zero.sh tmp-1000-1 5000  # 6000 Thread
 real    4m5.337s
 user    94m19.180s
 sys     1m5.388s
 
-# time ./zero.sh tmp-1000-1 10000 # 1000 Thread
+# time ./zero.sh tmp-1000-1 10000 # 3000 Thread
 real    7m32.362s
 user    197m45.132s
 sys     2m0.188s
 
-# time ./zero.sh tmp-1000-1 100000 # 100 Thread
+# time ./zero.sh tmp-1000-1 100000 # 300 Thread
 real    21m45.517s
 user    610m38.468s
 sys     5m57.712s
 
 </pre>
 
+<pre>
+# time python rand7.py 6 10000000 20000 > tmp-1000-2
+
+# time ./zero.sh tmp-1000-2 5000
+9998,6920,119,102,0,19,102,0
+9999,13800,75,70,0,11,70,0
+
+real    9m12.877s
+user    232m53.500s
+sys     0m55.216s
+
+# time ./zero.sh tmp-1000-2 10000 # 3000 Thread
+9998,6920,52,29,29,47,29,0
+9999,6202,106,30,30,59,30,0
+
+real    17m15.024s
+user    456m21.056s
+sys     1m28.660s
+
+# time ./zero.sh tmp-1000-2 100000 # 300 Thread
+9998,7392,131,131,212,81,291,131
+9999,1040,125,125,163,75,8,125
+
+real    49m10.408s
+user    1345m40.968s
+sys     3m34.992s
+
+</pre>
+
+<pre>
+# time python rand7.py 6 10000000 30000 > tmp-1000-3
+
+real    6m22.590s
+user    6m13.784s
+sys     0m11.108s
+
+# time ./zero.sh tmp-1000-3 10000 # 3000 Thread
+
+real    25m54.707s
+user    703m7.728s
+sys     1m54.888s
+
+# time ./zero.sh tmp-1000-3 100000 # 300 Thread
+9999,23483,252,252,136,90,118,252
+
+real    76m34.199s
+user    2078m18.024s
+sys     3m35.332s
+
+</pre>
 
 <pre>
 # time python rand7.py 6 1000000 10000 > tmp
