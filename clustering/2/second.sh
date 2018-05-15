@@ -13,7 +13,7 @@ nDimensions=$3
 nClusters=$4
 nItems=$5 # nDimensions-2 / items: src dst n[* * *] 
 
-threshold=`expr $allnLines / 100`
+threshold=`expr $allnLines / 10000`
 echo "threshold:"$threshold
 
 echo "STEP0: building executables ..."
