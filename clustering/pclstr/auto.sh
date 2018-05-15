@@ -9,12 +9,8 @@ echo $date
 
 date_now=`date "+%Y%m%d-%H%M%S"`
 date_start=`date "+%s"`
-
 echo "started at:"$date_now 
 echo "started at:"$date_now > procTime
-
-#time ./first.sh all-${date} $1 $2 $3
-#time ./second.sh all-${date} $1 $2 $3 $4
 
 time ./first.sh $1 $2 $3 $4
 time ./second.sh $1 $2 $3 $4 $5 
