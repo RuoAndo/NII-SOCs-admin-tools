@@ -9,8 +9,8 @@ iplist = []
 
 while line:                                                                                                            
     tmp = line.split(",")                                                                                                
-    iplist.append(tmp[9])                                                                                               
-    iplist.append(tmp[15])
+    iplist.append(tmp[11])                                                                                               
+    iplist.append(tmp[17])
     line = f.readline()                                                                                                 
 f.close()
 
