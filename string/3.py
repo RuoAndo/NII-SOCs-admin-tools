@@ -180,6 +180,7 @@ plt.ylabel('Softmax Loss')
 plt.legend(loc='upper left')
 #plt.show()
 plt.savefig('1.png')
+plt.clf()
 
 # Plot accuracy over time
 plt.plot(epoch_seq, train_accuracy, 'k--', label='Train Set')
