@@ -1,6 +1,6 @@
 date=`date --date "1 days ago" +%Y%m%d`
 cd iplist
-ls | grep cp02 > list
+ls | grep cp01 > list
 dn=`grep $date list` #| cut -d "/" -f 2`
 echo $dn
 cp $dn ../
