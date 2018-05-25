@@ -5,7 +5,7 @@ ls delta/* | grep delta > list
 fn=`grep $date list` #| cut -d "/" -f 2`
 echo $fn
 
-head -n 4000 $fn > tmp
+head -n 500 $fn > tmp
 python cut-delta.py tmp > $fn
 
 date_start=`date "+%s"`

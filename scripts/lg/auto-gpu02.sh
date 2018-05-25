@@ -16,7 +16,7 @@ echo $fn
 nLines_fn=`wc -l $fn | cut -d " " -f1`
 echo $nLines_fn
 
-var=5000
+var=500
 if [ $nLines_fn -gt $var ] ; then
     head -n 5000 $fn > tmp
     \cp tmp $fn
