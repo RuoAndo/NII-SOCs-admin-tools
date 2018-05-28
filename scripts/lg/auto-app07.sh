@@ -18,7 +18,7 @@ echo $nLines_fn
 
 var=500
 if [ $nLines_fn -gt $var ] ; then
-    head -n 5000 $fn > tmp
+    head -n 500 $fn > tmp
     \cp tmp $fn
 fi
 
