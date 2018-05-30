@@ -1,5 +1,7 @@
 <pre>
-tshark -r 1.pcap -E separator=',' -T fields -e ip.src -e ip.dst -e dns.qry.name -e dns.ns -e dns.ptr.domain_name > dump-string
+tshark -r $1 -E separator=',' -T fields -e ip.src -e ip.dst -e dns.qry.name -e dns.ns -e dns.ptr.domain_name -e dns.cname -e dns.dname -e dns.hinfo.os -e dns.ilnp.lp -e dns.mb -e dns.md -e dns.mf -e dns.mg -e dns.ns -e dns.ptr.domain_name -e dns.resp.name -e dns.rp.mailbox -e dns.rp.txt_rr -e dns.soa.mname -e dns.spf -e dns.srv.name -e dns.srv.proto -e dns.srv.service -e dns.srv.target -e dns.tkey.algo_name -e dns.txt 
+
+tring
 timeout 5 python 1.py iplist dump-string > tmp
 </pre>
 
