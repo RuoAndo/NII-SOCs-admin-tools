@@ -13,7 +13,7 @@ f = open(argvs[1])
 
 line = f.readline() 
 
-print "_time, tid, ipaddr, tagname"
+print "timestamp, tid, ipaddr, tagname"
 
 counter = 0
 while line:
