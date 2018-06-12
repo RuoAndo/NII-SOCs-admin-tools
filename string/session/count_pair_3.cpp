@@ -27,7 +27,7 @@ static bool verbose = false;
 static bool silent = false;
 
 // ! Problem size
-// long N = 50000000;
+long N = 50000000;
 const int size_factor = 2;
 
 std::vector<string> all_pair;
@@ -69,7 +69,7 @@ struct Tally2 {
 
 static MyString* Data;
 
-static void CountOccurrences(int nthreads, int N) {
+static void CountOccurrences(int nthreads) {
 
     int max_count;
   
@@ -136,7 +136,6 @@ static void CountOccurrences(int nthreads, int N) {
 int main( int argc, char* argv[] ) {
 
   int counter = 0;
-  int N = atoi(argv[2]);
   
     try {
         tbb::tick_count mainStartTime = tbb::tick_count::now();
@@ -148,10 +147,7 @@ int main( int argc, char* argv[] ) {
 
         Data = new MyString[N];
 
-	// String fname = argv[0].c_str();
-	
-	// const string csv_file = "all-50000000";
-	const string csv_file = std::string(argv[1]); 
+	const string csv_file = "all-50000000"; 
 	vector<vector<string>> data; 
 
 	try {
@@ -184,7 +180,7 @@ int main( int argc, char* argv[] ) {
             for(int p = threads.first;  p <= threads.last; p = threads.step(p)) {
                 if ( !silent ) printf("threads = %d  ", p );
                 task_scheduler_init init( p );
-                CountOccurrences( p, N );
+                CountOccurrences( p );
             }
         } else { // Number of threads wasn't set explicitly. Run serial and parallel version
             { // serial run
@@ -197,7 +193,7 @@ int main( int argc, char* argv[] ) {
             { // parallel run (number of threads is selected automatically)
                 if ( !silent ) printf("parallel run \n");
                 task_scheduler_init init_parallel;
-                CountOccurrences(0, N);
+                CountOccurrences(0);
             }
         }
 
