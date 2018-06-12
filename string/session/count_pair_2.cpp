@@ -27,7 +27,7 @@ static bool verbose = false;
 static bool silent = false;
 
 // ! Problem size
-long N = 100000;
+long N = 50000000;
 const int size_factor = 2;
 
 std::vector<string> all_pair;
@@ -147,7 +147,7 @@ int main( int argc, char* argv[] ) {
 
         Data = new MyString[N];
 
-	const string csv_file = "all-100000"; 
+	const string csv_file = "all-50000000"; 
 	vector<vector<string>> data; 
 
 	try {
@@ -160,7 +160,7 @@ int main( int argc, char* argv[] ) {
 	  for (unsigned int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
 
-	    std::string pair = rec[8] + "," + rec[19];
+	    std::string pair = rec[1] + "," + rec[2];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
