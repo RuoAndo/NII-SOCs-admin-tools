@@ -11,7 +11,7 @@ line = f.readline()
 iplist_concat = []                                                                                                     
 while line:                                                                                                            
     tmp = line.split(":")                                                                                                
-    iplist_concat.append(tmp[0])
+    iplist_concat.append(tmp[0].strip())
     line = f.readline()                                                                                                 
 f.close()
 
@@ -26,18 +26,32 @@ while line:
     line = f.readline()                                                                                                 
 f.close()
 
+#print(len(iplist_concat))
+#print(len(iplist_new))
+
+#print(iplist_new)
+#print(iplist_concat)
+
 set_concat = set(iplist_concat)
 set_new = set(iplist_new)
 
-diff = (set_new - set_concat)
+diff = list(set_new - set_concat)
 #print(len(diff))
 #print(diff)
 
-print("timestamp, counter, ipaddr")
+#diff2 = set_new - set(diff)
 
+#matched_list = []
+#for concat in iplist_concat:
+#    for new in iplist_new:
+#        if concat == new:
+#            matched_list.append(new)
+
+#print(len(matched_list))
+
+print("timestamp, counter, ipaddr")
 counter = 0
 for x in diff:
-
-   print(str(dt.strptime(argvs[3],'%Y%m%d')).replace("-","/") + "," + str(counter) + "," + x)
-   counter = counter + 1
+    print(str(dt.strptime(argvs[3],'%Y%m%d')).replace("-","/") + "," + str(counter) + "," + x)
+    counter = counter + 1
     
