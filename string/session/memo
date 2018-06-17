@@ -1,0 +1,2 @@
+  525  ./count_pair_2 all-100000 100000
+  528  ./sort.pl tmp > tmp-sorted
