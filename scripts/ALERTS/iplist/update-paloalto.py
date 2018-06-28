@@ -32,34 +32,43 @@ line = f.readline()
 counter = 0
 while line:
     tmp = argvs[1].split("-")
-    
-    datestr=str(dt.strptime(tmp[2],'%Y%m%d')).replace("-","/")
-    ipaddr=line.strip()
 
-    reader = geoip2.database.Reader('/usr/local/share/GeoIP/GeoLite2-City.mmdb')
-    #reader2 = geoip2.database.Reader('/usr/share/GeoIP/GeoLite2-ASN.mmdb')
+    datestr=str(dt.strptime(tmp[1],'%Y%m%d')).replace("-","/")
+    ip_addr=line.strip()
 
     try:
-        ip_addr = ipaddr
-        record = reader.city(ip_addr)
-        country_code = record.country.iso_code
 
-        #print(ip_addr)
+        reader = geoip2.database.Reader('/usr/share/GeoIP/GeoLite2-Country.mmdb')
+        response = reader.country(ip_addr)
+        country_code=(response.country.iso_code)
+        
         with geoip2.database.Reader('/usr/share/GeoIP/GeoLite2-ASN.mmdb') as reader2:
-            response = reader2.asn(ipaddr)
+            response = reader2.asn(ip_addr)
             asn = response.autonomous_system_number
+        
+        date6digit=tmp[1].strip()
 
-        co.update({"_id": ipaddr},{'$setOnInsert': {"_id": ipaddr, "_time": datestr, "date": tmp[2].strip(), "country": country_code, "ASN": asn}}, upsert=True)
+        co.update({"_id": ip_addr},{'$setOnInsert': {"_id": ip_addr, "_time": datestr, "date": date6digit, "country": country_code, "ASN": asn}}, upsert=True)
 
-        co_all.update({"_id": ipaddr},{'$setOnInsert': {"_id": ipaddr, "_time": datestr, "date": tmp[2].strip(), "country": country_code, "ASN": asn}}, upsert=True)
+        co_all.update({"_id": ip_addr},{'$setOnInsert': {"_id": ip_addr, "_time": datestr, "date": date6digit, "country": country_code, "ASN": asn}}, upsert=True)
 
     except:
-        pass
+        asn="NA"
+        country_code="NA"
+
+        co.update({"_id": ip_addr},{'$setOnInsert': {"_id": ip_addr, "_time": datestr, "date": date6digit, "country": country_code, "ASN": asn}}, upsert=True)
+
+        co_all.update({"_id": ip_addr},{'$setOnInsert': {"_id": ip_addr, "_time": datestr, "date": date6digit, "country": country_code, "ASN": asn}}, upsert=True)
 
     counter = counter + 1
     line = f.readline() 
 f.close()
 
+#print(tmp[1].strip())
+
+searchdate = tmp[1].strip()
+
 # 全部とってくる
-for data in co.find():
+#for data in co.find({"date":searchdate}).sort({"date":-1}):
+for data in co.find({"date":searchdate}):
     print(data)
