@@ -19,7 +19,6 @@ counter = 0
 while line:
     tmp = line.split(",")
     #print dt.strptime(tmp[0], '%Y%m%d')
-
     print str(dt.strptime(tmp[0],'%Y%m%d')).replace("-","/") + "," + str(counter) + "," + tmp[1] + "," + tmp[2].strip()
     #print line.strip()
     counter = counter + 1
