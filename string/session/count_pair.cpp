@@ -27,7 +27,7 @@ static bool verbose = false;
 static bool silent = false;
 
 //! Problem size
-long N = 100000;
+// long N = 100000;
 const int size_factor = 2;
 
 // std::vector<string> v;
@@ -49,7 +49,7 @@ struct Tally {
 
 static MyString* Data;
 
-static void CountOccurrences(int nthreads) {
+static void CountOccurrences(int nthreads, int N) {
     StringTable table;
 
     tick_count t0 = tick_count::now();
@@ -73,7 +73,8 @@ static void CountOccurrences(int nthreads) {
 int main( int argc, char* argv[] ) {
 
   int counter = 0;
-  
+  int N = atoi(argv[2]);  
+
     try {
         tbb::tick_count mainStartTime = tbb::tick_count::now();
         srand(2);
@@ -84,7 +85,8 @@ int main( int argc, char* argv[] ) {
 
         Data = new MyString[N];
 
-	const string csv_file = "all-100000"; 
+	const string csv_file = std::string(argv[1]); 
+	// const string csv_file = "all-100000"; 
 	vector<vector<string>> data; 
 
 	try {
@@ -96,7 +98,7 @@ int main( int argc, char* argv[] ) {
 
 	  for (unsigned int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
-	    std::string pair = rec[1] + "," + rec[2];
+	    std::string pair = rec[4] + "," + rec[7];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
@@ -114,7 +116,7 @@ int main( int argc, char* argv[] ) {
             for(int p = threads.first;  p <= threads.last; p = threads.step(p)) {
                 if ( !silent ) printf("threads = %d  ", p );
                 task_scheduler_init init( p );
-                CountOccurrences( p );
+                CountOccurrences( p, N );
             }
         } else { // Number of threads wasn't set explicitly. Run serial and parallel version
             { // serial run
@@ -125,7 +127,7 @@ int main( int argc, char* argv[] ) {
             { // parallel run (number of threads is selected automatically)
                 if ( !silent ) printf("parallel run ");
                 task_scheduler_init init_parallel;
-                CountOccurrences(0);
+                CountOccurrences(0, N);
             }
         }
 
