@@ -7,3 +7,4 @@ while read line; do
     echo $line
     ./cut.sh $line >> all
 done < list-csv
+
