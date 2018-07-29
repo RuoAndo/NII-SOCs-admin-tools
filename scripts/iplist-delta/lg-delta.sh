@@ -23,4 +23,4 @@ echo "querying ScoutVision 10.224.253.54..."
 time /usr/bin/python2.7 lookup_ip_details.py scout.cfg $fn-iplist NII
 
 mv ${fn}-iplist_ip_detailed_data.txt ../iplist-delta-lg/${fn}_ip_detailed_data.txt
-rm -rf ${fn}
+#rm -rf ${fn}
