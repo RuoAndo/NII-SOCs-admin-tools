@@ -1,5 +1,5 @@
 #if __linux__ && defined(__INTEL_COMPILER)
-#define __sync_fetch_and_add(ptr,addend) _InterlockedExchangeAdd(const_cast<void*>(reinterpret_cast<volatile void*>(ptr)), addend)
+82;1;0c#define __sync_fetch_and_add(ptr,addend) _InterlockedExchangeAdd(const_cast<void*>(reinterpret_cast<volatile void*>(ptr)), addend)
 #endif
 #include <string>
 #include <cstring>
@@ -98,7 +98,7 @@ int main( int argc, char* argv[] ) {
 
 	  for (unsigned int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
-	    std::string pair = rec[0] + "," + rec[1];
+	    std::string pair = rec[0] + "," + rec[1] + "," + rec[2] + "," + rec[3];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
