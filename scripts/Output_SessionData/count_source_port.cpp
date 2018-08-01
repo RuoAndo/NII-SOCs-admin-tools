@@ -56,7 +56,7 @@ static void CountOccurrences(int nthreads, int N) {
     parallel_for( blocked_range<MyString*>( Data, Data+N, 1000 ), Tally(table) );
     tick_count t1 = tick_count::now();
 
-    ofstream outputfile("pair");  
+    ofstream outputfile("source_port");  
     
     int n = 0;
     for( StringTable::iterator i=table.begin(); i!=table.end(); ++i ) {
@@ -98,7 +98,7 @@ int main( int argc, char* argv[] ) {
 
 	  for (unsigned int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
-	    std::string pair = rec[0] + "," + rec[1] + "," + rec[2] + "," + rec[3];
+	    std::string pair = rec[6];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
