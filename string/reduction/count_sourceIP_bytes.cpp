@@ -185,7 +185,7 @@ static void CountOccurrences(int nthreads, int N) {
     printf("writing file with %d \n", count_max);
     
     int i;
-    ofstream outputfile("destIP_bytes");  
+    ofstream outputfile("sourceIP_bytes");  
     for(i=0; i< count_max-1 ; i++)
       {
 	// std::cout << all_pair[i] << "," << all_count[i] << "," << all_bytes[2] << std::endl;
@@ -227,7 +227,7 @@ int main( int argc, char* argv[] ) {
 	    // cout << endl;
 
 	    // std::string pair = rec[4] + "," + rec[7];
-	    std::string pair = rec[2]; // + "," + rec[7];
+	    std::string pair = rec[0]; // + "," + rec[7];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
