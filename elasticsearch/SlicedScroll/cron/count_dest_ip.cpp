@@ -56,7 +56,7 @@ static void CountOccurrences(int nthreads, int N) {
     parallel_for( blocked_range<MyString*>( Data, Data+N, 1000 ), Tally(table) );
     tick_count t1 = tick_count::now();
 
-    ofstream outputfile("destip");  
+    ofstream outputfile("dest_ip");  
     
     int n = 0;
     for( StringTable::iterator i=table.begin(); i!=table.end(); ++i ) {
