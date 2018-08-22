@@ -63,3 +63,11 @@ for (( DATE=${START_DATE} ; ${DATE} <= ${END_DATE} ; DATE=`date -d "${DATE} 1 da
 
   cd ..
 done
+
+./build.sh count_destPort_final 
+./count_destPort_final all-dest_port
+scp destPort_final scp 192.168.72.5:/root/splunk-session-port/
+
+./build.sh count_sourcePort_final
+./count_sourcePort_final all-source_port
+scp sourcePort_final scp 192.168.72.5:/root/splunk-session-port/

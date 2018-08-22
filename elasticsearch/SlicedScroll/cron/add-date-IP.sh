@@ -64,10 +64,14 @@ for (( DATE=${START_DATE} ; ${DATE} <= ${END_DATE} ; DATE=`date -d "${DATE} 1 da
   cd ..
 done
 
-#./build.sh count_destIp_final 
-#./count_destIp_final all-dest_ip
-#scp destIp_final scp 192.168.72.5:/root/splunk-session-ip/
+nLines=`wc -l all-dest_ip | cut -d "" -f 1`
+./build.sh count_destIP_final 
+./count_destIP_final all-dest_ip $nLines
+cp destIP_final destIP_final-${START_DATE}-${END_DATE}
+scp destIP_final-${START_DATE}-${END_DATE} 192.168.72.5:/root/splunk-session-port/
 
-#./build.sh count_sourceIp_final
-#./count_sourceIp_final all-source_ip
-#scp sourceIp_final scp 192.168.72.5:/root/splunk-session-ip/
+nLines=`wc -l all-dest_ip | cut -d "" -f 1`
+./build.sh count_sourceIP_final
+./count_sourceIP_final all-source_ip $nLines
+cp sourceIP_final sourceIP_final-${START_DATE}-${END_DATE}
+scp sourceIP_final-${START_DATE}-${END_DATE} 192.168.72.5:/root/splunk-session-port/
