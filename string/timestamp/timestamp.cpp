@@ -26,11 +26,7 @@ using namespace std;
 static bool verbose = false;
 static bool silent = false;
 
-//! Problem size
-// long N = 100000;
 const int size_factor = 2;
-
-// std::vector<string> v;
 
 // typedef concurrent_hash_map<MyString,int> StringTable;
 typedef concurrent_hash_map<MyString,std::vector<string>> StringTable;
@@ -83,9 +79,21 @@ static void CountOccurrences(int nthreads, int N) {
       for(size_t c = i->second[0].find_first_of(":"); c != string::npos; c = c = i->second[0].find_first_of(":")){
 	i->second[0].erase(c,1);
       }
+
+      for(size_t c = i->second[0].find_first_of("\""); c != string::npos; c = c = i->second[0].find_first_of("\"")){
+	i->second[0].erase(c,1);
+      }
       
       // cout << i->first.c_str() << "," << i->second[0] << endl;
-      outputfile<< i->first.c_str() << "," << i->second[0] << endl;	
+      outputfile<< i->first.c_str() << ",";
+
+      std::vector<string>::iterator itr = i->second.begin();
+      for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
+	      outputfile << i->second[0] << ",";	
+      }
+
+      outputfile << endl;
+      
       counter = counter + 1;
     }
     outputfile.close();
@@ -109,7 +117,6 @@ int main( int argc, char* argv[] ) {
         Data = new MyString[N];
 
 	const string csv_file = std::string(argv[1]); 
-	// const string csv_file = "all-100000"; 
 	vector<vector<string>> data; 
 
 	try {
@@ -121,7 +128,7 @@ int main( int argc, char* argv[] ) {
 
 	  for (unsigned int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
-	    std::string pair = rec[4] + "," + rec[7];
+	    std::string pair = rec[4] + "," + rec[5] + "," + rec[7] + "," + rec[8];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
@@ -147,7 +154,7 @@ int main( int argc, char* argv[] ) {
         } else { // Number of threads wasn't set explicitly. Run serial and parallel version
             { // serial run
 	      // if ( !silent ) printf("serial run   ");
-	      //task_scheduler_init init_serial(1);
+	      //  task_scheduler_init init_serial(1);
               //  CountOccurrences(1);
             }
             { // parallel run (number of threads is selected automatically)
