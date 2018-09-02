@@ -1,7 +1,11 @@
-START_DATE=`date --date '4 day ago' +%Y%m%d`                                                                          
-END_DATE=`date --date '4 day ago' +%Y%m%d`                                                                             
-echo $START_DATE                                                                                                        
-echo $END_DATE   
+if [ "$1" = "" ]
+then
+    echo "./add-date-portNumber.sh start_date end_date DIR"
+    exit 1
+fi
+
+START_DATE=$1
+END_DATE=$2
 
 rm -rf all-dest_ip
 touch all-dest_ip
@@ -26,6 +30,9 @@ for (( DATE=${START_DATE} ; ${DATE} <= ${END_DATE} ; DATE=`date -d "${DATE} 1 da
   cd ${DATE}
 
   #####
+  echo "catting...."
+  ./cat.sh
+
   echo "spliting..."
 
   split -l 100000000 all spl.
