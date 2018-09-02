@@ -1,3 +1,12 @@
+if [ "$1" = "" ]
+then
+    echo "./add-date-portNumber.sh start_date end_date DIR"
+    exit 1
+fi
+
+#START_DATE=`date --date '4 day ago' +%Y%m%d`
+#END_DATE=`date --date '4 day ago' +%Y%m%d`
+
 START_DATE=$1
 END_DATE=$2
 
@@ -24,6 +33,9 @@ for (( DATE=${START_DATE} ; ${DATE} <= ${END_DATE} ; DATE=`date -d "${DATE} 1 da
   cd ${DATE}
 
   #####
+
+  echo "catting...."
+  ./cat.sh
   
   echo "spliting..."
 
@@ -67,8 +79,8 @@ done
 
 ./build.sh count_destPort_final 
 ./count_destPort_final all-dest_port
-scp destPort_final scp 192.168.72.5:/mnt/sdc/splunk-session/
+scp destPort_final scp 192.168.72.5:/mnt/sdc/splunk-session/$3
 
 ./build.sh count_sourcePort_final
 ./count_sourcePort_final all-source_port
-scp sourcePort_final scp 192.168.72.5:/mnt/sdc/splunk-session/
+scp sourcePort_final scp 192.168.72.5:/mnt/sdc/splunk-session/$3
