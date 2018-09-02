@@ -1,4 +1,4 @@
-if [ "$1" = "" ]
+if [ "$3" = "" ]
 then
     echo "./add-date-portNumber.sh start_date end_date DIR"
     exit 1
