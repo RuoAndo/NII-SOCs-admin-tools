@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ "$1" = "" ]
 then
     echo "./add-date-portNumber.sh DIR"
