@@ -1,6 +1,8 @@
+#!/bin/bash
+
 if [ "$1" = "" ]
 then
-    echo "./add-date-portNumber.sh start_date DIR"
+    echo "./add-date-IP.sh start_date DIR"
     exit 1
 fi
 
