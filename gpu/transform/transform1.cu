@@ -27,6 +27,9 @@ int main(){
 
     cudaEvent_t start,stop;
     float elapsed;
+    float elapsed_bak;
+    float ratio;
+    
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
 
@@ -40,6 +43,8 @@ int main(){
 
     std::cout<<"gpu :"<<elapsed<<"ms ["<<std::setprecision(8)<<C1/elapsed<<"/ms]"<<std::endl;
 
+    elapsed_bak = elapsed;
+
     std::generate(hv.begin(),hv.end(),rand);
     dv=hv;
 
@@ -52,6 +57,9 @@ int main(){
     cudaEventElapsedTime(&elapsed,start,stop);
 
     std::cout<<"cpu :"<<elapsed<<"ms ["<<std::setprecision(8)<<C1/elapsed<<"/ms]"<<std::endl;
+
+    ratio = elapsed/elapsed_bak;
+    std::cout<<"ratio:"<<ratio<<std::endl;
 
     cudaEventDestroy(start);
     cudaEventDestroy(stop);
