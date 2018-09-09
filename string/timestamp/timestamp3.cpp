@@ -97,7 +97,7 @@ static void CountOccurrences(int nthreads, int N) {
       counter2 = 0;
       std::vector<string>::iterator itr = i->second.begin();
       for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
-	outputfile << i->second[0] << ",";
+	// outputfile << i->second[0] << ",";
 	
 	previous_value = atoi(i->second[0].c_str());
 	
@@ -112,14 +112,24 @@ static void CountOccurrences(int nthreads, int N) {
       }
 
       counter2 = 0;
-      int sum2 = 0;
+      float sum2 = 0;
+      float counter3 = 0;
+      float ave = 0;
       std::vector<int>::iterator itr2 = diff_vector.begin();
       for(auto itr2 = diff_vector.begin(); itr2 != diff_vector.end(); ++itr2) {
-        // outputfile << *itr2 << ",";
+        // outputfile << (int)*itr2 << ",";
 	sum2 = sum2 + (int)*itr2;
+	counter3 = counter3 + 1;
       }
 
-      outputfile << sum2 << endl;
+      outputfile << counter3 << ",";
+      
+      if (counter3 > 0)
+	ave = sum2 / counter3;
+      else
+	ave = 0;
+	
+      outputfile << ave;
       diff_vector.erase( diff_vector.begin(), diff_vector.end() ); 
       
       outputfile << endl;
