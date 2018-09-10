@@ -26,9 +26,6 @@ using namespace std;
 static bool verbose = false;
 static bool silent = false;
 
-// ! Problem size
-// long N = 500000000;
-// long N = 1000;
 const int size_factor = 2;
 
 std::vector<int> v_bytes;
@@ -40,8 +37,6 @@ std::vector<string> all_pair;
 /* second */
 std::vector<int> all_count;
 std::vector<int> all_bytes;
-std::vector<int> all_sent;
-std::vector<int> all_recv;
 
 typedef concurrent_hash_map<MyString,int> StringTable;
 
@@ -70,14 +65,15 @@ struct Tally_bytes {
         for( MyString* p=range.begin(); p!=range.end(); ++p ) {
             StringTable::accessor a;
             table.insert( a, *p );
-            // a->second += 1;
 	    a->second += v_bytes[counter];
+	    // v_bytes.push_back(std::atoi(rec[2].c_str())); 
 	    counter = counter + 1;
         }
     }
 };
 
 /* sent */
+/*
 struct Tally_sent {
     StringTable& table;
     Tally_sent( StringTable& table_ ) : table(table_) {}
@@ -92,8 +88,10 @@ struct Tally_sent {
         }
     }
 };
+*/
 
 /* recv */
+/*
 struct Tally_recv {
     StringTable& table;
     Tally_recv( StringTable& table_ ) : table(table_) {}
@@ -108,6 +106,7 @@ struct Tally_recv {
         }
     }
 };
+*/
 
 static MyString* Data;
 
@@ -125,18 +124,6 @@ static void CountOccurrences(int nthreads, int N) {
     parallel_for( blocked_range<MyString*>( Data, Data+N, N ), Tally_bytes(table2) );
     tick_count t3 = tick_count::now();
 
-    /*
-    StringTable table3;    
-    tick_count t4 = tick_count::now();
-    parallel_for( blocked_range<MyString*>( Data, Data+N, 1000 ), Tally_sent(table3) );
-    tick_count t5 = tick_count::now();
-
-    StringTable table4;    
-    tick_count t6 = tick_count::now();
-    parallel_for( blocked_range<MyString*>( Data, Data+N, 1000 ), Tally_recv(table4) );
-    tick_count t7 = tick_count::now();
-    */
-
     unsigned long n = 0;
     for( StringTable::iterator i=table.begin(); i!=table.end(); ++i ) {
         if( verbose && nthreads )
@@ -149,44 +136,15 @@ static void CountOccurrences(int nthreads, int N) {
     count_max = unsigned(table.size());
     printf("1 total = %10lu  unique = %u  time = %g\n", n, unsigned(table.size()), (t1-t0).seconds());
 
-    /* bytes */
+    /* all_counts */
     n = 0;
     for( StringTable::iterator i=table2.begin(); i!=table2.end(); ++i ) {
         if( verbose && nthreads )
             printf("%s,%d\n",i->first.c_str(),i->second);
 	all_bytes.push_back(i->second);	
-	// all_pair.push_back(i->first.c_str());
         n += i->second;	
     }
     printf("2 total = %10lu  unique = %u  time = %g\n", n, unsigned(table2.size()), (t3-t2).seconds());
-
-    /* sent */
-    /*
-    n = 0;
-    for( StringTable::iterator i=table3.begin(); i!=table3.end(); ++i ) {
-        if( verbose && nthreads )
-            printf("%s,%d\n",i->first.c_str(),i->second);
-	all_sent.push_back(i->second);	
-	// all_pair.push_back(i->first.c_str());
-        n += i->second;	
-    }
-    printf("3 total = %10lu  unique = %u  time = %g\n", n, unsigned(table3.size()), (t5-t4).seconds());
-    */
-
-    /* recv */
-    /*
-    n = 0;
-    for( StringTable::iterator i=table4.begin(); i!=table4.end(); ++i ) {
-        if( verbose && nthreads )
-            printf("%s,%d\n",i->first.c_str(),i->second);
-	all_recv.push_back(i->second);	
-	// all_pair.push_back(i->first.c_str());
-        n += i->second;	
-    }
-    printf("4 total = %10lu  unique = %u  time = %g\n", n, unsigned(table4.size()), (t7-t6).seconds());
-    */
-
-    // count_max = n;
 
     printf("writing file with %d \n", count_max);
     
@@ -194,8 +152,6 @@ static void CountOccurrences(int nthreads, int N) {
     ofstream outputfile("destIP_final");  
     for(i=0; i< count_max-1 ; i++)
       {
-	// std::cout << all_pair[i] << "," << all_count[i] << "," << all_bytes[2] << std::endl;
-	// outputfile << all_pair[i] << "," << all_count[i] << "," << all_bytes[i] << "," << all_sent[i] << "," << all_recv[i] << std::endl;
 	outputfile << all_pair[i] << "," << all_count[i] << "," << all_bytes[i] << std::endl;
       }
     
@@ -230,11 +186,9 @@ int main( int argc, char* argv[] ) {
 
 	  for (unsigned int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
-	    // cout << rec[0];
-	    // cout << endl;
 
-	    // std::string pair = rec[4] + "," + rec[7];
-	    std::string pair = rec[0] + "," + rec[1]; // + "," + rec[7];
+	    // std::string pair = rec[0] + "," + rec[1]; // + "," + rec[7];
+	    std::string pair = rec[1]; 
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
@@ -242,27 +196,6 @@ int main( int argc, char* argv[] ) {
 	    Data[row] += cstr;
 
 	    v_bytes.push_back(std::atoi(rec[2].c_str()));
-	    // v_sent.push_back(std::atoi(rec[8].c_str()));
-	    // v_recv.push_back(std::atoi(rec[9].c_str())); 	    
-	    
-	    /*
-	    std::string tmpstring; 
- 
-	    tmpstring = rec[20].c_str(); 
-	    tmpstring.erase(tmpstring.begin());
-	    tmpstring.pop_back();
-	    v_bytes.push_back(std::atoi(tmpstring.c_str()));
-
-	    tmpstring = rec[21].c_str(); 
-	    tmpstring.erase(tmpstring.begin());
-	    tmpstring.pop_back();
-	    v_sent.push_back(std::atoi(tmpstring.c_str()));
-
-	    tmpstring = rec[22].c_str(); 
-	    tmpstring.erase(tmpstring.begin());
-	    tmpstring.pop_back();
-	    v_recv.push_back(std::atoi(tmpstring.c_str())); 
-	    */	    
 
 	    delete[] cstr; 
 	  }
