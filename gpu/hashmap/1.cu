@@ -3,7 +3,7 @@
 #include "lock.h"
 
 // #define SIZE    1024 * 1024 * 100
-#define SIZE    1024 * 1024 * 400
+#define SIZE    1024 * 1024 * 1000
 #define ELEMENTS    (SIZE / sizeof(unsigned int))
 // #define ELEMENTS SIZE 
 // #define HASH_ENTRIES     1024
@@ -107,10 +107,12 @@ void verify_table( const Table &dev_table ) {
                         current->key,
                         hash(current->key, table.count), i );
 
-	    if(count%10000000 == 0) {
+            /* 
+	    if(count%40000000 == 0) {
 		printf( "%d hashed to %ld\n", current->key, hash(current->key, table.count));
 		}
-		
+	    */
+
             current = current->next;
         }
     }
@@ -156,25 +158,28 @@ int main( void ) {
                               HASH_ENTRIES * sizeof( Lock ),
                               cudaMemcpyHostToDevice ) );
 
-    //cudaEvent_t     start, stop;
-    //HANDLE_ERROR( cudaEventCreate( &start ) );
-    //HANDLE_ERROR( cudaEventCreate( &stop ) );
-    //HANDLE_ERROR( cudaEventRecord( start, 0 ) );
+    cudaEvent_t     start, stop;
+    HANDLE_ERROR( cudaEventCreate( &start ) );
+    HANDLE_ERROR( cudaEventCreate( &stop ) );
+    HANDLE_ERROR( cudaEventRecord( start, 0 ) );
 
+    /*
     add_to_table<<<60,256>>>( dev_keys, dev_values,
                               table, dev_lock );
+    */
+    add_to_table<<<256,1024>>>( dev_keys, dev_values,
+                              table, dev_lock );
 
-    //HANDLE_ERROR( cudaEventRecord( stop, 0 ) );
-    //HANDLE_ERROR( cudaEventSynchronize( stop ) );
-    //float   elapsedTime;
-    //HANDLE_ERROR( cudaEventElapsedTime( &elapsedTime,
-    //                                   start, stop ) );
-    //printf( "Time to hash:  %3.1f ms\n", elapsedTime );
+    HANDLE_ERROR( cudaEventRecord( stop, 0 ) );
+    HANDLE_ERROR( cudaEventSynchronize( stop ) );
+    float   elapsedTime;
+    HANDLE_ERROR( cudaEventElapsedTime( &elapsedTime, start, stop ) );
+    printf( "Time to hash:  %3.1f ms\n", elapsedTime );
 
     verify_table( table );
 
-    //HANDLE_ERROR( cudaEventDestroy( start ) );
-    //HANDLE_ERROR( cudaEventDestroy( stop ) );
+    HANDLE_ERROR( cudaEventDestroy( start ) );
+    HANDLE_ERROR( cudaEventDestroy( stop ) );
     
     free_table( table );
     HANDLE_ERROR( cudaFree( dev_lock ) );
