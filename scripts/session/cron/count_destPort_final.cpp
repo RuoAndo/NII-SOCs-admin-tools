@@ -234,7 +234,8 @@ int main( int argc, char* argv[] ) {
 	    // cout << endl;
 
 	    // std::string pair = rec[4] + "," + rec[7];
-	    std::string pair = rec[0] + "," + rec[1]; // + "," + rec[7];
+	    // std::string pair = rec[0] + "," + rec[1]; // + "," + rec[7];
+	    std::string pair = rec[1]; // + "," + rec[7];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
