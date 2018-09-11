@@ -167,7 +167,8 @@ int main( int argc, char* argv[] ) {
 	  }
 
 	  for (unsigned int row = 0; row < data.size(); row++) {
-	    vector<string> rec = data[row]; 
+	    vector<string> rec = data[row];
+	    
 	    std::string pair = rec[4] + "," + rec[5] + "," + rec[7] + "," + rec[8];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
