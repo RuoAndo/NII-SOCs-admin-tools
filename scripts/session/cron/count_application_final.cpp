@@ -243,7 +243,7 @@ int main( int argc, char* argv[] ) {
 	
 	    Data[row] += cstr;
 
-	    v_bytes.push_back(std::atoi(rec[1].c_str()));
+	    v_bytes.push_back(std::atoi(rec[2].c_str()));
 	    // v_sent.push_back(std::atoi(rec[8].c_str()));
 	    // v_recv.push_back(std::atoi(rec[9].c_str())); 	    
 	    

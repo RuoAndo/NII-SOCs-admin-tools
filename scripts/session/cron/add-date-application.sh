@@ -27,6 +27,7 @@ for (( DATE=${START_DATE} ; ${DATE} <= ${END_DATE} ; DATE=`date -d "${DATE} 1 da
   cp *.cpp ${DATE}
   cp *.h ${DATE}
   cp *.hpp ${DATE}
+  cp *.py ${DATE}
 
   cd ${DATE}
 
@@ -69,6 +70,7 @@ done
 nLines=`wc -l all-application | cut -d " " -f 1`
 ./build.sh count_application_final
 ./count_application_final all-application $nLines
-cp application_final application_final-${START_DATE}-${END_DATE}
+python add-date-application.py application_final ${DATE} > tmp-application_final
+cp tmp-application_final application_final-${START_DATE}-${END_DATE}
 scp application_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
 
