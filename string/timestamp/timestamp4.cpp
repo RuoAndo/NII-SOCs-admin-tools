@@ -59,7 +59,7 @@ static void CountOccurrences(int nthreads, int N) {
     parallel_for( blocked_range<MyString*>( Data, Data+N, N ), Tally(table) );
     tick_count t1 = tick_count::now();
 
-    ofstream outputfile("tmp-timestamp-3");  
+    ofstream outputfile("tmp-timestamp");  
     
     int n = 0;
     int counter = 0;
@@ -68,9 +68,10 @@ static void CountOccurrences(int nthreads, int N) {
     std::vector<int> diff_vector;
     
     for( StringTable::iterator i=table.begin(); i!=table.end(); ++i ) {
+      // i->second[0].erase(std::find(i->second[0].begin(), i->second[0].end(), '/'));
+      // i->second[0].erase(i->second[0].find('/'));
 
-      /*
-      for(size_t c = string(*i).find_first_of("/"); c != string::npos; c = c = i->second[0].find_first_of("/")){
+      for(size_t c = i->second[0].find_first_of("/"); c != string::npos; c = c = i->second[0].find_first_of("/")){
 	i->second[0].erase(c,1);
       }
 
@@ -89,44 +90,19 @@ static void CountOccurrences(int nthreads, int N) {
       for(size_t c = i->second[0].find_first_of("\""); c != string::npos; c = c = i->second[0].find_first_of("\"")){
 	i->second[0].erase(c,1);
       }
-      */
+      
       outputfile<< i->first.c_str() << ",";
       
       counter2 = 0;
       std::vector<string>::iterator itr = i->second.begin();
       for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
-	// outputfile << i->second[0] << ",";
-
-	std::string tmp_string = *itr;
+	outputfile << *itr << ",";
 	
-	for(size_t c = tmp_string.find_first_of(":"); c != string::npos; c = c = tmp_string.find_first_of(":")){
-	  tmp_string.erase(c,1);
-	}
-
-	for(size_t c = tmp_string.find_first_of("."); c != string::npos; c = c = tmp_string.find_first_of(".")){
-	  tmp_string.erase(c,1);
-	}
-	
-	for(size_t c = tmp_string.find_first_of("/"); c != string::npos; c = c = tmp_string.find_first_of("/")){
-	  tmp_string.erase(c,1);
-	}
-
-	for(size_t c = tmp_string.find_first_of("\""); c != string::npos; c = c = tmp_string.find_first_of("\"")){
-	  tmp_string.erase(c,1);
-	}
-
-	for(size_t c = tmp_string.find_first_of(" "); c != string::npos; c = c = tmp_string.find_first_of(" ")){
-	  tmp_string.erase(c,1);
-	}
-
-	outputfile << tmp_string << ",";
-	
-	// previous_value = atoi(i->second[0].c_str());
-	previous_value = atoi(tmp_string.c_str());
+	previous_value = atoi(i->second[0].c_str());
 	
 	if(counter2 > 0)
 	  {
-	    diff = atoi(string(*itr).c_str()) - previous_value;
+	    diff = atoi(i->second[0].c_str()) - previous_value;
 	    diff = diff + 1;
 	    diff_vector.push_back(diff);
 	  }
@@ -191,7 +167,7 @@ int main( int argc, char* argv[] ) {
 	  for (unsigned int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row];
 	    
-	    std::string pair = rec[4] + "," + rec[5] + "," + rec[7] + "," + rec[8];
+	    std::string pair = rec[4] + "," + rec[7];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
@@ -202,6 +178,9 @@ int main( int argc, char* argv[] ) {
 	    
 	    delete[] cstr; 
 	  }
+
+	  cout << "timestamp size: " << v_timestamp.size() << endl;
+	  
 	}
 	catch (...) {
 	  cout << "EXCEPTION!" << endl;
