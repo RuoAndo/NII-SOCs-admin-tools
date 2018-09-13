@@ -70,8 +70,8 @@ struct Tally_bytes {
         for( MyString* p=range.begin(); p!=range.end(); ++p ) {
             StringTable::accessor a;
             table.insert( a, *p );
-            // a->second += 1;
-	    a->second += v_bytes[counter];
+            a->second += 1;
+	    // a->second += v_bytes[counter];
 	    counter = counter + 1;
         }
     }
@@ -196,7 +196,7 @@ static void CountOccurrences(int nthreads, int N) {
       {
 	// std::cout << all_pair[i] << "," << all_count[i] << "," << all_bytes[2] << std::endl;
 	// outputfile << all_pair[i] << "," << all_count[i] << "," << all_bytes[i] << "," << all_sent[i] << "," << all_recv[i] << std::endl;
-	outputfile << all_pair[i] << "," << all_count[i] << "," << all_bytes[i] << std::endl;
+	outputfile << all_pair[i] << "," << all_count[i] << std::endl;
       }
     
     outputfile.close();
@@ -235,7 +235,7 @@ int main( int argc, char* argv[] ) {
 
 	    // std::string pair = rec[4] + "," + rec[7];
 	    // std::string pair = rec[0] + "," + rec[1]; // + "," + rec[7];
-	    std::string pair = rec[0] + "," + rec[1] + "," + rec[2] + "," + rec[3]; // + "," + rec[7];
+	    std::string pair = rec[1] + "," + rec[2] + "," + rec[3] + "," + rec[4]; // + "," + rec[7];
 	    // std::string pair = rec[1]; // + "," + rec[7];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
@@ -243,7 +243,7 @@ int main( int argc, char* argv[] ) {
 	
 	    Data[row] += cstr;
 
-	    v_bytes.push_back(std::atoi(rec[4].c_str()));
+	    // v_bytes.push_back(std::atoi(rec[4].c_str()));
 	    // v_sent.push_back(std::atoi(rec[8].c_str()));
 	    // v_recv.push_back(std::atoi(rec[9].c_str())); 	    
 	    
