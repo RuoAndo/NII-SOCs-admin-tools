@@ -235,6 +235,8 @@ int main( int argc, char* argv[] ) {
 
 	    // std::string pair = rec[4] + "," + rec[7];
 	    // std::string pair = rec[0] + "," + rec[1]; // + "," + rec[7];
+
+
 	    std::string pair = rec[1]; // + "," + rec[7];
 	    
 	    char* cstr = new char[pair.size() + 1]; 
@@ -243,8 +245,6 @@ int main( int argc, char* argv[] ) {
 	    Data[row] += cstr;
 
 	    v_bytes.push_back(std::atoi(rec[2].c_str()));
-	    // v_sent.push_back(std::atoi(rec[8].c_str()));
-	    // v_recv.push_back(std::atoi(rec[9].c_str())); 	    
 	    
 	    /*
 	    std::string tmpstring; 
