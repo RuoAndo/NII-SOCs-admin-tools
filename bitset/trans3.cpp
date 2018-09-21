@@ -50,7 +50,7 @@ void split_string(const std::string& s, const std::string& delim, List& result)
 	  break;
 	}
       else {
-	std::cout << s.substr(pos, p - pos) << endl;
+	// std::cout << s.substr(pos, p - pos) << endl;
 	result.push_back(s.substr(pos, p - pos));
 	// result.push_back(";");
       }
@@ -90,7 +90,7 @@ struct Tally {
             table.insert( a, *p );
             // a->second += 1;
 	    
-	    std::cout << a->first << std::endl;
+	    // std::cout << a->first << std::endl;
 	    std::string tmp_string =  p->c_str();
 
 	    /*
@@ -119,10 +119,10 @@ struct Tally {
 	      ipaddr = atoi(subStr.c_str());
 	      std::bitset<8> trans =  std::bitset<8>(ipaddr);
 	      std::string trans_string = trans.to_string();
-	      std::cout << subStr << ": " << trans_string << std::endl;     
+	      // std::cout << subStr << ": " << trans_string << std::endl;     
 	      ip_address = ip_address + "." + trans_string;
 	    }
-	    std::cout << ip_address << std::endl;
+	    // std::cout << ip_address << std::endl;
 	    
 	    a->second = ip_address; 
 	    
