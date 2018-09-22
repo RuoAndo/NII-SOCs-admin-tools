@@ -125,7 +125,7 @@ int main( int argc, char* argv[] ) {
 	std::vector<string> sv;
 	sv.insert(sv.begin(), IPpair.begin(), IPpair.end());
 
-
+	std::unique(sv.begin(), sv.end());
 	
 	for(auto itr = sv.begin(); itr != sv.end(); ++itr) {
 	     std::cout << *itr << endl;
