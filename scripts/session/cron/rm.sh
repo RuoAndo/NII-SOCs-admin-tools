@@ -1,4 +1,7 @@
-RMDATE=`date --date '30 day ago' +%Y%m%d`
+RMDATE=`date --date '6 day ago' +%Y%m%d`
 echo $RMDATE
-rm -rf $RMDATE
+rm -rf /data1/$RMDATE
 
+if [[ ! -e /data1/$RMDATE ]]; then
+  echo "OK:"$RMDATE
+fi
