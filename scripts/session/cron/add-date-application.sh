@@ -33,11 +33,11 @@ for (( DATE=${START_DATE} ; ${DATE} <= ${END_DATE} ; DATE=`date -d "${DATE} 1 da
 
   #####
 
-  #echo "catting...."
-  #./cat.sh
+  echo "catting...."
+  ./cat.sh
   
-  #echo "spliting..."
-  #split -l 100000000 all spl.
+  echo "spliting..."
+  split -l 100000000 all spl.
 
   ls spl.* > list-spl
 
