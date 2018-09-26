@@ -6,8 +6,8 @@ then
     exit 1
 fi
 
-START_DATE=`date --date '4 day ago' +%Y%m%d`
-END_DATE=`date --date '4 day ago' +%Y%m%d`
+START_DATE=`date --date '3 day ago' +%Y%m%d`
+END_DATE=`date --date '3 day ago' +%Y%m%d`
 
 #START_DATE=$1
 #END_DATE=$2
