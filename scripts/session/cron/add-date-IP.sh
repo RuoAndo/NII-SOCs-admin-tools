@@ -82,12 +82,14 @@ nLines=`wc -l all-dest_ip | cut -d "" -f 1`
 ./build.sh count_destIP_final 
 ./count_destIP_final all-dest_ip $nLines
 sed -i -e '1,1d' destIP_final
-cp destIP_final destIP_final-${START_DATE}-${END_DATE}
+python add-date-IP.py  destIP_final ${DATE} >> tmp-destIP_final
+cp tmp-destIP_final destIP_final-${START_DATE}-${END_DATE}
 scp destIP_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
 
 nLines=`wc -l all-dest_ip | cut -d "" -f 1`
 ./build.sh count_sourceIP_final
 ./count_sourceIP_final all-source_ip $nLines
 sed -i -e '1,1d' sourceIP_final
-cp sourceIP_final sourceIP_final-${START_DATE}-${END_DATE}
+python add-date-IP.py  sourceIP_final ${DATE} >> tmp-sourceIP_final
+cp tmp-sourceIP_final sourceIP_final-${START_DATE}-${END_DATE}
 scp sourceIP_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
