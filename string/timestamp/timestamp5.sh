@@ -1,6 +1,12 @@
+if [ "$1" = "" ]
+then
+    echo "./timestamp5.sh nLines"
+    exit 1
+fi
+
 ./build.sh timestamp5
 
-time split -l 500000000 all-org
+time split -l $1 all-org
 ls x* > list
 
 rm -rf timestamp-all
