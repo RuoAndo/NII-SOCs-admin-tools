@@ -61,7 +61,7 @@ static void CountOccurrences(int nthreads, int N) {
     parallel_for( blocked_range<MyString*>( Data, Data+N, N ), Tally(table) );
     tick_count t1 = tick_count::now();
 
-    ofstream outputfile("tmp-timestamp-3");  
+    ofstream outputfile("tmp-timestamp");  
     
     int n = 0;
     int counter = 0;
