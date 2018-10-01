@@ -119,7 +119,7 @@ int main( int argc, char* argv[] ) {
 
 	    Data[row] += cstr;
 	    
-	    v_timestamp.push_back(rec[17].c_str());
+	    v_timestamp.push_back(rec[20].c_str());
 	    
 	    delete[] cstr; 
 	  }
