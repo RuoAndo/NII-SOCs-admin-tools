@@ -93,7 +93,7 @@ static void CountOccurrences(int nthreads, int N) {
       }
       */
 
-      outputfile<< i->first.c_str() << ",";
+      //outputfile<< i->first.c_str() << ",";
       
       counter2 = 0;
       std::vector<string>::iterator itr = i->second.begin();
@@ -122,7 +122,7 @@ static void CountOccurrences(int nthreads, int N) {
 	  tmp_string.erase(c,1);
 	}
 
-	outputfile << tmp_string << ",";
+	// outputfile << tmp_string << ",";
 	// std::cout << tmp_string << ",";
 		
 	if(counter2 > 0)
@@ -165,19 +165,43 @@ static void CountOccurrences(int nthreads, int N) {
 	sum2 = sum2 + tmp_value;
 	counter3 = counter3 + 1;
       }
-      
-      outputfile << counter3 << ",";
-      
+
       if (counter3 > 0)
 	ave = sum2 / (counter3 * 10000);
       else
 	ave = 0;
-	
-      outputfile << ave;
-      diff_vector.erase( diff_vector.begin(), diff_vector.end() ); 
-
-      outputfile << endl;
       
+      if (ave > 0)
+	{
+	  outputfile<< i->first.c_str() << ",";
+	  for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
+
+	    std::string tmp_string = *itr;
+	
+	    for(size_t c = tmp_string.find_first_of(":"); c != string::npos; c = c = tmp_string.find_first_of(":")){
+	      tmp_string.erase(c,1);
+	    }
+	    for(size_t c = tmp_string.find_first_of("."); c != string::npos; c = c = tmp_string.find_first_of(".")){
+	      tmp_string.erase(c,1);
+	    }
+	    for(size_t c = tmp_string.find_first_of("/"); c != string::npos; c = c = tmp_string.find_first_of("/")){
+	      tmp_string.erase(c,1);
+	    }
+	    for(size_t c = tmp_string.find_first_of("\""); c != string::npos; c = c = tmp_string.find_first_of("\"")){
+	      tmp_string.erase(c,1);
+	    }
+	    for(size_t c = tmp_string.find_first_of(" "); c != string::npos; c = c = tmp_string.find_first_of(" ")){
+	      tmp_string.erase(c,1);
+	    }
+	    outputfile << tmp_string << ",";
+	  }
+      
+	  outputfile << counter3 << ",";	
+	  outputfile << ave;
+	  outputfile << endl;
+	}
+      
+      diff_vector.erase( diff_vector.begin(), diff_vector.end() ); 
       counter = counter + 1;
     }
     outputfile.close();
