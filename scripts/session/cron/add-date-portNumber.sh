@@ -82,7 +82,7 @@ done
 nLines=`wc -l all-dest_port | cut -d " " -f 1`
 ./build.sh count_destPort_final 
 ./count_destPort_final all-dest_port $nLines
-python add-date-portNumber.py destPort_final ${DATE} > tmp-destPort_final
+python add-date-portNumber.py destPort_final ${START_DATE} > tmp-destPort_final
 cp tmp-destPort_final destPort_final-${START_DATE}-${END_DATE}
 scp destPort_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
 
@@ -90,4 +90,6 @@ nLines=`wc -l all-source_port | cut -d " " -f 1`
 ./build.sh count_sourcePort_final
 ./count_sourcePort_final all-source_port $nLines
 cp sourcePort_final sourcePort_final-${START_DATE}-${END_DATE}
+#python add-date-portNumber.py sourcePort_final ${START_DATE} > tmp-sourcePort_final
+#cp tmp-sourcePort_final sourcePort_final-${START_DATE}-${END_DATE}
 scp sourcePort_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1

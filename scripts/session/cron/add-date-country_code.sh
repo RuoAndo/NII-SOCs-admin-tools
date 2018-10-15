@@ -84,14 +84,14 @@ done
 nLines=`wc -l all-dest_country_code | cut -d " " -f 1`
 ./build.sh count_dest_country_code_final 
 ./count_dest_country_code_final all-dest_country_code $nLines
-python add-date-country_code.py dest_country_code_final ${DATE} > tmp-dest_country_code_final
+python add-date-country_code.py dest_country_code_final ${START_DATE} > tmp-dest_country_code_final
 cp tmp-dest_country_code_final dest_country_code_final-${START_DATE}-${END_DATE}
 scp dest_country_code_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
 
 nLines=`wc -l all-source_country_code | cut -d " " -f 1`
 ./build.sh count_source_country_code_final 
 ./count_source_country_code_final all-source_country_code $nLines
-python add-date-country_code.py source_country_code_final ${DATE} > tmp-source_country_code_final
+python add-date-country_code.py source_country_code_final ${START_DATE} > tmp-source_country_code_final
 cp tmp-source_country_code_final source_country_code_final-${START_DATE}-${END_DATE}
 scp source_country_code_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
 
