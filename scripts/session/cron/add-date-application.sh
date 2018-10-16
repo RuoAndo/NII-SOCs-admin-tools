@@ -70,7 +70,11 @@ done
 nLines=`wc -l all-application | cut -d " " -f 1`
 ./build.sh count_application_final
 ./count_application_final all-application $nLines
-python add-date-application.py application_final ${DATE} > tmp-application_final
+
+#TMP_DATE=`date --date '4 day ago' +%Y%m%d`
+#python add-date-application.py application_final ${TMP_DATE} > tmp-application_final
+
+python add-date-application.py application_final ${START_DATE} > tmp-application_final
 cp tmp-application_final application_final-${START_DATE}-${END_DATE}
 scp application_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
 
