@@ -71,7 +71,7 @@ nLines=`wc -l all-pair-ip | cut -d " " -f 1`
 echo $nLines
 ./build.sh count_pair_ip_final
 ./count_pair_ip_final all-pair-ip $nLines
-python add-date-pair-ip.py pair_ip_final ${DATE} > pair_ip_final-tmp
+python add-date-pair-ip.py pair_ip_final ${START_DATE} > pair_ip_final-tmp
 cp pair_ip_final-tmp pair_ip_final-${START_DATE}-${END_DATE}
 scp pair_ip_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
 

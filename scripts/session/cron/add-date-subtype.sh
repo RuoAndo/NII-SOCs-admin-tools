@@ -72,6 +72,6 @@ done
 nLines=`wc -l all-subtype | cut -d " " -f 1`
 ./build.sh count_subtype_final
 ./count_subtype_final all-subtype $nLines
-python add-date-subtype.py subtype_final ${DATE} > tmp-subtype_final
+python add-date-subtype.py subtype_final ${START_DATE} > tmp-subtype_final
 cp tmp-subtype_final subtype_final-${START_DATE}-${END_DATE}
 scp subtype_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
