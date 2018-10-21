@@ -6,6 +6,8 @@ then
     exit 1
 fi
 
+start_time=`date +%s`
+
 START_DATE=`date --date '3 day ago' +%Y%m%d`
 END_DATE=`date --date '3 day ago' +%Y%m%d`
 
@@ -75,3 +77,7 @@ nLines=`wc -l all-subtype | cut -d " " -f 1`
 python add-date-subtype.py subtype_final ${START_DATE} > tmp-subtype_final
 cp tmp-subtype_final subtype_final-${START_DATE}-${END_DATE}
 scp subtype_final-${START_DATE}-${END_DATE} 192.168.72.5:/mnt/sdc/splunk-session/$1
+
+end_time=`date +%s`
+time=$((end_time - start_time))
+echo "elapsed time:"$time
