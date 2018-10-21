@@ -173,7 +173,12 @@ static void CountOccurrences(int nthreads, int N) {
       
       if (ave > 0)
 	{
+
 	  outputfile<< i->first.c_str() << ",";
+
+	  outputfile << counter3 << ",";	
+	  outputfile << ave;
+	  
 	  for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
 
 	    std::string tmp_string = *itr;
@@ -193,11 +198,9 @@ static void CountOccurrences(int nthreads, int N) {
 	    for(size_t c = tmp_string.find_first_of(" "); c != string::npos; c = c = tmp_string.find_first_of(" ")){
 	      tmp_string.erase(c,1);
 	    }
-	    outputfile << tmp_string << ",";
+	    outputfile << "," << tmp_string;
 	  }
-      
-	  outputfile << counter3 << ",";	
-	  outputfile << ave;
+	  
 	  outputfile << endl;
 	}
       
@@ -238,6 +241,10 @@ int main( int argc, char* argv[] ) {
 	    vector<string> rec = data[row];
 	    
 	    std::string pair = rec[4] + "," + rec[5] + "," + rec[7] + "," + rec[8];
+
+	    for(size_t c = pair.find_first_of("\""); c != string::npos; c = c = pair.find_first_of("\"")){
+	      pair.erase(c,1);
+	    }
 	    
 	    char* cstr = new char[pair.size() + 1]; 
 	    std::strcpy(cstr, pair.c_str());        
