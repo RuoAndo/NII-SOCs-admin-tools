@@ -5,12 +5,18 @@
 #include <thrust/copy.h>
 #include <algorithm>
 #include <cstdlib>
+#include "util.h"
 
 int main(void)
 {
+  int N = 1024 << 8;
+
   // generate 32M random numbers serially
-  // thrust::host_vector<int> h_vec(1024 << 20);
-  // std::generate(h_vec.begin(), h_vec.end(), rand);
+  thrust::host_vector<int> h_vec_1(N);
+  std::generate(h_vec_1.begin(), h_vec_1.end(), rand);
+
+  thrust::host_vector<int> h_vec_2(N);
+  std::generate(h_vec_2.begin(), h_vec_2.end(), rand);
 
   // static int counter;
 
@@ -20,18 +26,23 @@ int main(void)
   // sort data on the device (846M keys per second on GeForce GTX 480)
   // thrust::sort(d_vec.begin(), d_vec.end());
 
-
   // input value
-  const int key[]   {1, 1, 2, 2, 2, 3, 3, 1, 1};
-  const int value[] {1, 1, 1, 1, 1, 1, 1, 1, 1};
+  // const int key[]   {1, 1, 2, 2, 2, 3, 3, 1, 1};
+  // const int value[] {1, 1, 1, 1, 1, 1, 1, 1, 1};
 
   // copy data from host to device
-  thrust::device_vector<int> key_in(key, key + 9);
-  thrust::device_vector<int> value_in(value, value + 9);
+  // thrust::device_vector<int> key_in = h_vec_1;
+  // thrust::device_vector<int> value_in = h_vec_2;
+
+  thrust::device_vector<int> key_in(N);
+  thrust::device_vector<int> value_in(N);
+
+  thrust::copy(h_vec_1.begin(), h_vec_1.end(), key_in.begin());
+  thrust::copy(h_vec_2.begin(), h_vec_2.end(), value_in.begin());
 
   // create output buffer
-  thrust::device_vector<int> key_out(9);
-  thrust::device_vector<int> value_out(9);
+  thrust::device_vector<int> key_out(N);
+  thrust::device_vector<int> value_out(N);
 
   // do reduction operation
   auto new_end = thrust::reduce_by_key(key_in.begin(),
@@ -39,7 +50,6 @@ int main(void)
                                      value_in.begin(),
                                      key_out.begin(),
                                      value_out.begin());
-
 
   int new_size = new_end.first - key_out.begin() + 1;
   
@@ -50,17 +60,17 @@ int main(void)
   thrust::copy(key_out.begin(), key_out.end(), hkey.begin());
   thrust::copy(value_out.begin(), value_out.end(), hvalue.begin());
 
-  for(int i=0; i < hkey.size();i++)
+  for(int i=0; i < 10;i++)
   {
    std::cout << hkey[i] << ",";
   }
    std::cout << std::endl;
 
-  for(int i=0; i < hvalue.size();i++)
+  for(int i=0; i < 10;i++)
   {
    std::cout << hvalue[i] << ","; // << std::endl;
   }
    std::cout << std::endl;
 
-  // return 0;
+  return 0;
 }
