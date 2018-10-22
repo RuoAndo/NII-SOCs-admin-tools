@@ -29,8 +29,10 @@ struct saxpi{
 
 int main(void)
 {
-    int N = 100000000;
-    
+    int N = 1000000000;
+
+    std::cout << "vector size:" << N << std::endl;
+
     float kk1=1, kk2=5;
     
     /*
