@@ -151,17 +151,16 @@ int main( int argc, char* argv[] ) {
 	    // std::cout << timestamp << endl;
 	    key[row] = std::atol(timestamp.c_str());
 	    // std::cout << key[row] << endl;
-
 	    value[row] = 1;
 	    
-	    outputfile << timestamp << std::endl;
+	    // outputfile << timestamp << std::endl;
 
 	  }
 
 	  /*
 	  for(int i = 0; i<10; i++)
 	  	  std::cout << key[i] << endl;
-		  */
+          */
 
           //thrust::host_vector<int> host_input{5, 1, 9, 3, 7};
 	  //thrust::device_vector<int> device_vec(5);
@@ -188,17 +187,20 @@ int main( int argc, char* argv[] ) {
 
 	  long new_size = new_end.first - dkey_out.begin();
 
-	  for(long i=0; i < 10;i++)
+	  for(long i=0; i <new_size; i++)
 	    {
-	      std::cout << dkey_out[i] << ",";
+	      // std::cout << dkey_out[i] << "," << dvalue_out[i] << endl;
+	      outputfile << dkey_out[i] << "," << dvalue_out[i] << endl;
 	    }
 	  std::cout << std::endl;
 
+	  /*
 	  for(long i=0; i < 10;i++)
 	    {
 	      std::cout << dvalue_out[i] << ","; // << std::endl;
 	    }
 	  std::cout << std::endl;     
+	  */
 	  
 	  outputfile.close();
     }
