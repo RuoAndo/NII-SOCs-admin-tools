@@ -162,8 +162,9 @@ int main( int argc, char* argv[] ) {
 	    {
 		if(std::to_string(dkey_out[i]).length()  == 14)
 		{
-			      // outputfile << dkey_out[i] << "," << dvalue_out[i] << endl;
+			      outputfile << dkey_out[i] << "," << dvalue_out[i] << endl;
 			      // 2018 09 20 00 00 00 133
+			      /*
 			      std::string tmpstring = std::to_string(dkey_out[i]);
 			      outputfile << tmpstring.substr( 0, 4 )
 			      << "-"
@@ -177,6 +178,7 @@ int main( int argc, char* argv[] ) {
 			      << ":"
 			      << tmpstring.substr( 12, 2 )
 			      << "," << dvalue_out[i] << endl;
+			      */
 	  	}
 	    }
 	  // std::cout << std::endl;
