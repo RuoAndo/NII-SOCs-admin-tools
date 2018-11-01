@@ -106,40 +106,13 @@ int main( int argc, char* argv[] ) {
 
 	 std::remove("tmp");
 	 ofstream outputfile("tmp");
-	 
-      	  for (int row = 0; row < data.size(); row++) {
+
+         for (int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
-	    std::string timestamp = rec[0];
 
-	    for(size_t c = timestamp.find_first_of("\""); c != string::npos; c = c = timestamp.find_first_of("\"")){
-	      timestamp.erase(c,1);
-	    }
-	    for(size_t c = timestamp.find_first_of("."); c != string::npos; c = c = timestamp.find_first_of(".")){
-	      timestamp.erase(c,1);
-	    }
-	    for(size_t c = timestamp.find_first_of(" "); c != string::npos; c = c = timestamp.find_first_of(" ")){
-	      timestamp.erase(c,1);
-	    }
-	    for(size_t c = timestamp.find_first_of(":"); c != string::npos; c = c = timestamp.find_first_of(":")){
-	      timestamp.erase(c,1);
-	    }
-	    for(size_t c = timestamp.find_first_of("/"); c != string::npos; c = c = timestamp.find_first_of("/")){
-	      timestamp.erase(c,1);
-	    }
-
-	    // 2018 09 20 00 00 00 133
-
-	    /*
-	    timestamp.pop_back();
-	    timestamp.pop_back();
-	    timestamp.pop_back();
-	    */
-
-	    h_vec_1.push_back(std::atol(timestamp.c_str()));
-	    h_vec_2.push_back(1);
-
-	    // key[row] = std::atol(timestamp.c_str());
-	    // value[row] = 1;
+	    h_vec_1.push_back(std::atol(rec[0].c_str()));
+	    h_vec_2.push_back(std::atol(rec[1].c_str()));
+	    
 	    }
 
 	    thrust::device_vector<long> key_in = h_vec_1;
@@ -159,15 +132,22 @@ int main( int argc, char* argv[] ) {
 	  				       dvalue_out.begin());
 
 	  long new_size = new_end.first - dkey_out.begin();
+	  // std::cout << new_size << endl;
+	  std::string tmpstring;
 
-	  for(long i=0; i <new_size; i++)
-	    {
-		if(std::to_string(dkey_out[i]).length()  == 17)
+	  for(long i=0; i < new_size-1 ; i++)
+	  {
+		tmpstring = std::to_string(dkey_out[i]);
+		
+		if(tmpstring.length()  == 17)
 		{
-			      outputfile << dkey_out[i] << "," << dvalue_out[i] << endl;
+			      // outputfile << dkey_out[i] << "," << dvalue_out[i] << endl;
+			      // std::cout << dkey_out[i] << "," << dvalue_out[i] << endl;
 			      // 2018 09 20 00 00 00 133
+			 
+			      // outputfile << tmpstring << endl;
+
 			      /*
-			      std::string tmpstring = std::to_string(dkey_out[i]);
 			      outputfile << tmpstring.substr( 0, 4 )
 			      << "-"
 			      << tmpstring.substr( 4, 2 ) 
@@ -181,10 +161,26 @@ int main( int argc, char* argv[] ) {
 			      << tmpstring.substr( 12, 2 )
 			      << "," << dvalue_out[i] << endl;
 			      */
+			      
+			      outputfile << tmpstring.substr( 0, 4 )
+			      << "-"
+			      << tmpstring.substr( 4, 2 ) 
+			      << "-"
+			      << tmpstring.substr( 6, 2 ) 
+			      << " "
+			      << tmpstring.substr( 8, 2 ) 
+			      << ":"
+			      << tmpstring.substr( 10, 2 )
+			      << ":"
+			      << tmpstring.substr( 12, 2 )
+			      << "\."
+			      << tmpstring.substr( 14, 3 )
+			      << "," << dvalue_out[i] << endl;
+			      
 	  	}
 	    }
+	    
 	  // std::cout << std::endl;
-
 	  outputfile.close();
 	}
 	
