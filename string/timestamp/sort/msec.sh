@@ -20,4 +20,8 @@ DATETIME=`date +%Y%m%d`
 time ./9 tmp-all $nLines
 cp tmp msec-$DATETIME
 
+time ./10 tmp-all $nLines
+cp sorted sorted-msec-$DATETIME
+
 scp msec-$DATETIME 192.168.72.5:/mnt/sdc/splunk-msec/
+scp sorted-msec-$DATETIME 192.168.72.5:/mnt/sdc/splunk-msec/
