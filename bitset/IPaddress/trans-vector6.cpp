@@ -28,6 +28,7 @@ concurrent_vector < string > IPpair;
 std::vector<string> sv;
 std::vector<string> sourceIP;
 std::vector<string> destinationIP;
+std::vector<string> timestamp;
 
 std::vector<std::string> split_string_2(std::string str, char del) {
   int first = 0;
@@ -78,7 +79,28 @@ int main( int argc, char* argv[] ) {
 	    vector<string> rec = data[row]; 
 	    std::string srcIP = rec[4];
 	    std::string destIP = rec[7];
+	    std::string tms = rec[0];
+	    
+	    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
+	      tms.erase(c,1);
+	    }
 
+	    for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
+	      tms.erase(c,1);
+	    }
+
+	    for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
+	      tms.erase(c,1);
+	    }
+
+	    for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
+	      tms.erase(c,1);
+	    }
+
+	    for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
+	      tms.erase(c,1);
+	    }
+	    
 	    for(size_t c = srcIP.find_first_of("\""); c != string::npos; c = c = srcIP.find_first_of("\"")){
 	      srcIP.erase(c,1);
 	    }
@@ -113,9 +135,10 @@ int main( int argc, char* argv[] ) {
 
 	    sourceIP.push_back(srcIP);
 	    destinationIP.push_back(destIP);
+	    timestamp.push_back(tms);
 	    
 	    // string pair_string = stringIP;
-	    std:cout << IPstring << endl;
+	    // std:cout << IPstring << endl;
 	    sv.push_back(IPstring);	    
 	  }
 	}
@@ -130,7 +153,7 @@ int main( int argc, char* argv[] ) {
 	     std::bitset<64> trans_tmp (tmp_string);
 	     unsigned long long int n = bitset<64>(tmp_string).to_ullong();
 	     // std::cout << srcIP << "," << destIP << "," << tmp_string << "," << n << endl;
-	     std::cout << sourceIP[counter] << "," << destinationIP[counter] << "," << tmp_string << "," << n << endl;
+	     std::cout << timestamp[counter] << "," << sourceIP[counter] << "," << destinationIP[counter] << "," << tmp_string << "," << n << endl;
 	     counter = counter + 1;
 	}
 	
