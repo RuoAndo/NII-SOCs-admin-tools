@@ -32,11 +32,16 @@ ls x* > list
 rm -rf timestamp-all-${DATE}
 touch timestamp-all-${DATE}
 
+rm -rf timestamp-all-cut-${DATE}
+touch timestamp-all-cut-${DATE}
+
 while read line; do
     echo $line
     nLines=`wc -l $line | cut -d " " -f 1`
     ./timestamp5 $line $nLines
     cat tmp-timestamp >> timestamp-all-${DATE}
+    cat tmp-timestamp-cut >> timestamp-all-cut-${DATE}
 done < list
 
 scp timestamp-all-${DATE} 192.168.72.5:/mnt/sdc/splunk-session/$2
+scp timestamp-all-cut-${DATE} 192.168.72.5:/mnt/sdc/splunk-session/$2

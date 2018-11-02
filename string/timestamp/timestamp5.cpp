@@ -61,7 +61,8 @@ static void CountOccurrences(int nthreads, int N) {
     parallel_for( blocked_range<MyString*>( Data, Data+N, N ), Tally(table) );
     tick_count t1 = tick_count::now();
 
-    ofstream outputfile("tmp-timestamp");  
+    ofstream outputfile("tmp-timestamp");
+    ofstream outputfile2("tmp-timestamp-cut");  
     
     int n = 0;
     int counter = 0;
@@ -174,10 +175,13 @@ static void CountOccurrences(int nthreads, int N) {
       if (ave > 0)
 	{
 
-	  outputfile<< i->first.c_str() << ",";
-
+	  outputfile << i->first.c_str() << ",";
 	  outputfile << counter3 << ",";	
 	  outputfile << ave;
+
+	  outputfile2 << i->first.c_str() << ",";
+	  outputfile2 << counter3 << ",";	
+	  outputfile2 << ave;
 	  
 	  for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
 
@@ -202,12 +206,16 @@ static void CountOccurrences(int nthreads, int N) {
 	  }
 	  
 	  outputfile << endl;
+	  outputfile2 << endl;
 	}
       
       diff_vector.erase( diff_vector.begin(), diff_vector.end() ); 
       counter = counter + 1;
     }
     outputfile.close();
+    outputfile2.close();
+
+
     
     printf("total = %d  unique = %u  time = %g\n", n, unsigned(table.size()), (t1-t0).seconds());
 }
