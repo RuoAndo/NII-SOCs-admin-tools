@@ -107,6 +107,8 @@ int main( int argc, char* argv[] ) {
 	 std::remove("tmp");
 	 ofstream outputfile("tmp");
 	 
+	 outputfile << "timestamp, counted" << endl;
+	 
       	  for (int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
 
