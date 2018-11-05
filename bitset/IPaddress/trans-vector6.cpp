@@ -10,6 +10,10 @@
 #include <fstream>
 #include <bitset>
 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>   
+
 #include "tbb/concurrent_hash_map.h"
 #include "tbb/blocked_range.h"
 #include "tbb/parallel_for.h"
@@ -29,6 +33,9 @@ std::vector<string> sv;
 std::vector<string> sourceIP;
 std::vector<string> destinationIP;
 std::vector<string> timestamp;
+
+std::vector<string> IPstring_src;
+std::vector<string> IPstring_dst;
 
 std::vector<std::string> split_string_2(std::string str, char del) {
   int first = 0;
@@ -57,6 +64,9 @@ int main( int argc, char* argv[] ) {
   int counter = 0;
   int N = atoi(argv[2]);  
 
+  struct in_addr inaddr;
+  char *some_addr;
+  
     try {
         tbb::tick_count mainStartTime = tbb::tick_count::now();
         srand(2);
@@ -68,6 +78,9 @@ int main( int argc, char* argv[] ) {
 	const string csv_file = std::string(argv[1]); 
 	vector<vector<string>> data; 
 
+	std::remove("trans");
+	ofstream outputfile("trans");
+	
 	try {
 	  Csv objCsv(csv_file);
 	  if (!objCsv.getCsv(data)) {
@@ -113,8 +126,8 @@ int main( int argc, char* argv[] ) {
 
 	    std::string stringIP;
 	    std::string IPstring;
-	    stringIP = srcIP;
-	    
+	    	    
+	    stringIP = srcIP;	    
 	    for (const auto subStr : split_string_2(stringIP, del)) {
 	      unsigned long ipaddr_src;
 	      ipaddr_src = atoi(subStr.c_str());
@@ -123,8 +136,9 @@ int main( int argc, char* argv[] ) {
 	      IPstring = IPstring + trans_string;
 	    }
 
+	    IPstring_src.push_back(IPstring);
+	    
 	    stringIP = destIP;
-	    
 	    for (const auto subStr : split_string_2(stringIP, del)) {
 	      unsigned long ipaddr_src;
 	      ipaddr_src = atoi(subStr.c_str());
@@ -133,6 +147,8 @@ int main( int argc, char* argv[] ) {
 	      IPstring = IPstring + trans_string;
 	    }
 
+	    IPstring_dst.push_back(IPstring.substr(32,32));
+	    
 	    sourceIP.push_back(srcIP);
 	    destinationIP.push_back(destIP);
 	    timestamp.push_back(tms);
@@ -151,11 +167,29 @@ int main( int argc, char* argv[] ) {
 	for(auto itr = sv.begin(); itr != sv.end(); ++itr) {
 	     std::string tmp_string = *itr;
 	     std::bitset<64> trans_tmp (tmp_string);
+	     
 	     unsigned long long int n = bitset<64>(tmp_string).to_ullong();
+	     unsigned long long int s = bitset<32>(IPstring_src[counter]).to_ullong();
+	     unsigned long long int d = bitset<32>(IPstring_dst[counter]).to_ullong();
+	                                                                                    
+             inaddr = { htonl(s) };
+	     some_addr = inet_ntoa(inaddr);
+	     string src_string = string(some_addr);
+
+	     inaddr = { htonl(d) };
+	     some_addr = inet_ntoa(inaddr);
+	     string dst_string = string(some_addr);
+
 	     // std::cout << srcIP << "," << destIP << "," << tmp_string << "," << n << endl;
-	     std::cout << timestamp[counter] << "," << sourceIP[counter] << "," << destinationIP[counter] << "," << tmp_string << "," << n << endl;
+	     // std::cout << timestamp[counter] << "," << sourceIP[counter] << "," << s << "," << src_string << "," << destinationIP[counter] << "," << d << "," << dst_string << "," << tmp_string << "," << n << endl;
+
+	     // outputfile << timestamp[counter] << "," << sourceIP[counter] << "," << s << "," << src_string << "," << destinationIP[counter] << "," << d << "," << dst_string << "," << tmp_string << "," << n << endl;
+	     
+	     outputfile << timestamp[counter] << "," << n << endl;
 	     counter = counter + 1;
 	}
+
+	outputfile.close();
 	
         utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());
        
