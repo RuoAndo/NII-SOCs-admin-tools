@@ -21,6 +21,7 @@
 #include "tbb/task_scheduler_init.h"
 //  #include "tbb/tbb_allocator.hz"
 #include "utility.h"
+#include "timer.h"
 
 #include "csv.hpp"
 typedef std::basic_string<char,std::char_traits<char>,tbb::tbb_allocator<char> > MyString;
@@ -68,6 +69,8 @@ int main( int argc, char* argv[] ) {
 
   struct in_addr inaddr;
   char *some_addr;
+
+  unsigned int t, travdirtime; 
 
     int dev = 0;
     cudaSetDevice(dev);
@@ -144,8 +147,13 @@ int main( int argc, char* argv[] ) {
     dim3 block (1);
     dim3 grid  (N);
 
+    start_timer(&t);  
+
     sumArraysOnGPU<<<grid, block>>>(d_A, d_B, d_C, nElem);
     printf("Execution configure <<<%d, %d>>>\n", grid.x, block.x);
+
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);
 
     cudaMemcpy(h_D, d_C, nBytes, cudaMemcpyDeviceToHost);
     cudaMemcpy(h_C, d_C, nBytes, cudaMemcpyDeviceToHost);
