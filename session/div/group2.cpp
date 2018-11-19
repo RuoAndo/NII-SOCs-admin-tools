@@ -58,7 +58,7 @@ void thread_func(void *arg) {
 	if(counter==4)
 	  dst = token;
 
-	std::cout << src << "," << dst << endl;
+	//std::cout << src << "," << dst << endl;
 
 	pthread_mutex_lock(&result.mutex);
 	result.m.insert(pair<string, string>(src,dst));
@@ -78,6 +78,9 @@ int main(int argc, char *argv[])
     pthread_t handle[THREAD_NUM];
     thread_arg_t targ[THREAD_NUM];
 
+    string tmp_string_first;
+    string tmp_string_second;
+    
     int i;
 
     /* èàóùäJén */
@@ -92,18 +95,42 @@ int main(int argc, char *argv[])
 
     map<string, string>::iterator itr;   
     
-    // counter = 0;
     for (itr = result.m.begin(); itr != result.m.end(); itr++)
       {
-	std::cout << itr->first << "," << itr->second << std::endl;
 
-	/*
-	if(counter==10)
-	  break;
-	*/	
+	tmp_string_first = itr->first;
+	tmp_string_second = itr->second;
 
-	// counter = counter + 1;
+	for(size_t c = tmp_string_first.find_first_of("\""); c != string::npos; c = c = tmp_string_first.find_first_of("\"")){
+	      tmp_string_first.erase(c,1);
+	}
+
+	for(size_t c = tmp_string_first.find_first_of(":"); c != string::npos; c = c = tmp_string_first.find_first_of(":")){
+	      tmp_string_first.erase(c,1);
+	}
+
+	for(size_t c = tmp_string_first.find_first_of(" "); c != string::npos; c = c = tmp_string_first.find_first_of(" ")){
+	      tmp_string_first.erase(c,1);
+	}
+
+	for(size_t c = tmp_string_first.find_first_of("/"); c != string::npos; c = c = tmp_string_first.find_first_of("/")){
+	      tmp_string_first.erase(c,1);
+	}
+
+	for(size_t c = tmp_string_first.find_first_of("\""); c != string::npos; c = c = tmp_string_first.find_first_of("\"")){
+	      tmp_string_first.erase(c,1);
+	}
+
+	for(size_t c = tmp_string_first.find_first_of("."); c != string::npos; c = c = tmp_string_first.find_first_of(".")){
+	      tmp_string_first.erase(c,1);
+	}
+
+	for(size_t c = tmp_string_second.find_first_of("\""); c != string::npos; c = c = tmp_string_second.find_first_of("\"")){
+	      tmp_string_second.erase(c,1);
+	}
+	
+	std::cout << tmp_string_first << "," <<tmp_string_second << endl;
+
       }
-    
-    std::cout << "map size() is " << result.m.size() << std::endl;
-}
+
+   std::cout << "map size() is " << result.m.size() << std::endl;}
