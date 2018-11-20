@@ -148,7 +148,7 @@ void *thread_func(void *arg) {
     }
 
 	if(progress%100000==0)
-		cout <<  "progress:" << targ->id << "," << progress << endl;
+		cout <<  "progress count:" << targ->id << "," << progress << endl;
 		
 	progress = progress + 1;
     }
