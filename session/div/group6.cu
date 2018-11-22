@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <cstdlib>
 // #include "util.h"
+#include "timer.h" 
 
 #include <cstdio>
 #include <cctype>
@@ -37,7 +38,7 @@
 using namespace tbb;
 using namespace std;
 
-#define THREAD_NUM 30
+#define THREAD_NUM 60
 
 // using namespace Eigen;
 using namespace std;
@@ -221,7 +222,9 @@ int main(int argc, char *argv[])
 
     string tmp_string_first;
     string tmp_string_second;
-    
+
+    unsigned int t, travdirtime;   
+
     int i;
     int counter;
 
@@ -236,31 +239,50 @@ int main(int argc, char *argv[])
     for (i = 0; i < THREAD_NUM; i++) 
         pthread_join(handle[i], NULL);
 
-    std::remove("tmp");
-    ofstream outputfile("tmp");
+    // std::remove("tmp");
+    // ofstream outputfile("tmp");
+
+    thrust::host_vector<long> h_vec_1(table.size());
+    thrust::host_vector<long> h_vec_2(table.size());
 
     counter = 0;
     for( CharTable::iterator i=table.begin(); i!=table.end(); ++i )
     {
-      // cout << i->first << "," << i->second << endl;
-      // outputfile << i->first << "," << i->second << endl;
+
       for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
-      	       outputfile << i->first << "," << *itr << endl;
+      	       // outputfile << i->first << "," << *itr << endl;
+	       h_vec_1[counter] = long(i->first);
+   	       h_vec_2[counter] = long(*itr);
       }
       
       if(counter%1000000==0)
       {
 	std::cout << "counter:" << counter << endl;
       }
+      
       counter = counter + 1;
     }
 
-    outputfile.close();
+    for(i=0; i<10; i++)
+    {
+	cout << h_vec_1[i] << "," << h_vec_2[i] << endl;
+    }
 
-    // cout << endl;
+    start_timer(&t);
 
-    thrust::host_vector<long> h_vec_1(result.m.size());
-    thrust::host_vector<long> h_vec_2(result.m.size());
+    thrust::device_vector<long> d_vec_1 = h_vec_1;
+    thrust::device_vector<long> d_vec_2 = h_vec_2;
+    thrust::sort_by_key(d_vec_1.begin(), d_vec_1.end(), d_vec_2.begin());
+
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);       
+
+    for(i=0; i<10; i++)
+    {
+	cout << d_vec_1[i] << "," << d_vec_2[i] << endl;
+    }      
+
+    // outputfile.close();
 
    // std::cout << "map size() is " << result.m.size() << std::endl;
 }
