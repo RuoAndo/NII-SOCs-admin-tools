@@ -38,7 +38,7 @@
 using namespace tbb;
 using namespace std;
 
-#define THREAD_NUM 46
+#define THREAD_NUM 31
 
 // using namespace Eigen;
 using namespace std;
@@ -215,7 +215,7 @@ void *thread_func(void *arg) {
     return;
 }
 
-__global__ void sumArraysOnGPU(float *A, float *B, float *C, const int N)
+__global__ void sumArraysOnGPU(long *A, long *B, double *C, const int N)
 {
     // int i = blockIdx.x * blockDim.x + threadIdx.x;
      int i = blockIdx.x; // * blockDim.x + threadIdx.x;
@@ -238,7 +238,7 @@ int main(int argc, char *argv[])
     int i;
     int counter;
 
-    cout << "threads:" << endl;
+    cout << "concurrent hash map:" << endl;
     start_timer(&t);
 
     /* ˆ—ŠJŽn */
@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
     thrust::host_vector<long> h_vec_1(table.size());
     thrust::host_vector<long> h_vec_2(table.size());
 
-    cout << "host_vector" << endl; 
+    cout << "concurrent hash map to host_vector:" << endl; 
     start_timer(&t);
 
     counter = 0;
@@ -290,7 +290,7 @@ int main(int argc, char *argv[])
 	cout << h_vec_1[i] << "," << h_vec_2[i] << endl;
     }
 
-    cout << "sort by key" << endl;
+    cout << "host->GPU - sort by key:" << endl;
 
     start_timer(&t);
 
@@ -306,18 +306,21 @@ int main(int argc, char *argv[])
 	cout << d_vec_1[i] << "," << d_vec_2[i] << endl;
     }      
 
-    size_t nBytes = d_vec_1.size() * sizeof(float);
+    size_t nBytes = d_vec_1.size() * sizeof(long);
+    size_t fnBytes = d_vec_1.size() * sizeof(double);
 
-    cout << "ip to float / device -> host" << endl;
+    cout << "GPU to host - ip to long - host to GPU" << endl;
 
     start_timer(&t);
-    float *h_A, *h_B, *h_C, *h_D, *hostRef, *gpuRef;
-    h_A     = (float *)malloc(nBytes);
-    h_B     = (float *)malloc(nBytes);
-    h_C     = (float *)malloc(nBytes);
-    h_D     = (float *)malloc(nBytes);
-    hostRef = (float *)malloc(nBytes);
-    gpuRef  = (float *)malloc(nBytes);
+    // long *h_A, *h_B, *h_C, *h_D, *hostRef, *gpuRef;
+    long *h_A, *h_B, *h_C, *hostRef, *gpuRef;
+    double *h_D;
+    h_A     = (long *)malloc(nBytes);
+    h_B     = (long *)malloc(nBytes);
+    h_C     = (long *)malloc(nBytes);
+    h_D     = (double *)malloc(fnBytes);
+    hostRef = (long *)malloc(nBytes);
+    gpuRef  = (long *)malloc(nBytes);
 
     const string targetIP = std::string(argv[1]); 
 
@@ -335,7 +338,7 @@ int main(int argc, char *argv[])
 	}
 
      unsigned long s = bitset<32>(IPstring).to_ulong();
-     unsigned int f = (unsigned int)s;
+     long f = (long)s;
      std::cout << targetIP << "," << f << endl;
 
      for(i=0;i<d_vec_1.size();i++)
@@ -344,21 +347,29 @@ int main(int argc, char *argv[])
 	h_B[i] = d_vec_2[i];
 	h_C[i] = f;
     }
+
+     for(i=0;i<10;i++)
+     {	
+    	cout << h_A[i] << "," << h_B[i] << "," << h_C[i] << endl;
+    }
+
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);       
 
-    float *d_A, *d_B, *d_C, *d_D;
-    cudaMalloc((float**)&d_A, nBytes);
-    cudaMalloc((float**)&d_B, nBytes);
-    cudaMalloc((float**)&d_C, nBytes);
-    cudaMalloc((float**)&d_D, nBytes);
+    // long *d_A, *d_B, *d_C, *d_D;
+    long *d_A, *d_B, *d_C;
+    double *d_D;
+    cudaMalloc((long**)&d_A, nBytes);
+    cudaMalloc((long**)&d_B, nBytes);
+    cudaMalloc((long**)&d_C, nBytes);
+    cudaMalloc((double**)&d_D, fnBytes);
 
     cudaMemcpy(d_A, h_A, nBytes, cudaMemcpyHostToDevice);
     cudaMemcpy(d_B, h_B, nBytes, cudaMemcpyHostToDevice);
     cudaMemcpy(d_C, h_C, nBytes, cudaMemcpyHostToDevice);
-    // cudaMemcpy(d_D, h_D, nBytes, cudaMemcpyHostToDevice);
+    // cudaMemcpy(d_D, h_D, fnBytes, cudaMemcpyHostToDevice);
 
-    cout << "division" << endl;
+    cout << "division on GPU - GPU to host" << endl;
     
     start_timer(&t);  
 
@@ -368,18 +379,29 @@ int main(int argc, char *argv[])
     sumArraysOnGPU<<<grid, block>>>(d_B, d_C, d_D, d_vec_1.size());
     printf("Execution configure <<<%d, %d>>>\n", grid.x, block.x);
 
-    travdirtime = stop_timer(&t);
-    print_timer(travdirtime);
-
     cudaMemcpy(h_A, d_A, nBytes, cudaMemcpyDeviceToHost);
     cudaMemcpy(h_B, d_B, nBytes, cudaMemcpyDeviceToHost);
     cudaMemcpy(h_C, d_C, nBytes, cudaMemcpyDeviceToHost);
-    cudaMemcpy(h_D, d_D, nBytes, cudaMemcpyDeviceToHost);
+    cudaMemcpy(h_D, d_D, fnBytes, cudaMemcpyDeviceToHost);
 
-    for(i=0;i<10;i++)
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);
+
+    for(i=0;i<5;i++)
     {
 	cout << h_A[i] << "," << h_B[i] << "," << h_C[i] << "," << h_D[i] << endl;
-	}
+    }
+
+    cout << "check : 1" << endl;
+    start_timer(&t);
+    
+    for(i=0;i<d_vec_1.size();i++)
+    {
+       if((int)h_D[i] == 1)
+       	cout << (long)h_A[i] << "," << (long)h_B[i] << "," << (long)h_C[i] << "," << h_D[i] << endl;
+    }
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);
 
     // outputfile.close();
 
