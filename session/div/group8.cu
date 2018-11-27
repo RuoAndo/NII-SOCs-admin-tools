@@ -38,7 +38,7 @@
 using namespace tbb;
 using namespace std;
 
-#define THREAD_NUM 31
+#define THREAD_NUM 10
 
 // using namespace Eigen;
 using namespace std;
@@ -54,6 +54,7 @@ struct HashCompare {
 
 // typedef concurrent_hash_map<unsigned long, unsigned long, HashCompare> CharTable;
 // typedef concurrent_hash_map<unsigned long, unsigned long> CharTable;
+// typedef concurrent_hash_map<unsigned long, std::vector<unsigned long>> CharTable;
 typedef concurrent_hash_map<unsigned long, std::vector<unsigned long>> CharTable;
 // typedef concurrent_hash_map<MyString,std::vector<string>> StringTable; 
 static CharTable table;
@@ -198,6 +199,7 @@ void *thread_func(void *arg) {
 		// cout <<  "progress count:" << targ->id << "," << progress << "," << endl;
         }
 	progress = progress + 1;
+
 	/*
 	for( CharTable::iterator i=table.begin(); i!=table.end(); ++i )
              cout << i->first << "," << i->second;
@@ -215,12 +217,12 @@ void *thread_func(void *arg) {
     return;
 }
 
-__global__ void sumArraysOnGPU(long *A, long *B, double *C, const int N)
+__global__ void sumArraysOnGPU(unsigned long *A, unsigned long *B, int *C, const int N)
 {
-    // int i = blockIdx.x * blockDim.x + threadIdx.x;
-     int i = blockIdx.x; // * blockDim.x + threadIdx.x;
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    //  int i = blockIdx.x; // * blockDim.x + threadIdx.x;
     // C[i] = A[i] + B[i];
-    C[i] = A[i] / B[i];
+    C[i] = A[i] - B[i];
     // B[i] = B[i] + 1000;
     // C[i] = 3;
 }
@@ -234,6 +236,7 @@ int main(int argc, char *argv[])
     string tmp_string_second;
 
     unsigned int t, travdirtime;   
+    int nData = atoi(argv[2]);
 
     int i;
     int counter;
@@ -258,29 +261,31 @@ int main(int argc, char *argv[])
     // std::remove("tmp");
     // ofstream outputfile("tmp");
 
-    thrust::host_vector<long> h_vec_1(table.size());
-    thrust::host_vector<long> h_vec_2(table.size());
+    thrust::host_vector<unsigned long> h_vec_1(nData);
+    thrust::host_vector<unsigned long> h_vec_2(nData);
 
     cout << "concurrent hash map to host_vector:" << endl; 
     start_timer(&t);
 
+    // ofstream outputfile("tmp"); 
     counter = 0;
     for( CharTable::iterator i=table.begin(); i!=table.end(); ++i )
     {
-
       for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
       	       // outputfile << i->first << "," << *itr << endl;
-	       h_vec_1[counter] = long(i->first);
-   	       h_vec_2[counter] = long(*itr);
+	       h_vec_1[counter] = (unsigned long)(i->first);
+   	       h_vec_2[counter] = (unsigned long)(*itr);
+	       counter = counter + 1;
       }
       
       if(counter%1000000==0)
       {
 	std::cout << "counter:" << counter << endl;
       }
-      
-      counter = counter + 1;
     }
+    // outputfile.close();
+
+    cout << "counter:" << counter << endl;
 
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);       
@@ -294,9 +299,18 @@ int main(int argc, char *argv[])
 
     start_timer(&t);
 
-    thrust::device_vector<long> d_vec_1 = h_vec_1;
-    thrust::device_vector<long> d_vec_2 = h_vec_2;
+    // thrust::device_vector<unsigned long> d_vec_1 = h_vec_1;
+    // thrust::device_vector<unsigned long> d_vec_2 = h_vec_2;
+
+    thrust::device_vector<unsigned long> d_vec_1(h_vec_1.size()); // = h_vec_1;
+    thrust::device_vector<unsigned long> d_vec_2(h_vec_2.size()); //  = h_vec_2;
+
+    thrust::copy(h_vec_1.begin(), h_vec_1.end(), d_vec_1.begin());
+    thrust::copy(h_vec_2.begin(), h_vec_2.end(), d_vec_2.begin());
+
+    cout << "sort before:" << d_vec_2.size() << endl;
     thrust::sort_by_key(d_vec_1.begin(), d_vec_1.end(), d_vec_2.begin());
+    cout << "sort after:" << d_vec_2.size() << endl;
 
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);       
@@ -306,21 +320,23 @@ int main(int argc, char *argv[])
 	cout << d_vec_1[i] << "," << d_vec_2[i] << endl;
     }      
 
-    size_t nBytes = d_vec_1.size() * sizeof(long);
-    size_t fnBytes = d_vec_1.size() * sizeof(double);
+    size_t nBytes = nData * sizeof(unsigned long);
+    size_t iBytes = nData * sizeof(int);
 
     cout << "GPU to host - ip to long - host to GPU" << endl;
 
     start_timer(&t);
     // long *h_A, *h_B, *h_C, *h_D, *hostRef, *gpuRef;
-    long *h_A, *h_B, *h_C, *hostRef, *gpuRef;
-    double *h_D;
-    h_A     = (long *)malloc(nBytes);
-    h_B     = (long *)malloc(nBytes);
-    h_C     = (long *)malloc(nBytes);
-    h_D     = (double *)malloc(fnBytes);
-    hostRef = (long *)malloc(nBytes);
-    gpuRef  = (long *)malloc(nBytes);
+    unsigned long *h_A, *h_B, *h_C, *hostRef, *gpuRef;
+    int *h_D;
+    h_A     = (unsigned long *)malloc(nBytes);
+    h_B     = (unsigned long *)malloc(nBytes);
+    h_C     = (unsigned long *)malloc(nBytes);
+    h_D     = (int *)malloc(iBytes);
+    hostRef = (unsigned long *)malloc(nBytes);
+    gpuRef  = (unsigned long *)malloc(nBytes);
+
+    cout << "allocated" << endl;
 
     const string targetIP = std::string(argv[1]); 
 
@@ -338,15 +354,22 @@ int main(int argc, char *argv[])
 	}
 
      unsigned long s = bitset<32>(IPstring).to_ulong();
-     long f = (long)s;
+     unsigned long f = s;
      std::cout << targetIP << "," << f << endl;
 
-     for(i=0;i<d_vec_1.size();i++)
+     counter = 0;
+     for(i=0;i<nData;i++)
      {	
     	h_A[i] = d_vec_1[i];
 	h_B[i] = d_vec_2[i];
 	h_C[i] = f;
+	
+	if(counter%1000000==0)
+	  cout << "transfering " << counter << " vectors" << endl;
+	counter = counter + 1;
     }
+
+    cout << "done." << endl;
 
      for(i=0;i<10;i++)
      {	
@@ -356,33 +379,43 @@ int main(int argc, char *argv[])
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);       
 
+    cout << "transfer: host to GPU" << endl;
+
+    start_timer(&t);  
+
     // long *d_A, *d_B, *d_C, *d_D;
-    long *d_A, *d_B, *d_C;
-    double *d_D;
-    cudaMalloc((long**)&d_A, nBytes);
-    cudaMalloc((long**)&d_B, nBytes);
-    cudaMalloc((long**)&d_C, nBytes);
-    cudaMalloc((double**)&d_D, fnBytes);
+    unsigned long *d_A, *d_B, *d_C;
+    int *d_D;
+    cudaMalloc((unsigned long**)&d_A, nBytes);
+    cudaMalloc((unsigned long**)&d_B, nBytes);
+    cudaMalloc((unsigned long**)&d_C, nBytes);
+    cudaMalloc((int**)&d_D, iBytes);
 
     cudaMemcpy(d_A, h_A, nBytes, cudaMemcpyHostToDevice);
     cudaMemcpy(d_B, h_B, nBytes, cudaMemcpyHostToDevice);
     cudaMemcpy(d_C, h_C, nBytes, cudaMemcpyHostToDevice);
-    // cudaMemcpy(d_D, h_D, fnBytes, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_D, h_D, iBytes, cudaMemcpyHostToDevice);
 
-    cout << "division on GPU - GPU to host" << endl;
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);       
+
+    cout << "substraction:" << endl;
     
     start_timer(&t);  
 
     dim3 block=32;
     dim3 grid=32;
 
-    sumArraysOnGPU<<<grid, block>>>(d_B, d_C, d_D, d_vec_1.size());
+    sumArraysOnGPU<<<grid, block>>>(d_B, d_C, d_D, nData);
     printf("Execution configure <<<%d, %d>>>\n", grid.x, block.x);
+
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);       
 
     cudaMemcpy(h_A, d_A, nBytes, cudaMemcpyDeviceToHost);
     cudaMemcpy(h_B, d_B, nBytes, cudaMemcpyDeviceToHost);
     cudaMemcpy(h_C, d_C, nBytes, cudaMemcpyDeviceToHost);
-    cudaMemcpy(h_D, d_D, fnBytes, cudaMemcpyDeviceToHost);
+    cudaMemcpy(h_D, d_D, iBytes, cudaMemcpyDeviceToHost);
 
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);
@@ -392,14 +425,21 @@ int main(int argc, char *argv[])
 	cout << h_A[i] << "," << h_B[i] << "," << h_C[i] << "," << h_D[i] << endl;
     }
 
-    cout << "check : 1" << endl;
+    cout << "compare : 1" << endl;
     start_timer(&t);
-    
-    for(i=0;i<d_vec_1.size();i++)
+
+    std::remove("result");
+    ofstream outputfile("result");
+    for(i=0;i<nData;i++)
     {
-       if((int)h_D[i] == 1)
-       	cout << (long)h_A[i] << "," << (long)h_B[i] << "," << (long)h_C[i] << "," << h_D[i] << endl;
+       if(h_C[i] == h_B[i])
+       {
+       	cout << h_A[i] << "," << h_B[i] << "," << h_C[i] << "," << h_D[i] << endl;
+	outputfile << h_A[i] << "," << h_B[i] << "," << h_C[i] << "," << h_D[i] << endl;
+       }
     }
+    outputfile.close();
+
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);
 
