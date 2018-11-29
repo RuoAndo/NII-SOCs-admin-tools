@@ -2,7 +2,7 @@
 #include <cuda_runtime.h>
 #include <stdio.h>
 
-int recursiveReduce(int *data, int const size)
+int recursiveReduceWithStrideOnCPU(int *data, int const size)
 {
     if (size == 1) return data[0];
 
@@ -12,7 +12,7 @@ int recursiveReduce(int *data, int const size)
     {
         data[i] += data[i + stride];
     }
-    return recursiveReduce(data, stride);
+    return recursiveReduceWithStrideOnCPU(data, stride);
 }
 
 __global__ void reduceNeighbored (int *g_idata, int *g_odata, unsigned int n)
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
     CHECK(cudaMalloc((void **) &d_odata, grid.x * sizeof(int)));
 
     iStart = seconds();
-    int cpu_sum = recursiveReduce (tmp, size);
+    int cpu_sum = recursiveReduceWithStrideOnCPU (tmp, size);
     iElaps = seconds() - iStart;
     printf("cpu reduce      elapsed %f sec cpu_sum: %d\n", iElaps, cpu_sum);
 
