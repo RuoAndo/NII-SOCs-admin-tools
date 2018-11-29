@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < grid.x; i++) gpu_sum += h_odata[i];
 
-    printf("gpu Neighbored  elapsed %f sec gpu_sum: %d <<<grid %d block "
+    printf("gpu with IF  elapsed %f sec gpu_sum: %d <<<grid %d block "
            "%d>>>\n", iElaps, gpu_sum, grid.x, block.x);
 
     CHECK(cudaMemcpy(d_idata, h_idata, bytes, cudaMemcpyHostToDevice));
@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < grid.x; i++) gpu_sum += h_odata[i];
 
-    printf("gpu Neighbored2 elapsed %f sec gpu_sum: %d <<<grid %d block "
+    printf("gpu withtout IF elapsed %f sec gpu_sum: %d <<<grid %d block "
            "%d>>>\n", iElaps, gpu_sum, grid.x, block.x);
 
     CHECK(cudaFree(d_idata));
