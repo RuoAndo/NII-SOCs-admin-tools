@@ -1,5 +1,11 @@
+if [ "$1" = "" ]
+then
+    echo "./do.sh IPADDR"
+    exit 1
+fi
+
 nLines=300000000
-START_DATE=`date --date '9 day ago' +%Y%m%d`
+START_DATE=`date --date '5 day ago' +%Y%m%d`
 END_DATE=`date --date '2 day ago' +%Y%m%d`
 
 echo $START_DATE
@@ -10,7 +16,7 @@ touch all-whole
 
 for (( DATE=${START_DATE} ; ${DATE} < ${END_DATE} ; DATE=`date -d "${DATE} 1 day" '+%Y%m%d'` )) ; do
     echo ${DATE}
-    cat /root/${DATE}/all-org >> all-whole
+    cat /mnt/data2/${DATE}/all-org >> all-whole
 done
 
 WHOLE_LINE=`wc -l all-whole | cut -d " " -f 1`
@@ -38,7 +44,7 @@ touch result-all
 while read line; do
     echo $line
     split -d -l 10000000 $line
-    CUDA_VISIBLE_DEVICES=1 ./group10 112.78.5.70 $nLines
+    CUDA_VISIBLE_DEVICES=1 ./group10 $1 $nLines
     \cp result result.${line}
     cat result >> result-all
 done < list
