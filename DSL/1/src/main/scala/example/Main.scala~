@@ -1,0 +1,16 @@
+import java.io.File
+
+object Main extends App {
+
+    class Position(val id: Int, val name: String, val posX: Double, val posY: Double) {
+        override def toString = "id: %d, name: %s, posX: %f, posY: %f".format(id, name, posX, posY)
+    }
+
+    val csvFile = new File("positions.csv")
+    val list = MyCSVParser.parse(csvFile, r => new Position(
+        r.get("id").toInt, r.get("name"), r.get("posX").toDouble, r.get("posY").toDouble
+    ))
+
+    list.foreach(println)
+
+}
