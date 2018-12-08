@@ -188,8 +188,8 @@ int main( int argc, char* argv[] ) {
 	     bitset<64> addr((unsigned long long)n);
 	     std::string addr_string = addr.to_string();
 	    // cout << addr_string.substr(0,31) << "," << addr_string.substr(32,63) << "," << hvalue_out_2[i] << endl;
-	    string addr_src = addr_string.substr(0,32);
-	    string addr_dst = addr_string.substr(32,32);
+	    string addr_src = addr_string.substr(0,31);
+	    string addr_dst = addr_string.substr(32,64);
 
 	    bitset<32> bs(addr_src);
 	    bitset<32> ds(addr_dst);
