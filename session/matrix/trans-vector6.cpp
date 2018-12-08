@@ -154,7 +154,7 @@ int main( int argc, char* argv[] ) {
 	    timestamp.push_back(tms);
 	    
 	    // string pair_string = stringIP;
-	    // std:cout << IPstring << endl;
+	    std:cout << IPstring << endl;
 	    sv.push_back(IPstring);	    
 	  }
 	}
@@ -168,9 +168,9 @@ int main( int argc, char* argv[] ) {
 	     std::string tmp_string = *itr;
 	     std::bitset<64> trans_tmp (tmp_string);
 	     
-	     unsigned long long int n = bitset<64>(tmp_string).to_ullong();
-	     unsigned long long int s = bitset<32>(IPstring_src[counter]).to_ullong();
-	     unsigned long long int d = bitset<32>(IPstring_dst[counter]).to_ullong();
+	     unsigned long long n = bitset<64>(tmp_string).to_ullong();
+	     unsigned long long s = bitset<32>(IPstring_src[counter]).to_ullong();
+	     unsigned long long d = bitset<32>(IPstring_dst[counter]).to_ullong();
 	                                                                                    
              inaddr = { htonl(s) };
 	     some_addr = inet_ntoa(inaddr);
@@ -181,10 +181,34 @@ int main( int argc, char* argv[] ) {
 	     string dst_string = string(some_addr);
 
 	     // std::cout << srcIP << "," << destIP << "," << tmp_string << "," << n << endl;
-	     // std::cout << timestamp[counter] << "," << sourceIP[counter] << "," << s << "," << src_string << "," << destinationIP[counter] << "," << d << "," << dst_string << "," << tmp_string << "," << n << endl;
+	     std::cout << timestamp[counter] << "," << sourceIP[counter] << "," << s << "," << src_string << "," << destinationIP[counter] << "," << d << "," << dst_string << "," << tmp_string << "," << n << endl;
 
-	     // outputfile << timestamp[counter] << "," << sourceIP[counter] << "," << s << "," << src_string << "," << destinationIP[counter] << "," << d << "," << dst_string << "," << tmp_string << "," << n << endl;
-	     
+	     outputfile << timestamp[counter] << "," << sourceIP[counter] << "," << s << "," << src_string << "," << destinationIP[counter] << "," << d << "," << dst_string << "," << tmp_string << "," << n << endl;
+
+	     bitset<64> addr((unsigned long long)n);
+	     std::string addr_string = addr.to_string();
+	    // cout << addr_string.substr(0,31) << "," << addr_string.substr(32,63) << "," << hvalue_out_2[i] << endl;
+	    string addr_src = addr_string.substr(0,32);
+	    string addr_dst = addr_string.substr(32,32);
+
+	    bitset<32> bs(addr_src);
+	    bitset<32> ds(addr_dst);
+
+	    std::cout << bs << "," << ds << endl;
+
+	    unsigned long long int s2 = bs.to_ullong();
+	    unsigned long long int d2 = ds.to_ullong();
+	                                                
+            inaddr = { htonl(s2) };
+	    some_addr = inet_ntoa(inaddr);
+	    src_string = string(some_addr);
+
+	    inaddr = { htonl(d2) };
+	    some_addr = inet_ntoa(inaddr);
+	    dst_string = string(some_addr);
+
+	    cout << src_string << "," << dst_string << endl;
+	    
 	     outputfile << timestamp[counter] << "," << n << endl;
 	     counter = counter + 1;
 	}
