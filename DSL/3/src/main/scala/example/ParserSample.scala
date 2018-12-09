@@ -58,7 +58,52 @@ password=postgres
     }.toMap)
   }.toMap
 
-  println(map)
+  // val a = map(section)
+  // println(map.get("77943409"))
+
+  map.foreach { e =>
+  	      // println(map.get(e._1))
+	      val map2 = map.get(e._1)
+
+	      map2.foreach { f =>
+	        // println(f)
+
+		val s = f.toList
+		// val str = s.toString
+		
+		f match {
+		      // case map => println(f)
+		      case map => { val g = f("subtype")
+		      	       	    // println(g)
+		      	       	    
+		      	       	    g.toString match {
+				    case "vulnerability" => println("[FOUND - vlun] " + f)
+				    case _ => // println(g)
+				    }
+				  
+		      } 
+		      	   
+		      
+		      }
+
+		/*
+	      	if(map2.get("subtype") == "spyware")
+		{
+		 println(map2)
+		}
+		*/
+              }
+	      
+  }
+	      
+
+/*
+  map.foreach { e =>
+  	      map.get(e._1).foreach { f =>
+	      	println(e._1)
+		}
+	      }
+*/
 }
 
 import scala.util.parsing.combinator.RegexParsers
