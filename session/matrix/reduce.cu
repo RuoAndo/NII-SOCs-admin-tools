@@ -77,7 +77,9 @@ int main( int argc, char* argv[] ) {
 
   struct in_addr inaddr;
   char *some_addr;
-  
+
+  std::string timestamp;
+
   thrust::host_vector<unsigned long long> h_vec_1(N);
   thrust::host_vector<unsigned long long> h_vec_2(N);   
 
@@ -101,12 +103,14 @@ int main( int argc, char* argv[] ) {
 	    return 1;
 	  }
 
-	 std::remove("tmp");
-	 ofstream outputfile("tmp");
-	 
+	 std::remove("tmp-pair");
+	 ofstream outputfile("tmp-pair");
+
+	 outputfile << "timestamp,src,dest,counted" << endl;
+
       	  for (int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
-	    std::string timestamp = rec[0];
+	    timestamp = rec[0];
 	    std::string pair = rec[1];
 
 	    h_vec_1[row] = stoull(string(pair.c_str()));
@@ -154,8 +158,8 @@ int main( int argc, char* argv[] ) {
 	    bitset<64> addr((unsigned long long)hkey_out_2[i]);
 	    std::string addr_string = addr.to_string();
 	    // cout << addr_string.substr(0,31) << "," << addr_string.substr(32,63) << "," << hvalue_out_2[i] << endl;
-	    string addr_src = addr_string.substr(0,31);
-	    string addr_dst = addr_string.substr(32,63);
+	    string addr_src = addr_string.substr(0,32);
+	    string addr_dst = addr_string.substr(32,32);
 
 	    bitset<32> bs(addr_src);
 	    bitset<32> ds(addr_dst);
@@ -170,6 +174,20 @@ int main( int argc, char* argv[] ) {
 	    some_addr = inet_ntoa(inaddr);
 	    string dst_string = string(some_addr);
 
+	    std::string tmpstring = timestamp;
+	    outputfile << tmpstring.substr( 0, 4 )
+		<< "-"
+	        << tmpstring.substr( 4, 2 ) 
+		<< "-"
+		<< tmpstring.substr( 6, 2 ) 
+		<< " "
+		<< tmpstring.substr( 8, 2 ) 
+		<< ":"
+		<< tmpstring.substr( 10, 2 )
+		<< ":"
+		<< tmpstring.substr( 12, 2 )
+		<< ",";
+			      
 	    outputfile << src_string << "," << dst_string << "," << hvalue_out_2[i] << endl;
           }
 
