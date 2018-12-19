@@ -33,7 +33,7 @@
 using namespace tbb;
 using namespace std;
 
-#define THREAD_NUM 10
+#define THREAD_NUM 30
 
 using namespace std;
 
@@ -314,21 +314,39 @@ int main(int argc, char *argv[])
     }
     */
 
+    cout << "#3 sort on GPU:" << endl;
+    start_timer(&t);
     cout << "sort before:" << d_vec_timestamp.size() << endl;
     thrust::sort_by_key(d_vec_substract.begin(), d_vec_substract.end(), d_vec_timestamp.begin());
     cout << "sort after:" << d_vec_timestamp.size() << endl;
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);       
 
+    cout << "#4 copy_if on GPU:" << endl;
+    start_timer(&t);
     std::cout << d_vec_timestamp.size() << std::endl;
     int N_prime = thrust::count_if(d_vec_substract.begin(), d_vec_substract.end(), is_smaller_than_10());
     std::cout << N_prime << std::endl;
     thrust::device_vector<int> d_b(N_prime);
     thrust::copy_if(d_vec_substract.begin(), d_vec_substract.end(), d_b.begin(), is_smaller_than_10());
-    std::cout << d_b.size() << std::endl;
+    std::cout << "d_b size:" << d_b.size() << std::endl;
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);       
 
-    for(i=0; i<10; i++)
+    thrust::host_vector<int> h_b(N_prime);
+    thrust::host_vector<unsigned long> h_vec_timestamp(N_prime);
+
+    for(i=0; i<N_prime; i++)
     {
-	cout << d_vec_timestamp[i] << "," << d_b[i] << endl;
+	h_vec_timestamp[i] = d_vec_timestamp[i];
+	h_b[i] = d_b[i];
     }
+
+    for(i=0; i<5; i++)
+    {
+	cout << h_vec_timestamp[i] << "," << h_b[i] << endl;
+    }
+
 
     /*
     for(i=0; i<d_b.size(); i++)
