@@ -1,15 +1,15 @@
 import scala.io.Source
 import java.io.PrintWriter
 
-case class PA (alarm_id: Int, timestamp: String)
+// case class PA (alarm_id: Int, timestamp: String)
 
 object Main extends App {
 
-def caseClassMatchSample(pa: PA)
+def caseClassMatchSample(pa: Int)
 {
     pa match {
-		case PA(77943409,_) => {
-	     	  println("MATCH:77943409")
+		case pa @ (77943409 | 77943413) => {
+	     	  println("MATCH:" + pa)
 	     	       }
 		case _ => {
 	     	  // println("NO MATCH")
@@ -19,10 +19,11 @@ def caseClassMatchSample(pa: PA)
 
 def address_format(line : String, out : PrintWriter) = {
     val list = line split ','
+    caseClassMatchSample(list(0).toInt)
 
     // val concat_str = list(0) + list(1)
-    caseClassMatchSample(PA(list(0).toInt, list(1).replaceAll(" ","_").toString))
-    out.write("%s,%s\n" format (list(0), list(1)))
+    // caseClassMatchSample(PA(list(0).toInt, list(1).replaceAll(" ","_").toString))
+    // out.write("%s,%s\n" format (list(0), list(1)))
 }
 
 val source = Source.fromFile("1.csv", "utf8")
