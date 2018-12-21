@@ -33,7 +33,7 @@
 using namespace tbb;
 using namespace std;
 
-#define THREAD_NUM 30
+#define THREAD_NUM 50
 
 using namespace std;
 
@@ -184,10 +184,10 @@ void *thread_func(void *arg) {
 	      IPstring = IPstring + trans_string;
 	}  
 
-	unsigned long n = bitset<64>(IPstring).to_ullong();
-	long m = atol(tmp_string_first.c_str());
+	unsigned long n = bitset<32>(IPstring).to_ullong();
+	unsigned long m = atol(tmp_string_first.c_str());
 	
-	// cout << src << "," << n << "," << dst << "," << m << endl;
+	// cout << "CHECK:" << m << "," << n << ":" << endl;
 
 	CharTable::accessor a;
 	table.insert(a, m);
@@ -251,14 +251,16 @@ int main(int argc, char *argv[])
     for( CharTable::iterator i=table.begin(); i!=table.end(); ++i )
     {
       for(auto itr = i->second.begin(); itr != i->second.end(); ++itr) {
-	       h_vec_1[counter] = (unsigned long)(i->first);
-   	       h_vec_2[counter] = (unsigned long)(*itr);
-	       counter = counter + 1;
-	       
+	       h_vec_1[counter] = (unsigned long)i->first;
+   	       h_vec_2[counter] = (unsigned long)*itr;
+	      
       	       if(counter%1000000==0)
       	       {
 	       std::cout << "counter:" << counter << endl;
+	       std::cout << h_vec_1[counter] << "," << h_vec_2[counter] << endl;
+	       std::cout << i->first << "," << *itr << endl;
       	       }
+	       counter = counter + 1;
       }
     }
 
@@ -267,9 +269,10 @@ int main(int argc, char *argv[])
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);       
 
-    for(i=0; i<10; i++)
+    for(i=0; i<counter; i++)
     {
-	cout << h_vec_1[i] << "," << h_vec_2[i] << endl;
+	if(i%3000000==0)
+	     cout << "CHECK:" << (unsigned long)h_vec_1[i] << "," << (unsigned long)h_vec_2[i] << endl;
     }
 
     /***/
@@ -289,9 +292,9 @@ int main(int argc, char *argv[])
 	IPstring = IPstring + trans_string;
 	}
 
-     unsigned long s = bitset<32>(IPstring).to_ulong();
-     unsigned long f = s;
-     std::cout << targetIP << "," << f << endl;
+    unsigned long s = bitset<32>(IPstring).to_ulong();
+    unsigned long f = s;
+    std::cout << targetIP << "," << f << endl;
 
     thrust::device_vector<unsigned long> d_vec_srcIP(nData);
     thrust::device_vector<unsigned long> d_vec_timestamp(nData);
@@ -342,11 +345,18 @@ int main(int argc, char *argv[])
 	h_b[i] = d_b[i];
     }
 
-    for(i=0; i<5; i++)
+    std::remove("tmp");
+    ofstream outputfile("tmp");
+
+    for(i=0; i<N_prime; i++)
     {
 	cout << h_vec_timestamp[i] << "," << h_b[i] << endl;
+
+	std::string tmpstring = std::to_string(h_vec_timestamp[i]);
+	outputfile << tmpstring.substr( 0, 4 ) << "-" << tmpstring.substr( 4, 2 ) << "-" << tmpstring.substr( 6, 2 ) << " " << tmpstring.substr( 8, 2) << ":" << tmpstring.substr( 10, 2 ) << ":" << tmpstring.substr( 12, 2 ) << "," << argv[1] << endl;;                  
     }
 
+    outputfile.close();
 
     /*
     for(i=0; i<d_b.size(); i++)
