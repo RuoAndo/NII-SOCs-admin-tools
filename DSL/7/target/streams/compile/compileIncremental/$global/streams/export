@@ -1,0 +1,1 @@
+scalac -bootclasspath /root/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.5.jar -classpath /home/flare/7/target/scala-2.12/classes /home/flare/7/src/main/scala/example/csv.scala
