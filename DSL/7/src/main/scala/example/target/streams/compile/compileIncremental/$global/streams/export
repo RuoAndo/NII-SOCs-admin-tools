@@ -1,1 +1,0 @@
-scalac -bootclasspath /root/.sbt/boot/scala-2.12.7/lib/scala-library.jar -classpath /home/flare/7/src/main/scala/example/target/scala-2.12/classes /home/flare/7/src/main/scala/example/csv.scala /home/flare/7/src/main/scala/example/Hello.scala
