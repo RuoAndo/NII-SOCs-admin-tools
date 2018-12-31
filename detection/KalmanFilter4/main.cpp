@@ -32,12 +32,16 @@ int main(int argc, char const *argv[])
   unsigned int t, travdirtime; 
   
   nData = atoi(argv[2]);
-  unsigned long long timestamp[atoi(argv[2])];
-  float* measure = new float[atoi(argv[2])];
-  float* org = new float[atoi(argv[2])];
-  float* diff = new float[atoi(argv[2])-1];
 
-  int N = atoi(argv[2]);  
+  size_t nBytes = nData * sizeof(unsigned long long);
+  unsigned long long *timestamp;
+  timestamp  = (unsigned long long *)malloc(nBytes);
+
+  size_t fBytes = nData * sizeof(float);
+  float *measure, *org, *diff;
+  measure  = (float *)malloc(fBytes);
+  org  = (float *)malloc(fBytes);
+  diff  = (float *)malloc(fBytes);
 
   const string csv_file = std::string(argv[1]); 
   vector<vector<string>> data; 
@@ -54,7 +58,8 @@ int main(int argc, char const *argv[])
 
 	    measure[row] = stof(rec[1].c_str());
 	    timestamp[row] = stoull(rec[0].c_str());
-	    
+
+	    // std::cout << measure[row] << "," << timestamp[row] << std::endl;
 	  }
 
    }
@@ -121,7 +126,7 @@ int main(int argc, char const *argv[])
   print_timer(travdirtime);      
   
   outputfile.close();
-
+  
   ofstream outputfile2("ma");
   for (int i = 0; i < nData -1; ++i)
   {
@@ -130,6 +135,11 @@ int main(int argc, char const *argv[])
   }
 
   outputfile2.close();
+
+  free(timestamp);
+  free(measure);
+  free(org);
+  free(diff);
   
   return 0;
 }
