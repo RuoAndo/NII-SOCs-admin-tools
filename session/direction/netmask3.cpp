@@ -89,90 +89,89 @@ int main( int argc, char* argv[] ) {
 
 	  for (unsigned int row = 0; row < data.size(); row++) {
 
-	    // unsigned long long to string
-	    
 	    vector<string> rec = data[row];
+
+	    if(atoi(rec[0].c_str())==1)
+	      {
+		 std::string all_line;
+	      	 for(auto itr = rec.begin(); itr != rec.end(); ++itr) {
+		   all_line = all_line + "," + *itr;
+		 }
+		 std::cout << all_line << std::endl;
+		 break;
+	      }
+		   
+	    // unsigned long long to string
 	    std::string srcIP = rec[4];
 
-	    // std::cout << rec[4] << std::endl;
-
-	    for(size_t c = srcIP.find_first_of("\""); c != string::npos; c = c = srcIP.find_first_of("\"")){
-	      srcIP.erase(c,1);
-	    }
-	    
-	    /*
 	    unsigned long srcIP_long = std::atol(srcIP.c_str());
 
             inaddr = { htonl(srcIP_long) };
 	    some_addr = inet_ntoa(inaddr);
 	    string src_string = string(some_addr);
-	    */
+
+	    // string to bitset
 	    
 	    std::string stringIP;
-	    std::string argIPstring;
-	    std::string address_per_line;
-	    
-	    char del2 = '.';
+	    std::string IPstring;
 
 	    // converting argIP to bitset
 	    
+	    char del2 = '.';
+	
 	    for (const auto subStr : split_string_2(argIP, del2)) {
 	      unsigned long ipaddr_src;
 	      ipaddr_src = atol(subStr.c_str());
 	      std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
 	      std::string trans_string = trans.to_string();
-	      argIPstring = argIPstring + trans_string;
+	      IPstring = IPstring + trans_string;
 	    }
-	    // std::cout << "BITSET:arg:" << argIPstring << std::endl;
-	    
-	    for (const auto subStr : split_string_2(srcIP, del2)) {
-	      unsigned long ipaddr_src;
-	      ipaddr_src = atol(subStr.c_str());
-	      std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
-	      std::string trans_string = trans.to_string();
-	      address_per_line = address_per_line + trans_string;
-	    }
-	    // std::cout << "BITSET:per_line:" << address_per_line << std::endl;
 
 	    // std::cout << endl;
 	    // std::cout << "T:" << argIP << "/" << netmask << endl; 	
 
 	    // argIP
-	    unsigned long s = bitset<32>(argIPstring).to_ullong();
+	    unsigned long s = bitset<32>(IPstring).to_ullong();
 	    // std::cout << "T:" << IPstring << endl;
 	    // argIP (bitset) 
-	    std::bitset<32> bs2(argIPstring);
+	    std::bitset<32> bs2(IPstring);
 	    // std::cout << "T:" << bs2 << endl; 	
 
 	    // address per line
-	    // s = bitset<32>(address_per_line).to_ullong();
 	    // std::cout << "C:" << src_string << "/" << netmask << endl;
-	    std::bitset<32> trans =  std::bitset<32>(address_per_line);
+	    std::bitset<32> trans =  std::bitset<32>(srcIP_long);
 	    // std::cout << "C:" << trans << endl;
 	    
 	    std::bitset<32> trans2(0xFFFFFFFF);
 	    trans2 <<= netmask;
 	    trans &= trans2;
 	    // std::cout << "C:" << trans << std::endl; 
-	    
+
 	    if(trans==bs2)
 	      {
 		std::string all_line;
-		all_line = "1";
+		// all_line = "1";
+		counter = 0;
 		for(auto itr = rec.begin(); itr != rec.end(); ++itr) {
-		  all_line = all_line + "," + *itr;
+		  if(counter==0)
+		    all_line = rec[0];
+		  else
+		    all_line = all_line + "," + *itr;
+		  counter = counter + 1;
 		}
-
 		std::cout << all_line << endl;
 	      }
 	    else
 	      {
 		std::string all_line;
-		all_line = "0";
+		counter = 0;
 		for(auto itr = rec.begin(); itr != rec.end(); ++itr) {
-		  all_line = all_line + "," + *itr;
+		  if(counter==0)
+		    all_line = rec[0];
+		  else
+		    all_line = all_line + "," + *itr;
+		  counter = counter + 1;
 		}
-		
 		std::cout << all_line << endl;
 	      }
 	    

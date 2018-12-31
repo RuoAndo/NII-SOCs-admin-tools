@@ -64,6 +64,7 @@ int main( int argc, char* argv[] ) {
   int counter = 0;
   int N = atoi(argv[2]);  
   int netmask = atoi(argv[4]);
+  int loop_flag;
   
   struct in_addr inaddr;
   char *some_addr;
@@ -92,7 +93,29 @@ int main( int argc, char* argv[] ) {
 	    // unsigned long long to string
 	    
 	    vector<string> rec = data[row];
-	    std::string srcIP = rec[4];
+
+	    // std::cout << "DIR:" << rec[0] << endl;
+
+	    // std::string dir_flag = rec[0];
+	    // std::cout << atoi(dir_flag.c_str()) << endl;
+	    // if(atoi(dir_flag.c_str())==1)
+	    if(rec[0] == "1")
+	      {
+		// std::cout << "HIT:" << rec[0] << std::endl; 
+		std::string all_line = "1";
+		counter = 0;
+	      	for(auto itr = rec.begin(); itr != rec.end(); ++itr) {
+		  if(counter > 0)
+		    all_line = all_line + "," + *itr;
+		  counter = counter + 1;
+		 }
+		 std::cout << all_line << std::endl;
+	       continue;
+	      }
+
+	    else {
+	    
+	    std::string srcIP = rec[5];
 
 	    // std::cout << rec[4] << std::endl;
 
@@ -154,28 +177,39 @@ int main( int argc, char* argv[] ) {
 	    trans2 <<= netmask;
 	    trans &= trans2;
 	    // std::cout << "C:" << trans << std::endl; 
-	    
+
+	    std::string all_line;
+	    for(auto itr = rec.begin(); itr != rec.end(); ++itr) {
+	      all_line = all_line + "," + *itr;
+	    }
+
 	    if(trans==bs2)
 	      {
+		// std::cout << "HIT" << std::endl;
 		std::string all_line;
 		all_line = "1";
+		counter = 0;
 		for(auto itr = rec.begin(); itr != rec.end(); ++itr) {
-		  all_line = all_line + "," + *itr;
+		  if(counter>0)
+		    all_line = all_line + "," + *itr;
+		  counter = counter + 1;
 		}
-
 		std::cout << all_line << endl;
 	      }
 	    else
 	      {
 		std::string all_line;
-		all_line = "0";
+		counter = 0;
 		for(auto itr = rec.begin(); itr != rec.end(); ++itr) {
-		  all_line = all_line + "," + *itr;
+		  if(counter==0)
+		    all_line = rec[0];
+		  else
+		    all_line = all_line + "," + *itr;
+		  counter = counter + 1;
 		}
-		
 		std::cout << all_line << endl;
-	      }
-	    
+	      } 
+	    } // else
 	  }
 	}
 	catch (...) {
