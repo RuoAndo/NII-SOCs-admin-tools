@@ -97,7 +97,12 @@ int main( int argc, char* argv[] ) {
             cout << "EXCEPTION (session)" << endl;
 	    return 1;
 	}
+
+	// init map
+	  for(int i=0; i<N; i++)
+	    found_flag[i] = 0;
 	
+	  counter = 0;
 	  for (unsigned int row = 0; row < list_data.size(); row++) {
 
 	    vector<string> rec = list_data[row];
@@ -176,7 +181,7 @@ int main( int argc, char* argv[] ) {
 		  }
 		else
 		  {
-		    found_flag[row2] = 0;
+		    // found_flag[row2] = 0;
 		    /*
 		    std::string all_line;
 		    counter = 0;
@@ -190,9 +195,9 @@ int main( int argc, char* argv[] ) {
 		    std::cout << all_line << endl;
 		    */
 		  }
-	      }
+	      }	     
+	  }
 
-	      counter = 0;
 	      for (const auto& [key, value] : found_flag){
 		if(value==1)
 		  {
@@ -200,13 +205,12 @@ int main( int argc, char* argv[] ) {
 		  counter = counter + 1;
 		  }
 	      }
+	      std::cout << counter << "," << found_flag.size() << "," << session_data.size() << std::endl;
 	      
-	      std::cout << rec[0] << "/" << rec[1] << "," << counter << std::endl;
-	      
-	  }
 
-	 std::remove("rendered");
-	 ofstream outputfile("rendered");
+	      const string file_rendered = "rendered_" + session_file;
+	      // std::remove(file_rendered);
+	      ofstream outputfile(file_rendered);
 	  
 	  for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 	      vector<string> rec3 = session_data[row3];
@@ -228,7 +232,7 @@ int main( int argc, char* argv[] ) {
 		      all_line = all_line + "," + *itr;
 		    }
 		    // std::cout << all_line << std::endl;
-		    // outputfile << all_line << std::endl;
+		    outputfile << all_line << std::endl;
 		}	
 	  }
 
