@@ -4,6 +4,8 @@ then
     exit 1
 fi
 
+./build.sh netmask5
+
 nLines_1=100000000
 nLines_2=10000000
 
