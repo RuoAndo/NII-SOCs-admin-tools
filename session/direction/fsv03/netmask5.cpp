@@ -198,6 +198,7 @@ int main( int argc, char* argv[] ) {
 	      }	     
 	  }
 
+	      /*
 	      for (const auto& [key, value] : found_flag){
 		if(value==1)
 		  {
@@ -205,6 +206,13 @@ int main( int argc, char* argv[] ) {
 		  counter = counter + 1;
 		  }
 	      }
+	      */
+
+	      for(auto itr = found_flag.begin(); itr != found_flag.end(); ++itr) {
+		if(itr->first==1)
+		  counter = counter + 1;
+	      }
+
 	      std::cout << counter << "," << found_flag.size() << "," << session_data.size() << std::endl;
 	      
 
