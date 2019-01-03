@@ -166,7 +166,6 @@ int main( int argc, char* argv[] ) {
 		
 	        if(bit_sessionIP == bit_argIP)
 		  {
-		    // std::cout << "HIT" << std::endl;
 		    std::string all_line;
 		    all_line = "1";
 		    // counter = 0;
@@ -199,7 +198,6 @@ int main( int argc, char* argv[] ) {
 	      }	     
 	  }
 
-	      /*
 	      for (const auto& [key, value] : found_flag){
 		if(value==1)
 		  {
@@ -207,20 +205,9 @@ int main( int argc, char* argv[] ) {
 		  counter = counter + 1;
 		  }
 	      }
-	      */
-
-	      for(auto itr = found_flag.begin(); itr != found_flag.end(); ++itr) {
-		if(itr->second==1)
-		  counter = counter + 1;
-		// else
-		//  counter = counter + 1;
-	      }
-
 	      std::cout << counter << "," << found_flag.size() << "," << session_data.size() << std::endl;
 	      
-
 	      const string file_rendered = "rendered_" + session_file;
-	      // std::remove(file_rendered);
 	      ofstream outputfile(file_rendered);
 	  
 	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
@@ -234,7 +221,7 @@ int main( int argc, char* argv[] ) {
 		    }
 		    // std::cout << all_line << std::endl;
 		    outputfile << all_line << std::endl;
-		  }
+		}
 		else
 		  {
 		    std::string all_line;
@@ -248,7 +235,7 @@ int main( int argc, char* argv[] ) {
 	      }
 
 	      outputfile.close();
-	
+
               const string file_rendered_2 = "directed_msec_" + session_file;
 	      ofstream outputfile2(file_rendered_2);
 	  
@@ -333,8 +320,7 @@ int main( int argc, char* argv[] ) {
 	      }
 
 	      outputfile2.close();
-
-	  
+	      
         return 0;
     }
     
