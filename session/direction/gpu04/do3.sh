@@ -1,9 +1,9 @@
 DATE=`date --date '4 day ago' +%Y%m%d` 
 echo $DATE
-ls -alh /data1/${DATE}/all-org
+ls -alh /mnt/data2/${DATE}/all-org
 
 echo "copying..."
-cp /data1/${DATE}/all-org .
+cp /mnt/data2/${DATE}/all-org .
 
 ./build.sh netmask5
 
