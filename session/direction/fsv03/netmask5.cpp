@@ -166,6 +166,7 @@ int main( int argc, char* argv[] ) {
 		
 	        if(bit_sessionIP == bit_argIP)
 		  {
+		    // std::cout << "HIT" << std::endl;
 		    std::string all_line;
 		    all_line = "1";
 		    // counter = 0;
@@ -209,8 +210,10 @@ int main( int argc, char* argv[] ) {
 	      */
 
 	      for(auto itr = found_flag.begin(); itr != found_flag.end(); ++itr) {
-		if(itr->first==1)
+		if(itr->second==1)
 		  counter = counter + 1;
+		// else
+		//  counter = counter + 1;
 	      }
 
 	      std::cout << counter << "," << found_flag.size() << "," << session_data.size() << std::endl;
@@ -220,10 +223,10 @@ int main( int argc, char* argv[] ) {
 	      // std::remove(file_rendered);
 	      ofstream outputfile(file_rendered);
 	  
-	  for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
-	      vector<string> rec3 = session_data[row3];
-	      if(found_flag[row3]==1)
-		{
+	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
+		vector<string> rec3 = session_data[row3];
+		if(found_flag[row3]==1)
+		  {
 		    std::string all_line;
 		    all_line = "1";
 		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
@@ -231,9 +234,9 @@ int main( int argc, char* argv[] ) {
 		    }
 		    // std::cout << all_line << std::endl;
 		    outputfile << all_line << std::endl;
-		}
-	      else
-		{
+		  }
+		else
+		  {
 		    std::string all_line;
 		    all_line = "0";
 		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
@@ -241,11 +244,97 @@ int main( int argc, char* argv[] ) {
 		    }
 		    // std::cout << all_line << std::endl;
 		    outputfile << all_line << std::endl;
-		}	
-	  }
+		  }	
+	      }
 
-	  outputfile.close();
-		  
+	      outputfile.close();
+	
+              const string file_rendered_2 = "directed_msec_" + session_file;
+	      ofstream outputfile2(file_rendered_2);
+	  
+	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
+		vector<string> rec3 = session_data[row3];
+		if(found_flag[row3]==1)
+		  {
+		    std::string all_line;
+
+		    /*
+		    all_line = "1";
+		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
+		      all_line = all_line + "," + *itr;
+		    }
+		    */
+
+		    std::string tms = rec3[0];
+	    
+		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
+		      tms.erase(c,1);
+		    }
+
+		    for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
+		      tms.erase(c,1);
+		    }
+
+		    for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
+		      tms.erase(c,1);
+		    }
+
+		    for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
+		      tms.erase(c,1);
+		    }
+
+		    for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
+		      tms.erase(c,1);
+		    }
+		    
+		    all_line = tms + ",1";
+		    
+		    // std::cout << all_line << std::endl;
+		    outputfile2 << all_line << std::endl;
+		}
+		else
+		  {
+		    std::string all_line;
+
+		    /*
+		    all_line = "0";
+		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
+		      all_line = all_line + "," + *itr;
+		    }
+		    */
+
+		    std::string tms = rec3[0];
+	    
+		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
+		      tms.erase(c,1);
+		    }
+
+		    for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
+		      tms.erase(c,1);
+		    }
+
+		    for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
+		      tms.erase(c,1);
+		    }
+
+		    for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
+		      tms.erase(c,1);
+		    }
+
+		    for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
+		      tms.erase(c,1);
+		    }
+
+		    all_line = tms + ",0";
+		    
+		    // std::cout << all_line << std::endl;
+		    outputfile2 << all_line << std::endl;
+		  }	
+	      }
+
+	      outputfile2.close();
+
+	  
         return 0;
     }
     
