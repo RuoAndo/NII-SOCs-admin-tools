@@ -8,7 +8,7 @@ cp /data1/${DATE}/all-org .
 ./build.sh netmask5
 
 nLines_1=100000000
-nLines_2=10000000
+nLines_2=1000000
 
 echo "removing and splitting..."
 rm -rf y*
@@ -70,5 +70,5 @@ scp directed_msec-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/gpu04/
 
 wc -l all-org
 wc -l rendered-all_${DATE}
-rm -rf rendered-all_${DATE}
-rm -rf directed_msec-all_${DATE}
+rm -rf rendered*
+rm -rf directed*
