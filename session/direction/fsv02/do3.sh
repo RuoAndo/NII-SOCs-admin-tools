@@ -10,7 +10,8 @@ cp /data1/${DATE}/all-org .
 nLines_1=100000000
 nLines_2=10000000
 
-echo "splitting..."
+echo "removing and splitting..."
+rm -rf y*
 split -l ${nLines_1} -a 2 all-org y
 
 ls y* > list
@@ -24,7 +25,8 @@ touch directed_msec-all
 while read line; do
     echo $line
     
-    echo "splitting 2..."
+    echo "removing and splitting 2..."
+    rm -rf x*
     split -l ${nLines_2} $line 
     
     ls x* > list2
