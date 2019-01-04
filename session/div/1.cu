@@ -1,59 +1,83 @@
-#include<iostream>
-#include<algorithm>
-#include<iomanip>
-#include<time.h>
-#include<thrust/host_vector.h>
-#include<thrust/device_vector.h>
-#include<thrust/sort.h>
+#if __linux__ && defined(__INTEL_COMPILER)
+#define __sync_fetch_and_add(ptr,addend) _InterlockedExchangeAdd(const_cast<void*>(reinterpret_cast<volatile void*>(ptr)), addend)
+#endif
+#include <string>
+#include <cstring>
+#include <cctype>
+#include <cstdlib>
+#include <cstdio>
+#include <iostream>
+#include <fstream>
+#include <bitset>
+#include <map>
 
-#define N (8<<10)
-#define COUNT_LIMIT 10000
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
-template<class T>
-class plusOne{
-public:
-    __device__ __host__ T operator() (T a){
-        return a+1;
+#include "csv.hpp"
+
+#include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+#include <thrust/generate.h>
+#include <thrust/sort.h>
+#include <thrust/copy.h>
+#include <algorithm>
+#include <cstdlib>
+#include "util.h"
+
+using namespace std;
+// static MyString* Data;
+
+void sumArraysOnHost(float *A, float *B, float *C, const int N)
+{
+    for (int idx = 0; idx < N; idx++)
+    {
+        C[idx] = A[idx] + B[idx];
     }
-};
+}
 
-int main(){
-    srand(time(NULL));
-    thrust::host_vector<int> host_vector(N);
-    std::generate(host_vector.begin(),host_vector.end(),rand);
-    thrust::device_vector<int> device_vector=host_vector;
+__global__ void sumArraysOnGPU(float *A, float *B, float *C, const int N)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
 
-    cudaEvent_t start,stop;
-    float elapsed;
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
+    if (i < N) C[i] = A[i] + B[i];
+}
 
+int main( int argc, char* argv[] ) {
 
-    cudaEventRecord(start,0);
-    for(int c=0;c<COUNT_LIMIT;c++){
-        thrust::transform(device_vector.begin(),device_vector.end(),device_vector.begin(),plusOne<int>());
-    }
-    cudaEventRecord(stop,0);
-    cudaEventSynchronize(stop);
-    cudaEventElapsedTime(&elapsed,start,stop);
+  int N = atoi(argv[2]);  
+  std::string timestamp;
 
-    std::cout<<"gpu :"<<elapsed<<"ms ["<<std::setprecision(8)<<COUNT_LIMIT/elapsed<<"/ms]"<<std::endl;
+  int counter = 0;
+  std::map<unsigned long long, int> mp;  
 
-    std::generate(host_vector.begin(),host_vector.end(),rand);
-    device_vector=host_vector;
+  size_t nBytes = N * sizeof(int);
 
-    cudaEventRecord(start,0);
-    for(int c=0;c<COUNT_LIMIT;c++){
-        thrust::transform(host_vector.begin(),host_vector.end(),host_vector.begin(),plusOne<int>());
-    }
-    cudaEventRecord(stop,0);
-    cudaEventSynchronize(stop);
-    cudaEventElapsedTime(&elapsed,start,stop);
+  int *h_recv;
+  h_recv = (int *)malloc(nBytes);
 
-    std::cout<<"cpu :"<<elapsed<<"ms ["<<std::setprecision(8)<<COUNT_LIMIT/elapsed<<"/ms]"<<std::endl;
+  const string csv_file = std::string(argv[1]); 
+  vector<vector<string>> data; 
 
-    cudaEventDestroy(start);
-    cudaEventDestroy(stop);
+  try {
+      	  Csv objCsv(csv_file);
+	  if (!objCsv.getCsv(data)) {
+	    cout << "read ERROR" << endl;
+	    return 1;
+	    }
 
-    return 0;
+	  for (int row = 0; row < data.size(); row++) {
+	    vector<string> rec = data[row];
+	    h_recv[row] = atoi(rec[17].c_str());
+	  }
+	  
+   }
+   catch (...) {
+	  cout << "EXCEPTION!" << endl;
+	  return 1;
+   }
+	
+   // delete[] Data;       
+   return 0;
 }
