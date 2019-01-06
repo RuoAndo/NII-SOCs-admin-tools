@@ -3,6 +3,7 @@
 #include <fstream>
 #include "KalmanFilter.h"
 #include "timer.h"
+#include "csv.hpp"
 
 // #define LINE_NUM 5000
 
@@ -31,11 +32,43 @@ int main(int argc, char const *argv[])
   unsigned int t, travdirtime; 
   
   nData = atoi(argv[2]);
-  float* measure = new float[atoi(argv[2])];
-  float* org = new float[atoi(argv[2])];
-  float* diff = new float[atoi(argv[2])-1];
 
-  readFromFile(argv[1], int(argv[2]), measure);
+  size_t nBytes = nData * sizeof(unsigned long long);
+  unsigned long long *timestamp;
+  timestamp  = (unsigned long long *)malloc(nBytes);
+
+  size_t fBytes = nData * sizeof(float);
+  float *measure, *org, *diff;
+  measure  = (float *)malloc(fBytes);
+  org  = (float *)malloc(fBytes);
+  diff  = (float *)malloc(fBytes);
+
+  const string csv_file = std::string(argv[1]); 
+  vector<vector<string>> data; 
+
+  try {
+      	  Csv objCsv(csv_file);
+	  if (!objCsv.getCsv(data)) {
+	    cout << "read ERROR" << endl;
+	    return 1;
+	    }
+
+	  for (int row = 0; row < data.size(); row++) {
+	    vector<string> rec = data[row]; 
+
+	    measure[row] = stof(rec[1].c_str());
+	    timestamp[row] = stoull(rec[0].c_str());
+
+	    // std::cout << measure[row] << "," << timestamp[row] << std::endl;
+	  }
+
+   }
+   catch (...) {
+	  cout << "EXCEPTION!" << endl;
+	  return 1;
+   }
+
+  // readFromFile(argv[1], int(argv[2]), measure);
 
   for(i=0;i<nData;i++)
     {
@@ -66,8 +99,24 @@ int main(int argc, char const *argv[])
     Z << measure[i];
     filter1.correct( Z );   
     // cout << measure[i] << "," << filter1.X << endl;
-    outputfile << filter1.X << endl;
-   org[i] = filter1.X[0];
+
+    std::string tmpstring = std::to_string(timestamp[i]);
+    outputfile << tmpstring.substr( 0, 4 )
+	       << "-"
+	       << tmpstring.substr( 4, 2 )
+	       << "-"
+	       << tmpstring.substr( 6, 2 )
+	       << " "
+	       << tmpstring.substr( 8, 2 )
+	       << ":"
+	       << tmpstring.substr( 10, 2 )
+	       << ":"
+	       << tmpstring.substr( 12, 2 )
+	       << "," << filter1.X << endl;
+
+    // outputfile << timestamp[i] << "," << filter1.X << endl;
+
+    org[i] = filter1.X[0];
 
     if (i%(nData/10)==0)
       filter1.setInitial(X0, P0);
@@ -77,7 +126,7 @@ int main(int argc, char const *argv[])
   print_timer(travdirtime);      
   
   outputfile.close();
-
+  
   ofstream outputfile2("ma");
   for (int i = 0; i < nData -1; ++i)
   {
@@ -86,6 +135,11 @@ int main(int argc, char const *argv[])
   }
 
   outputfile2.close();
+
+  free(timestamp);
+  free(measure);
+  free(org);
+  free(diff);
   
   return 0;
 }
