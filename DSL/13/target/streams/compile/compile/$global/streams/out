@@ -1,0 +1,22 @@
+[0m[[0m[31merror[0m] [0m[0m/home/flare/13/src/main/scala/example/csv.scala:14:24: invalid escape character[0m
+[0m[[0m[31merror[0m] [0m[0m      val regex = ".*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}).*".r[0m
+[0m[[0m[31merror[0m] [0m[0m                       ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/flare/13/src/main/scala/example/csv.scala:14:32: invalid escape character[0m
+[0m[[0m[31merror[0m] [0m[0m      val regex = ".*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}).*".r[0m
+[0m[[0m[31merror[0m] [0m[0m                               ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/flare/13/src/main/scala/example/csv.scala:14:35: invalid escape character[0m
+[0m[[0m[31merror[0m] [0m[0m      val regex = ".*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}).*".r[0m
+[0m[[0m[31merror[0m] [0m[0m                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/flare/13/src/main/scala/example/csv.scala:14:43: invalid escape character[0m
+[0m[[0m[31merror[0m] [0m[0m      val regex = ".*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}).*".r[0m
+[0m[[0m[31merror[0m] [0m[0m                                          ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/flare/13/src/main/scala/example/csv.scala:14:46: invalid escape character[0m
+[0m[[0m[31merror[0m] [0m[0m      val regex = ".*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}).*".r[0m
+[0m[[0m[31merror[0m] [0m[0m                                             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/flare/13/src/main/scala/example/csv.scala:14:54: invalid escape character[0m
+[0m[[0m[31merror[0m] [0m[0m      val regex = ".*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}).*".r[0m
+[0m[[0m[31merror[0m] [0m[0m                                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/flare/13/src/main/scala/example/csv.scala:14:57: invalid escape character[0m
+[0m[[0m[31merror[0m] [0m[0m      val regex = ".*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}).*".r[0m
+[0m[[0m[31merror[0m] [0m[0m                                                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m7 errors found[0m
