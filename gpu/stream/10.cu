@@ -96,11 +96,6 @@ int main( int argc, char* argv[] ) {
 	vector<vector<string>> data; 
 
 	try {
-
-	  cout << "reading file..." << endl;
-	  mainStartTime = tbb::tick_count::now();
-	  start_timer(&t); 
-
 	  Csv objCsv(csv_file);
 	  if (!objCsv.getCsv(data)) {
 	    cout << "read ERROR" << endl;
@@ -153,11 +148,7 @@ int main( int argc, char* argv[] ) {
 	    
 	  }
 
-	  travdirtime = stop_timer(&t);
-          print_timer(travdirtime); 
-	  utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());
-
-	  cout << "sequential" << endl;
+	  /*
 	  tbb::tick_count mainStartTime = tbb::tick_count::now();
 	  start_timer(&t); 
 	  thrust::device_vector<long> key_in_0 = h_vec_1_0;
@@ -179,22 +170,17 @@ int main( int argc, char* argv[] ) {
           print_timer(travdirtime); 
 	  utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());
 
-	  cout << "writing file.." << endl;
-	  mainStartTime = tbb::tick_count::now();
-	  start_timer(&t); 
 	  for(long i=0; i <new_size_0; i++)
 	    {
 		outputfile << dkey_out_0[i] << "," << dvalue_out_0[i] << endl;
 	    }
-	  travdirtime = stop_timer(&t);
-          print_timer(travdirtime); 
-	  utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());
+	    */
 
 	  /* streams */
 
           // tbb::tick_count mainStartTime = tbb::tick_count::now();
 
-	  cout << "streams" << endl;
+	  
 	  start_timer(&t); 
 	  mainStartTime = tbb::tick_count::now();
 	  cudaStream_t *stream = (cudaStream_t *)malloc(sizeof(cudaStream_t) * 2);
@@ -246,9 +232,6 @@ int main( int argc, char* argv[] ) {
           print_timer(travdirtime); 
 	  utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());
 
-	  cout << "writing file" << endl;
-	  start_timer(&t); 
-	  mainStartTime = tbb::tick_count::now();
 	  long new_size_1 = new_end_1.first - dkey_out_1.begin();
 	  long new_size_2 = new_end_2.first - dkey_out_2.begin();
 
@@ -267,12 +250,9 @@ int main( int argc, char* argv[] ) {
 		outputfile3 << dkey_out_2[i] << "," << dvalue_out_2[i] << endl;
 	    }
 	  outputfile3.close();
-
-	  travdirtime = stop_timer(&t);
-          print_timer(travdirtime); 
-	  utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());
-
+	  
 	}
+	
 	catch (...) {
 	  cout << "EXCEPTION!" << endl;
 	  return 1;
