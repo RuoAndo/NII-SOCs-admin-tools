@@ -20,8 +20,10 @@
 #include <stdio.h>
 #include <iostream>
 
+/*
 #include "Utilities.cuh"
 #include "TimingGPU.cuh"
+*/
 
 #include "csv.hpp"
 using namespace std;
