@@ -8,7 +8,7 @@ cp /data1/${DATE}/all-org .
 ./build.sh netmask5
 
 nLines_1=100000000
-nLines_2=1000000
+nLines_2=500000
 
 echo "removing and splitting..."
 rm -rf y*
@@ -53,20 +53,13 @@ while read line; do
 done < list
 
 cp rendered-all rendered-all_${DATE}
-scp rendered-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
 scp rendered-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv03/
-scp rendered-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/gpu04/
-scp rendered-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
 scp rendered-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv03/
-scp rendered-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/gpu04/
 
 cp directed_msec-all directed_msec-all_${DATE}
-scp directed_msec-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
 scp directed_msec-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv03/
-scp directed_msec-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/gpu04/
-scp directed_msec-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
 scp directed_msec-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv03/
-scp directed_msec-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/gpu04/
+scp directed_msec-all_${DATE} 192.168.76.203:/root/session-directed/fsv03/
 
 wc -l all-org
 wc -l rendered-all_${DATE}
