@@ -249,21 +249,17 @@ int main( int argc, char* argv[] ) {
 
 	      outputfile.close();
 	
-              const string file_rendered_2 = "directed_msec_" + session_file;
+              const string file_rendered_2 = "directed_msec_outward_" + session_file;
 	      ofstream outputfile2(file_rendered_2);
-	  
+	
+              const string file_rendered_3 = "directed_msec_inward_" + session_file;
+	      ofstream outputfile3(file_rendered_2);
+
 	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 		vector<string> rec3 = session_data[row3];
 		if(found_flag[row3]==1)
 		  {
 		    std::string all_line;
-
-		    /*
-		    all_line = "1";
-		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
-		      all_line = all_line + "," + *itr;
-		    }
-		    */
 
 		    std::string tms = rec3[0];
 	    
@@ -288,20 +284,11 @@ int main( int argc, char* argv[] ) {
 		    }
 		    
 		    all_line = tms + ",1";
-		    
-		    // std::cout << all_line << std::endl;
 		    outputfile2 << all_line << std::endl;
 		}
 		else
 		  {
 		    std::string all_line;
-
-		    /*
-		    all_line = "0";
-		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
-		      all_line = all_line + "," + *itr;
-		    }
-		    */
 
 		    std::string tms = rec3[0];
 	    
@@ -328,11 +315,12 @@ int main( int argc, char* argv[] ) {
 		    all_line = tms + ",0";
 		    
 		    // std::cout << all_line << std::endl;
-		    outputfile2 << all_line << std::endl;
+		    outputfile3 << all_line << std::endl;
 		  }	
 	      }
 
 	      outputfile2.close();
+	      outputfile3.close();
 
 	  
         return 0;
