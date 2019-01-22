@@ -1,0 +1,10 @@
+[0m[[0m[31merror[0m] [0m[0m/home/flare/7/src/main/scala/example/csv.scala:23:9: overloaded method value write with alternatives:[0m
+[0m[[0m[31merror[0m] [0m[0m  (x$1: String)Unit <and>[0m
+[0m[[0m[31merror[0m] [0m[0m  (x$1: String,x$2: Int,x$3: Int)Unit <and>[0m
+[0m[[0m[31merror[0m] [0m[0m  (x$1: Array[Char])Unit <and>[0m
+[0m[[0m[31merror[0m] [0m[0m  (x$1: Array[Char],x$2: Int,x$3: Int)Unit <and>[0m
+[0m[[0m[31merror[0m] [0m[0m  (x$1: Int)Unit[0m
+[0m[[0m[31merror[0m] [0m[0m cannot be applied to (String, String)[0m
+[0m[[0m[31merror[0m] [0m[0m    out.write("%s,%s\n" format (list(0), list(5)),list(7))[0m
+[0m[[0m[31merror[0m] [0m[0m        ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
