@@ -253,7 +253,7 @@ int main( int argc, char* argv[] ) {
 	      ofstream outputfile2(file_rendered_2);
 	
               const string file_rendered_3 = "directed_msec_inward_" + session_file;
-	      ofstream outputfile3(file_rendered_2);
+	      ofstream outputfile3(file_rendered_3);
 
 	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 		vector<string> rec3 = session_data[row3];
