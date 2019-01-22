@@ -47,7 +47,12 @@ while read line; do
 
     while read line2; do
 	echo $line2
-	cat directed_msec_${line2} >> directed_msec-all
+	cat directed_msec_inward_${line2} >> directed_msec_inward-all
+    done < list2
+
+    while read line2; do
+	echo $line2
+	cat directed_msec_outward_${line2} >> directed_msec_outward-all
     done < list2
 
 done < list
@@ -56,10 +61,15 @@ cp rendered-all rendered-all_${DATE}
 scp rendered-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv03/
 scp rendered-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv03/
 
-cp directed_msec-all directed_msec-all_${DATE}
-scp directed_msec-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv03/
-scp directed_msec-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv03/
-scp directed_msec-all_${DATE} 192.168.76.203:/root/session-directed/fsv03/
+cp directed_msec_inward-all directed_msec_inward-all_${DATE}
+scp directed_msec_inward-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv03/
+scp directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv03/
+scp directed_msec_inward-all_${DATE} 192.168.76.203:/root/session-directed/fsv03/
+
+cp directed_msec_outward-all directed_msec_outward-all_${DATE}
+scp directed_msec_outward-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv03/
+scp directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv03/
+scp directed_msec_outward-all_${DATE} 192.168.76.203:/root/session-directed/fsv03/
 
 wc -l all-org
 wc -l rendered-all_${DATE}
