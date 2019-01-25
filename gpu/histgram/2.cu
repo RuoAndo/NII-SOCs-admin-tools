@@ -186,9 +186,33 @@ int main(int argc, char **argv)
 
     int new_size = new_end.first - dkey_out.begin();
 
-    for(long i=0; i <10; i++)
-    	     std::cout << dkey_out[i] << "," << dvalue_out[i] << endl;
-	     
+    cout << "writing file..." << endl;
+    std::remove("tmp");
+    ofstream outputfile("tmp"); 
+
+    for(long i=0; i <new_size; i++)
+    {
+    	     // std::cout << dkey_out[i] << "," << dvalue_out[i] << endl;
+	     std::string tmpstring = to_string(dkey_out[i]);
+
+	     outputfile << tmpstring.substr( 0, 4 )
+	     		<< "-"
+			<< tmpstring.substr( 4, 2 ) 
+			<< "-"
+			<< tmpstring.substr( 6, 2 )
+			<< " "
+			<< tmpstring.substr( 8, 2 )
+			<< ":"
+			<< tmpstring.substr( 10, 2 )
+			<< ":"
+			<< tmpstring.substr( 12, 2 )
+			<< "\."
+			<< tmpstring.substr( 14, 3 )
+			<< "," << dvalue_out[i] << endl;
+    }
+
+    outputfile.close();
+
     /*
     cout << "writing file..." << endl;
     std::remove("tmp");
