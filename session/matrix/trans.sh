@@ -14,7 +14,9 @@ time split -l 100000000 all-org
 rm -rf trans-pair-all
 touch trans-pair-all
 
-ls x* > list
+# pair
+
+ls xa > list
 while read line; do
     echo $line
     ./trans-vector6 $line 100000000
@@ -24,7 +26,9 @@ done < list
 rm -rf trans-src-dst-all
 touch trans-src-dst-all
 
-ls x* > list
+# src-dst
+
+ls xa > list
 while read line; do
     echo $line
     ./trans-vector7 $line 100000000
@@ -34,7 +38,9 @@ done < list
 rm -rf trans-counts-bytes
 touch trans-counts-bytes
 
-ls x* > list
+# counts-bytes
+
+ls xa > list
 while read line; do
     echo $line
     ./trans-vector8 $line 100000000
@@ -45,21 +51,25 @@ cp trans-pair-all trans-pair-all-${DATE}
 cp trans-src-dst-all trans-src-dst-all-${DATE}
 cp trans-counts-bytes trans-counts-bytes-${DATE}
 
-scp trans-pair-all-${DATE} 192.168.76.210:/mnt/data/matrix
-scp trans-src-dst-all-${DATE} 192.168.76.210:/mnt/data/matrix
-scp trans-counts-bytes-${DATE} 192.168.76.210:/mnt/data/matrix
+scp trans-pair-all-${DATE} 192.168.76.210:/mnt/data/matrix/dev02/
+scp trans-src-dst-all-${DATE} 192.168.76.210:/mnt/data/matrix/dev02/
+scp trans-counts-bytes-${DATE} 192.168.76.210:/mnt/data/matrix/dev02/
 
-scp trans-pair-all-${DATE} 192.168.76.212:/mnt/data2/matrix
-scp trans-src-dst-all-${DATE} 192.168.76.212:/mnt/data2/matrix
-scp trans-counts-bytes-${DATE} 192.168.76.212:/mnt/data/matrix
+scp trans-pair-all-${DATE} 192.168.76.212:/mnt/data2/matrix/dev02/
+scp trans-src-dst-all-${DATE} 192.168.76.212:/mnt/data2/matrix/dev02/
+scp trans-counts-bytes-${DATE} 192.168.76.212:/mnt/data2/matrix/dev02/
 
-scp trans-pair-all-${DATE} 192.168.72.5:/mnt/sdc/matrix
-scp trans-src-dst-all-${DATE} 192.168.72.5:/mnt/sdc/matri
-scp trans-counts-bytes-${DATE} 192.168.76.5:/mnt/data/matrix
+scp trans-pair-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/dev02/
+scp trans-src-dst-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/dev02/
+scp trans-counts-bytes-${DATE} 192.168.76.5:/mnt/sdc/matrix/dev02/
 
-scp trans-pair-all-${DATE} 192.168.72.6:/mnt/sdc/matrix
-scp trans-src-dst-all-${DATE} 192.168.72.6:/mnt/sdc/matri
-scp trans-counts-bytes-${DATE} 192.168.76.6:/mnt/data/matrix
+scp trans-pair-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/dev02/
+scp trans-src-dst-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/dev02/
+scp trans-counts-bytes-${DATE} 192.168.76.6:/mnt/sdc/matrix/dev02/
+
+rm -rf trans-pair-all trans-pair-all-${DATE}
+rm -rf trans-src-dst-all trans-src-dst-all-${DATE}
+rm -rf trans-counts-bytes trans-counts-bytes-${DATE}
 
 DATETIME=`date +%Y%m%d_%H%M%S_%3N`
 echo $DATETIME
