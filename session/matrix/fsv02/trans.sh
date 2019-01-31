@@ -14,7 +14,8 @@ time split -l 100000000 all-org
 rm -rf trans-pair-all
 touch trans-pair-all
 
-ls xa > list
+# ls xa* > list
+echo "xaa" > list
 while read line; do
     echo $line
     ./trans-vector6 $line 100000000
@@ -24,7 +25,8 @@ done < list
 rm -rf trans-src-dst-all
 touch trans-src-dst-all
 
-ls xa > list
+# ls xa* > list
+echo "xaa" > list
 while read line; do
     echo $line
     ./trans-vector7 $line 100000000
@@ -34,7 +36,8 @@ done < list
 rm -rf trans-counts-bytes
 touch trans-counts-bytes
 
-ls xa > list
+# ls xa* > list
+echo "xaa" > list
 while read line; do
     echo $line
     ./trans-vector8 $line 100000000
@@ -55,11 +58,11 @@ scp trans-counts-bytes-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv02
 
 scp trans-pair-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
 scp trans-src-dst-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
-scp trans-counts-bytes-${DATE} 192.168.76.5:/mnt/sdc/matrix/fsv02
+scp trans-counts-bytes-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
 
 scp trans-pair-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
 scp trans-src-dst-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
-scp trans-counts-bytes-${DATE} 192.168.76.6:/mnt/sdc/matrix/fsv02
+scp trans-counts-bytes-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
 
 rm -rf trans-pair-all trans-pair-all-${DATE}
 rm -rf trans-src-dst-all trans-src-dst-all-${DATE}
