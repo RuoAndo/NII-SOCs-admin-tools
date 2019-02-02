@@ -64,5 +64,9 @@ scp trans-pair-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/dev02
 scp trans-src-dst-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/dev02
 scp trans-counts-bytes-${DATE} 192.168.72.6:/mnt/sdc/matrix/dev02
 
+rm -rf trans-pair-all-${DATE}
+rm -rf trans-src-dst-all-${DATE}
+rm -rf trans-counts-bytes-${DATE}
+
 DATETIME=`date +%Y%m%d_%H%M%S_%3N`
 echo $DATETIME
