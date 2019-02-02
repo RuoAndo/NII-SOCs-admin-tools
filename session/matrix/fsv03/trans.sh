@@ -36,37 +36,36 @@ done < list
 rm -rf trans-counts-bytes
 touch trans-counts-bytes
 
-ls x* > list
-#echo "xaa" > list
-while read line; do
-    echo $line
-    ./trans-vector8 $line 100000000
-    cat trans >> trans-counts-bytes
-done < list
+#ls x* > list
+#while read line; do
+#    echo $line
+#    ./trans-vector8 $line 100000000
+#    cat trans >> trans-counts-bytes
+#done < list
 
 cp trans-pair-all trans-pair-all-${DATE}
 cp trans-src-dst-all trans-src-dst-all-${DATE}
-cp trans-counts-bytes trans-counts-bytes-${DATE}
+#cp trans-counts-bytes trans-counts-bytes-${DATE}
 
 scp trans-pair-all-${DATE} 192.168.76.210:/mnt/data/matrix/fsv03
 scp trans-src-dst-all-${DATE} 192.168.76.210:/mnt/data/matrix/fsv03
-scp trans-counts-bytes-${DATE} 192.168.76.210:/mnt/data/matrix/fsv03
+#scp trans-counts-bytes-${DATE} 192.168.76.210:/mnt/data/matrix/fsv03
 
 scp trans-pair-all-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv03
 scp trans-src-dst-all-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv03
-scp trans-counts-bytes-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv03
+#scp trans-counts-bytes-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv03
 
 scp trans-pair-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv03
 scp trans-src-dst-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv03
-scp trans-counts-bytes-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv03
+#scp trans-counts-bytes-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv03
 
 scp trans-pair-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv03
 scp trans-src-dst-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv03
-scp trans-counts-bytes-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv03
+#scp trans-counts-bytes-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv03
 
-rm -rf trans-pair-all trans-pair-all-${DATE}
-rm -rf trans-src-dst-all trans-src-dst-all-${DATE}
-rm -rf trans-counts-bytes trans-counts-bytes-${DATE}
+rm -rf trans-pair-all-${DATE}
+rm -rf trans-src-dst-all-${DATE}
+#rm -rf trans-counts-bytes-${DATE}
 
 DATETIME=`date +%Y%m%d_%H%M%S_%3N`
 echo $DATETIME
