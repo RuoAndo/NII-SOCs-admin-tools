@@ -14,8 +14,8 @@ time split -l 100000000 all-org
 rm -rf trans-pair-all
 touch trans-pair-all
 
-# ls xa* > list
-echo "xaa" > list
+ls x* > list
+#echo "xaa" > list
 while read line; do
     echo $line
     ./trans-vector6 $line 100000000
@@ -25,8 +25,8 @@ done < list
 rm -rf trans-src-dst-all
 touch trans-src-dst-all
 
-# ls xa* > list
-echo "xaa" > list
+ls x* > list
+#echo "xaa" > list
 while read line; do
     echo $line
     ./trans-vector7 $line 100000000
@@ -36,8 +36,8 @@ done < list
 rm -rf trans-counts-bytes
 touch trans-counts-bytes
 
-# ls xa* > list
-echo "xaa" > list
+ls x* > list
+#echo "xaa" > list
 while read line; do
     echo $line
     ./trans-vector8 $line 100000000
