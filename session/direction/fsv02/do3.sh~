@@ -1,0 +1,48 @@
+DATE=`date --date '4 day ago' +%Y%m%d` 
+echo $DATE
+ls -alh /data1/${DATE}/all-org
+
+echo "copying..."
+cp /data1/${DATE}/all-org .
+
+./build.sh netmask5
+
+nLines_1=100000000
+nLines_2=10000000
+
+echo "splitting..."
+split -l ${nLines_1} -a 2 all-org y
+
+ls y* > list
+
+rm -rf rendered-all
+touch rendered-all
+
+while read line; do
+    echo $line
+    
+    echo "splitting 2..."
+    split -l ${nLines_2} $line 
+    
+    ls x* > list2
+
+    while read line2; do
+	echo $line2
+	rm -rf rendered_$line2
+	nLines_to_split=`wc -l $line2 | cut -d " " -f 1`
+	./netmask5 monitoring_list2 $line2 ${nLines_to_split} &
+    done < list2
+
+    wait
+
+    while read line2; do
+	echo $line2
+	cat rendered_${line2} >> rendered-all
+    done < list2
+
+done < list
+
+cp rendered-all rendered-all_${DATE}
+scp rendered-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
+scp rendered-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
+rm -rf rendered-all_${DATE}
