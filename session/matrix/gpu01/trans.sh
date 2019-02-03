@@ -48,21 +48,21 @@ cp trans-pair-all trans-pair-all-${DATE}
 cp trans-src-dst-all trans-src-dst-all-${DATE}
 cp trans-counts-bytes trans-counts-bytes-${DATE}
 
-#scp trans-pair-all-${DATE} 192.168.76.210:/mnt/data/matrix/fsv02
-#scp trans-src-dst-all-${DATE} 192.168.76.210:/mnt/data/matrix/fsv02
-#scp trans-counts-bytes-${DATE} 192.168.76.210:/mnt/data/matrix/fsv02
+scp trans-pair-all-${DATE} 192.168.76.210:/mnt/data/matrix/fsv02
+scp trans-src-dst-all-${DATE} 192.168.76.210:/mnt/data/matrix/fsv02
+scp trans-counts-bytes-${DATE} 192.168.76.210:/mnt/data/matrix/fsv02
 
-#scp trans-pair-all-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv02
-#scp trans-src-dst-all-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv02
-#scp trans-counts-bytes-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv02
+scp trans-pair-all-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv02
+scp trans-src-dst-all-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv02
+scp trans-counts-bytes-${DATE} 192.168.76.212:/mnt/data2/matrix/fsv02
 
-#scp trans-pair-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
-#scp trans-src-dst-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
-#scp trans-counts-bytes-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
+scp trans-pair-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
+scp trans-src-dst-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
+scp trans-counts-bytes-${DATE} 192.168.72.5:/mnt/sdc/matrix/fsv02
 
-#scp trans-pair-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
-#scp trans-src-dst-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
-#scp trans-counts-bytes-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
+scp trans-pair-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
+scp trans-src-dst-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
+scp trans-counts-bytes-${DATE} 192.168.72.6:/mnt/sdc/matrix/fsv02
 
 rm -rf trans-pair-all trans-pair-all-${DATE}
 rm -rf trans-src-dst-all trans-src-dst-all-${DATE}
