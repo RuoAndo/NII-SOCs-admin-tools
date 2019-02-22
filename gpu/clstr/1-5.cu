@@ -173,30 +173,6 @@ int main(int argc, const char* argv[]) {
   }
 
 /*
-  for (size_t iteration = 0; iteration < number_of_iterations; ++iteration) {
-    cudaMemset(d_counts, 0, k * sizeof(int));
-    d_sums.clear();
-
-    assign_clusters<<<blocks, threads>>>(d_data.x,
-                                         d_data.y,
-                                         d_data.size,
-                                         d_means.x,
-                                         d_means.y,
-                                         d_sums.x,
-                                         d_sums.y,
-                                         k,
-                                         d_counts,
-					 d_clusterNo);
-    cudaDeviceSynchronize();
-
-    compute_new_means<<<1, k>>>(d_means.x,
-                                d_means.y,
-                                d_sums.x,
-                                d_sums.y,
-                                d_counts);
-    cudaDeviceSynchronize();
-  }
-
   cudaMemcpy(h_clusterNo, d_clusterNo, N * sizeof(int), cudaMemcpyDeviceToHost);
 
   for(int i=0; i < N; i++)
