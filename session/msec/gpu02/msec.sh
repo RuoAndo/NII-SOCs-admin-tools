@@ -29,9 +29,9 @@ time CUDA_VISIBLE_DEVICES=1 ./9 tmp-all $nLines
 cp tmp msec-${DATE}
 cp raw raw-${DATE}
 
-scp msec-${DATE} 192.168.72.6:/mnt/sdc/splunk-msec/
-scp msec-${DATE} 192.168.72.6:/mnt/sdc/splunk-msec/current
-scp raw-${DATE} 192.168.72.6:/mnt/sdc/splunk-msec/raw/
+scp msec-${DATE} 192.168.72.6:/mnt/sdc/splunk-msec/gpu02
+scp msec-${DATE} 192.168.72.6:/mnt/sdc/splunk-msec/gpu02/current
+scp raw-${DATE} 192.168.72.6:/mnt/sdc/splunk-msec/gpu02/raw/
 
 mv msec-${DATE} ./backup
 mv raw-${DATE} ./backup

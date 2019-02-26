@@ -18,7 +18,7 @@ touch tmp-all
 ls x* > list
 while read line; do
     echo $line
-    CUDA_VISIBLE_DEVICES=1 ./8-inward $line 100000000
+    time CUDA_VISIBLE_DEVICES=0 ./8-inward $line 100000000
     cat tmp-inward >> tmp-inward-all
 done < list
 
@@ -30,9 +30,9 @@ time CUDA_VISIBLE_DEVICES=1 ./9-inward tmp-inward-all $nLines
 cp tmp-inward msec-inward-${DATE}
 cp raw-inward raw-inward-${DATE}
 
-scp msec-inward-${DATE} 192.168.72.6:/mnt/sdc/splunk-session-directed/inward
+scp msec-inward-${DATE} 192.168.72.6:/mnt/sdc/splunk-session-directed/inward/gpu02/
 scp msec-inward-${DATE} 192.168.72.6:/mnt/sdc/splunk-session-directed/inward/current
-scp raw-inward-${DATE} 192.168.72.6:/mnt/sdc/splunk-session-directed/inward/raw
+scp raw-inward-${DATE} 192.168.72.6:/mnt/sdc/splunk-session-directed/inward/gpu02/raw/
 
 mv msec-inward-${DATE} ./backup
 mv raw-inward-${DATE} ./backup
