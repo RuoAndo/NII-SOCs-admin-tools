@@ -111,7 +111,6 @@ int main( int argc, char* argv[] ) {
 	 ofstream outputfile2("raw");
 
 	 outputfile << "timestamp, counted" << endl;
-	 outputfile2 << "timestamp, counted" << endl;	 
 
          for (int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
@@ -143,62 +142,29 @@ int main( int argc, char* argv[] ) {
 
 	  for(long i=0; i < new_size-1 ; i++)
 	  {
+
+	   if(std::to_string(dkey_out[i]).length()  == 17)
+	   {
 		tmpstring = std::to_string(dkey_out[i]);
-		
-		if(tmpstring.length()  == 17)
-		{
-			      // outputfile << dkey_out[i] << "," << dvalue_out[i] << endl;
-			      // std::cout << dkey_out[i] << "," << dvalue_out[i] << endl;
-			      // 2018 09 20 00 00 00 133
-			 
-			      // outputfile << tmpstring << endl;
+					      
+	        outputfile << tmpstring.substr( 0, 4 )
+			   << "-"
+			   << tmpstring.substr( 4, 2 ) 
+			   << "-"
+			   << tmpstring.substr( 6, 2 ) 
+			   << " "
+			   << tmpstring.substr( 8, 2 ) 
+			   << ":"
+			   << tmpstring.substr( 10, 2 )
+			   << ":"
+			   << tmpstring.substr( 12, 2 )
+			   << "\."
+			   << tmpstring.substr( 14, 3 )
+			   << "," << dvalue_out[i] << endl;
 
-			      /*
-			      outputfile << tmpstring.substr( 0, 4 )
-			      << "-"
-			      << tmpstring.substr( 4, 2 ) 
-			      << "-"
-			      << tmpstring.substr( 6, 2 ) 
-			      << " "
-			      << tmpstring.substr( 8, 2 ) 
-			      << ":"
-			      << tmpstring.substr( 10, 2 )
-			      << ":"
-			      << tmpstring.substr( 12, 2 )
-			      << "," << dvalue_out[i] << endl;
-			      */
-			      
-			      outputfile << tmpstring.substr( 0, 4 )
-			      << "-"
-			      << tmpstring.substr( 4, 2 ) 
-			      << "-"
-			      << tmpstring.substr( 6, 2 ) 
-			      << " "
-			      << tmpstring.substr( 8, 2 ) 
-			      << ":"
-			      << tmpstring.substr( 10, 2 )
-			      << ":"
-			      << tmpstring.substr( 12, 2 )
-			      << "\."
-			      << tmpstring.substr( 14, 3 )
-			      << "," << dvalue_out[i] << endl;
+		outputfile2 << tmpstring << "," << dvalue_out[i] << endl;
+	    }		      
 
-			      outputfile2 << tmpstring.substr( 0, 4 )
-			      << "-"
-			      << tmpstring.substr( 4, 2 ) 
-			      << "-"
-			      << tmpstring.substr( 6, 2 ) 
-			      << " "
-			      << tmpstring.substr( 8, 2 ) 
-			      << ":"
-			      << tmpstring.substr( 10, 2 )
-			      << ":"
-			      << tmpstring.substr( 12, 2 )
-			      << "\."
-			      << tmpstring.substr( 14, 3 )
-			      << "," << dvalue_out[i] << endl;
-			      
-	  	}
 	    }
 	    
 	  // std::cout << std::endl;

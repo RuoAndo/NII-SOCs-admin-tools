@@ -111,35 +111,9 @@ int main( int argc, char* argv[] ) {
 	    vector<string> rec = data[row]; 
 	    std::string timestamp = rec[0];
 
-	    for(size_t c = timestamp.find_first_of("\""); c != string::npos; c = c = timestamp.find_first_of("\"")){
-	      timestamp.erase(c,1);
-	    }
-	    for(size_t c = timestamp.find_first_of("."); c != string::npos; c = c = timestamp.find_first_of(".")){
-	      timestamp.erase(c,1);
-	    }
-	    for(size_t c = timestamp.find_first_of(" "); c != string::npos; c = c = timestamp.find_first_of(" ")){
-	      timestamp.erase(c,1);
-	    }
-	    for(size_t c = timestamp.find_first_of(":"); c != string::npos; c = c = timestamp.find_first_of(":")){
-	      timestamp.erase(c,1);
-	    }
-	    for(size_t c = timestamp.find_first_of("/"); c != string::npos; c = c = timestamp.find_first_of("/")){
-	      timestamp.erase(c,1);
-	    }
-
-	    // 2018 09 20 00 00 00 133
-
-	    /*
-	    timestamp.pop_back();
-	    timestamp.pop_back();
-	    timestamp.pop_back();
-	    */
-
 	    h_vec_1.push_back(std::atol(timestamp.c_str()));
 	    h_vec_2.push_back(1);
 
-	    // key[row] = std::atol(timestamp.c_str());
-	    // value[row] = 1;
 	    }
 
 	    thrust::device_vector<long> key_in = h_vec_1;
@@ -164,23 +138,7 @@ int main( int argc, char* argv[] ) {
 	    {
 		if(std::to_string(dkey_out[i]).length()  == 17)
 		{
-			      outputfile << dkey_out[i] << "," << dvalue_out[i] << endl;
-			      // 2018 09 20 00 00 00 133
-			      /*
-			      std::string tmpstring = std::to_string(dkey_out[i]);
-			      outputfile << tmpstring.substr( 0, 4 )
-			      << "-"
-			      << tmpstring.substr( 4, 2 ) 
-			      << "-"
-			      << tmpstring.substr( 6, 2 ) 
-			      << " "
-			      << tmpstring.substr( 8, 2 ) 
-			      << ":"
-			      << tmpstring.substr( 10, 2 )
-			      << ":"
-			      << tmpstring.substr( 12, 2 )
-			      << "," << dvalue_out[i] << endl;
-			      */
+		   outputfile << dkey_out[i] << "," << dvalue_out[i] << endl;
 	  	}
 	    }
 	  // std::cout << std::endl;
