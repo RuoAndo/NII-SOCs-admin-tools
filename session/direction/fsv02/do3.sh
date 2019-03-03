@@ -1,5 +1,7 @@
 DATE=`date --date '4 day ago' +%Y%m%d` 
 echo $DATE
+start_time=`date +%s`
+
 ls -alh /data1/${DATE}/all-org
 
 echo "copying..."
@@ -60,18 +62,26 @@ done < list
 cp rendered-all rendered-all_${DATE}
 scp rendered-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
 scp rendered-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
+scp rendered-all_${DATE} 192.168.76.210:/mnt/sdc/session-directed/fsv02/
+
 
 cp directed_msec_inward-all directed_msec_inward-all_${DATE}
 scp directed_msec_inward-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
 scp directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
 scp directed_msec_inward-all_${DATE} 192.168.76.203:/root/session-directed/fsv02/
+scp directed_msec_inward-all_${DATE} 192.168.76.210:/mnt/data/session-directed/fsv02/
 
 cp directed_msec_outward-all directed_msec_outward-all_${DATE}
 scp directed_msec_outward-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
 scp directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
 scp directed_msec_outward-all_${DATE} 192.168.76.203:/root/session-directed/fsv02/
+scp directed_msec_outward-all_${DATE} 192.168.76.210:/mnt/data/session-directed/fsv02/
 
 wc -l all-org
 wc -l rendered-all_${DATE}
 rm -rf rendered*
 rm -rf directed*
+
+end_time=`date +%s`
+time=$((end_time - start_time))
+echo "time elapsed:"$time"@"${DATE}
