@@ -1,6 +1,8 @@
 # about 4 min
 DATE=`date --date '3 day ago' +%Y%m%d`  
 echo $DATE
+start_time=`date +%s`
+
 cp /data1/${DATE}/all-org .
 
 ./build.sh trans-vector6
@@ -70,3 +72,7 @@ rm -rf trans-counts-bytes trans-counts-bytes-${DATE}
 
 DATETIME=`date +%Y%m%d_%H%M%S_%3N`
 echo $DATETIME
+
+end_time=`date +%s`
+time=$((end_time - start_time))
+echo "elapsed time:"$time":"${DATE}
