@@ -70,7 +70,8 @@ int main( int argc, char* argv[] ) {
 
   // unsigned long long timestamp;
   int counter = 0;
-  
+
+  std::cout << "reading...." << endl;
   tbb::tick_count mainStartTime = tbb::tick_count::now();
 
   const string csv_file = std::string(argv[1]); 
@@ -93,7 +94,8 @@ int main( int argc, char* argv[] ) {
       timestamp.push_back(stoull(rec[0].substr(0,14)));
       counted.push_back(1);
   }
-
+  utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());
+  
   /*
   std::cout << "sorting..." << endl;
   mainStartTime = tbb::tick_count::now();
@@ -109,11 +111,9 @@ int main( int argc, char* argv[] ) {
       table.insert(a, timestamp[row]);
       a->second += counted[row];   
   }
-  utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());
 
   std::map<unsigned long long,int> reduced;
-
-  mainStartTime = tbb::tick_count::now();
+  
   for( CharTable::iterator i=table.begin(); i!=table.end(); ++i )
     {
       reduced[i->first] = i->second;
@@ -142,11 +142,10 @@ int main( int argc, char* argv[] ) {
       << tmpstring.substr( 12, 2 )
       << "," << i->second << endl;
        
-  }
+  }  
+  outputfile.close();
   utility::report_elapsed_time((tbb::tick_count::now() - mainStartTime).seconds());    
   
-  outputfile.close();
-    
   return 0;
 
 }
