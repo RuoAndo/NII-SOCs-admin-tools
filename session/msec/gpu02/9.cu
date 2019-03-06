@@ -125,7 +125,8 @@ int main( int argc, char* argv[] ) {
 
 	  // thrust::sort(key_in.begin(), key_in.end(),thrust::greater<int>());
 
-	  thrust::sort(key_in.begin(), key_in.end());
+	  // thrust::sort(key_in.begin(), key_in.end());
+	  thrust::sort_by_key(key_in.begin(), key_in.end(), value_in.begin());
 
 	  thrust::device_vector<long> dkey_out(N,0);
 	  thrust::device_vector<long> dvalue_out(N,0);
