@@ -65,10 +65,8 @@ int main(int argc, char** argv) {
 
 void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) {
 
-    //
     // Allocate two arrays on the GPU
     // we switch back and forth between them during the sort
-    //
     long* D_data;
     long* D_swp;
     dim3* D_threads;
@@ -84,9 +82,7 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
     cudaMemcpy(D_data, data, size * sizeof(long), cudaMemcpyHostToDevice);
         std::cout << "cudaMemcpy list to device: " << tm() << " microseconds\n";
  
-    //
     // Copy the thread / block info to the GPU as well
-    //
     cudaMalloc((void**) &D_threads, sizeof(dim3));
     cudaMalloc((void**) &D_blocks, sizeof(dim3));
 
@@ -101,11 +97,9 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
 
     long nThreads = threadsPerBlock.x * threadsPerBlock.y * threadsPerBlock.z *
                     blocksPerGrid.x * blocksPerGrid.y * blocksPerGrid.z;
-
-    //
+	
     // Slice up the list and give pieces of it to each thread, letting the pieces grow
     // bigger and bigger until the whole list is sorted
-    //
     for (int width = 2; width < (size << 1); width <<= 1) {
         long slices = size / ((nThreads) * width) + 1;
 
@@ -124,9 +118,7 @@ void mergesort(long* data, long size, dim3 threadsPerBlock, dim3 blocksPerGrid) 
         B = B == D_data ? D_swp : D_data;
     }
 
-    //
     // Get the list back from the GPU
-    //
     tm();
     cudaMemcpy(data, A, size * sizeof(long), cudaMemcpyDeviceToHost);
         std::cout << "cudaMemcpy list back to host: " << tm() << " microseconds\n";
