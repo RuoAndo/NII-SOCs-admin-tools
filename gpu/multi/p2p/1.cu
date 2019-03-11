@@ -87,6 +87,17 @@ void initialData(float *ip, int size)
 int main(int argc, char **argv)
 {
     int ngpus;
+    int N;
+    int M;
+
+    if (argc < 3 )
+    {
+       printf("usage: ./1 N M(mb) \n");
+       exit();
+    }
+
+    N = atoi(argv[1]);
+    M = atoi(argv[2]);
 
     // check device count
     CHECK(cudaGetDeviceCount(&ngpus));
@@ -96,6 +107,7 @@ int main(int argc, char **argv)
     isCapableP2P(ngpus);
 
     // get ngpus from command line
+    /*
     if (argc > 1)
     {
         if (atoi(argv[1]) > ngpus)
@@ -108,6 +120,7 @@ int main(int argc, char **argv)
 
         ngpus = atoi(argv[1]);
     }
+    */
 
     if (ngpus > 2)
     {
@@ -118,7 +131,7 @@ int main(int argc, char **argv)
     if (ngpus > 1) enableP2P(ngpus);
 
     // Allocate buffers
-    int iSize = 1024 * 1024 * 16;
+    int iSize = 1024 * 1024 * M;
     const size_t iBytes = iSize * sizeof(float);
     printf("\nAllocating buffers (%iMB on each GPU and CPU Host)...\n",
            int(iBytes / 1024 / 1024));
@@ -153,7 +166,7 @@ int main(int argc, char **argv)
     CHECK(cudaSetDevice(0));
     CHECK(cudaEventRecord(start, 0));
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < N; i++)
     {
         if (i % 2 == 0)
         {
@@ -179,7 +192,7 @@ int main(int argc, char **argv)
     //  bidirectional asynchronous gmem copy
     CHECK(cudaEventRecord(start, 0));
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < N; i++)
     {
         CHECK(cudaMemcpyAsync(d_src[1], d_src[0], iBytes, cudaMemcpyDeviceToDevice, stream[0]));
         CHECK(cudaMemcpyAsync(d_rcv[0], d_rcv[1], iBytes, cudaMemcpyDeviceToDevice, stream[1]));
