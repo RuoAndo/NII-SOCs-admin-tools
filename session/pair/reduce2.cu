@@ -81,7 +81,7 @@ int main( int argc, char* argv[] ) {
   std::string timestamp;
 
   thrust::host_vector<unsigned long long> h_vec_1(N);
-  thrust::host_vector<unsigned long long> h_vec_2(N);   
+  thrust::host_vector<long> h_vec_2(N);   
 
     try {
         tbb::tick_count mainStartTime = tbb::tick_count::now();
@@ -103,25 +103,25 @@ int main( int argc, char* argv[] ) {
 	    return 1;
 	  }
 
-	 std::remove("tmp");
-	 ofstream outputfile("tmp");
+	 std::remove("tmp-pair");
+	 ofstream outputfile("tmp-pair");
 
-	 //outputfile << "timestamp,src,dest,counted" << endl;
+	 outputfile << "src,dest,counted" << endl;
 
       	  for (int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
-	    timestamp = rec[0];
-	    std::string pair = rec[1];
+	    // timestamp = rec[0];
+	    // std::string pair = rec[1];
 
-	    h_vec_1[row] = stoull(string(pair.c_str()));
-	    h_vec_2[row] = 1; // atol(pair.c_str());
+	    h_vec_1[row] = stoull(rec[0]);
+	    h_vec_2[row] = stol(rec[1]);
 	    }
 
 	  for(long i=0; i <10; i++)
 	  	   cout << h_vec_1[i] << "," << h_vec_2[i] << endl;
 	  
 	  thrust::device_vector<unsigned long long> key_in(N); // = h_vec_1;
-	  thrust::device_vector<unsigned long long> value_in(N); // = h_vec_2; 
+	  thrust::device_vector<long> value_in(N); // = h_vec_2; 
 
 	  thrust::copy(h_vec_1.begin(), h_vec_1.end(), key_in.begin());
 	  thrust::copy(h_vec_2.begin(), h_vec_2.end(), value_in.begin());
@@ -141,7 +141,7 @@ int main( int argc, char* argv[] ) {
 	  cout << "size:" << key_in.size() << "," << new_size << endl;
 
 	  thrust::host_vector<unsigned long long> hkey_out_2(new_size);
-	  thrust::host_vector<unsigned long long> hvalue_out_2(new_size);
+	  thrust::host_vector<long> hvalue_out_2(new_size);
 
 	  for(int i=0;i<new_size;i++)
 	  {
@@ -153,11 +153,11 @@ int main( int argc, char* argv[] ) {
 
 	  for(long i=0; i <new_size; i++)
 	  {
-	    outputfile << hkey_out_2[i] << "," << hvalue_out_2[i] << endl;
-
-	    /*
+	    // cout << hkey_out_2[i] << "," << hvalue_out_2[i] << endl;
+   	    
 	    bitset<64> addr((unsigned long long)hkey_out_2[i]);
 	    std::string addr_string = addr.to_string();
+	    // cout << addr_string.substr(0,31) << "," << addr_string.substr(32,63) << "," << hvalue_out_2[i] << endl;
 	    string addr_src = addr_string.substr(0,32);
 	    string addr_dst = addr_string.substr(32,32);
 
@@ -173,23 +173,8 @@ int main( int argc, char* argv[] ) {
 	    inaddr = { htonl(d) };
 	    some_addr = inet_ntoa(inaddr);
 	    string dst_string = string(some_addr);
-
-	    std::string tmpstring = timestamp;
-	    outputfile << tmpstring.substr( 0, 4 )
-		<< "-"
-	        << tmpstring.substr( 4, 2 ) 
-		<< "-"
-		<< tmpstring.substr( 6, 2 ) 
-		<< " "
-		<< tmpstring.substr( 8, 2 ) 
-		<< ":"
-		<< tmpstring.substr( 10, 2 )
-		<< ":"
-		<< tmpstring.substr( 12, 2 )
-		<< ",";
 			      
 	    outputfile << src_string << "," << dst_string << "," << hvalue_out_2[i] << endl;
-	    */
           }
 
 	  /*
