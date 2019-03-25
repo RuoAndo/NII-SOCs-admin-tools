@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     if (argc < 3 )
     {
        printf("usage: ./1 N M(mb) \n");
-       exit();
+       return 1;
     }
 
     N = atoi(argv[1]);
@@ -122,11 +122,13 @@ int main(int argc, char **argv)
     }
     */
 
+    /*
     if (ngpus > 2)
     {
         fprintf(stderr, "No more than 2 GPUs supported\n");
         return 1;
     }
+    */
 
     if (ngpus > 1) enableP2P(ngpus);
 
