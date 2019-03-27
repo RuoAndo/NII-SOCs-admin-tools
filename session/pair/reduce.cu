@@ -72,7 +72,9 @@ std::vector<std::string> split_string_2(std::string str, char del) {
 int main( int argc, char* argv[] ) {
 
   int counter = 0;
-  int N = atoi(argv[2]);  
+  
+  int N = atoi(argv[2]);
+
   char* tmpchar;
 
   struct in_addr inaddr;
@@ -174,44 +176,10 @@ int main( int argc, char* argv[] ) {
 	    some_addr = inet_ntoa(inaddr);
 	    string dst_string = string(some_addr);
 
-	    std::string tmpstring = timestamp;
-	    outputfile << tmpstring.substr( 0, 4 )
-		<< "-"
-	        << tmpstring.substr( 4, 2 ) 
-		<< "-"
-		<< tmpstring.substr( 6, 2 ) 
-		<< " "
-		<< tmpstring.substr( 8, 2 ) 
-		<< ":"
-		<< tmpstring.substr( 10, 2 )
-		<< ":"
-		<< tmpstring.substr( 12, 2 )
-		<< ",";
-			      
 	    outputfile << src_string << "," << dst_string << "," << hvalue_out_2[i] << endl;
 	    */
+	    
           }
-
-	  /*
-	  thrust::host_vector<long> hkey_out_2(N,0);
-	  thrust::host_vector<long> hvalue_out_2(N,0);
-
-	  for(int i=0;i<new_size;i++)
-	  {
-		hkey_out_2[i] = dkey_out[i];
-		hvalue_out_2[i] = dvalue_out[i];
-	  }
-	  */
-
-	  // thrust::sort_by_key(hvalue_out_2, hvalue_out_2 + (int)new_size, hvalue_out_2);
-          // thrust::sort_by_key(hvalue_out_2.begin(), hvalue_out_2.end(), hkey_out_2.begin(), thrust::greater<long>());
-
-	  /*
-	  for(long i=0; i <new_size; i++)
-	  {
-	    outputfile << hkey_out_2[i] << "," << hvalue_out_2[i] << endl;
-          }
-	  */
 
 	  outputfile.close();
 	}

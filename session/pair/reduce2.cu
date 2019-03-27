@@ -72,7 +72,9 @@ std::vector<std::string> split_string_2(std::string str, char del) {
 int main( int argc, char* argv[] ) {
 
   int counter = 0;
-  int N = atoi(argv[2]);  
+  int N = atoi(argv[2]);
+  string datestr = argv[3];
+
   char* tmpchar;
 
   struct in_addr inaddr;
@@ -106,7 +108,7 @@ int main( int argc, char* argv[] ) {
 	 std::remove("tmp-pair");
 	 ofstream outputfile("tmp-pair");
 
-	 outputfile << "src,dest,counted" << endl;
+	 outputfile << "timestamp,pair,counted" << endl;
 
       	  for (int row = 0; row < data.size(); row++) {
 	    vector<string> rec = data[row]; 
@@ -173,7 +175,17 @@ int main( int argc, char* argv[] ) {
 	    inaddr = { htonl(d) };
 	    some_addr = inet_ntoa(inaddr);
 	    string dst_string = string(some_addr);
-			      
+
+	    std::string tmpstring = datestr;
+	    outputfile << tmpstring.substr( 0, 4 )
+		<< "-"
+	        << tmpstring.substr( 4, 2 ) 
+		<< "-"
+		<< tmpstring.substr( 6, 2 ) 
+		<< " "
+		<< "00:00"
+		<< ".000,";
+
 	    outputfile << src_string << "," << dst_string << "," << hvalue_out_2[i] << endl;
           }
 

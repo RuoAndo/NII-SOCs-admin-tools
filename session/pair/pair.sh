@@ -17,17 +17,15 @@ while read line; do
     echo $line
     time nLines=`wc -l $line | cut -d " " -f 1`
     echo $nLines
-    comstr="./reduce $line $nLines"
+    comstr="CUDA_VISIBLE_DEVICES=1 ./reduce $line $nLines"
     echo $comstr
     eval $comstr
     cat tmp >> tmp-all
-    #head -n 1000 tmp-pair >> pair-${DATE}
 done < list
 
 nLines=`wc -l tmp-all | cut -d " " -f 1`
 echo $nLines
-time ./reduce2 tmp-all $nLines
+time CUDA_VISIBLE_DEVICES=1 ./reduce2 tmp-all $nLines ${DATE}
+cp tmp-pair pair-${DATE}
 
-#time ./sort-pair.pl tmp-pair > tmp-pair-sorted
-#cp tmp-pair-sorted tmp-pair-sorted-${DATE}
-#scp tmp-pair-sorted-${DATE} 192.168.72.6:/mnt/sdc/splunk-ip-pair/
+scp pair-${DATE} 192.168.72.6:/mnt/sdc/splunk-ip/pair/
