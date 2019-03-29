@@ -75,6 +75,8 @@ int main( int argc, char* argv[] ) {
   int N = atoi(argv[2]);  
   char* tmpchar;
 
+  string datestr = argv[3]; 
+
   struct in_addr inaddr;
   char *some_addr;
 
@@ -147,11 +149,21 @@ int main( int argc, char* argv[] ) {
 	  
           thrust::sort_by_key(hvalue_out_2.begin(), hvalue_out_2.end(), hkey_out_2.begin(), thrust::greater<long>());
 
-	  outputfile << "src, counted" << endl;
+	  outputfile << "timestamp, srcIP, counted" << endl;
 
 	  for(long i=0; i <new_size; i++)
 	  {
 	    // outputfile << hkey_out_2[i] << "," << hvalue_out_2[i] << endl;
+
+	    std::string tmpstring = datestr;
+            outputfile << tmpstring.substr( 0, 4 )
+                << "-"
+                << tmpstring.substr( 4, 2 )
+                << "-"
+                << tmpstring.substr( 6, 2 )
+                << " "
+                << "00:00"
+                << ".000,";     
 
 	    bitset<32> addr((unsigned long long)hkey_out_2[i]);
 	    std::string addr_string = addr.to_string();
