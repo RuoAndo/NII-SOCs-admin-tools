@@ -64,11 +64,11 @@ scp trans-counts-bytes-${DATE} 192.168.76.212:/mnt/data2/matrix/dev02/
 
 scp trans-pair-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/dev02/
 scp trans-src-dst-all-${DATE} 192.168.72.5:/mnt/sdc/matrix/dev02/
-scp trans-counts-bytes-${DATE} 192.168.76.5:/mnt/sdc/matrix/dev02/
+scp trans-counts-bytes-${DATE} 192.168.72.5:/mnt/sdc/matrix/dev02/
 
 scp trans-pair-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/dev02/
 scp trans-src-dst-all-${DATE} 192.168.72.6:/mnt/sdc/matrix/dev02/
-scp trans-counts-bytes-${DATE} 192.168.76.6:/mnt/sdc/matrix/dev02/
+scp trans-counts-bytes-${DATE} 192.168.72.6:/mnt/sdc/matrix/dev02/
 
 rm -rf trans-pair-all trans-pair-all-${DATE}
 rm -rf trans-src-dst-all trans-src-dst-all-${DATE}
