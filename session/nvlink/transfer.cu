@@ -57,6 +57,7 @@ int main(int argc, const char* argv[])
   int ngpus = 4;
   const size_t iBytes = N * sizeof(float);  
 
+  int RATIO = 1000000;
   unsigned int t, travdirtime; 
 
   float **d_A = (float **)malloc(sizeof(float *) * ngpus);
@@ -93,10 +94,16 @@ int main(int argc, const char* argv[])
   counter = 0;
   for (const auto& rows : cells) {
       h_A[0][counter] = std::stof(rows[0]);
+
+      if(counter % RATIO == 0)
+      {
+	cout << "stored " << counter / RATIO << "..." << endl;
+      }
+
       counter = counter + 1;
   }
 
-  cudaDeviceEnablePeerAccess(1, 0);
+  cudaDeviceEnablePeerAccess(0, 1);
   // printf("> GPU%d enabled direct access to GPU%d\n", , j); 
 
   start_timer(&t);
