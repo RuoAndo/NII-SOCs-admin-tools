@@ -14,6 +14,9 @@
 #include <bitset>
 #include <random>
 
+#include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
+
 #include "csv.hpp"
 using namespace std;
 
@@ -56,20 +59,20 @@ squared_l2_distance(float x_1, float y_1, float x_2, float y_2) {
 // In the assignment step, each point (thread) computes its distance to each
 // cluster centroid and adds its x and y values to the sum of its closest
 // centroid, as well as incrementing that centroid's count of assigned points.
-__global__ void assign_clusters(const float* __restrict__ data_x,
-                                const float* __restrict__ data_y,
+__global__ void assign_clusters(const thrust::device_ptr<float> data_x,
+                                const thrust::device_ptr<float> data_y,
                                 int data_size,
-                                const float* __restrict__ means_x,
-                                const float* __restrict__ means_y,
-                                float* __restrict__ new_sums_x,
-                                float* __restrict__ new_sums_y,
+                                const thrust::device_ptr<float> means_x,
+                                const thrust::device_ptr<float> means_y,
+                                thrust::device_ptr<float> new_sums_x,
+                                thrust::device_ptr<float> new_sums_y,
                                 int k,
-                                int* __restrict__ counts,
+                                thrust::device_ptr<int> counts,
 				int* clusterNo) {
   const int index = blockIdx.x * blockDim.x + threadIdx.x;
   if (index >= data_size) return;
 
-  // printf("data_size %d \n", data_size);
+  // int* clusterNo;
 
   // Make global loads once.
   const float x = data_x[index];
@@ -83,33 +86,29 @@ __global__ void assign_clusters(const float* __restrict__ data_x,
     if (distance < best_distance) {
       best_distance = distance;
       best_cluster = cluster;
-      // printf("best_cluster %d \n", cluster);
-      clusterNo[index] = cluster;
+      clusterNo[index] = best_cluster;
     }
   }
 
-  // Slow but simple.
-  atomicAdd(&new_sums_x[best_cluster], x);
-  atomicAdd(&new_sums_y[best_cluster], y);
-  atomicAdd(&counts[best_cluster], 1);
+  atomicAdd(thrust::raw_pointer_cast(new_sums_x + best_cluster), x);
+  atomicAdd(thrust::raw_pointer_cast(new_sums_y + best_cluster), y);
+  atomicAdd(thrust::raw_pointer_cast(counts + best_cluster), 1);
 }
 
 // Each thread is one cluster, which just recomputes its coordinates as the mean
 // of all points assigned to it.
-__global__ void compute_new_means(float* __restrict__ means_x,
-                                  float* __restrict__ means_y,
-                                  const float* __restrict__ new_sum_x,
-                                  const float* __restrict__ new_sum_y,
-                                  const int* __restrict__ counts) {
+__global__ void compute_new_means(thrust::device_ptr<float> means_x,
+                                  thrust::device_ptr<float> means_y,
+                                  const thrust::device_ptr<float> new_sum_x,
+                                  const thrust::device_ptr<float> new_sum_y,
+                                  const thrust::device_ptr<int> counts) {
   const int cluster = threadIdx.x;
-  // Threshold count to turn 0/0 into 0/1.
   const int count = max(1, counts[cluster]);
   means_x[cluster] = new_sum_x[cluster] / count;
   means_y[cluster] = new_sum_y[cluster] / count;
 }
 
 int main(int argc, const char* argv[]) {
-
   // std::vector<float> h_x;
   // std::vector<float> h_y;
 
@@ -119,7 +118,6 @@ int main(int argc, const char* argv[]) {
   int k = 4;
   int number_of_iterations = 1000;
 
-  // default = 10
   int N = 1024 << SHIFT;
   cout << N << endl;
   
@@ -155,6 +153,10 @@ int main(int argc, const char* argv[]) {
   }
 
   /*
+  int N = atoi(argv[2]);
+  int k = 3;
+  int number_of_iterations = 1000;
+
   const string csv_file = std::string(argv[1]); 
   vector<vector<string>> data2; 
 
@@ -172,23 +174,6 @@ int main(int argc, const char* argv[]) {
   */
 
   const size_t number_of_elements = h_x.size();
-  Data d_data(number_of_elements, h_x, h_y);
-
-  // Random shuffle the data and pick the first
-  // k points (i.e. k random points).
-  std::random_device seed;
-  std::mt19937 rng(seed());
-  std::shuffle(h_x.begin(), h_x.end(), rng);
-  std::shuffle(h_y.begin(), h_y.end(), rng);
-  Data d_means(k, h_x, h_y);
-  Data d_sums(k);
-
-  int* d_counts;
-  cudaMalloc(&d_counts, k * sizeof(int));
-  cudaMemset(d_counts, 0, k * sizeof(int));
-
-  int* h_counts;
-  h_counts = (int *)malloc(k * sizeof(int));
 
   int* h_clusterNo;
   h_clusterNo = (int *)malloc(N * sizeof(int)); 
@@ -197,30 +182,44 @@ int main(int argc, const char* argv[]) {
   cudaMalloc(&d_clusterNo, N * sizeof(int));
   cudaMemset(d_clusterNo, 0, N * sizeof(int));
 
+  thrust::device_vector<float> d_x = h_x;
+  thrust::device_vector<float> d_y = h_y;
+
+  std::mt19937 rng(std::random_device{}());
+  std::shuffle(h_x.begin(), h_x.end(), rng);
+  std::shuffle(h_y.begin(), h_y.end(), rng);
+  thrust::device_vector<float> d_mean_x(h_x.begin(), h_x.begin() + k);
+  thrust::device_vector<float> d_mean_y(h_y.begin(), h_y.begin() + k);
+
+  thrust::device_vector<float> d_sums_x(k);
+  thrust::device_vector<float> d_sums_y(k);
+  thrust::device_vector<int> d_counts(k, 0);
+
   const int threads = 1024;
   const int blocks = (number_of_elements + threads - 1) / threads;
 
   for (size_t iteration = 0; iteration < number_of_iterations; ++iteration) {
-    cudaMemset(d_counts, 0, k * sizeof(int));
-    d_sums.clear();
+    thrust::fill(d_sums_x.begin(), d_sums_x.end(), 0);
+    thrust::fill(d_sums_y.begin(), d_sums_y.end(), 0);
+    thrust::fill(d_counts.begin(), d_counts.end(), 0);
 
-    assign_clusters<<<blocks, threads>>>(d_data.x,
-                                         d_data.y,
-                                         d_data.size,
-                                         d_means.x,
-                                         d_means.y,
-                                         d_sums.x,
-                                         d_sums.y,
+    assign_clusters<<<blocks, threads>>>(d_x.data(),
+                                         d_y.data(),
+                                         number_of_elements,
+                                         d_mean_x.data(),
+                                         d_mean_y.data(),
+                                         d_sums_x.data(),
+                                         d_sums_y.data(),
                                          k,
-                                         d_counts,
+                                         d_counts.data(),
 					 d_clusterNo);
     cudaDeviceSynchronize();
 
-    compute_new_means<<<1, k>>>(d_means.x,
-                                d_means.y,
-                                d_sums.x,
-                                d_sums.y,
-                                d_counts);
+    compute_new_means<<<1, k>>>(d_mean_x.data(),
+                                d_mean_y.data(),
+                                d_sums_x.data(),
+                                d_sums_y.data(),
+                                d_counts.data());
     cudaDeviceSynchronize();
   }
 
@@ -234,5 +233,12 @@ int main(int argc, const char* argv[]) {
 	outputfile << h_x[i] << "," << h_y[i] << "," << h_clusterNo[i] << std::endl;
   	// std::cout << h_x[i] << "," << h_y[i] << "," << h_clusterNo[i] << std::endl;
   }
+
+/*
+  cudaMemcpy(h_clusterNo, d_clusterNo, N * sizeof(int), cudaMemcpyDeviceToHost);
+
+  for(int i=0; i < N; i++)
+  	  std::cout << h_x[i] << "," << h_y[i] << "," << h_clusterNo[i] << std::endl;
+*/
 
 }
