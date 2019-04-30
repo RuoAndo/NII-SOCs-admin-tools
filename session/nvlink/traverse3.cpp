@@ -124,9 +124,9 @@ int traverse_file(char* filename, int thread_id) {
     std::string s1 = "-read";
 
     int netmask;
-    std::map <int,int> found_flag;
+    int found_flag = 0;
     int counter = 0;
-    
+
     printf("%s \n", filename);
 
     const string list_file = "monitoring_list"; 
@@ -147,136 +147,105 @@ int traverse_file(char* filename, int thread_id) {
        return 1;
     }
 
-    for(int i=0; i < session_data.size(); i++)
-      found_flag[i] = 0;
+    // for(int i=0; i < session_data.size(); i++)
+    // found_flag[i]=0;
 
     /*
       X.X.X.X,16
       Y.Y.Y.Y,30
     */    
 
-    counter = 0;
-    for (unsigned int row = 0; row < list_data.size(); row++) {
-      vector<string> rec = list_data[row];
-      const string argIP = rec[0]; 
-      std::string argIPstring;
+    for (unsigned int row2 = 0; row2 < session_data.size(); row2++) {
 
-      netmask = atoi(rec[1].c_str());
-	    
-      // std::cout << argIP << "/" << netmask << std::endl;
-	    
-      char del2 = '.';
-	    
-      for (const auto subStr : split_string_2(argIP, del2)) {
-	   unsigned long ipaddr_src;
-	   ipaddr_src = atol(subStr.c_str());
-	   std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
-	   std::string trans_string = trans.to_string();
-	   argIPstring = argIPstring + trans_string;
-      }
+	       vector<string> rec2 = session_data[row2];
+	       std::string srcIP = rec2[4];
 
-      // argIPstring -> session line 1
-      // argIPstring -> session line 2
-      // argIPstring -> session line ...
-     
-      for (unsigned int row2 = 0; row2 < session_data.size(); row2++) {
-	   vector<string> rec2 = session_data[row2];
-	   std::string srcIP = rec2[4];
-
-	   for(size_t c = srcIP.find_first_of("\""); c != string::npos; c = c = srcIP.find_first_of("\"")){
-		  srcIP.erase(c,1);
-	   }
-				
-	   std::string sessionIPstring;
-	   for (const auto subStr : split_string_2(srcIP, del2)) {
-	     unsigned long ipaddr_src;
-	     ipaddr_src = atol(subStr.c_str());
-	     std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
-	     std::string trans_string = trans.to_string();
-	     sessionIPstring = sessionIPstring + trans_string;
-	    }
-
-	   
-	   std::bitset<32> bit_argIP(argIPstring);
-	   std::bitset<32> bit_sessionIP(sessionIPstring);
-				
-	   std::bitset<32> trans2(0xFFFFFFFF);
-	   trans2 <<= netmask;
-	   bit_sessionIP &= trans2;
-		
-	   if(bit_sessionIP == bit_argIP)
-	     {
-	       found_flag[row2] = 1;
-	     }
-	   else
-	        found_flag[row2] = 0;
-		
-	   } //for (unsigned int row2 = 0; row2 < session_data.size(); row2++) {
-
-           /* 
-	      1: flag, session_line
-	      2: flag, session_line
-	   */
-      
-	   for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
-	     
-	     vector<string> rec3 = session_data[row3];
-	     std::string tms = rec3[0];
-	     std::string bytes = rec3[20];
-
-	     for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
-	       tms.erase(c,1);
-	     }
-	     for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
-	       tms.erase(c,1);
-	     }
-	     for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
-	       tms.erase(c,1);
-	     }
-	     for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
-	       tms.erase(c,1);
-	     }
-	     for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
-	       tms.erase(c,1);
-	     }
-	     for(size_t c = bytes.find_first_of("\""); c != string::npos; c = c = bytes.find_first_of("\"")){
-	       bytes.erase(c,1);
-	     }
-
-	     TbbVec1.push_back(stol(tms));
-	     TbbVec2.push_back(stol(bytes)); 
-
-	     if(found_flag[row3]==1)
-	       {
-		 /*
-		 std::string all_line;
-		 all_line = "1";
-		 for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
-		   all_line = all_line + "," + *itr;
-		 }
-		 */
-		 
-		 TbbVec3.push_back(1); 
-		 // std::cout << all_line << std::endl;
+	       for(size_t c = srcIP.find_first_of("\""); c != string::npos; c = c = srcIP.find_first_of("\"")){
+		 srcIP.erase(c,1);
 	       }
-	     else
-	       {
-		 /*
-		 std::string all_line;
-		 all_line = "0";
-		 for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
-		   all_line = all_line + "," + *itr;
-		 }
-		 */
-		 
-		 TbbVec3.push_back(0); 
-		 // std::cout << all_line << std::endl;
-	       }	
-	   } // for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 
-	   cout << "threadID:" << thread_id << "-" << row << "/" << list_data.size() << " done" << endl;
-	   
-    } // for (unsigned int row = 0; row < list_data.size(); row++) {
+	       std::string tms = rec2[0];
+	       std::string bytes = rec2[20];
+
+	       for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
+		 tms.erase(c,1);
+	       }
+	       for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
+		 tms.erase(c,1);
+	       }
+	       for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
+		 tms.erase(c,1);
+	       }
+	       for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
+		 tms.erase(c,1);
+	       }
+	       for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
+		 tms.erase(c,1);
+	       }
+	       for(size_t c = bytes.find_first_of("\""); c != string::npos; c = c = bytes.find_first_of("\"")){
+		 bytes.erase(c,1);
+	       }
+
+	       char del2 = '.';
+	       
+	       std::string sessionIPstring;
+	       for (const auto subStr : split_string_2(srcIP, del2)) {
+		 unsigned long ipaddr_src;
+		 ipaddr_src = atol(subStr.c_str());
+		 std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
+		 std::string trans_string = trans.to_string();
+		 sessionIPstring = sessionIPstring + trans_string;
+	       }
+
+	     found_flag = 0;
+	       
+             for (unsigned int row = 0; row < list_data.size(); row++) {
+
+	       vector<string> rec = list_data[row];
+	       const string argIP = rec[0]; 
+	       std::string argIPstring;
+
+	       netmask = atoi(rec[1].c_str());
+	    
+	     // std::cout << argIP << "/" << netmask << std::endl;
+	    	    
+	       for (const auto subStr : split_string_2(argIP, del2)) {
+		 unsigned long ipaddr_src;
+		 ipaddr_src = atol(subStr.c_str());
+		 std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
+		 std::string trans_string = trans.to_string();
+		 argIPstring = argIPstring + trans_string;
+	       }
+	       
+	       std::bitset<32> bit_argIP(argIPstring);
+	       std::bitset<32> bit_sessionIP(sessionIPstring);
+	       
+	       std::bitset<32> trans2(0xFFFFFFFF);
+	       trans2 <<= netmask;
+	       bit_sessionIP &= trans2;
+		
+	       if(bit_sessionIP == bit_argIP)
+		 {
+		 found_flag = 1;
+		 TbbVec3.push_back(1);
+		 TbbVec1.push_back(stol(tms));
+		 TbbVec2.push_back(stol(bytes));
+		 counter = counter + 1;
+		 }
+	     }
+
+	     if( row2 % (session_data.size()/100) == 0)
+	       cout << "threadID:" << thread_id << ":" << ((float)row2 / (float)session_data.size()) * 100
+		    << "% done" << endl; 
+	     
+	     if(found_flag == 0)
+	       {
+		 TbbVec1.push_back(stol(tms));
+		 TbbVec2.push_back(stol(bytes));
+		 TbbVec3.push_back(0);
+	       }
+    }
+    
 }
 
 void initqueue(queue_t* q) {
@@ -517,7 +486,6 @@ int main(int argc, char* argv[]) {
     }
     if(result.fname != NULL) free(result.fname);
 
-
     ofstream outputfile("tmp"); 
     
     /*
@@ -528,7 +496,7 @@ int main(int argc, char* argv[]) {
     }
     */
 
-    cout << TbbVec1.size() << endl;
+    cout << TbbVec1.size() << "," << TbbVec2.size() << "," << TbbVec3.size() << endl;
     
     tbb::concurrent_vector<long>::iterator start1;
     tbb::concurrent_vector<long>::iterator end1 = TbbVec1.end();  
@@ -539,7 +507,7 @@ int main(int argc, char* argv[]) {
     tbb::concurrent_vector<long>::iterator start3;
     tbb::concurrent_vector<long>::iterator end3 = TbbVec3.end();
 
-    long counter = 0;
+    int counter = 0;
     int outward = 0;
     int inward = 0;
     
@@ -549,15 +517,15 @@ int main(int argc, char* argv[]) {
 	
 	if(flag_tmp == 1)
 	  outward++;
-	else
-	  inward++;
+	// else
+	// inward++;
 	
-	
-	// cout << *start3 << "," << TbbVec1[counter] << endl;
 	counter = counter + 1;
       }
 
-    cout << counter << "," << outward << endl;
+    inward = counter - outward;
+    
+    cout << "outward:" << outward << ",inward:" << inward << ",all:" << counter << endl;
     
     /*
     long *h_key;
