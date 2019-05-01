@@ -110,7 +110,7 @@ std::vector < std::vector< std::string > > parse_csv(const char* filepath)
     return cells;
 }
 
-void kernel(long *h_key, long *h_value_1, long *h_value_2, int size)
+void kernel(long *h_key, long *h_value_1, long *h_value_2, string filename, int size)
 {
   int N = size;
 
@@ -210,7 +210,7 @@ void kernel(long *h_key, long *h_value_1, long *h_value_2, int size)
   auto new_end_2 = thrust::reduce_by_key(d_vec_key_2.begin(), d_vec_key_2.end(), d_vec_value_2.begin(),
        	       	 		       d_vec_key_2_out.begin(), d_vec_value_2_out.begin());      
 
-  int new_size_2 = new_end_2.first - d_vec_key_2_out.begin() + 1; 
+  int new_size_2 = new_end_2.first - d_vec_key_2_out.begin();// + 1; 
 
   thrust::host_vector<unsigned long long> h_vec_key_4_out(N);
   thrust::host_vector<long> h_vec_value_4_out(N);
@@ -230,15 +230,24 @@ void kernel(long *h_key, long *h_value_1, long *h_value_2, int size)
 	cout << h_vec_key_4_out[i] << "," << h_vec_value_4_out[i] << endl;
   }
 
-  ofstream outputfile("tmp");
+  ofstream outputfile(filename);
     
   cout << "all" << endl;
   for(int i = 0; i < new_size_2; i++)
   {
-	//cout << h_vec_key_3_out[i] << "," << h_vec_value_3_out[i] << "," << h_vec_value_4_out[i] << endl;
+	// cout << h_vec_key_3_out[i] << "," << h_vec_value_3_out[i] << "," << h_vec_value_4_out[i] << endl;
 
+	/*
 	if(h_vec_key_3_out[i] != 0)
 		outputfile << h_vec_key_3_out[i] << "," << h_vec_value_3_out[i] << "," << h_vec_value_4_out[i] << endl;
+	*/
+	
+	std::string timestamp = to_string(h_vec_key_3_out[i]);
+
+	outputfile << timestamp.substr(0,4) << "-" << timestamp.substr(4,2) << "-" << timestamp.substr(6,2) << " "
+	     	   << timestamp.substr(8,2) << ":" << timestamp.substr(10,2) << ":" << timestamp.substr(12,2)
+	     	   << "." << timestamp.substr(14,3) << "," 
+		   << h_vec_value_3_out[i] << "," << h_vec_value_4_out[i] << endl;
   }
 
   outputfile.close();
