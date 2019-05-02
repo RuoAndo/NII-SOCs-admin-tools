@@ -233,6 +233,9 @@ void kernel(long *h_key, long *h_value_1, long *h_value_2, string filename, int 
   ofstream outputfile(filename);
     
   cout << "all" << endl;
+
+  outputfile << "timestamp, bytes, counted" << endl;
+  
   for(int i = 0; i < new_size_2; i++)
   {
 	// cout << h_vec_key_3_out[i] << "," << h_vec_value_3_out[i] << "," << h_vec_value_4_out[i] << endl;
