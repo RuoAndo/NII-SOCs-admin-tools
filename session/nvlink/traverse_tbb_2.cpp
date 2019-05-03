@@ -17,6 +17,7 @@
 #include <dirent.h>
 #include <pthread.h>
 #include <alloca.h>
+#include <time.h>
 
 #include <sys/socket.h>
 #include <sys/time.h>
@@ -130,6 +131,8 @@ int traverse_file(char* filename, int thread_id) {
     int found_flag = 0;
     int counter = 0;
 
+    char date[64];
+    
     printf("%s \n", filename);
 
     const string list_file = "monitoring_list"; 
@@ -243,11 +246,19 @@ int traverse_file(char* filename, int thread_id) {
 		 }
 	     }
 
-	     if( row2 % (session_data.size()/100) == 0)
-	       cout << "threadID:" << thread_id << ":" << filename << ":"
-		    <<((float)row2 / (float)session_data.size()) * 100
-		    << "% done" << endl; 
+
+	     // printf("%s\n", date);
 	     
+	     if( row2 % (session_data.size()/100) == 0)
+	       {
+		time_t t = time(NULL);
+		strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", localtime(&t));
+		// printf("%s\n", date);
+	       cout << date << "," << "threadID," << thread_id << "," << filename << ","
+		    <<((float)row2 / (float)session_data.size()) * 100
+		    << ",% done" << endl; 
+	       }
+	       
 	     if(found_flag == 0)
 	       {
 		 iTbb_Vec_timestamp_inward::accessor tms_in;
@@ -500,8 +511,6 @@ int main(int argc, char* argv[]) {
     }
     if(result.fname != NULL) free(result.fname);
 
-    ofstream outputfile("tmp"); 
-
     int counter = 0;
 
     std::map<long, long> inward_tms;
@@ -515,15 +524,39 @@ int main(int argc, char* argv[]) {
     
     for( iTbb_Vec_bytes_inward::iterator i = TbbVec_bytes_inward.begin(); i!=TbbVec_bytes_inward.end(); ++i )
     {
-      // cout << i->first << "," << i->second << endl;
       inward_bytes.insert(std::make_pair(long(i->first),long(i->second)));      
     }
 
+    ofstream outputfile("tbb-inward"); 
     counter = 0;
     for(auto itr = inward_tms.begin(); itr != inward_tms.end(); ++itr) {
       outputfile << itr->first << "," << itr->second << "," << inward_bytes[(long)itr->first] << endl;
       counter++;
     }
-      
+    outputfile.close();
+
+
+    std::map<long, long> outward_tms;
+    
+    for( iTbb_Vec_timestamp_outward::iterator i = TbbVec_timestamp_outward.begin(); i!=TbbVec_timestamp_outward.end(); ++i )
+    {
+      outward_tms.insert(std::make_pair(long(i->first),long(i->second)));      
+    }
+
+    std::map<long, long> outward_bytes;
+    
+    for( iTbb_Vec_bytes_outward::iterator i = TbbVec_bytes_outward.begin(); i!=TbbVec_bytes_outward.end(); ++i )
+    {
+      outward_bytes.insert(std::make_pair(long(i->first),long(i->second)));      
+    }
+
+    ofstream outputfile2("tbb-outward"); 
+    counter = 0;
+    for(auto itr = outward_tms.begin(); itr != outward_tms.end(); ++itr) {
+      outputfile2 << itr->first << "," << itr->second << "," << outward_bytes[(long)itr->first] << endl;
+      counter++;
+    }
+    outputfile2.close();
+    
     return 0;
 }
