@@ -212,6 +212,13 @@ int traverse_file(char* filename) {
 	    TbbVec3.push_back(s);
 	    TbbVec_application.push_back(1);
 	  }
+	  else if(application == "ssl")
+	  {
+	    TbbVec1.push_back(stol(tms));
+	    TbbVec2.push_back(stol(bytes));
+	    TbbVec3.push_back(s);
+	    TbbVec_application.push_back(3);
+	  }
 	else
 	  {
 	    TbbVec1.push_back(stol(tms));
@@ -568,6 +575,54 @@ int main(int argc, char* argv[]) {
     for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp ;++start_timestamp)
       {
 	if((long)*start_application == 2)
+	  {
+	    h_key[counter] = (long)*start_timestamp;
+	    h_value_count[counter] = (long)*start_application;
+	    h_value_bytes[counter] = (long)*start_bytes;
+	    counter++;
+	  }
+	    
+	 start_bytes++;
+	 start_application++;
+      }
+
+    kernel(h_key, h_value_count, h_value_bytes, filename, counter);
+
+    free(h_key);
+    free(h_value_count);
+    free(h_value_bytes);
+
+    /////
+
+    filename = "tmp-ssl";
+    application_counter = 0;
+
+    start_application = TbbVec_application.begin();
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp; ++start_timestamp)
+      {    
+	if((long)*start_application == 3)
+	  {
+	    application_counter++;
+	  }
+	start_application++;
+      }
+
+    // long *h_key;
+    h_key = (long *)malloc(application_counter*sizeof(long));
+
+    // long *h_value_count;
+    h_value_count = (long *)malloc(application_counter*sizeof(long));
+
+    // long *h_value_bytes;
+    h_value_bytes = (long *)malloc(application_counter*sizeof(long));
+    
+    start_application = TbbVec_application.begin();
+    start_bytes = TbbVec2.begin();
+
+    counter = 0;
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp ;++start_timestamp)
+      {
+	if((long)*start_application == 3)
 	  {
 	    h_key[counter] = (long)*start_timestamp;
 	    h_value_count[counter] = (long)*start_application;
