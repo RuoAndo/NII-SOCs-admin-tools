@@ -1,4 +1,4 @@
-DATE=`date --date '3 day ago' +%Y%m%d`
+DATE=`date --date '4 day ago' +%Y%m%d`
 echo $DATE
 
 ./build-traverse.sh traverse4
