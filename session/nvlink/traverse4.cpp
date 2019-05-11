@@ -17,7 +17,6 @@
 #include <dirent.h>
 #include <pthread.h>
 #include <alloca.h>
-#include <time.h>
 
 #include <sys/socket.h>
 #include <sys/time.h>
@@ -126,8 +125,6 @@ int traverse_file(char* filename, int thread_id) {
     int found_flag = 0;
     int counter = 0;
 
-    char date[64];
-    
     printf("%s \n", filename);
 
     const string list_file = "monitoring_list"; 
@@ -237,14 +234,9 @@ int traverse_file(char* filename, int thread_id) {
 	     }
 
 	     if( row2 % (session_data.size()/100) == 0)
-	       {
-		time_t t = time(NULL);
-		strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", localtime(&t));
-		// printf("%s\n", date);
-	       cout << date << "," << "threadID," << thread_id << "," << filename << ","
+	       cout << "threadID:" << thread_id << ":" << filename << ":"
 		    <<((float)row2 / (float)session_data.size()) * 100
-		    << ",% done" << endl; 
-	       }
+		    << "% done" << endl; 
 	     
 	     if(found_flag == 0)
 	       {
