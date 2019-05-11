@@ -48,23 +48,28 @@
 using namespace std;
 using namespace tbb;
 
+#define STR(var) #var 
+
 // 2 / 1024
-#define WORKER_THREAD_NUM (100)
-#define MAX_QUEUE_NUM (200)
+#define WORKER_THREAD_NUM (50)
+#define MAX_QUEUE_NUM (100)
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
 
-typedef tbb::concurrent_vector<long> iTbb_Vec_timestamp;
-iTbb_Vec_timestamp TbbVec_timestamp;
+// 96typedef concurrent_hash_map<unsigned long long, int, HashCompare> CharTable2;
+// 97static CharTable2 table2; 
 
-typedef tbb::concurrent_vector<long> iTbb_Vec_bytes;
-iTbb_Vec_bytes TbbVec_bytes;
+typedef tbb::concurrent_hash_map<long, int> iTbb_Vec_timestamp_inward;
+static iTbb_Vec_timestamp_inward TbbVec_timestamp_inward;
 
-typedef tbb::concurrent_vector<long> iTbb_Vec_direction;
-iTbb_Vec_direction TbbVec_direction;
+typedef tbb::concurrent_hash_map<long, int> iTbb_Vec_bytes_inward;
+static iTbb_Vec_bytes_inward TbbVec_bytes_inward;
 
-typedef tbb::concurrent_vector<long> iTbb_Vec_count;
-iTbb_Vec_count TbbVec_count;
+typedef tbb::concurrent_hash_map<long, int> iTbb_Vec_timestamp_outward;
+static iTbb_Vec_timestamp_outward TbbVec_timestamp_outward;
+
+typedef tbb::concurrent_hash_map<long, int> iTbb_Vec_bytes_outward;
+static iTbb_Vec_bytes_outward TbbVec_bytes_outward;
 
 extern void kernel(long* h_key, long* h_value_1, long* h_value_2, string filename, int size);
 
@@ -228,14 +233,22 @@ int traverse_file(char* filename, int thread_id) {
 	       if(bit_sessionIP == bit_argIP)
 		 {
 		 found_flag = 1;
-		 TbbVec_direction.push_back(1);
-		 TbbVec_timestamp.push_back(stol(tms));
-		 TbbVec_bytes.push_back(stol(bytes));
-		 TbbVec_count.push_back(1);
+
+		 iTbb_Vec_timestamp_outward::accessor tms_out;
+		 TbbVec_timestamp_outward.insert(tms_out, stol(tms)); 
+		 tms_out->second += 1;
+
+		 iTbb_Vec_bytes_outward::accessor bytes_out;
+		 TbbVec_bytes_outward.insert(bytes_out, stol(tms)); 
+		 bytes_out->second += stol(bytes);
+		 
 		 counter = counter + 1;
 		 }
 	     }
 
+
+	     // printf("%s\n", date);
+	     
 	     if( row2 % (session_data.size()/100) == 0)
 	       {
 		time_t t = time(NULL);
@@ -245,16 +258,19 @@ int traverse_file(char* filename, int thread_id) {
 		    <<((float)row2 / (float)session_data.size()) * 100
 		    << ",% done" << endl; 
 	       }
-	     
+	       
 	     if(found_flag == 0)
 	       {
-		 TbbVec_timestamp.push_back(stol(tms));
-		 TbbVec_bytes.push_back(stol(bytes));
-		 TbbVec_direction.push_back(0);
-		 TbbVec_count.push_back(1);
+		 iTbb_Vec_timestamp_inward::accessor tms_in;
+		 TbbVec_timestamp_inward.insert(tms_in, stol(tms)); 
+		 tms_in->second += 1;
+
+		 iTbb_Vec_bytes_inward::accessor bytes_in;
+		 TbbVec_bytes_inward.insert(bytes_in, stol(tms)); 
+		 bytes_in->second += stol(bytes);
+		 
 	       }
-    }
-    
+    }   
 }
 
 void initqueue(queue_t* q) {
@@ -495,123 +511,52 @@ int main(int argc, char* argv[]) {
     }
     if(result.fname != NULL) free(result.fname);
 
-    ofstream outputfile("tmp"); 
+    int counter = 0;
+
+    std::map<long, long> inward_tms;
     
-    /*
-    for( CharTable::iterator i=table.begin(); i!=table.end(); ++i )
+    for( iTbb_Vec_timestamp_inward::iterator i = TbbVec_timestamp_inward.begin(); i!=TbbVec_timestamp_inward.end(); ++i )
     {
-     outputfile << i->first << "," << i->second << endl;       	  
-     counter = counter + 1;
+      inward_tms.insert(std::make_pair(long(i->first),long(i->second)));      
     }
-    */
 
-    cout << TbbVec_timestamp.size() << "," << TbbVec_bytes.size() << "," << TbbVec_direction.size() << endl;
+    std::map<long, long> inward_bytes;
     
-    tbb::concurrent_vector<long>::iterator start_timestamp;
-    tbb::concurrent_vector<long>::iterator end_timestamp = TbbVec_timestamp.end();  
+    for( iTbb_Vec_bytes_inward::iterator i = TbbVec_bytes_inward.begin(); i!=TbbVec_bytes_inward.end(); ++i )
+    {
+      inward_bytes.insert(std::make_pair(long(i->first),long(i->second)));      
+    }
 
-    tbb::concurrent_vector<long>::iterator start_bytes;
-    tbb::concurrent_vector<long>::iterator end_bytes = TbbVec_bytes.end();
-
-    tbb::concurrent_vector<long>::iterator start_direction;
-    tbb::concurrent_vector<long>::iterator end_direction = TbbVec_direction.end();
-
-    tbb::concurrent_vector<long>::iterator start_count;
-    tbb::concurrent_vector<long>::iterator end_count = TbbVec_count.end();
-
-    unsigned long long counter = 0;
-    unsigned long long outward = 0;
-    unsigned long long inward = 0;
-    
-    for(start_direction = TbbVec_direction.begin();start_direction != end_direction; ++start_direction)
-      {
-	long flag_tmp = (long)*start_direction;
-	
-	if(flag_tmp == 1)
-	  outward++;
-	// else
-	// inward++;
-	
-	counter = counter + 1;
-      }
-
-    inward = counter - outward;
-    
-    cout << "outward:" << outward << ",inward:" << inward << ",all:" << counter << endl;
-    
-    long *h_key_inward;
-    h_key_inward = (long *)malloc(inward*sizeof(long));
-
-    long *h_value_bytes_inward;
-    h_value_bytes_inward = (long *)malloc(inward*sizeof(long));
-
-    long *h_value_count_inward;
-    h_value_count_inward = (long *)malloc(inward*sizeof(long));
-
-    long *h_value_direction_inward;
-    h_value_direction_inward = (long *)malloc(inward*sizeof(long));
-
-    long *h_key_outward;
-    h_key_outward = (long *)malloc(outward*sizeof(long));
-
-    long *h_value_bytes_outward;
-    h_value_bytes_outward = (long *)malloc(outward*sizeof(long));
-
-    long *h_value_count_outward;
-    h_value_count_outward = (long *)malloc(outward*sizeof(long));
-
-    long *h_value_direction_outward;
-    h_value_direction_outward = (long *)malloc(outward*sizeof(long));
-
-    start_bytes = TbbVec_bytes.begin();
-    start_direction = TbbVec_direction.begin();
-
+    ofstream outputfile("tbb-inward"); 
     counter = 0;
-
-    unsigned long long counter_inward = 0;
-    unsigned long long counter_outward = 0;
-    for(start_timestamp = TbbVec_timestamp.begin();start_timestamp != end_timestamp;++start_timestamp)
-    {
-      // cout << *start_timestamp << "," << *start_bytes << "," << *start_direction << endl;
-
-      std::string tms_string = to_string(*start_timestamp);
-      // std::string tms_sec = tms_string.substr(0,14) + "000";
-      std::string tms_sec = tms_string;
-      // cout << tms_sec << "," << tms_string << endl;
-
-      /* outward session */
-      if((long)*start_direction == 1)
-	{
-	  h_key_outward[counter_outward] = stol(tms_sec);	   
-	  h_value_bytes_outward[counter_outward] = (long)*start_bytes;
-	  h_value_direction_outward[counter_outward] = (long)*start_direction;
-	  h_value_count_outward[counter_outward] = 1;
-	  counter_outward++;
-	}
-
-      /* inward session */
-      if((long)*start_direction == 0)
-	{
-	  h_key_inward[counter_inward] = stol(tms_sec);	   
-	  h_value_bytes_inward[counter_inward] = (long)*start_bytes;
-	  h_value_direction_inward[counter_inward] = (long)*start_direction;
-	  h_value_count_inward[counter_inward] = 1;
-	  counter_inward++;
-	}
-	  
-      start_bytes++;
-      start_direction++;
-
-      counter = counter + 1;
+    for(auto itr = inward_tms.begin(); itr != inward_tms.end(); ++itr) {
+      outputfile << itr->first << "," << itr->second << "," << inward_bytes[(long)itr->first] << endl;
+      counter++;
     }
-    
     outputfile.close();
 
-    std::string filename_inward = "tmp-inward";
-    kernel(h_key_inward, h_value_bytes_inward, h_value_count_inward, filename_inward, inward);
 
-    std::string filename_outward = "tmp-outward";
-    kernel(h_key_outward, h_value_bytes_outward, h_value_count_outward, filename_outward, outward);
-   
+    std::map<long, long> outward_tms;
+    
+    for( iTbb_Vec_timestamp_outward::iterator i = TbbVec_timestamp_outward.begin(); i!=TbbVec_timestamp_outward.end(); ++i )
+    {
+      outward_tms.insert(std::make_pair(long(i->first),long(i->second)));      
+    }
+
+    std::map<long, long> outward_bytes;
+    
+    for( iTbb_Vec_bytes_outward::iterator i = TbbVec_bytes_outward.begin(); i!=TbbVec_bytes_outward.end(); ++i )
+    {
+      outward_bytes.insert(std::make_pair(long(i->first),long(i->second)));      
+    }
+
+    ofstream outputfile2("tbb-outward"); 
+    counter = 0;
+    for(auto itr = outward_tms.begin(); itr != outward_tms.end(); ++itr) {
+      outputfile2 << itr->first << "," << itr->second << "," << outward_bytes[(long)itr->first] << endl;
+      counter++;
+    }
+    outputfile2.close();
+    
     return 0;
 }

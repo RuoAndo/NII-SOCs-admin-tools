@@ -49,8 +49,8 @@ using namespace std;
 using namespace tbb;
 
 // 2 / 1024
-#define WORKER_THREAD_NUM (100)
-#define MAX_QUEUE_NUM (200)
+#define WORKER_THREAD_NUM (50)
+#define MAX_QUEUE_NUM (100)
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
 
@@ -519,9 +519,9 @@ int main(int argc, char* argv[]) {
     tbb::concurrent_vector<long>::iterator start_count;
     tbb::concurrent_vector<long>::iterator end_count = TbbVec_count.end();
 
-    unsigned long long counter = 0;
-    unsigned long long outward = 0;
-    unsigned long long inward = 0;
+    int counter = 0;
+    int outward = 0;
+    int inward = 0;
     
     for(start_direction = TbbVec_direction.begin();start_direction != end_direction; ++start_direction)
       {
@@ -568,8 +568,8 @@ int main(int argc, char* argv[]) {
 
     counter = 0;
 
-    unsigned long long counter_inward = 0;
-    unsigned long long counter_outward = 0;
+    int counter_inward = 0;
+    int counter_outward = 0;
     for(start_timestamp = TbbVec_timestamp.begin();start_timestamp != end_timestamp;++start_timestamp)
     {
       // cout << *start_timestamp << "," << *start_bytes << "," << *start_direction << endl;

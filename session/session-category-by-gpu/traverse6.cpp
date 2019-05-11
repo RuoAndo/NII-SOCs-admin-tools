@@ -17,7 +17,6 @@
 #include <dirent.h>
 #include <pthread.h>
 #include <alloca.h>
-#include <time.h>
 
 #include <sys/socket.h>
 #include <sys/time.h>
@@ -49,24 +48,31 @@ using namespace std;
 using namespace tbb;
 
 // 2 / 1024
-#define WORKER_THREAD_NUM (100)
-#define MAX_QUEUE_NUM (200)
+#define WORKER_THREAD_NUM (50)
+#define MAX_QUEUE_NUM (100)
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
 
-typedef tbb::concurrent_vector<long> iTbb_Vec_timestamp;
-iTbb_Vec_timestamp TbbVec_timestamp;
-
-typedef tbb::concurrent_vector<long> iTbb_Vec_bytes;
-iTbb_Vec_bytes TbbVec_bytes;
-
-typedef tbb::concurrent_vector<long> iTbb_Vec_direction;
-iTbb_Vec_direction TbbVec_direction;
-
-typedef tbb::concurrent_vector<long> iTbb_Vec_count;
-iTbb_Vec_count TbbVec_count;
+/*
+typedef concurrent_hash_map<long, long> CharTable;
+static CharTable table;
+*/
 
 extern void kernel(long* h_key, long* h_value_1, long* h_value_2, string filename, int size);
+
+typedef tbb::concurrent_vector<long> iTbb_Vec1;
+iTbb_Vec1 TbbVec1;
+
+typedef tbb::concurrent_vector<long> iTbb_Vec2;
+iTbb_Vec2 TbbVec2;
+
+typedef tbb::concurrent_vector<unsigned long long> iTbb_Vec3;
+iTbb_Vec3 TbbVec3;
+
+typedef tbb::concurrent_vector<int> iTbb_Vec_category;
+iTbb_Vec_category TbbVec_category;
+
+extern void kernel(long* h_key, long* h_value_1, long* h_value_2, int size);
 
 typedef struct _result {
     int num;
@@ -86,7 +92,6 @@ typedef struct _queue {
 } queue_t;
 
 typedef struct _thread_arg {
-    int id;
     int cpuid;
     queue_t* q;
     char* srchstr;
@@ -116,145 +121,97 @@ std::vector<std::string> split_string_2(std::string str, char del) {
   return result;
 }
 
-int traverse_file(char* filename, int thread_id) {
+int traverse_file(char* filename) {
     char buf[1024];
     int n = 0, sumn = 0;
     int i;
     std::string s1 = "-read";
-
-    int netmask;
-    int found_flag = 0;
-    int counter = 0;
-
-    char date[64];
     
     printf("%s \n", filename);
 
-    const string list_file = "monitoring_list"; 
-    vector<vector<string>> list_data; 
-	
-    const string session_file = std::string(filename); 
-    vector<vector<string>> session_data; 
+    const string csv_file = std::string(filename); 
+    vector<vector<string>> data; 
 
-    Csv objCsv(list_file);
-    if (!objCsv.getCsv(list_data)) {
-      cout << "read ERROR" << endl;
-      return 1;
-    }
-
-    Csv objCsv2(session_file);
-    if (!objCsv2.getCsv(session_data)) {
+    Csv objCsv(csv_file);
+    if (!objCsv.getCsv(data)) {
        cout << "read ERROR" << endl;
        return 1;
-    }
+       }
 
-    // for(int i=0; i < session_data.size(); i++)
-    // found_flag[i]=0;
-
-    /*
-      X.X.X.X,16
-      Y.Y.Y.Y,30
-    */    
-
-    for (unsigned int row2 = 0; row2 < session_data.size(); row2++) {
-
-	       vector<string> rec2 = session_data[row2];
-	       std::string srcIP = rec2[4];
-
-	       for(size_t c = srcIP.find_first_of("\""); c != string::npos; c = c = srcIP.find_first_of("\"")){
-		 srcIP.erase(c,1);
-	       }
-
-	       std::string tms = rec2[0];
-	       std::string bytes = rec2[20];
-
-	       for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
-		 tms.erase(c,1);
-	       }
-	       for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
-		 tms.erase(c,1);
-	       }
-	       for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
-		 tms.erase(c,1);
-	       }
-	       for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
-		 tms.erase(c,1);
-	       }
-	       for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
-		 tms.erase(c,1);
-	       }
-	       for(size_t c = bytes.find_first_of("\""); c != string::npos; c = c = bytes.find_first_of("\"")){
-		 bytes.erase(c,1);
-	       }
-
-	       char del2 = '.';
-	       
-	       std::string sessionIPstring;
-	       for (const auto subStr : split_string_2(srcIP, del2)) {
-		 unsigned long ipaddr_src;
-		 ipaddr_src = atol(subStr.c_str());
-		 std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
-		 std::string trans_string = trans.to_string();
-		 sessionIPstring = sessionIPstring + trans_string;
-	       }
-
-	     found_flag = 0;
-	       
-             for (unsigned int row = 0; row < list_data.size(); row++) {
-
-	       vector<string> rec = list_data[row];
-	       const string argIP = rec[0]; 
-	       std::string argIPstring;
-
-	       netmask = atoi(rec[1].c_str());
-	    
-	     // std::cout << argIP << "/" << netmask << std::endl;
-	    	    
-	       for (const auto subStr : split_string_2(argIP, del2)) {
-		 unsigned long ipaddr_src;
-		 ipaddr_src = atol(subStr.c_str());
-		 std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
-		 std::string trans_string = trans.to_string();
-		 argIPstring = argIPstring + trans_string;
-	       }
-	       
-	       std::bitset<32> bit_argIP(argIPstring);
-	       std::bitset<32> bit_sessionIP(sessionIPstring);
-	       
-	       std::bitset<32> trans2(0xFFFFFFFF);
-	       trans2 <<= netmask;
-	       bit_sessionIP &= trans2;
-		
-	       if(bit_sessionIP == bit_argIP)
-		 {
-		 found_flag = 1;
-		 TbbVec_direction.push_back(1);
-		 TbbVec_timestamp.push_back(stol(tms));
-		 TbbVec_bytes.push_back(stol(bytes));
-		 TbbVec_count.push_back(1);
-		 counter = counter + 1;
-		 }
-	     }
-
-	     if( row2 % (session_data.size()/100) == 0)
-	       {
-		time_t t = time(NULL);
-		strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", localtime(&t));
-		// printf("%s\n", date);
-	       cout << date << "," << "threadID," << thread_id << "," << filename << ","
-		    <<((float)row2 / (float)session_data.size()) * 100
-		    << ",% done" << endl; 
-	       }
-	     
-	     if(found_flag == 0)
-	       {
-		 TbbVec_timestamp.push_back(stol(tms));
-		 TbbVec_bytes.push_back(stol(bytes));
-		 TbbVec_direction.push_back(0);
-		 TbbVec_count.push_back(1);
-	       }
-    }
+    // cout << data.size() << endl;
     
+    for (unsigned int row = 0; row < data.size(); row++)
+      {
+	std::vector<string> rec = data[row];
+
+	std::string tms = rec[0];
+	std::string bytes = rec[20];
+	std::string srcIP = rec[4];
+       	std::string category = rec[16];
+	
+	for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
+    	      tms.erase(c,1);
+	}
+
+	for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
+	      tms.erase(c,1);
+	}
+
+        for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
+	      tms.erase(c,1);
+	}
+
+	for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
+	      tms.erase(c,1);
+	}
+
+	for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
+	      tms.erase(c,1);
+	}
+
+	for(size_t c = bytes.find_first_of("\""); c != string::npos; c = c = bytes.find_first_of("\"")){
+	      bytes.erase(c,1);
+	}
+
+	for(size_t c = bytes.find_first_of("\""); c != string::npos; c = c = bytes.find_first_of("\"")){
+	      srcIP.erase(c,1);
+	}
+
+	for(size_t c = category.find_first_of("\""); c != string::npos; c = c = category.find_first_of("\"")){
+	      category.erase(c,1);
+	}
+	
+	char del = '.';
+	std::string stringIP;
+	std::string IPstring;
+	    	    
+	stringIP = srcIP;	    
+	    for (const auto subStr : split_string_2(stringIP, del)) {
+	      unsigned long ipaddr_src;
+	      ipaddr_src = atoi(subStr.c_str());
+	      std::bitset<8> trans =  std::bitset<8>(ipaddr_src);
+	      std::string trans_string = trans.to_string();
+	      IPstring = IPstring + trans_string;
+	    }
+
+	unsigned long long s = bitset<32>(IPstring).to_ullong();
+
+	if(category == "social-networking")
+	  {
+	    TbbVec1.push_back(stol(tms));
+	    TbbVec2.push_back(stol(bytes));
+	    TbbVec3.push_back(s);
+	    TbbVec_category.push_back(1);
+	  }
+	else
+	  {
+	    TbbVec1.push_back(stol(tms));
+	    TbbVec2.push_back(stol(bytes));
+	    TbbVec3.push_back(s);
+	    TbbVec_category.push_back(0);
+	  }
+	   
+      }	
 }
 
 void initqueue(queue_t* q) {
@@ -373,8 +330,6 @@ void worker_func(thread_arg_t* arg) {
     queue_t* q = arg->q;
     char* srchstr = arg->srchstr;
 
-    int thread_id = arg->id;
-    
 #ifdef __CPU_SET
     cpu_set_t mask;    
     __CPU_ZERO(&mask);
@@ -392,7 +347,7 @@ void worker_func(thread_arg_t* arg) {
         if (strncmp(fname, END_MARK_FNAME, END_MARK_FLENGTH + 1) == 0)
             break;
 
-        n = traverse_file(fname, thread_id);
+        n = traverse_file(fname);
         pthread_mutex_lock(&result.mutex);
 
         if (n > result.num) {
@@ -415,7 +370,7 @@ void worker_func(thread_arg_t* arg) {
         if (strncmp(fname, END_MARK_FNAME, END_MARK_FLENGTH + 1) == 0)
             break;
 
-        n = traverse_file(fname, thread_id);
+        n = traverse_file(fname);
 
         if (n > my_result_num) {
             my_result_num = n;
@@ -445,7 +400,7 @@ void print_result(thread_arg_t* arg) {
 }
 
 int main(int argc, char* argv[]) {
-    int i; 
+    int i;
     int thread_num = 1 + WORKER_THREAD_NUM;
     unsigned int t, travdirtime;
     queue_t q;
@@ -478,12 +433,9 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&result.mutex, NULL);
 
     pthread_create(&master, NULL, (void*)master_func, (void*)&targ[0]);
-    for (i = 1; i < thread_num; ++i)
-      {
-        targ[i].id = i;  
+    for (i = 1; i < thread_num; ++i) 
         pthread_create(&worker[i], NULL, (void*)worker_func, (void*)&targ[i]);
-      }
-	
+
     for (i = 1; i < thread_num; ++i) 
         pthread_join(worker[i], NULL);
 
@@ -495,8 +447,10 @@ int main(int argc, char* argv[]) {
     }
     if(result.fname != NULL) free(result.fname);
 
+
     ofstream outputfile("tmp"); 
-    
+    int counter = 0;
+
     /*
     for( CharTable::iterator i=table.begin(); i!=table.end(); ++i )
     {
@@ -505,113 +459,67 @@ int main(int argc, char* argv[]) {
     }
     */
 
-    cout << TbbVec_timestamp.size() << "," << TbbVec_bytes.size() << "," << TbbVec_direction.size() << endl;
+    cout << TbbVec1.size() << endl;
     
     tbb::concurrent_vector<long>::iterator start_timestamp;
-    tbb::concurrent_vector<long>::iterator end_timestamp = TbbVec_timestamp.end();  
+    tbb::concurrent_vector<long>::iterator end_timestamp = TbbVec1.end();  
+
+    tbb::concurrent_vector<int>::iterator start_category;
+    tbb::concurrent_vector<int>::iterator end_category = TbbVec_category.end();
 
     tbb::concurrent_vector<long>::iterator start_bytes;
-    tbb::concurrent_vector<long>::iterator end_bytes = TbbVec_bytes.end();
+    tbb::concurrent_vector<long>::iterator end_bytes = TbbVec2.end();
 
-    tbb::concurrent_vector<long>::iterator start_direction;
-    tbb::concurrent_vector<long>::iterator end_direction = TbbVec_direction.end();
-
-    tbb::concurrent_vector<long>::iterator start_count;
-    tbb::concurrent_vector<long>::iterator end_count = TbbVec_count.end();
-
-    unsigned long long counter = 0;
-    unsigned long long outward = 0;
-    unsigned long long inward = 0;
-    
-    for(start_direction = TbbVec_direction.begin();start_direction != end_direction; ++start_direction)
-      {
-	long flag_tmp = (long)*start_direction;
-	
-	if(flag_tmp == 1)
-	  outward++;
-	// else
-	// inward++;
-	
-	counter = counter + 1;
-      }
-
-    inward = counter - outward;
-    
-    cout << "outward:" << outward << ",inward:" << inward << ",all:" << counter << endl;
-    
-    long *h_key_inward;
-    h_key_inward = (long *)malloc(inward*sizeof(long));
-
-    long *h_value_bytes_inward;
-    h_value_bytes_inward = (long *)malloc(inward*sizeof(long));
-
-    long *h_value_count_inward;
-    h_value_count_inward = (long *)malloc(inward*sizeof(long));
-
-    long *h_value_direction_inward;
-    h_value_direction_inward = (long *)malloc(inward*sizeof(long));
-
-    long *h_key_outward;
-    h_key_outward = (long *)malloc(outward*sizeof(long));
-
-    long *h_value_bytes_outward;
-    h_value_bytes_outward = (long *)malloc(outward*sizeof(long));
-
-    long *h_value_count_outward;
-    h_value_count_outward = (long *)malloc(outward*sizeof(long));
-
-    long *h_value_direction_outward;
-    h_value_direction_outward = (long *)malloc(outward*sizeof(long));
-
-    start_bytes = TbbVec_bytes.begin();
-    start_direction = TbbVec_direction.begin();
-
+    start_bytes = TbbVec2.begin();
     counter = 0;
 
-    unsigned long long counter_inward = 0;
-    unsigned long long counter_outward = 0;
-    for(start_timestamp = TbbVec_timestamp.begin();start_timestamp != end_timestamp;++start_timestamp)
-    {
-      // cout << *start_timestamp << "," << *start_bytes << "," << *start_direction << endl;
+    /////
 
-      std::string tms_string = to_string(*start_timestamp);
-      // std::string tms_sec = tms_string.substr(0,14) + "000";
-      std::string tms_sec = tms_string;
-      // cout << tms_sec << "," << tms_string << endl;
+    std::string filename = "tmp-social-networking";
+    int category_counter = 0;
 
-      /* outward session */
-      if((long)*start_direction == 1)
-	{
-	  h_key_outward[counter_outward] = stol(tms_sec);	   
-	  h_value_bytes_outward[counter_outward] = (long)*start_bytes;
-	  h_value_direction_outward[counter_outward] = (long)*start_direction;
-	  h_value_count_outward[counter_outward] = 1;
-	  counter_outward++;
-	}
+    start_category = TbbVec_category.begin();
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp; ++start_timestamp)
+      {    
+	if((long)*start_category == 1)
+	  {
+	    category_counter++;
+	  }
+	start_category++;
+      }
 
-      /* inward session */
-      if((long)*start_direction == 0)
-	{
-	  h_key_inward[counter_inward] = stol(tms_sec);	   
-	  h_value_bytes_inward[counter_inward] = (long)*start_bytes;
-	  h_value_direction_inward[counter_inward] = (long)*start_direction;
-	  h_value_count_inward[counter_inward] = 1;
-	  counter_inward++;
-	}
-	  
-      start_bytes++;
-      start_direction++;
+    long *h_key;
+    h_key = (long *)malloc(category_counter*sizeof(long));
 
-      counter = counter + 1;
-    }
+    long *h_value_count;
+    h_value_count = (long *)malloc(category_counter*sizeof(long));
+
+    long *h_value_bytes;
+    h_value_bytes = (long *)malloc(category_counter*sizeof(long));
     
-    outputfile.close();
+    start_category = TbbVec_category.begin();
+    start_bytes = TbbVec2.begin();
 
-    std::string filename_inward = "tmp-inward";
-    kernel(h_key_inward, h_value_bytes_inward, h_value_count_inward, filename_inward, inward);
+    counter = 0;
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp ;++start_timestamp)
+      {
+	if((long)*start_category == 1)
+	  {
+	    h_key[counter] = (long)*start_timestamp;
+	    h_value_count[counter] = (long)*start_category;
+	    h_value_bytes[counter] = (long)*start_bytes;
+	    counter++;
+	  }
+	    
+	 start_bytes++;
+	 start_category++;
+      }
 
-    std::string filename_outward = "tmp-outward";
-    kernel(h_key_outward, h_value_bytes_outward, h_value_count_outward, filename_outward, outward);
-   
+    kernel(h_key, h_value_count, h_value_bytes, filename, counter);
+
+    free(h_key);
+    free(h_value_count);
+    free(h_value_bytes);
+    
     return 0;
 }
