@@ -448,6 +448,7 @@ int main(int argc, char* argv[]) {
 
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);
+    
     print_result(&targ[0]);
     for (i = 1; i < thread_num; ++i) {
         if ((targ[i].q)->fname[i] != NULL) free((targ[i].q)->fname[i]);
@@ -482,7 +483,7 @@ int main(int argc, char* argv[]) {
 
     /////
 
-    std::string filename = "tmp-cn";
+    std::string filename = "tmp-cn-inward";
     int country_counter = 0;
 
     start_country = TbbVec_country.begin();
@@ -522,8 +523,11 @@ int main(int argc, char* argv[]) {
 	 start_country++;
       }
 
+    start_timer(&t);
     kernel(h_key, h_value_count, h_value_bytes, filename, counter);
-
+    travdirtime = stop_timer(&t);
+    print_timer(travdirtime);
+    
     free(h_key);
     free(h_value_count);
     free(h_value_bytes);
