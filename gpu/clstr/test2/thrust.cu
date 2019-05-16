@@ -20,6 +20,8 @@
 #include <bitset>
 #include <random>
 
+#include "timer.h"
+
 #include "csv.hpp"
 using namespace std;
 
@@ -82,8 +84,10 @@ __global__ void compute_new_means(thrust::device_ptr<float> means_x,
 int main(int argc, const char* argv[]) {
 
   int N = atoi(argv[2]);
-  int k = 3;
-  int number_of_iterations = 1000;
+  int k = atoi(argv[4]);
+  int number_of_iterations = atoi(argv[3]);
+
+  unsigned int t, travdirtime;
 
   int* h_clusterNo;
   h_clusterNo = (int *)malloc(N * sizeof(int)); 
@@ -111,6 +115,8 @@ int main(int argc, const char* argv[]) {
       h_y.push_back(std::stof(rec[1]));
   }
 
+  start_timer(&t);
+  
   const size_t number_of_elements = h_x.size();
 
   thrust::device_vector<float> d_x = h_x;
@@ -154,22 +160,29 @@ int main(int argc, const char* argv[]) {
                                 d_counts.data());
     cudaDeviceSynchronize();
   }
+  
+
+  cudaMemcpy(h_clusterNo, d_clusterNo, N * sizeof(int), cudaMemcpyDeviceToHost);
+
+  travdirtime = stop_timer(&t);
+  print_timer(travdirtime);
+
+/*
   const auto end = std::chrono::high_resolution_clock::now();
   const auto duration =
-      std::chrono::duration_cast<std::chrono::duration<float>>(end - start);
-  std::cerr << "Took: " << duration.count() << "s" << std::endl;
-
+  std::chrono::duration_cast<std::chrono::duration<float>>(end - start);
+ 
   thrust::host_vector<float> h_mean_x = d_mean_x;
   thrust::host_vector<float> h_mean_y = d_mean_y;
 
   for (size_t cluster = 0; cluster < k; ++cluster) {
     std::cout << h_mean_x[cluster] << " " << h_mean_y[cluster] << std::endl;
   }
+*/
 
-  cudaMemcpy(h_clusterNo, d_clusterNo, N * sizeof(int), cudaMemcpyDeviceToHost);
-
+/*
   for(int i=0; i < N; i++)
   	  std::cout << h_x[i] << "," << h_y[i] << "," << h_clusterNo[i] << std::endl;
-
+*/
 
 }

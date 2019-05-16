@@ -14,6 +14,8 @@
 #include <bitset>
 #include <random>
 
+#include "timer.h"
+
 #include "csv.hpp"
 using namespace std;
 
@@ -231,11 +233,13 @@ int main(int argc, const char* argv[]) {
   std::vector<float> h_x;
   std::vector<float> h_y;
 
+  unsigned int t, travdirtime;
+
   // Load x and y into host vectors ... (omitted)
 
   int N = atoi(argv[2]);
-  int k = 3;
-  int number_of_iterations = 1000;
+  int k = atoi(argv[4]);
+  int number_of_iterations = atoi(argv[3]);
 
   const string csv_file = std::string(argv[1]); 
   vector<vector<string>> data2; 
@@ -252,6 +256,8 @@ int main(int argc, const char* argv[]) {
       h_x.push_back(std::stof(rec[0]));
       h_y.push_back(std::stof(rec[1]));
   }
+
+  start_timer(&t); 
 
   const size_t number_of_elements = h_x.size();
   Data d_data(number_of_elements, h_x, h_y);
@@ -311,8 +317,14 @@ for (size_t iteration = 0; iteration < number_of_iterations; ++iteration) {
 
   cudaMemcpy(h_clusterNo, d_clusterNo, N * sizeof(int), cudaMemcpyDeviceToHost);
 
+  travdirtime = stop_timer(&t);
+  print_timer(travdirtime); 
+
+
+/*
   for(int i=0; i < N; i++)
   	  std::cout << h_x[i] << "," << h_y[i] << "," << h_clusterNo[i] << std::endl;
+*/
 
 /*
 

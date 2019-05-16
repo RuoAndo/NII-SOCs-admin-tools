@@ -1,1 +1,2 @@
+python plot3.py atomic.csv fine-coarse.csv thrust.csv 
 ./1 data 1024

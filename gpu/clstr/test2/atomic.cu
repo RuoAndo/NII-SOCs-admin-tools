@@ -14,6 +14,8 @@
 #include <bitset>
 #include <random>
 
+#include "timer.h"
+
 #include "csv.hpp"
 using namespace std;
 
@@ -109,14 +111,30 @@ __global__ void compute_new_means(float* __restrict__ means_x,
 }
 
 int main(int argc, const char* argv[]) {
+
+  unsigned int t, travdirtime;
+
   std::vector<float> h_x;
   std::vector<float> h_y;
 
   // Load x and y into host vectors ... (omitted)
 
+  if (argc != 5)
+  {
+	printf("./a.out file data N(lines) I(number_of_iterations) K(clusters) \n");
+	printf("./a.out file data 1000 1000 3 \n");
+	exit(1);
+  }
+
   int N = atoi(argv[2]);
+
+  /*
   int k = 3;
   int number_of_iterations = 1000;
+  */
+
+  int k = atoi(argv[4]);
+  int number_of_iterations = atoi(argv[3]);
 
   const string csv_file = std::string(argv[1]); 
   vector<vector<string>> data2; 
@@ -128,11 +146,13 @@ int main(int argc, const char* argv[]) {
   }
 
   // for (int row = 0; row < data2.size(); row++) {
-  for (int row = 0; row < 1024; row++) {
+  for (int row = 0; row < N; row++) {
       vector<string> rec = data2[row]; 
       h_x.push_back(std::stof(rec[0]));
       h_y.push_back(std::stof(rec[1]));
   }
+
+  start_timer(&t); 
 
   const size_t number_of_elements = h_x.size();
   Data d_data(number_of_elements, h_x, h_y);
@@ -189,7 +209,11 @@ int main(int argc, const char* argv[]) {
 
   cudaMemcpy(h_clusterNo, d_clusterNo, N * sizeof(int), cudaMemcpyDeviceToHost);
 
+  travdirtime = stop_timer(&t);
+  print_timer(travdirtime); 
+
+  /*
   for(int i=0; i < N; i++)
   	  std::cout << h_x[i] << "," << h_y[i] << "," << h_clusterNo[i] << std::endl;
-
+  */
 }
