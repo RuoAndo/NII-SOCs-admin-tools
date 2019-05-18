@@ -5,7 +5,7 @@ echo $DATE
 
 mkdir $DATE
 echo "copying..."
-time cp /root/${DATE}/all-org ./${DATE}/
+time cp /mnt/data2/${DATE}/all-org ./${DATE}/
 cd ${DATE}
 
 echo "spliting files..."
@@ -16,16 +16,20 @@ time CUDA_VISIBLE_DEVICES=1 ./traverse6 ./${DATE}
 cp tmp-twitter tmp-twitter-${DATE}
 cp tmp-ssl tmp-ssl-${DATE}
 cp tmp-web-browsing tmp-web-browsing-${DATE}
+cp tmp-web-google-play tmp-google-play-${DATE}
 
-scp tmp-twitter-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu02/
-scp tmp-ssl-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu02/
-scp tmp-web-browsing-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu02/
+scp tmp-twitter-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
+scp tmp-ssl-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
+scp tmp-web-browsing-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
+scp tmp-google-play-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
 
-scp tmp-twitter-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu02/tmp-twitter-current
-scp tmp-ssl-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu02/tmp-ssl-current
-scp tmp-web-browsing-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu02/tmp-web-browsing-current
+scp tmp-twitter-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-twitter-current
+scp tmp-ssl-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-ssl-current
+scp tmp-web-browsing-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-web-browsing-current
+scp tmp-google-play-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-google-play-current
 
 rm -rf ${DATE}
 rm -rf tmp-twitter-${DATE}
 rm -rf tmp-ssl-${DATE}
 rm -rf tmp-web-browsing-${DATE}
+rm -rf tmp-google-play-${DATE}

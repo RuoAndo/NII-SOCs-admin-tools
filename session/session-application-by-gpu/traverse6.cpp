@@ -196,8 +196,6 @@ int traverse_file(char* filename) {
 
 	unsigned long long s = bitset<32>(IPstring).to_ullong();
 
-	
-
 	if(application == "twitter-base")
 	  {
 	    TbbVec1.push_back(stol(tms));
@@ -212,12 +210,19 @@ int traverse_file(char* filename) {
 	    TbbVec3.push_back(s);
 	    TbbVec_application.push_back(1);
 	  }
-	  else if(application == "ssl")
+	else if(application == "ssl")
 	  {
 	    TbbVec1.push_back(stol(tms));
 	    TbbVec2.push_back(stol(bytes));
 	    TbbVec3.push_back(s);
 	    TbbVec_application.push_back(3);
+	  }
+       	else if(application == "google-play")
+	  {
+	    TbbVec1.push_back(stol(tms));
+	    TbbVec2.push_back(stol(bytes));
+	    TbbVec3.push_back(s);
+	    TbbVec_application.push_back(4);
 	  }
 	else
 	  {
@@ -226,14 +231,6 @@ int traverse_file(char* filename) {
 	    TbbVec3.push_back(s);
 	    TbbVec_application.push_back(0);
 	  }
-	    
-	/*
-	if(application == "twitter-base")	
-	  TbbVec_application.push_back(1);
-        else	
-	  TbbVec_application.push_back(0);
-	*/	
-
       }	
 }
 
@@ -623,6 +620,48 @@ int main(int argc, char* argv[]) {
     for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp ;++start_timestamp)
       {
 	if((long)*start_application == 3)
+	  {
+	    h_key[counter] = (long)*start_timestamp;
+	    h_value_count[counter] = (long)*start_application;
+	    h_value_bytes[counter] = (long)*start_bytes;
+	    counter++;
+	  }
+	    
+	 start_bytes++;
+	 start_application++;
+      }
+
+    /////
+
+    filename = "tmp-google-play";
+    application_counter = 0;
+
+    start_application = TbbVec_application.begin();
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp; ++start_timestamp)
+      {    
+	if((long)*start_application == 4)
+	  {
+	    application_counter++;
+	  }
+	start_application++;
+      }
+
+    // long *h_key;
+    h_key = (long *)malloc(application_counter*sizeof(long));
+
+    // long *h_value_count;
+    h_value_count = (long *)malloc(application_counter*sizeof(long));
+
+    // long *h_value_bytes;
+    h_value_bytes = (long *)malloc(application_counter*sizeof(long));
+    
+    start_application = TbbVec_application.begin();
+    start_bytes = TbbVec2.begin();
+
+    counter = 0;
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp ;++start_timestamp)
+      {
+	if((long)*start_application == 4)
 	  {
 	    h_key[counter] = (long)*start_timestamp;
 	    h_value_count[counter] = (long)*start_application;
