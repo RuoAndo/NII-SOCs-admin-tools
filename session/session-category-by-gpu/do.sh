@@ -14,8 +14,18 @@ rm -rf all-org
 cd ..
 time CUDA_VISIBLE_DEVICES=1 ./traverse6 ./${DATE}
 cp tmp-social-networking tmp-social-networking-${DATE}
+cp tmp-web-advertisements tmp-web-advertisements-${DATE}
+cp tmp-online-storage-and-backup tmp-online-storage-and-backup-${DATE}
 
-#scp tmp-social-networking-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
+scp tmp-social-networking-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_category_by_gpu/gpu04/
+scp tmp-social-networking-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_category_by_gpu/gpu04/tmp-social-networking-current
+scp tmp-online-storage-and-backup-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_category_by_gpu/gpu04/tmp-online-storage-and-backup-current
 
-#rm -rf ${DATE}
-#rm -rf tmp-social-networking-${DATE}
+scp tmp-social-networking-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_category_by_gpu/gpu04/
+scp tmp-web-advertisements-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_category_by_gpu/gpu04/
+scp tmp-online-storage-and-backup-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_category_by_gpu/gpu04/
+
+rm -rf ${DATE}
+rm -rf tmp-social-networking-${DATE}
+rm -rf tmp-web-advertisements-${DATE}
+rm -rf tmp-online-storage-and-backup-${DATE}

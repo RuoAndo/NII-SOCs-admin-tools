@@ -203,6 +203,20 @@ int traverse_file(char* filename) {
 	    TbbVec3.push_back(s);
 	    TbbVec_category.push_back(1);
 	  }
+	else if(category == "web-advertisements")
+	  {
+	    TbbVec1.push_back(stol(tms));
+	    TbbVec2.push_back(stol(bytes));
+	    TbbVec3.push_back(s);
+	    TbbVec_category.push_back(2);
+	  }
+	else if(category == "online-storage-and-backup")
+	  {
+	    TbbVec1.push_back(stol(tms));
+	    TbbVec2.push_back(stol(bytes));
+	    TbbVec3.push_back(s);
+	    TbbVec_category.push_back(3);
+	  }
 	else
 	  {
 	    TbbVec1.push_back(stol(tms));
@@ -520,6 +534,96 @@ int main(int argc, char* argv[]) {
     free(h_key);
     free(h_value_count);
     free(h_value_bytes);
+
+    /////
+
+    filename = "tmp-web-advertisements";
+    category_counter = 0;
+
+    start_category = TbbVec_category.begin();
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp; ++start_timestamp)
+      {    
+	if((long)*start_category == 2)
+	  {
+	    category_counter++;
+	  }
+	start_category++;
+      }
+
+    h_key = (long *)malloc(category_counter*sizeof(long));
+
+    h_value_count = (long *)malloc(category_counter*sizeof(long));
+
+    h_value_bytes = (long *)malloc(category_counter*sizeof(long));
     
+    start_category = TbbVec_category.begin();
+    start_bytes = TbbVec2.begin();
+
+    counter = 0;
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp ;++start_timestamp)
+      {
+	if((long)*start_category == 2)
+	  {
+	    h_key[counter] = (long)*start_timestamp;
+	    h_value_count[counter] = (long)*start_category;
+	    h_value_bytes[counter] = (long)*start_bytes;
+	    counter++;
+	  }
+	    
+	 start_bytes++;
+	 start_category++;
+      }
+
+    kernel(h_key, h_value_count, h_value_bytes, filename, counter);
+
+    free(h_key);
+    free(h_value_count);
+    free(h_value_bytes);
+
+    /////
+
+    filename = "tmp-online-storage-and-backup";
+    category_counter = 0;
+
+    start_category = TbbVec_category.begin();
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp; ++start_timestamp)
+      {    
+	if((long)*start_category == 3)
+	  {
+	    category_counter++;
+	  }
+	start_category++;
+      }
+
+    h_key = (long *)malloc(category_counter*sizeof(long));
+
+    h_value_count = (long *)malloc(category_counter*sizeof(long));
+
+    h_value_bytes = (long *)malloc(category_counter*sizeof(long));
+    
+    start_category = TbbVec_category.begin();
+    start_bytes = TbbVec2.begin();
+
+    counter = 0;
+    for(start_timestamp = TbbVec1.begin(); start_timestamp != end_timestamp ;++start_timestamp)
+      {
+	if((long)*start_category == 3)
+	  {
+	    h_key[counter] = (long)*start_timestamp;
+	    h_value_count[counter] = (long)*start_category;
+	    h_value_bytes[counter] = (long)*start_bytes;
+	    counter++;
+	  }
+	    
+	 start_bytes++;
+	 start_category++;
+      }
+
+    kernel(h_key, h_value_count, h_value_bytes, filename, counter);
+
+    free(h_key);
+    free(h_value_count);
+    free(h_value_bytes);
+
     return 0;
 }
