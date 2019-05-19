@@ -631,6 +631,12 @@ int main(int argc, char* argv[]) {
 	 start_application++;
       }
 
+    kernel(h_key, h_value_count, h_value_bytes, filename, counter);
+    
+    free(h_key);
+    free(h_value_count);
+    free(h_value_bytes);
+    
     /////
 
     filename = "tmp-google-play";
@@ -678,6 +684,8 @@ int main(int argc, char* argv[]) {
     free(h_key);
     free(h_value_count);
     free(h_value_bytes);
+
+    /////
     
     return 0;
 }
