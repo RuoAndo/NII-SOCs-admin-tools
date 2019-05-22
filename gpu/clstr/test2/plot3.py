@@ -14,4 +14,5 @@ plt.plot(df['num1'],marker="o")
 plt.plot(df2['num3'],marker="o")
 plt.plot(df3['num5'],marker="o")
 
+plt.savefig("plot3.png")
 plt.show()
