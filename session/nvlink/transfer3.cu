@@ -110,7 +110,10 @@ int main(int argc, const char* argv[])
   thrust::device_vector<long> value_in_0(N); 
 
   thrust::device_vector<unsigned long long> key_in_1(N); 
-  thrust::device_vector<long> value_in_1(N); 
+  thrust::device_vector<long> value_in_1(N);
+
+  thrust::device_vector<unsigned long long> key_in_2(N); 
+  thrust::device_vector<long> value_in_2(N); 
 
   thrust::copy(h_key_in.begin(), h_key_in.end(), key_in_0.begin());
   thrust::copy(h_value_in.begin(), h_value_in.end(), value_in_0.begin());    
@@ -151,8 +154,12 @@ int main(int argc, const char* argv[])
 	cudaMalloc((void **) &d_D[i], lBytes2);
   }
 
+  cout << "[Host][transfer] Device0 to Device1" << endl;
+  start_timer(&t);
   cudaMemcpy(d_C[0], h_C, ullBytes2, cudaMemcpyHostToDevice);
   cudaMemcpy(d_D[0], h_D, ullBytes2, cudaMemcpyHostToDevice);
+  travdirtime = stop_timer(&t);
+  print_timer(travdirtime);
 
   cudaDeviceEnablePeerAccess(0, 1);  
 
@@ -171,6 +178,29 @@ int main(int argc, const char* argv[])
   {
 	key_in_1[i] = d_C[1][i];
 	value_in_1[i] = d_D[1][i];
+  }
+  travdirtime = stop_timer(&t);
+  print_timer(travdirtime);
+
+  ////
+
+  cudaDeviceEnablePeerAccess(0, 2);  
+
+  cout << "[Device1][transfer] Device1 to Device2" << endl;
+  start_timer(&t);
+  cudaMemcpy(d_C[2], d_D[1], ullBytes2, cudaMemcpyDeviceToDevice);
+  cudaMemcpy(d_D[2], d_D[1], lBytes2, cudaMemcpyDeviceToDevice);
+  travdirtime = stop_timer(&t);
+  print_timer(travdirtime);
+
+  cudaSetDevice(2);
+
+  cout << "[Device2][store] array to device_vector" << endl;
+  start_timer(&t);
+  for(int i = 0; i < new_size_0; i++)
+  {
+	key_in_2[i] = d_C[2][i];
+	value_in_2[i] = d_D[2][i];
   }
   travdirtime = stop_timer(&t);
   print_timer(travdirtime);
