@@ -44,7 +44,7 @@ using namespace tbb;
 #define END_MARK_FLENGTH 3
 
 extern void kernel(long* h_key, long* h_value_1, long* h_value_2, string filename, int size);
-extern void transfer(unsigned long long *key, long *value, int kBytes, int vBytes, int thread_id);
+extern void transfer(unsigned long long *key, long *value, unsigned long long *key_out, long *value_out, int kBytes, int vBytes, size_t data_size, int thread_id);
 
 typedef tbb::concurrent_vector<long> iTbb_Vec1;
 iTbb_Vec1 TbbVec1;
@@ -134,7 +134,13 @@ int traverse_file(char* filename, int thread_id) {
     size_t vBytes = data.size() * sizeof(long);
     long *value;
     value = (long *)malloc(vBytes);
-      
+
+    unsigned long long *key_out;
+    key_out = (unsigned long long *)malloc(kBytes);
+    
+    long *value_out;
+    value_out = (long *)malloc(vBytes);
+    
     start_timer(&t);    
     for (unsigned int row = 0; row < data.size(); row++)
       {
@@ -170,14 +176,17 @@ int traverse_file(char* filename, int thread_id) {
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);
     cout << endl;
-    
-    start_timer(&t);    
-    transfer(key, value, kBytes, vBytes, thread_id);
-    
-    cout << "thread:" << thread_id << ":" << data.size() << " lines - transfer done." << endl;
-    travdirtime = stop_timer(&t);
-    print_timer(travdirtime);
 
+    // start_timer(&t);    
+    transfer(key, value, key_out, value_out, kBytes, vBytes, data.size(), thread_id);
+    
+    // cout << "thread:" << thread_id << " - reduction done." << endl;
+    // travdirtime = stop_timer(&t);
+    // print_timer(travdirtime);
+
+    
+    for(int i = 0; i < 3; i++)
+      cout << key_out[i] << "," << value_out[i] << endl;
 
     /*
     long *d_A;
