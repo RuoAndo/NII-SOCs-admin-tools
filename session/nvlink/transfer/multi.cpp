@@ -169,12 +169,15 @@ int traverse_file(char* filename, int thread_id) {
     cout << "thread:" << thread_id << ":" << data.size() << " lines - read done." << endl;
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);
-
+    cout << endl;
+    
     start_timer(&t);    
     transfer(key, value, kBytes, vBytes, thread_id);
+    
+    cout << "thread:" << thread_id << ":" << data.size() << " lines - transfer done." << endl;
     travdirtime = stop_timer(&t);
     print_timer(travdirtime);
-    cout << "thread:" << thread_id << ":" << data.size() << "lines - transfer done." << endl;
+
 
     /*
     long *d_A;
