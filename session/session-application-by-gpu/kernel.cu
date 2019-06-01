@@ -234,7 +234,7 @@ void kernel(long *h_key, long *h_value_1, long *h_value_2, string filename, int 
     
   cout << "all" << endl;
 
-  outputfile << "timestamp, bytes, counted" << endl;
+  outputfile << "timestamp, counted, bytes" << endl;
   
   for(int i = 0; i < new_size_2; i++)
   {
