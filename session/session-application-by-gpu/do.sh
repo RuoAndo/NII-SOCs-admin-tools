@@ -20,6 +20,7 @@ cp tmp-ssl tmp-ssl-${DATE}
 cp tmp-web-browsing tmp-web-browsing-${DATE}
 cp tmp-google-play tmp-google-play-${DATE}
 cp tmp-web-crawler tmp-web-crawler-${DATE}
+cp tmp-dropbox-base tmp-dropbox-base-${DATE}
 
 # 
 scp tmp-twitter-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
@@ -27,6 +28,7 @@ scp tmp-ssl-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu0
 scp tmp-web-browsing-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
 scp tmp-google-play-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
 scp tmp-web-crawler-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
+scp tmp-dropbox-base-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/
 
 # current
 scp tmp-twitter-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-twitter-current
@@ -34,6 +36,7 @@ scp tmp-ssl-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu0
 scp tmp-web-browsing-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-web-browsing-current
 scp tmp-google-play-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-google-play-current
 scp tmp-web-crawler-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-web-crawler-current
+scp tmp-dropbox-base-${DATE} 192.168.72.6:/mnt/sdc/splunk_session_application_by_gpu/gpu04/tmp-dropbox-base-current
 
 rm -rf ${DATE}
 rm -rf tmp-twitter-${DATE}
@@ -41,3 +44,4 @@ rm -rf tmp-ssl-${DATE}
 rm -rf tmp-web-browsing-${DATE}
 rm -rf tmp-google-play-${DATE}
 rm -rf tmp-web-crawler-${DATE}
+rm -rf tmp-dropbox-base-${DATE}
