@@ -60,12 +60,11 @@ int main(int argc, char **argv)
 
       char del = '.';
       std::string IPstring;
+
       std::string stringIP = rec[1];
 
-      // std::cout << stringIP << endl;
       std::bitset<32> s = std::bitset<32>(stoull(stringIP));
       string bs = s.to_string();
-      // std::cout << ss << endl;
 
       string bs1 = bs.substr(0,8);
       int bi1 =  bitset<8>(bs1).to_ulong();
@@ -80,7 +79,26 @@ int main(int argc, char **argv)
       int bi4 =  bitset<8>(bs4).to_ulong();
 
       string sourceIP = to_string(bi1) + "." + to_string(bi2) + "." + to_string(bi3) + "." + to_string(bi4);
+
+      stringIP = rec[2];
+
+      s = std::bitset<32>(stoull(stringIP));
+      bs = s.to_string();
+
+      bs1 = bs.substr(0,8);
+      bi1 =  bitset<8>(bs1).to_ulong();
     
+      bs2 = bs.substr(8,8);
+      bi2 =  bitset<8>(bs2).to_ulong();
+
+      bs3 = bs.substr(16,8);
+      bi3 =  bitset<8>(bs3).to_ulong();
+
+      bs4 = bs.substr(24,8);
+      bi4 =  bitset<8>(bs4).to_ulong();
+
+      string destIP = to_string(bi1) + "." + to_string(bi2) + "." + to_string(bi3) + "." + to_string(bi4);
+
       outputfile << tmpstring.substr( 0, 4 )
 	     	<< "-"
 		<< tmpstring.substr( 4, 2 ) 
@@ -92,9 +110,9 @@ int main(int argc, char **argv)
 		<< tmpstring.substr( 10, 2 )
 		<< ":"
 		<< tmpstring.substr( 12, 2 )
-		<< "\."
+		<< "."
 		<< tmpstring.substr( 14, 3 )
-		<< "," << sourceIP << endl;      
+		<< "," << sourceIP << "," << destIP << endl;      
     }
 
     outputfile.close();
