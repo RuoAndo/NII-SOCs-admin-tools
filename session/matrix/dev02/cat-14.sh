@@ -1,4 +1,4 @@
-./build.sh reverse
+./build2.sh reverse
 
 STARTDATE=`date -d '19 day ago' "+%Y%m%d"`
 ENDDATE=`date -d '4 day ago' "+%Y%m%d"`
@@ -11,6 +11,8 @@ CURRENTDATE=$STARTDATE
 
 rm -rf rev.trans-src-dst-all-${CURRENTDATE}
 touch rev.trans-src-dst-all-${CURRENTDATE}
+
+echo "timestamp, srcIP, destIP" > rev.trans-src-dst-all-${CURRENTDATE}
 
 while [ 1 ] ; do
         echo trans-src-dst-all-${CURRENTDATE}
