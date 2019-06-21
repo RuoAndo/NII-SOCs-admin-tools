@@ -39,24 +39,15 @@ using namespace tbb;
 
 // 2 / 1024
 #define WORKER_THREAD_NUM 3
-#define MAX_QUEUE_NUM 3
+#define MAX_QUEUE_NUM 6
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
 
 extern void kernel(long* h_key, long* h_value_1, long* h_value_2, string filename, int size);
-extern void transfer(unsigned long long *key, long *value, unsigned long long *key_out, long *value_out, int kBytes, int vBytes, size_t data_size, int thread_id);
+extern void transfer(unsigned long long *key, long *value, unsigned long long *key_out, long *value_out, int kBytes, int vBytes, size_t data_size, int* new_size, int thread_id);
 
-typedef tbb::concurrent_vector<long> iTbb_Vec1;
-iTbb_Vec1 TbbVec1;
-
-typedef tbb::concurrent_vector<long> iTbb_Vec2;
-iTbb_Vec2 TbbVec2;
-
-typedef tbb::concurrent_vector<unsigned long long> iTbb_Vec3;
-iTbb_Vec3 TbbVec3;
-
-typedef tbb::concurrent_vector<int> iTbb_Vec_category;
-iTbb_Vec_category TbbVec_category;
+typedef tbb::concurrent_hash_map<long, int> iTbb_Vec_timestamp;
+static iTbb_Vec_tiestamp TbbVec_timestamp; 
 
 extern void kernel(long* h_key, long* h_value_1, long* h_value_2, int size);
 
@@ -140,6 +131,8 @@ int traverse_file(char* filename, int thread_id) {
     
     long *value_out;
     value_out = (long *)malloc(vBytes);
+
+    int new_size = 0;
     
     start_timer(&t);    
     for (unsigned int row = 0; row < data.size(); row++)
@@ -177,16 +170,14 @@ int traverse_file(char* filename, int thread_id) {
     print_timer(travdirtime);
     cout << endl;
 
-    // start_timer(&t);    
-    transfer(key, value, key_out, value_out, kBytes, vBytes, data.size(), thread_id);
-    
-    // cout << "thread:" << thread_id << " - reduction done." << endl;
-    // travdirtime = stop_timer(&t);
-    // print_timer(travdirtime);
-
-    
-    for(int i = 0; i < 3; i++)
-      cout << key_out[i] << "," << value_out[i] << endl;
+    transfer(key, value, key_out, value_out, kBytes, vBytes, data.size(), &new_size, thread_id);
+   
+    for(int i = 0; i < new_size; i++)
+      {
+	iTbb_Vec_timestamp::accessor tms;
+	TbbVec_timestamp.insert(tms, key_out[i]);
+	tms->second += value_out[i];
+      }
 
     /*
     long *d_A;
@@ -435,6 +426,24 @@ int main(int argc, char* argv[]) {
 
     print_result(&targ[0]);
 
+    /*
+    typedef tbb::concurrent_hash_map<long, int> iTbb_Vec_timestamp;
+    static iTbb_Vec_timestamp TbbVec_timestamp; 
+    */
+    
+    std::map<unsigned long long, long> final;
+    
+    for(auto itr = TbbVec_timestamp.begin(); itr != TbbVec_timestamp.end(); ++itr) {
+      final.insert(std::make_pair((unsigned long long)(itr->first),long(itr->second)));
+    }
+
+    ofstream outputfile("tmp");
+    for(auto itr = final.begin(); itr != final.end(); ++itr) {
+      // cout << itr->first << "," << itr->second << endl;
+      outputfile << itr->first << "," << itr->second << endl;			       
+    }
+    outputfile.close();
+    
     /*
     for (i = 1; i < thread_num; ++i) {
         if ((targ[i].q)->fname[i] != NULL) free((targ[i].q)->fname[i]);
