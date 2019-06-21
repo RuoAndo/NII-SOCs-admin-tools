@@ -161,8 +161,13 @@ int traverse_file(char* filename, int thread_id) {
 	      tms.erase(c,1);
 	}
 
+	std::string bytes = rec[20];
+	for(size_t c = bytes.find_first_of("\""); c != string::npos; c = c = bytes.find_first_of("\"")){
+    	      bytes.erase(c,1);
+	}
+	
 	key[row] = stoull(tms);
-	value[row] = 1;
+	value[row] = stol(bytes);
     }
 
     cout << "thread:" << thread_id << ":" << data.size() << " lines - read done." << endl;
@@ -434,10 +439,10 @@ int main(int argc, char* argv[]) {
     std::map<unsigned long long, long> final;
     
     for(auto itr = TbbVec_timestamp.begin(); itr != TbbVec_timestamp.end(); ++itr) {
-      final.insert(std::make_pair((unsigned long long)(itr->first), long(itr->second)));
+      final.insert(std::make_pair((unsigned long long)(itr->first),long(itr->second)));
     }
     
-    ofstream outputfile("tmp-counts");
+    ofstream outputfile("tmp-bytes");
     for(auto itr = final.begin(); itr != final.end(); ++itr) {
       // cout << itr->first << "," << itr->second << endl;
       outputfile << itr->first << "," << itr->second << endl;			       
