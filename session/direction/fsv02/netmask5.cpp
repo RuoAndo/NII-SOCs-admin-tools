@@ -219,9 +219,11 @@ int main( int argc, char* argv[] ) {
 	      std::cout << counter << "," << found_flag.size() << "," << session_data.size() << std::endl;
 	      
 
-	      const string file_rendered = "rendered_" + session_file;
-	      // std::remove(file_rendered);
-	      ofstream outputfile(file_rendered);
+	      const string file_rendered_outward = "rendered_outward_" + session_file;
+	      ofstream outputfile_outward(file_rendered_outward);
+
+	      const string file_rendered_inward = "rendered_inward_" + session_file;
+	      ofstream outputfile_inward(file_rendered_inward);
 	  
 	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 		vector<string> rec3 = session_data[row3];
@@ -233,7 +235,7 @@ int main( int argc, char* argv[] ) {
 		      all_line = all_line + "," + *itr;
 		    }
 		    // std::cout << all_line << std::endl;
-		    outputfile << all_line << std::endl;
+		    outputfile_outward << all_line << std::endl;
 		  }
 		else
 		  {
@@ -243,11 +245,12 @@ int main( int argc, char* argv[] ) {
 		      all_line = all_line + "," + *itr;
 		    }
 		    // std::cout << all_line << std::endl;
-		    outputfile << all_line << std::endl;
+		    outputfile_inward << all_line << std::endl;
 		  }	
 	      }
 
-	      outputfile.close();
+	      outputfile_inward.close();
+	      outputfile_outward.close();
 	
               const string file_rendered_2 = "directed_msec_outward_" + session_file;
 	      ofstream outputfile2(file_rendered_2);
