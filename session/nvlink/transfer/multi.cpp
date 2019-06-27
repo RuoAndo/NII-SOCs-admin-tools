@@ -380,7 +380,8 @@ void print_result(thread_arg_t* arg) {
 
 int main(int argc, char* argv[]) {
     int i;
-    int thread_num = 1 + WORKER_THREAD_NUM;
+    // int thread_num = 1 + WORKER_THREAD_NUM;
+    int thread_num = WORKER_THREAD_NUM;
     unsigned int t, travdirtime;
     queue_t q;
     thread_arg_t targ[thread_num];
@@ -440,7 +441,15 @@ int main(int argc, char* argv[]) {
     ofstream outputfile("tmp-counts");
     for(auto itr = final.begin(); itr != final.end(); ++itr) {
       // cout << itr->first << "," << itr->second << endl;
-      outputfile << itr->first << "," << itr->second << endl;			       
+
+      std::string timestamp = to_string(itr->first);
+
+      outputfile << timestamp.substr(0,4) << "-" << timestamp.substr(4,2) << "-" << timestamp.substr(6,2) << " "
+		 << timestamp.substr(8,2) << ":" << timestamp.substr(10,2) << ":" << timestamp.substr(12,2)
+		 << "." << timestamp.substr(14,3) << ","
+		 << itr->second << endl; 
+      
+      // outputfile << itr->first << "," << itr->second << endl;			       
     }
     outputfile.close();
     
