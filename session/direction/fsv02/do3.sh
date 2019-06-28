@@ -1,11 +1,13 @@
+LINES_TO_SPLIT=20000000
+
 DATE=`date --date '4 day ago' +%Y%m%d` 
 echo $DATE
 start_time=`date +%s`
 
-ls -alh /mnt/data/${DATE}/all-org
+ls -alh /data1/${DATE}/all-org
 
 echo "copying..."
-cp /mnt/data/${DATE}/all-org .
+cp /data1/${DATE}/all-org .
 
 ./build.sh netmask5
 
@@ -62,28 +64,43 @@ done < list
 
 cp rendered_inward-all rendered_inward-all_${DATE}
 cp rendered_outward-all rendered_outward-all_${DATE}
-#scp rendered-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
-#scp rendered-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
-#scp rendered-all_${DATE} 192.168.76.210:/mnt/sdc/session-directed/fsv02/
 
+rm -rf ${DATE}_inward
+mkdir ${DATE}_inward
+split -l ${LINES_TO_SPLIT} rendered_inward-all_${DATE} inward.
+mv inward.* ${DATE}_inward/
+
+rm -rf ${DATE}_outward
+mkdir ${DATE}_outward
+split -l ${LINES_TO_SPLIT} rendered_outward-all_${DATE} outward.
+mv outward.* ${DATE}_outward/
+
+scp -r ${DATE}_inward/ 192.168.76.210:/mnt/data/session_directed/fsv02/
+scp -r ${DATE}_outward/ 192.168.76.210:/mnt/data/session_directed/fsv02/
+
+scp -r ${DATE}_inward/ 192.168.76.203:/root/session_directed/fsv02/
+scp -r ${DATE}_outward/ 192.168.76.203:/root/session_directed/fsv02/
+
+#scp rendered_inward-all_${DATE} 192.168.76.210:/mnt/data/session_directed/fsv02
+#scp rendered_inward-all_${DATE} 192.168.76.210:/mnt/data/session_directed/fsv02
 
 cp directed_msec_inward-all directed_msec_inward-all_${DATE}
-#scp directed_msec_inward-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
-#scp directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
-#scp directed_msec_inward-all_${DATE} 192.168.76.203:/root/session-directed/fsv02/
-#scp directed_msec_inward-all_${DATE} 192.168.76.210:/mnt/data/session-directed/fsv02/
-
 cp directed_msec_outward-all directed_msec_outward-all_${DATE}
-#scp directed_msec_outward-all_${DATE} 192.168.72.5:/mnt/sdc/session-directed/fsv02/
-#scp directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/session-directed/fsv02/
-#scp directed_msec_outward-all_${DATE} 192.168.76.203:/root/session-directed/fsv02/
-#scp directed_msec_outward-all_${DATE} 192.168.76.210:/mnt/data/session-directed/fsv02/
 
 wc -l all-org
-wc -l rendered-all_${DATE}
+wc -l rendered_inward-all_${DATE}
+wc -l rendered_outward-all_${DATE}
 
-#rm -rf rendered*
-#rm -rf directed*
+DATE=`date --date '6 day ago' +%Y%m%d`
+
+rm -rf ${DATE}_outward
+rm -rf ${DATE}_inward
+
+rm -rf rendered_inward-all_${DATE}
+rm -rf rendered_outward-all_${DATE}
+
+rm -rf directed_msec_inward-all_${DATE}
+rm -rf directed_msec_outward-all_${DATE}
 
 rm -rf directed_msec_inward_x*
 rm -rf directed_msec_outward_x*
