@@ -1,13 +1,15 @@
 import pyasn
 import datetime
+import sys
+args = sys.argv
 
-f = open('attack.csv', 'r')
+f = open(args[1], 'r')
 line = f.readline()
 line = f.readline()
 
 asndb = pyasn.pyasn('asn_file')
 
-print("timestamp, ipaddr, ASN, mask")
+#print("timestamp, ipaddr, ASN, mask")
 while line:
     #print(line)
     tmp = line.split(",")
