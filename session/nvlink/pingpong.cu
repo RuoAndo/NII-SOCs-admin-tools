@@ -28,10 +28,6 @@ inline bool isCapableP2P(int ngpus)
     return (iCount == ngpus);
 }
 
-/*
- * enable P2P memcopies between GPUs (all GPUs must be compute capability 2.0 or
- * later (Fermi or later)).
- */
 inline void enableP2P(int ngpus)
 {
     for (int i = 0; i < ngpus; i++)
@@ -92,6 +88,9 @@ int main(int argc, char **argv)
 {
     int ngpus;
 
+    int N;
+    N = atoi(argv[1]);
+
     // check device count
     // CHECK(cudaGetDeviceCount(&ngpus));
     // printf("> CUDA-capable device count: %i\n", ngpus);
@@ -102,6 +101,7 @@ int main(int argc, char **argv)
     isCapableP2P(ngpus);
 
     // get ngpus from command line
+    /*
     if (argc > 1)
     {
         if (atoi(argv[1]) > ngpus)
@@ -114,6 +114,7 @@ int main(int argc, char **argv)
 
         ngpus = atoi(argv[1]);
     }
+    */
 
     if (ngpus > 2)
     {
@@ -124,7 +125,8 @@ int main(int argc, char **argv)
     if (ngpus > 1) enableP2P(ngpus);
 
     // Allocate buffers
-    int iSize = 1024 * 1024 * 16;
+    // int iSize = 1024 * 1024 * 16;
+    int iSize = 1024 * 1024 * N;
     const size_t iBytes = iSize * sizeof(float);
     printf("\nAllocating buffers (%iMB on each GPU and CPU Host)...\n",
            int(iBytes / 1024 / 1024));
