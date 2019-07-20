@@ -118,7 +118,23 @@ int main(int argc, const char* argv[])
   travdirtime = stop_timer(&t);
   print_timer(travdirtime);  
 
+  cudaSetDevice(0);
+
+  cout << "[transfer GPU->GPU] GPU0(d_A[0],d_B[0]) -> GPU1(d_A[1],d_B[1])" << endl;
+  start_timer(&t);
+  cudaMemcpy(d_A[1], d_A[0], ullBytes, cudaMemcpyDeviceToDevice);
+  cudaMemcpy(d_B[1], d_B[0], lBytes, cudaMemcpyDeviceToDevice);
+  travdirtime = stop_timer(&t);
+  print_timer(travdirtime);  
+
   cudaSetDevice(1);
+
+  cout << "[transfer GPU->GPU] GPU1(d_A[1],d_B[1]) -> GPU2(d_A[2],d_B[2])" << endl;
+  start_timer(&t);
+  cudaMemcpy(d_A[2], d_A[1], ullBytes, cudaMemcpyDeviceToDevice);
+  cudaMemcpy(d_B[2], d_B[1], lBytes, cudaMemcpyDeviceToDevice);
+  travdirtime = stop_timer(&t);
+  print_timer(travdirtime);  
 
   /*
   start_timer(&t);
@@ -131,13 +147,6 @@ int main(int argc, const char* argv[])
   travdirtime = stop_timer(&t);
   print_timer(travdirtime);  
   */
-
-  cout << "[transfer GPU->GPU] GPU0(d_A[0],d_B[0]) -> GPU1(d_A[1],d_B[1])" << endl;
-  start_timer(&t);
-  cudaMemcpy(d_A[1], d_A[0], ullBytes, cudaMemcpyDeviceToDevice);
-  cudaMemcpy(d_B[1], d_B[0], lBytes, cudaMemcpyDeviceToDevice);
-  travdirtime = stop_timer(&t);
-  print_timer(travdirtime);  
 
   /*
   cudaSetDevice(1);
