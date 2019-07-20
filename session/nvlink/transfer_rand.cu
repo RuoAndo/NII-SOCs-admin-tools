@@ -90,11 +90,12 @@ int main(int argc, const char* argv[])
   start_timer(&t);
   cout << "generating the random number " << N << "..." << endl;
   unsigned long long r;
+  long r2;
   for (int i = 0; i < N; ++i) {    
       r = randN(mt);
       h_A[counter] = r;
       r = randN(mt);
-      h_B[counter] = r;
+      h_B[counter] = r2;
   }
   travdirtime = stop_timer(&t);
   print_timer(travdirtime);  
@@ -117,7 +118,7 @@ int main(int argc, const char* argv[])
   travdirtime = stop_timer(&t);
   print_timer(travdirtime);  
 
-  cudaSetDevice(0);
+  cudaSetDevice(1);
 
   /*
   start_timer(&t);
@@ -134,7 +135,7 @@ int main(int argc, const char* argv[])
   cout << "[transfer GPU->GPU] GPU0(d_A[0],d_B[0]) -> GPU1(d_A[1],d_B[1])" << endl;
   start_timer(&t);
   cudaMemcpy(d_A[1], d_A[0], ullBytes, cudaMemcpyDeviceToDevice);
-  cudaMemcpy(d_B[1], d_B[0], ullBytes, cudaMemcpyDeviceToDevice);
+  cudaMemcpy(d_B[1], d_B[0], lBytes, cudaMemcpyDeviceToDevice);
   travdirtime = stop_timer(&t);
   print_timer(travdirtime);  
 
