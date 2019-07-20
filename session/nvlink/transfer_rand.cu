@@ -128,6 +128,7 @@ int main(int argc, const char* argv[])
   print_timer(travdirtime);  
 
   cudaSetDevice(1);
+  cudaDeviceEnablePeerAccess(1, 2);  
 
   cout << "[transfer GPU->GPU] GPU1(d_A[1],d_B[1]) -> GPU2(d_A[2],d_B[2])" << endl;
   start_timer(&t);
