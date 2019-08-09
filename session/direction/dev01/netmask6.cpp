@@ -265,6 +265,10 @@ int main( int argc, char* argv[] ) {
 
 		    std::string tms = rec3[0];
 		    std::string destIP = rec3[7];
+
+		    for(size_t c = destIP.find_first_of("\""); c != string::npos; c = c = destIP.find_first_of("\"")){
+		      destIP.erase(c,1);
+		    }
 		    
 		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
 		      tms.erase(c,1);
@@ -295,6 +299,10 @@ int main( int argc, char* argv[] ) {
 
 		    std::string tms = rec3[0];
 		    std::string sourceIP = rec3[4];
+
+		    for(size_t c = sourceIP.find_first_of("\""); c != string::npos; c = c = sourceIP.find_first_of("\"")){
+		      sourceIP.erase(c,1);
+		    }
 		    
 		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
 		      tms.erase(c,1);
