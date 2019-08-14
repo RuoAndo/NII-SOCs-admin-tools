@@ -1,3 +1,5 @@
+./build.sh netmask6
+
 LINES_TO_SPLIT=20000000
 
 DATE=`date --date '4 day ago' +%Y%m%d` 
@@ -8,8 +10,6 @@ ls -alh /root/${DATE}/all-org
 
 echo "copying..."
 cp /root/${DATE}/all-org .
-
-./build.sh netmask6
 
 nLines_1=100000000
 nLines_2=500000
@@ -94,6 +94,8 @@ wc -l all-org
 wc -l rendered_inward-all_${DATE}
 wc -l rendered_outward-all_${DATE}
 
+rm -rf x*
+rm -rf y*
 
 #scp -r ${DATE}_inward 192.168.76.203:/root/session_directed/dev02/
 #scp -r ${DATE}_outward 192.168.76.203:/root/session_directed/dev02/
