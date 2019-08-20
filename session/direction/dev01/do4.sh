@@ -97,8 +97,8 @@ wc -l rendered_outward-all_${DATE}
 rm -rf x*
 rm -rf y*
 
-#scp -r ${DATE}_inward 192.168.76.203:/root/session_directed/dev02/
-#scp -r ${DATE}_outward 192.168.76.203:/root/session_directed/dev02/
+scp -r ${DATE}_inward 192.168.72.6:/mnt/sdc/splunk_direction/dev01/
+scp -r ${DATE}_outward 192.168.72.6:/mnt/sdc/splunk_direction/dev01/
 
 DATE=`date --date '6 day ago' +%Y%m%d`
 
