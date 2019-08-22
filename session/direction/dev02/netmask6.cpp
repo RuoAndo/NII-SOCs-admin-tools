@@ -166,6 +166,7 @@ int main( int argc, char* argv[] ) {
 		
 	        if(bit_sessionIP == bit_argIP)
 		  {
+		    // std::cout << "HIT" << std::endl;
 		    std::string all_line;
 		    all_line = "1";
 		    // counter = 0;
@@ -198,6 +199,7 @@ int main( int argc, char* argv[] ) {
 	      }	     
 	  }
 
+	      /*
 	      for (const auto& [key, value] : found_flag){
 		if(value==1)
 		  {
@@ -205,10 +207,22 @@ int main( int argc, char* argv[] ) {
 		  counter = counter + 1;
 		  }
 	      }
+	      */
+
+	      for(auto itr = found_flag.begin(); itr != found_flag.end(); ++itr) {
+		if(itr->second==1)
+		  counter = counter + 1;
+		// else
+		//  counter = counter + 1;
+	      }
+
 	      std::cout << counter << "," << found_flag.size() << "," << session_data.size() << std::endl;
 	      
-	      const string file_rendered = "rendered_" + session_file;
-	      ofstream outputfile(file_rendered);
+	      const string file_rendered_outward = "rendered_outward_" + session_file;
+	      ofstream outputfile_outward(file_rendered_outward);
+
+	      const string file_rendered_inward = "rendered_inward_" + session_file;
+	      ofstream outputfile_inward(file_rendered_inward);
 	  
 	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 		vector<string> rec3 = session_data[row3];
@@ -220,8 +234,8 @@ int main( int argc, char* argv[] ) {
 		      all_line = all_line + "," + *itr;
 		    }
 		    // std::cout << all_line << std::endl;
-		    outputfile << all_line << std::endl;
-		}
+		    outputfile_outward << all_line << std::endl;
+		  }
 		else
 		  {
 		    std::string all_line;
@@ -230,30 +244,28 @@ int main( int argc, char* argv[] ) {
 		      all_line = all_line + "," + *itr;
 		    }
 		    // std::cout << all_line << std::endl;
-		    outputfile << all_line << std::endl;
+		    outputfile_inward << all_line << std::endl;
 		  }	
 	      }
 
-	      outputfile.close();
-
-              const string file_rendered_2 = "directed_msec_" + session_file;
+	      outputfile_inward.close();
+	      outputfile_outward.close();
+	
+              const string file_rendered_2 = "directed_msec_outward_" + session_file;
 	      ofstream outputfile2(file_rendered_2);
-	  
+	
+              const string file_rendered_3 = "directed_msec_inward_" + session_file;
+	      ofstream outputfile3(file_rendered_3);
+
 	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 		vector<string> rec3 = session_data[row3];
 		if(found_flag[row3]==1)
 		  {
 		    std::string all_line;
 
-		    /*
-		    all_line = "1";
-		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
-		      all_line = all_line + "," + *itr;
-		    }
-		    */
-
 		    std::string tms = rec3[0];
-	    
+		    std::string destIP = rec3[7];
+		    
 		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
 		      tms.erase(c,1);
 		    }
@@ -274,24 +286,16 @@ int main( int argc, char* argv[] ) {
 		      tms.erase(c,1);
 		    }
 		    
-		    all_line = tms + ",1";
-		    
-		    // std::cout << all_line << std::endl;
+		    all_line = "1," + tms + "," + destIP;
 		    outputfile2 << all_line << std::endl;
 		}
 		else
 		  {
 		    std::string all_line;
 
-		    /*
-		    all_line = "0";
-		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
-		      all_line = all_line + "," + *itr;
-		    }
-		    */
-
 		    std::string tms = rec3[0];
-	    
+		    std::string sourceIP = rec3[4];
+		    
 		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
 		      tms.erase(c,1);
 		    }
@@ -312,15 +316,17 @@ int main( int argc, char* argv[] ) {
 		      tms.erase(c,1);
 		    }
 
-		    all_line = tms + ",0";
+		    all_line = "0," + tms + "," + sourceIP;
 		    
 		    // std::cout << all_line << std::endl;
-		    outputfile2 << all_line << std::endl;
+		    outputfile3 << all_line << std::endl;
 		  }	
 	      }
 
 	      outputfile2.close();
-	      
+	      outputfile3.close();
+
+	  
         return 0;
     }
     
