@@ -32,6 +32,12 @@ touch directed_msec_inward-all
 rm -rf directed_msec_outward-all
 touch directed_msec_outward-all
 
+rm -rf directed_reduced_outward-all
+touch directed_reduced_outward-all
+
+rm -rf directed_reduced_inward-all
+touch directed_reduced_inward-all
+
 while read line; do
     echo $line
     
@@ -103,20 +109,25 @@ cp directed_msec_outward-all directed_msec_outward-all_${DATE}
 cp directed_msec_inward-all directed_msec_inward-all_current
 cp directed_msec_outward-all directed_msec_outward-all_current
 
-cp directed_msec_inward-all directed_reduced_inward-all_${DATE}
-cp directed_msec_outward-all directed_reduced_outward-all_${DATE}
+cp directed_reduced_inward-all directed_reduced_inward-all_${DATE}
+cp directed_reduced_outward-all directed_reduced_outward-all_${DATE}
 
-cp directed_msec_inward-all directed_reduced_inward-all_current
-cp directed_msec_outward-all directed_reduced_outward-all_current
+cp directed_reduced_inward-all directed_reduced_inward-all_current
+cp directed_reduced_outward-all directed_reduced_outward-all_current
 
 wc -l all-org
 wc -l rendered_inward-all_${DATE}
 wc -l rendered_outward-all_${DATE}
 
-#scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-#scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-#scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-#scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
+scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+
+scp -r directed_reduced_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_reduced_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_reduced_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_reduced_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
 
 DATE=`date --date '6 day ago' +%Y%m%d`
 
@@ -128,6 +139,9 @@ rm -rf rendered_outward-all_${DATE}
 
 rm -rf directed_msec_inward-all_${DATE}
 rm -rf directed_msec_outward-all_${DATE}
+
+rm -rf directed_reduced_inward-all_${DATE}
+rm -rf directed_reduced_outward-all_${DATE}
 
 rm -rf directed_msec_inward_x*
 rm -rf directed_msec_outward_x*

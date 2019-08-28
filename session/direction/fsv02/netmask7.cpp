@@ -349,8 +349,8 @@ int main( int argc, char* argv[] ) {
 
 		    all_line = tms_org + "," + sourceIP;
 
-		    iTbb_timestamp_egress::accessor t;
-		    TbbVec_timestamp_egress.insert(t, stoull(tms));
+		    iTbb_timestamp_ingress::accessor t;
+		    TbbVec_timestamp_ingress.insert(t, stoull(tms));
 		    t->second += 1;
 		    
 		    // std::cout << all_line << std::endl;
@@ -370,8 +370,15 @@ int main( int argc, char* argv[] ) {
               const string file_rendered_4 = "directed_reduced_inward_" + session_file;
 	      ofstream outputfile4(file_rendered_4);
 
+	      outputfile4 << "date, count" << endl;
+	      
 	      for(auto itr = TbbVec_timestamp_ingress.begin(); itr != TbbVec_timestamp_ingress.end(); ++itr) {
-		outputfile4 << (unsigned long long)(itr->first) << "," <<  long(itr->second) << endl;
+
+		std::string timestamp = to_string(itr->first);                                                 
+		outputfile4 << timestamp.substr(0,4) << "/" << timestamp.substr(4,2) << "/" 
+			    << timestamp.substr(6,2) << " " << timestamp.substr(8,2) << ":" 
+			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2) << "." 
+			    << timestamp.substr(14,3) << "," << (long)itr->second << endl;                  
 	      }	      
 
 	      outputfile4.close();
@@ -379,8 +386,15 @@ int main( int argc, char* argv[] ) {
               const string file_rendered_5 = "directed_reduced_outward_" + session_file;
 	      ofstream outputfile5(file_rendered_5);
 
+	      outputfile5 << "date, count" << endl;
+	      
 	      for(auto itr = TbbVec_timestamp_egress.begin(); itr != TbbVec_timestamp_egress.end(); ++itr) {
-		outputfile5 << (unsigned long long)(itr->first) << "," <<  long(itr->second) << endl;
+
+		std::string timestamp = to_string(itr->first);                                                 
+		outputfile5 << timestamp.substr(0,4) << "/" << timestamp.substr(4,2) << "/" 
+			    << timestamp.substr(6,2) << " " << timestamp.substr(8,2) << ":" 
+			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2) << "." 
+			    << timestamp.substr(14,3) << "," << (long)itr->second << endl;                  
 	      }	      
 
 	      outputfile5.close();
