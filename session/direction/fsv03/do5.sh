@@ -4,10 +4,10 @@ DATE=`date --date '4 day ago' +%Y%m%d`
 echo $DATE
 start_time=`date +%s`
 
-#ls -alh /data1/${DATE}/all-org
+ls -alh /data1/${DATE}/all-org
 
-#echo "copying..."
-#cp /data1/${DATE}/all-org .
+echo "copying..."
+cp /data1/${DATE}/all-org .
 
 ./build.sh netmask7
 
@@ -119,10 +119,15 @@ wc -l all-org
 wc -l rendered_inward-all_${DATE}
 wc -l rendered_outward-all_${DATE}
 
-scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv03/
-scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv03/
-scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv03/
-scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv03/
+scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+
+scp -r directed_reduced_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_reduced_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_reduced_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
+scp -r directed_reduced_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/fsv02/
 
 DATE=`date --date '6 day ago' +%Y%m%d`
 
@@ -134,6 +139,9 @@ rm -rf rendered_outward-all_${DATE}
 
 rm -rf directed_msec_inward-all_${DATE}
 rm -rf directed_msec_outward-all_${DATE}
+
+rm -rf directed_reduced_inward-all_${DATE}
+rm -rf directed_reduced_outward-all_${DATE}
 
 rm -rf directed_msec_inward_x*
 rm -rf directed_msec_outward_x*
