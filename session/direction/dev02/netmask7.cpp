@@ -304,8 +304,11 @@ int main( int argc, char* argv[] ) {
 		      tms.erase(c,1);
 		    }
 		    
+		    std::string timestamp_sec = tms.substr(0,4) + tms.substr(4,2) + tms.substr(6,2) + tms.substr(8,2) 
+		      + tms.substr(10,2) + tms.substr(12,2);                 
+
 		    iTbb_timestamp_egress::accessor t;
-		    TbbVec_timestamp_egress.insert(t, stoull(tms));
+		    TbbVec_timestamp_egress.insert(t, stoull(timestamp_sec));
 		    t->second += 1;
 
 		    all_line = tms_org + "," + destIP;
@@ -349,8 +352,11 @@ int main( int argc, char* argv[] ) {
 
 		    all_line = tms_org + "," + sourceIP;
 
+		    std::string timestamp_sec = tms.substr(0,4) + tms.substr(4,2) + tms.substr(6,2) + tms.substr(8,2) 
+		      + tms.substr(10,2) + tms.substr(12,2);                 
+
 		    iTbb_timestamp_ingress::accessor t;
-		    TbbVec_timestamp_ingress.insert(t, stoull(tms));
+		    TbbVec_timestamp_ingress.insert(t, stoull(timestamp_sec));
 		    t->second += 1;
 		    
 		    // std::cout << all_line << std::endl;
@@ -370,32 +376,42 @@ int main( int argc, char* argv[] ) {
               const string file_rendered_4 = "directed_reduced_inward_" + session_file;
 	      ofstream outputfile4(file_rendered_4);
 
+	      std::map<unsigned long long, long> final4;
+
 	      outputfile4 << "date, count" << endl;
 	      
 	      for(auto itr = TbbVec_timestamp_ingress.begin(); itr != TbbVec_timestamp_ingress.end(); ++itr) {
+		final4.insert(std::make_pair((unsigned long long)(itr->first), long(itr->second)));
+	      }	      
 
+	      for(auto itr = final4.begin(); itr != final4.end(); ++itr) {
 		std::string timestamp = to_string(itr->first);                                                 
 		outputfile4 << timestamp.substr(0,4) << "/" << timestamp.substr(4,2) << "/" 
 			    << timestamp.substr(6,2) << " " << timestamp.substr(8,2) << ":" 
-			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2) << "." 
-			    << timestamp.substr(14,3) << "," << (long)itr->second << endl;                  
-	      }	      
+			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2)  
+			    << "," << (long)itr->second << endl;                  
+	      }
 
 	      outputfile4.close();
 
               const string file_rendered_5 = "directed_reduced_outward_" + session_file;
 	      ofstream outputfile5(file_rendered_5);
 
+	      std::map<unsigned long long, long> final5;
+
 	      outputfile5 << "date, count" << endl;
 	      
 	      for(auto itr = TbbVec_timestamp_egress.begin(); itr != TbbVec_timestamp_egress.end(); ++itr) {
+		final5.insert(std::make_pair((unsigned long long)(itr->first), long(itr->second)));
+	      }	      
 
+	      for(auto itr = final5.begin(); itr != final5.end(); ++itr) {
 		std::string timestamp = to_string(itr->first);                                                 
 		outputfile5 << timestamp.substr(0,4) << "/" << timestamp.substr(4,2) << "/" 
 			    << timestamp.substr(6,2) << " " << timestamp.substr(8,2) << ":" 
-			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2) << "." 
-			    << timestamp.substr(14,3) << "," << (long)itr->second << endl;                  
-	      }	      
+			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2) 
+			    << "," << (long)itr->second << endl;                  
+	      }
 
 	      outputfile5.close();
 
