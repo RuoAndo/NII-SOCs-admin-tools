@@ -257,8 +257,8 @@ int main( int argc, char* argv[] ) {
               const string file_rendered_3 = "directed_msec_inward_" + session_file;
 	      ofstream outputfile3(file_rendered_3);
 
-	      outputfile3 << "date, sourceIP" << endl;
-	      outputfile2 << "date, destIP" << endl;
+	      outputfile3 << "date, direction, timestamp, sourceIP" << endl;
+	      outputfile2 << "date, direction, timestamp, destIP" << endl;
 	      
 	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 		vector<string> rec3 = session_data[row3];
@@ -298,7 +298,7 @@ int main( int argc, char* argv[] ) {
 		      tms.erase(c,1);
 		    }
 		    
-		    all_line = tms_org + "," + destIP;
+		    all_line = tms_org + "," + "1," + tms + "," + destIP;
 		    outputfile2 << all_line << std::endl;
 		}
 		else
@@ -337,7 +337,7 @@ int main( int argc, char* argv[] ) {
 		      tms.erase(c,1);
 		    }
 
-		    all_line = tms_org + "," + sourceIP;
+		    all_line = tms_org + "," + "0," + tms + "," + sourceIP;
 		    
 		    // std::cout << all_line << std::endl;
 		    outputfile3 << all_line << std::endl;

@@ -14,12 +14,12 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>   
 
-// #include "tbb/concurrent_hash_map.h"
-// #include "tbb/blocked_range.h"
-// #include "tbb/parallel_for.h"
-// #include "tbb/tick_count.h"
-// #include "tbb/task_scheduler_init.h"
-// #include "tbb/concurrent_vector.h"
+#include "tbb/concurrent_hash_map.h"
+#include "tbb/blocked_range.h"
+#include "tbb/parallel_for.h"
+#include "tbb/tick_count.h"
+#include "tbb/task_scheduler_init.h"
+#include "tbb/concurrent_vector.h"
 // #include "tbb/tbb_allocator.hz"
 #include "utility.h"
 
@@ -34,6 +34,12 @@ std::vector<string> timestamp;
 
 std::vector<string> IPstring_src;
 std::vector<string> IPstring_dst;
+
+typedef tbb::concurrent_hash_map<unsigned long long, long> iTbb_timestamp_ingress;
+static iTbb_timestamp_ingress TbbVec_timestamp_ingress; 
+
+typedef tbb::concurrent_hash_map<unsigned long long, long> iTbb_timestamp_egress;
+static iTbb_timestamp_egress TbbVec_timestamp_egress; 
 
 std::vector<std::string> split_string_2(std::string str, char del) {
   int first = 0;
@@ -298,6 +304,10 @@ int main( int argc, char* argv[] ) {
 		      tms.erase(c,1);
 		    }
 		    
+		    iTbb_timestamp_egress::accessor t;
+		    TbbVec_timestamp_egress.insert(t, stoull(tms));
+		    t->second += 1;
+
 		    all_line = tms_org + "," + destIP;
 		    outputfile2 << all_line << std::endl;
 		}
@@ -338,16 +348,54 @@ int main( int argc, char* argv[] ) {
 		    }
 
 		    all_line = tms_org + "," + sourceIP;
+
+		    iTbb_timestamp_ingress::accessor t;
+		    TbbVec_timestamp_ingress.insert(t, stoull(tms));
+		    t->second += 1;
 		    
 		    // std::cout << all_line << std::endl;
 		    outputfile3 << all_line << std::endl;
 		  }	
+
 	      }
 
 	      outputfile2.close();
 	      outputfile3.close();
 
-	  
+	      /*
+	      typedef tbb::concurrent_hash_map<unsigned long long, long> iTbb_timestamp_ingress;
+	      static iTbb_timestamp_ingress TbbVec_timestamp_ingress;
+	      */
+
+              const string file_rendered_4 = "directed_reduced_inward_" + session_file;
+	      ofstream outputfile4(file_rendered_4);
+
+	      for(auto itr = TbbVec_timestamp_ingress.begin(); itr != TbbVec_timestamp_ingress.end(); ++itr) {
+
+		std::string timestamp = to_string(itr->first);                                                 
+		outputfile4 << timestamp.substr(0,4) << "-" << timestamp.substr(4,2) << "-" 
+			    << timestamp.substr(6,2) << " " << timestamp.substr(8,2) << ":" 
+			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2) << "." 
+			    << timestamp.substr(14,3) << "," << (long)itr->second << endl;                  
+	      }	      
+
+	      outputfile4.close();
+
+              const string file_rendered_5 = "directed_reduced_outward_" + session_file;
+	      ofstream outputfile5(file_rendered_5);
+
+	      for(auto itr = TbbVec_timestamp_egress.begin(); itr != TbbVec_timestamp_egress.end(); ++itr) {
+
+		std::string timestamp = to_string(itr->first);                                                 
+		outputfile5 << timestamp.substr(0,4) << "-" << timestamp.substr(4,2) << "-" 
+			    << timestamp.substr(6,2) << " " << timestamp.substr(8,2) << ":" 
+			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2) << "." 
+			    << timestamp.substr(14,3) << "," << (long)itr->second << endl;                  
+	      }	      
+
+	      outputfile5.close();
+
+
         return 0;
     }
     

@@ -218,6 +218,7 @@ int main( int argc, char* argv[] ) {
 
 	      std::cout << counter << "," << found_flag.size() << "," << session_data.size() << std::endl;
 	      
+
 	      const string file_rendered_outward = "rendered_outward_" + session_file;
 	      ofstream outputfile_outward(file_rendered_outward);
 
@@ -257,27 +258,14 @@ int main( int argc, char* argv[] ) {
               const string file_rendered_3 = "directed_msec_inward_" + session_file;
 	      ofstream outputfile3(file_rendered_3);
 
-	      outputfile3 << "date, sourceIP" << endl;
-	      outputfile2 << "date, destIP" << endl;
-	      
 	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
 		vector<string> rec3 = session_data[row3];
 		if(found_flag[row3]==1)
 		  {
 		    std::string all_line;
 
-		    std::string tms_org = rec3[0];
 		    std::string tms = rec3[0];
-		    std::string destIP = rec3[7];
-
-		    for(size_t c = tms_org.find_first_of("\""); c != string::npos; c = c = tms_org.find_first_of("\"")){
-		      tms_org.erase(c,1);
-		    }
-		    
-		    for(size_t c = destIP.find_first_of("\""); c != string::npos; c = c = destIP.find_first_of("\"")){
-		      destIP.erase(c,1);
-		    }
-		    
+	    
 		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
 		      tms.erase(c,1);
 		    }
@@ -298,25 +286,15 @@ int main( int argc, char* argv[] ) {
 		      tms.erase(c,1);
 		    }
 		    
-		    all_line = tms_org + "," + destIP;
+		    all_line = tms + ",1";
 		    outputfile2 << all_line << std::endl;
 		}
 		else
 		  {
 		    std::string all_line;
 
-		    std::string tms_org = rec3[0];
 		    std::string tms = rec3[0];
-		    std::string sourceIP = rec3[4];
-
-		    for(size_t c = tms_org.find_first_of("\""); c != string::npos; c = c = tms_org.find_first_of("\"")){
-		      tms_org.erase(c,1);
-		    }
-		    
-		    for(size_t c = sourceIP.find_first_of("\""); c != string::npos; c = c = sourceIP.find_first_of("\"")){
-		      sourceIP.erase(c,1);
-		    }
-		    
+	    
 		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
 		      tms.erase(c,1);
 		    }
@@ -337,7 +315,7 @@ int main( int argc, char* argv[] ) {
 		      tms.erase(c,1);
 		    }
 
-		    all_line = tms_org + "," + sourceIP;
+		    all_line = tms + ",0";
 		    
 		    // std::cout << all_line << std::endl;
 		    outputfile3 << all_line << std::endl;
