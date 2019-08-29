@@ -4,10 +4,10 @@ DATE=`date --date '4 day ago' +%Y%m%d`
 echo $DATE
 start_time=`date +%s`
 
-ls -alh /data1/${DATE}/all-org
+#ls -alh /data1/${DATE}/all-org
 
-echo "copying..."
-cp /data1/${DATE}/all-org .
+#echo "copying..."
+#cp /data1/${DATE}/all-org .
 
 ./build.sh netmask7
 
@@ -76,7 +76,7 @@ while read line; do
     while read line2; do
 	echo $line2
 	cat directed_msec_outward_${line2} >> directed_msec_outward-all
-    done < list
+    done < list2
 
     while read line2; do
 	echo $line2
