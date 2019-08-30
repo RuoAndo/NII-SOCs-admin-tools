@@ -9,7 +9,7 @@ ls -alh /mnt/data/${DATE}/all-org
 echo "copying..."
 cp /mnt/data/${DATE}/all-org .
 
-./build.sh netmask7
+./build.sh netmask6
 
 nLines_1=100000000
 nLines_2=500000
@@ -32,12 +32,6 @@ touch directed_msec_inward-all
 rm -rf directed_msec_outward-all
 touch directed_msec_outward-all
 
-rm -rf directed_reduced_outward-all
-touch directed_reduced_outward-all
-
-rm -rf directed_reduced_inward-all
-touch directed_reduced_inward-all
-
 while read line; do
     echo $line
     
@@ -51,7 +45,7 @@ while read line; do
 	echo $line2
 	rm -rf rendered_$line2
 	nLines_to_split=`wc -l $line2 | cut -d " " -f 1`
-	./netmask7 monitoring_list2 $line2 ${nLines_to_split} &
+	./netmask6 monitoring_list2 $line2 ${nLines_to_split} &
     done < list2
 
     wait
@@ -78,16 +72,6 @@ while read line; do
 	cat directed_msec_outward_${line2} >> directed_msec_outward-all
     done < list2
 
-    while read line2; do
-	echo $line2
-	cat directed_reduced_outward_${line2} >> directed_reduced_outward-all
-    done < list2
-
-    while read line2; do
-	echo $line2
-	cat directed_reduced_inward_${line2} >> directed_reduced_inward-all
-    done < list2
-
 done < list
 
 cp rendered_inward-all rendered_inward-all_${DATE}
@@ -109,25 +93,27 @@ cp directed_msec_outward-all directed_msec_outward-all_${DATE}
 cp directed_msec_inward-all directed_msec_inward-all_current
 cp directed_msec_outward-all directed_msec_outward-all_current
 
-cp directed_reduced_inward-all directed_reduced_inward-all_${DATE}
-cp directed_reduced_outward-all directed_reduced_outward-all_${DATE}
-
-cp directed_reduced_inward-all directed_reduced_inward-all_current
-cp directed_reduced_outward-all directed_reduced_outward-all_current
-
 wc -l all-org
 wc -l rendered_inward-all_${DATE}
 wc -l rendered_outward-all_${DATE}
 
-scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
+#scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward/
+#scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward/
 
-scp -r directed_reduced_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-scp -r directed_reduced_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-scp -r directed_reduced_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-scp -r directed_reduced_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
+#scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward/
+#scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward/
+scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward/
+scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward/
+
+#scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward-bar/
+#scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward-bar/
+scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward-bar/
+scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward-bar/
+
+#scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward-sort/
+#scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward-sort/
+scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward-sort/
+scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward-sort/
 
 DATE=`date --date '6 day ago' +%Y%m%d`
 
@@ -142,14 +128,11 @@ rm -rf directed_msec_outward-all_${DATE}
 
 rm -rf directed_msec_inward_x*
 rm -rf directed_msec_outward_x*
-
-rm -rf directed_reduced_inward_x*
-rm -rf directed_reduced_outward_x*
-
 rm -rf rendered_inward_x*
 rm -rf rendered_outward_x*
 
 rm -rf x*
+rm -rf y*
 
 end_time=`date +%s`
 time=$((end_time - start_time))

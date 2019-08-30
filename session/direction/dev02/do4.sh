@@ -97,11 +97,23 @@ wc -l all-org
 wc -l rendered_inward-all_${DATE}
 wc -l rendered_outward-all_${DATE}
 
-scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
+#scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward/
+#scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward/
 
-scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
-scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/
+#scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward/
+#scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward/
+scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward/
+scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward/
+
+#scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward-bar/
+#scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward-bar/
+scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward-bar/
+scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward-bar/
+
+#scp -r directed_msec_inward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward-sort/
+#scp -r directed_msec_outward-all_current 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward-sort/
+scp -r directed_msec_inward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-inward-sort/
+scp -r directed_msec_outward-all_${DATE} 192.168.72.6:/mnt/sdc/splunk_direction/dev02/msec-outward-sort/
 
 DATE=`date --date '6 day ago' +%Y%m%d`
 
@@ -120,6 +132,7 @@ rm -rf rendered_inward_x*
 rm -rf rendered_outward_x*
 
 rm -rf x*
+rm -rf y*
 
 end_time=`date +%s`
 time=$((end_time - start_time))
