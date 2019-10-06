@@ -203,211 +203,52 @@ int main( int argc, char* argv[] ) {
 	      addr_counter++;
 	  }
 
-	      int ingress_counter = 0;
-	      int egress_counter = 0;
+	  int ingress_counter = 0;
+	  int egress_counter = 0;
 	  
-	      for(auto itr = found_flag.begin(); itr != found_flag.end(); ++itr) {
-		if(itr->second==1)
-		  ingress_counter++;
-	      }
+	  for(auto itr = found_flag.begin(); itr != found_flag.end(); ++itr) {
+	    if(itr->second==1)
+	      ingress_counter++;
+	  }
 
-	      for(auto itr = found_flag_2.begin(); itr != found_flag_2.end(); ++itr) {
-		if(itr->second==1)
-		  egress_counter++;
-	      }
+	  for(auto itr = found_flag_2.begin(); itr != found_flag_2.end(); ++itr) {
+	    if(itr->second==1)
+	      egress_counter++;
+	  }
 	      
-	      std::cout << "INGRESS:" << ingress_counter << "," << "EGRESS:" << egress_counter << "," << "ALL:" << session_data.size() << std::endl;
+	  std::cout << "INGRESS:" << ingress_counter << "," << "EGRESS:" << egress_counter << "," << "ALL:" << session_data.size() << std::endl;
 	      
-	      const string file_rendered_outward = "rendered_outward_" + session_file;
-	      ofstream outputfile_outward(file_rendered_outward);
-
-	      const string file_rendered_inward = "rendered_inward_" + session_file;
-	      ofstream outputfile_inward(file_rendered_inward);
+	  const string file_rendered_outward = session_file + "_egress";
+	  ofstream outputfile_outward(file_rendered_outward);
 	  
-	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
-		vector<string> rec3 = session_data[row3];
-		if(found_flag[row3]==1)
-		  {
-		    std::string all_line;
-		    all_line = "1";
-		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
-		      all_line = all_line + "," + *itr;
-		    }
-		    outputfile_outward << all_line << std::endl;
-		  }
-		if(found_flag_2[row3]==1)
-		  {
-		    std::string all_line;
-		    all_line = "0";
-		    for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
-		      all_line = all_line + "," + *itr;
-		    }
-		    outputfile_inward << all_line << std::endl;
-		  }	
-	      }
-
-	      outputfile_inward.close();
-	      outputfile_outward.close();
-	
-              const string file_rendered_2 = "directed_msec_outward_" + session_file;
-	      ofstream outputfile2(file_rendered_2);
-	
-              const string file_rendered_3 = "directed_msec_inward_" + session_file;
-	      ofstream outputfile3(file_rendered_3);
-
-	      outputfile3 << "date, sourceIP" << endl;
-	      outputfile2 << "date, destIP" << endl;
-	      
-	      for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
-		vector<string> rec3 = session_data[row3];
-		if(found_flag[row3]==1)
-		  {
-		    std::string all_line;
-
-		    std::string tms_org = rec3[0];
-		    std::string tms = rec3[0];
-		    std::string destIP = rec3[7];
-
-		    for(size_t c = tms_org.find_first_of("\""); c != string::npos; c = c = tms_org.find_first_of("\"")){
-		      tms_org.erase(c,1);
-		    }
-		    
-		    for(size_t c = destIP.find_first_of("\""); c != string::npos; c = c = destIP.find_first_of("\"")){
-		      destIP.erase(c,1);
-		    }
-		    
-		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
-		      tms.erase(c,1);
-		    }
-
-		    for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
-		      tms.erase(c,1);
-		    }
-
-		    for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
-		      tms.erase(c,1);
-		    }
-
-		    for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
-		      tms.erase(c,1);
-		    }
-
-		    for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
-		      tms.erase(c,1);
-		    }
-		    
-		    std::string timestamp_sec = tms.substr(0,4) + tms.substr(4,2) + tms.substr(6,2) + tms.substr(8,2) 
-		      + tms.substr(10,2) + tms.substr(12,2);                 
-
-		    iTbb_timestamp_egress::accessor t;
-		    TbbVec_timestamp_egress.insert(t, stoull(timestamp_sec));
-		    t->second += 1;
-
-		    all_line = tms_org + "," + destIP;
-		    outputfile2 << all_line << std::endl;
+	  const string file_rendered_inward = session_file + "_ingress";
+	  ofstream outputfile_inward(file_rendered_inward);
+	  
+	  for (unsigned int row3 = 0; row3 < session_data.size(); row3++) {
+	    vector<string> rec3 = session_data[row3];
+	    if(found_flag[row3]==1)
+	      {
+		std::string all_line;
+		all_line = "1";
+		for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
+		  all_line = all_line + "," + *itr;
 		}
-		if(found_flag_2[row3]==1)
-		  {
-		    std::string all_line;
-
-		    std::string tms_org = rec3[0];
-		    std::string tms = rec3[0];
-		    std::string sourceIP = rec3[4];
-
-		    for(size_t c = tms_org.find_first_of("\""); c != string::npos; c = c = tms_org.find_first_of("\"")){
-		      tms_org.erase(c,1);
-		    }
-		    
-		    for(size_t c = sourceIP.find_first_of("\""); c != string::npos; c = c = sourceIP.find_first_of("\"")){
-		      sourceIP.erase(c,1);
-		    }
-		    
-		    for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
-		      tms.erase(c,1);
-		    }
-
-		    for(size_t c = tms.find_first_of("/"); c != string::npos; c = c = tms.find_first_of("/")){
-		      tms.erase(c,1);
-		    }
-
-		    for(size_t c = tms.find_first_of("."); c != string::npos; c = c = tms.find_first_of(".")){
-		      tms.erase(c,1);
-		    }
-
-		    for(size_t c = tms.find_first_of(" "); c != string::npos; c = c = tms.find_first_of(" ")){
-		      tms.erase(c,1);
-		    }
-
-		    for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
-		      tms.erase(c,1);
-		    }
-
-		    all_line = tms_org + "," + sourceIP;
-
-		    std::string timestamp_sec = tms.substr(0,4) + tms.substr(4,2) + tms.substr(6,2) + tms.substr(8,2) 
-		      + tms.substr(10,2) + tms.substr(12,2);                 
-
-		    iTbb_timestamp_ingress::accessor t;
-		    TbbVec_timestamp_ingress.insert(t, stoull(timestamp_sec));
-		    t->second += 1;
-		    
-		    // std::cout << all_line << std::endl;
-		    outputfile3 << all_line << std::endl;
-		  }	
-
+		outputfile_outward << all_line << std::endl;
 	      }
+	    if(found_flag_2[row3]==1)
+	      {
+		std::string all_line;
+		all_line = "0";
+		for(auto itr = rec3.begin(); itr != rec3.end(); ++itr) {
+		  all_line = all_line + "," + *itr;
+		}
+		outputfile_inward << all_line << std::endl;
+	      }	
+	  }
 
-	      outputfile2.close();
-	      outputfile3.close();
-
-	      /*
-	      typedef tbb::concurrent_hash_map<unsigned long long, long> iTbb_timestamp_ingress;
-	      static iTbb_timestamp_ingress TbbVec_timestamp_ingress;
-	      */
-
-              const string file_rendered_4 = "directed_reduced_inward_" + session_file;
-	      ofstream outputfile4(file_rendered_4);
-
-	      std::map<unsigned long long, long> final4;
-
-	      outputfile4 << "date, count" << endl;
-	      
-	      for(auto itr = TbbVec_timestamp_ingress.begin(); itr != TbbVec_timestamp_ingress.end(); ++itr) {
-		final4.insert(std::make_pair((unsigned long long)(itr->first), long(itr->second)));
-	      }	      
-
-	      for(auto itr = final4.begin(); itr != final4.end(); ++itr) {
-		std::string timestamp = to_string(itr->first);                                                 
-		outputfile4 << timestamp.substr(0,4) << "/" << timestamp.substr(4,2) << "/" 
-			    << timestamp.substr(6,2) << " " << timestamp.substr(8,2) << ":" 
-			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2)  
-			    << "," << (long)itr->second << endl;                  
-	      }
-
-	      outputfile4.close();
-
-              const string file_rendered_5 = "directed_reduced_outward_" + session_file;
-	      ofstream outputfile5(file_rendered_5);
-
-	      std::map<unsigned long long, long> final5;
-
-	      outputfile5 << "date, count" << endl;
-	      
-	      for(auto itr = TbbVec_timestamp_egress.begin(); itr != TbbVec_timestamp_egress.end(); ++itr) {
-		final5.insert(std::make_pair((unsigned long long)(itr->first), long(itr->second)));
-	      }	      
-
-	      for(auto itr = final5.begin(); itr != final5.end(); ++itr) {
-		std::string timestamp = to_string(itr->first);                                                 
-		outputfile5 << timestamp.substr(0,4) << "/" << timestamp.substr(4,2) << "/" 
-			    << timestamp.substr(6,2) << " " << timestamp.substr(8,2) << ":" 
-			    << timestamp.substr(10,2) << ":" << timestamp.substr(12,2) 
-			    << "," << (long)itr->second << endl;                  
-	      }
-
-	      outputfile5.close();
-
-
+	  outputfile_inward.close();
+	  outputfile_outward.close();
+	
         return 0;
     }
     
