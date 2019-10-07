@@ -1,0 +1,5 @@
+SPDK_ROOT_DIR := $(abspath $(CURDIR)/../../..)
+
+APP = write
+
+include $(SPDK_ROOT_DIR)/mk/nvme.libtest.mk
