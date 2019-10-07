@@ -150,6 +150,8 @@ thread_func(void *arg)
 		ns_entry = ns_entry->next;
 	}
 
+	clock_gettime(CLOCK_REALTIME, &endTime);
+	
 	// printf("経過実時間 = ");
 	if (endTime.tv_nsec < startTime.tv_nsec) {
 	  elapsed_time_1 = endTime.tv_sec - startTime.tv_sec - 1;
