@@ -1,13 +1,13 @@
-nLines=`wc -l $1 | cut -d " " -f 1`
-LINES_TO_SPLIT=`expr $nLines / 50`
-
-echo ${LINES_TO_SPLIT} 
-
 if [ "$1" = "" ]
 then
     echo "usage: ./repeat [FILE_NAME]"
     exit 1
 fi
+
+nLines=`wc -l $1 | cut -d " " -f 1`
+LINES_TO_SPLIT=`expr $nLines / 50`
+
+echo ${LINES_TO_SPLIT} 
 
 rm -rf *_ingress
 rm -rf *_egress
@@ -20,7 +20,7 @@ ls x* > list
 SECONDS=0
 while read line; do
     echo $line
-    comstr="./netmask8 us-east-1 ${line} ${LINES_TO_SPLIT} &"
+    comstr="./netmask8 amazon_list ${line} ${LINES_TO_SPLIT} &"
     echo $comstr
     eval $comstr
 done < list
