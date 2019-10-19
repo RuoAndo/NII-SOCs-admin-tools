@@ -6,9 +6,32 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
+import sys
+import statistics
+
 np.random.seed(0)
 tf.set_random_seed(1234)
 
+def zscore(x, axis = None):
+    xmean = x.mean(axis=axis, keepdims=True)
+    xstd  = np.std(x, axis=axis, keepdims=True)
+    zscore = (x-xmean)/xstd
+    return zscore
+
+def min_max(l):
+    l_min = min(l)
+    l_max = max(l)
+    return [(i - l_min) / (l_max - l_min) for i in l]
+
+def standardization(l):
+    l_mean = statistics.mean(l)
+    l_stdev = statistics.stdev(l)
+    return [(i - l_mean) / l_stdev for i in l]
+
+def standardization_p(l):
+    l_mean = statistics.mean(l)
+    l_pstdev = statistics.pstdev(l)
+    return [(i - l_mean) / l_pstdev for i in l]
 
 def inference(x, n_batch, maxlen=None, n_hidden=None, n_out=None):
     def weight_variable(shape):
@@ -83,22 +106,27 @@ if __name__ == '__main__':
     #    noise = ampl * np.random.uniform(low=-1.0, high=1.0, size=len(x))
     #    return sin(x) + noise
 
-    T = 720
+    T = 360
     #f = toy_problem(T)
-    
-    test_data = open("sin-out.txt", "r")
+
+    args = sys.argv
+    test_data = open(args[1], "r")
+    #test_data = open("sin-out.txt", "r")
     f = []
 
     for line in test_data:
       #print line
       f.append(float(line.rstrip('\n')))
-
     #print f
       
     test_data.close()
+
+    # f = zscore(f)
+    f = standardization_p(f)
     
-    length_of_sequences = 2 * T  
-    maxlen = 72 
+    length_of_sequences = T * 4
+    # maxlen = 72
+    maxlen = 216
 
     data = []
     target = []
