@@ -8,6 +8,7 @@ from sklearn.utils import shuffle
 
 import sys
 import statistics
+import time
 
 np.random.seed(0)
 tf.set_random_seed(1234)
@@ -151,7 +152,7 @@ if __name__ == '__main__':
     x = tf.placeholder(tf.float32, shape=[None, maxlen, n_in])
     t = tf.placeholder(tf.float32, shape=[None, n_out])
     n_batch = tf.placeholder(tf.int32, shape=[])
-
+    
     y = inference(x, n_batch, maxlen=maxlen, n_hidden=n_hidden, n_out=n_out)
     loss = loss(y, t)
     train_step = training(loss)
@@ -170,6 +171,8 @@ if __name__ == '__main__':
 
     n_batches = N_train // batch_size
 
+    start_time = time.time()
+    
     for epoch in range(epochs):
         X_, Y_ = shuffle(X_train, Y_train)
 
@@ -196,12 +199,17 @@ if __name__ == '__main__':
         if early_stopping.validate(val_loss):
             break
 
+    elapsed_time = time.time() - start_time
+    print ("elapsed_time:{0}".format(elapsed_time) + "[sec]")
+        
     truncate = maxlen
     Z = X[:1]  
 
     original = [f[i] for i in range(maxlen)]
     predicted = [None for i in range(maxlen)]
 
+    start = time.time()
+    
     for i in range(length_of_sequences - maxlen + 1):
         z_ = Z[-1:]
         y_ = y.eval(session=sess, feed_dict={
@@ -214,6 +222,9 @@ if __name__ == '__main__':
         Z = np.append(Z, sequence_, axis=0)
         predicted.append(y_.reshape(-1))
 
+    elapsed_time = time.time() - start
+    print ("elapsed_time:{0}".format(elapsed_time) + "[sec]")
+        
     #f_plot = np.array(f)
     #print f_plot
     
