@@ -11,8 +11,9 @@ ls -alh /data1/${DATE}/all-org
 echo "copying..."
 cp /data1/${DATE}/all-org .
 
+nProc=30
 nLines=`wc -l all-org | cut -d " " -f 1`
-LINES_TO_SPLIT=`expr $nLines / 45`
+LINES_TO_SPLIT=`expr $nLines / $nProc`
 
 echo ${LINES_TO_SPLIT} 
 
@@ -84,6 +85,7 @@ echo $time" sec"
 
 wc -l all_egress
 wc -l all_ingress
+wc -l all-org
 
 mv all_egress AWS_us-east-1_all_egress_${DATE}
 mv all_ingress AWS_us-east-1_all_ingress_${DATE}
