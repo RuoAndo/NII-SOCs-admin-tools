@@ -11,7 +11,7 @@ ls -alh /data1/${DATE}/all-org
 echo "copying..."
 cp /data1/${DATE}/all-org .
 
-nProcs=20
+nProcs=24
 nLines=`wc -l all-org | cut -d " " -f 1`
 LINES_TO_SPLIT=`expr $nLines / $nProcs`
 
@@ -26,7 +26,7 @@ split -l ${LINES_TO_SPLIT} -a 2 all-org x
 
 ls x* > list
 
-split -n 4 list list.
+split -n 8 list list.
 
 ./build.sh netmask8
 
@@ -99,6 +99,75 @@ echo $time" sec"
  
 ############# 4 END ####
 
+
+############# 5 ##############
+
+SECONDS=0
+while read line; do
+    echo $line
+    comstr="./netmask8 list-us-east-1 ${line} ${LINES_TO_SPLIT} &"
+    echo $comstr
+    eval $comstr
+done < list.ae
+
+wait
+
+time=$SECONDS
+echo $time" sec"
+ 
+############# 5 END ####
+
+############# 6 ##############
+
+SECONDS=0
+while read line; do
+    echo $line
+    comstr="./netmask8 list-us-east-1 ${line} ${LINES_TO_SPLIT} &"
+    echo $comstr
+    eval $comstr
+done < list.af
+
+wait
+
+time=$SECONDS
+echo $time" sec"
+ 
+############# 6 END ####
+
+
+############# 7 ##############
+
+SECONDS=0
+while read line; do
+    echo $line
+    comstr="./netmask8 list-us-east-1 ${line} ${LINES_TO_SPLIT} &"
+    echo $comstr
+    eval $comstr
+done < list.ag
+
+wait
+
+time=$SECONDS
+echo $time" sec"
+ 
+############# 7 END ####
+
+############# 8 ##############
+
+SECONDS=0
+while read line; do
+    echo $line
+    comstr="./netmask8 list-us-east-1 ${line} ${LINES_TO_SPLIT} &"
+    echo $comstr
+    eval $comstr
+done < list.ah
+
+wait
+
+time=$SECONDS
+echo $time" sec"
+ 
+############# 8 END ####
 
 ### cat all (ingress)
  
