@@ -34,7 +34,7 @@ def standardization_p(l):
     l_pstdev = statistics.pstdev(l)
     return [(i - l_mean) / l_pstdev for i in l]
 
-def inference(x, n_batch, maxlen=None, n_hidden=None, n_out=None):
+def forward(x, n_batch, maxlen=None, n_hidden=None, n_out=None):
     def weight_variable(shape):
         initial = tf.truncated_normal(shape, stddev=0.01)
         return tf.Variable(initial)
@@ -107,28 +107,38 @@ if __name__ == '__main__':
     #    noise = ampl * np.random.uniform(low=-1.0, high=1.0, size=len(x))
     #    return sin(x) + noise
 
-    T = 360
     #f = toy_problem(T)
 
     args = sys.argv
     test_data = open(args[1], "r")
     #test_data = open("sin-out.txt", "r")
     f = []
-
+    
+    line_counter = 0
     for line in test_data:
-      #print line
-      f.append(float(line.rstrip('\n')))
-    #print f
+
+        if line_counter == 0:
+            line_counter = line_counter + 1
+            continue
+
+        #print line
+        tmp_item = line.split(",")
+        #print tmp_item
+        #print tmp_item[1]
+        f.append(float(tmp_item[1]))
+        
+    print f
       
     test_data.close()
 
     # f = zscore(f)
     f = standardization_p(f)
-    
-    length_of_sequences = T * 4
-    # maxlen = 72
-    maxlen = 216
 
+    T = 430
+    length_of_sequences = T
+    maxlen = 240
+    batch_size = 30
+    
     data = []
     target = []
 
@@ -153,7 +163,7 @@ if __name__ == '__main__':
     t = tf.placeholder(tf.float32, shape=[None, n_out])
     n_batch = tf.placeholder(tf.int32, shape=[])
     
-    y = inference(x, n_batch, maxlen=maxlen, n_hidden=n_hidden, n_out=n_out)
+    y = forward(x, n_batch, maxlen=maxlen, n_hidden=n_hidden, n_out=n_out)
     loss = loss(y, t)
     train_step = training(loss)
 
@@ -163,7 +173,6 @@ if __name__ == '__main__':
     }
 
     epochs = 500
-    batch_size = 10
 
     init = tf.global_variables_initializer()
     sess = tf.Session()
