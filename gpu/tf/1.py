@@ -2,6 +2,7 @@
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import time
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
@@ -45,7 +46,7 @@ def forward(x, n_batch, maxlen=None, n_hidden=None, n_out=None):
     initial_state = cell.zero_state(n_batch, tf.float32)
 
     state = initial_state
-    outputs = []  # 過去の隠れ層の出力を保存
+    outputs = []  
     with tf.variable_scope('LSTM'):
         for t in range(maxlen):
             if t > 0:
@@ -57,7 +58,7 @@ def forward(x, n_batch, maxlen=None, n_hidden=None, n_out=None):
 
     V = weight_variable([n_hidden, n_out])
     c = bias_variable([n_out])
-    y = tf.matmul(output, V) + c  # 線形活性
+    y = tf.matmul(output, V) + c  
 
     return y
 
@@ -123,10 +124,11 @@ if __name__ == '__main__':
 
     f = standardization_p(f)
 
-    T = 430
+    T = 570
     length_of_sequences = T
-    maxlen = 240
-    batch_size = 30
+    maxlen = 400
+    epochs = 500
+    batch_size = 10
     
     data = []
     target = []
@@ -138,16 +140,12 @@ if __name__ == '__main__':
     X = np.array(data).reshape(len(data), maxlen, 1)
     Y = np.array(target).reshape(len(data), 1)
 
-    # データ設定
     N_train = int(len(data) * 0.9)
     N_validation = len(data) - N_train
 
     X_train, X_validation, Y_train, Y_validation = \
         train_test_split(X, Y, test_size=N_validation)
 
-    '''
-    モデル設定
-    '''
     n_in = len(X[0][0])  # 1
     n_hidden = 30
     n_out = len(Y[0])  # 1
@@ -165,18 +163,13 @@ if __name__ == '__main__':
         'val_loss': []
     }
 
-    '''
-    モデル学習
-    '''
-    epochs = 500
-    batch_size = 10
-
     init = tf.global_variables_initializer()
     sess = tf.Session()
     sess.run(init)
 
     n_batches = N_train // batch_size
 
+    start_time = time.time()
     for epoch in range(epochs):
         X_, Y_ = shuffle(X_train, Y_train)
 
@@ -190,7 +183,6 @@ if __name__ == '__main__':
                 n_batch: batch_size
             })
 
-        # 検証データを用いた評価
         val_loss = loss.eval(session=sess, feed_dict={
             x: X_validation,
             t: Y_validation,
@@ -201,33 +193,36 @@ if __name__ == '__main__':
         print('epoch:', epoch,
               ' validation loss:', val_loss)
 
-        # Early Stopping チェック
         if early_stopping.validate(val_loss):
             break
 
-    '''
-    出力を用いて予測
-    '''
+    elapsed_time = time.time() - start_time
+    print ("elapsed_time:{0}".format(elapsed_time) + "[sec]")
+        
     truncate = maxlen
-    Z = X[:1]  # 元データの最初の一部だけ切り出し
+    Z = X[:1] 
 
     original = [f[i] for i in range(maxlen)]
     predicted = [None for i in range(maxlen)]
 
+    start_time = time.time()
+    
     for i in range(length_of_sequences - maxlen + 1):
-        # 最後の時系列データから未来を予測
         z_ = Z[-1:]
         y_ = y.eval(session=sess, feed_dict={
             x: Z[-1:],
             n_batch: 1
         })
-        # 予測結果を用いて新しい時系列データを生成
+
         sequence_ = np.concatenate(
             (z_.reshape(maxlen, n_in)[1:], y_), axis=0) \
             .reshape(1, maxlen, n_in)
         Z = np.append(Z, sequence_, axis=0)
         predicted.append(y_.reshape(-1))
 
+    elapsed_time = time.time() - start_time
+    print ("elapsed_time:{0}".format(elapsed_time) + "[sec]")
+        
     plt.figure()
     plt.plot(f, linestyle='dotted', color='#aaaaaa')
     plt.plot(original, linestyle='dashed', color='black')
