@@ -17,7 +17,6 @@ bool Csv::getCsv(vector<vector<string>>& data, const char delim)
     ifstream ifs(csv_file);
     if (!ifs.is_open()) return false; 
 
-    // ファイルREAD
     string buf;             
     while (getline(ifs, buf)) {
         vector<string> rec;  

@@ -17,6 +17,11 @@
 
 #include "csv.hpp"
 
+#include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/phoenix.hpp>
+
+using namespace boost::spirit;
+using namespace boost;
 using namespace std;
 
 int main( int argc, char* argv[] ) {
@@ -24,10 +29,8 @@ int main( int argc, char* argv[] ) {
   int counter = 0;
   
   int N = atoi(argv[2]);  
-  int netmask;
-
-  std::map <int,int> found_flag;
-  	
+  double result;
+  
   const string sfile = std::string(argv[1]); 
   vector<vector<string>> sdata; 
 	  
@@ -45,9 +48,25 @@ int main( int argc, char* argv[] ) {
 
   for (unsigned int row = 0; row < sdata.size(); row++) {
     vector<string> rec = sdata[row];
-    std::cout << rec[2] << std::endl;
-  }
-  
+
+    std::string packets = rec[2];
+    
+    for(size_t c = packets.find_first_of("\""); c != string::npos; c = c = packets.find_first_of("\"")){
+      packets.erase(c,1);
+    }
+    
+    string::const_iterator iter = packets.begin(), end = packets.end();
+      
+    bool success = qi::phrase_parse(iter, end, qi::double_, ascii::space, result); 
+
+    if (success && iter == end) {
+      cout << "[success] " << result << endl;
+    } else {
+      cout << "[failed] invalid syntax" << endl;
+    }
+
+    // std::cout << packets << std::endl;
+    }    
+    
   return 0;
-  
 }

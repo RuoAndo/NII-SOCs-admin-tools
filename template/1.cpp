@@ -2,10 +2,10 @@
 #include <string>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix.hpp>
+
 using namespace std;
 using namespace boost::spirit;
 using namespace boost;
-
 int main(){
     string buf;
     double result;

@@ -45,7 +45,14 @@ int main( int argc, char* argv[] ) {
 
   for (unsigned int row = 0; row < sdata.size(); row++) {
     vector<string> rec = sdata[row];
-    std::cout << rec[2] << std::endl;
+
+    std::string packets = rec[2];
+    
+    for(size_t c = packets.find_first_of("\""); c != string::npos; c = c = packets.find_first_of("\"")){
+      packets.erase(c,1);
+    }    
+    
+    std::cout << packets << std::endl;
   }
   
   return 0;
