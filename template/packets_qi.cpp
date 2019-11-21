@@ -49,6 +49,11 @@ int main( int argc, char* argv[] ) {
   for (unsigned int row = 0; row < sdata.size(); row++) {
     vector<string> rec = sdata[row];
 
+    std::string line_string = "";
+    for(auto itr = rec.begin(); itr != rec.end(); ++itr) {
+      line_string = line_string + string(*itr);
+    }
+    
     std::string packets = rec[2];
     
     for(size_t c = packets.find_first_of("\""); c != string::npos; c = c = packets.find_first_of("\"")){

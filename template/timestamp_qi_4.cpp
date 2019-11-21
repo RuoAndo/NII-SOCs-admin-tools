@@ -35,35 +35,6 @@ int main(int argc, char** argv) {
 	    std::string timestamp = rec[0];
 	    cout << timestamp << endl;
 
-	    std::string::iterator first = str.begin(), last = str.end();
-    
-	    auto w = [](int x){std::cout << x << std::endl;};
-    
-	    parse(
-		  first,
-		  last,
-		  '{' >> int_[w] >> '}'
-		  );
-
-	    parse(
-		  first,
-		  last,
-		  ch_p('"') >>
-		  str_p("2019") >>
-		  ch_p('/') >>
-		  uint_p >>
-		  ch_p('/') >>
-		  uint_p >>
-		  ch_p(' ') >>
-		  uint_p >>
-		  ch_p(':') >>
-		  uint_p >>
-		  ch_p(':') >>
-		  uint_p_[w] >>
-		  ch_p('"') >>
-		  '{' >> int_[w] >> '}'
-		  );
-
 	    /*
 	    std::cout <<  
 	      parse(timestamp.c_str(),
@@ -82,9 +53,25 @@ int main(int argc, char** argv) {
 		    ch_p('"') >>
 		end_p
                 ).full
-		<< std::endl; 
+            << std::endl; 
 	    */
-	    
+
+	    rule<> r = str_p('"') >>
+	      str_p("2019") >>
+	      ch_p('/') >>
+	      uint_p >>
+	      ch_p('/') >>
+	      uint_p >>
+	      ch_p(' ') >>
+	      uint_p >>
+	      ch_p(':') >>
+	      uint_p >>
+	      ch_p(':') >>
+	      uint_p >>
+	      ch_p('"') >>
+	      end_p;
+
+	    std::cout << parse(timestamp.c_str(), r).full << std::endl; 
 	}
        	  
 	return 0;
