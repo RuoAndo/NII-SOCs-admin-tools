@@ -1,29 +1,32 @@
-#include<boost/spirit/include/qi.hpp>
 #include<string>
 #include<iostream>
 #include "csv.hpp"
 
-namespace qi = boost::spirit::qi;
+#include <boost/spirit/include/qi.hpp>
+#include <boost/fusion/include/struct.hpp>
+#include <boost/bind.hpp>
+#include <boost/range/algorithm/for_each.hpp>
+#include <boost/lambda/lambda.hpp>
+#include <boost/lambda/bind.hpp>
+
 using namespace std;
+namespace bll = boost::lambda;
+namespace qi = boost::spirit::qi;
+// using qi::int_;
+// using qi::parse;
+// using qi::char_;
+
+double Average(const boost::fusion::vector<double, double>& x)
+{
+    return (boost::fusion::at_c<0>(x) + boost::fusion::at_c<1>(x)) * 0.5;
+}
 
 int main(int argc, char** argv) {
-  using qi::int_;
-  using qi::parse;
-  using qi::char_;
-  {
-    
-    /*
-    std::string str("{46}");
-    std::string::iterator first = str.begin(), last = str.end();
-    
-    auto w = [](int x){std::cout << x << std::endl;};
-    */
-
     int counter = 0;
   
     int N = atoi(argv[2]);  
     double result;
-  
+    
     const string sfile = std::string(argv[1]); 
     vector<vector<string>> sdata; 
 	  
@@ -38,7 +41,8 @@ int main(int argc, char** argv) {
       cout << "EXCEPTION (READ)" << endl;
       return 1;
     }
-	
+
+    
     for (unsigned int row = 0; row < sdata.size(); row++) {
         vector<string> rec = sdata[row];
 	     
@@ -46,16 +50,19 @@ int main(int argc, char** argv) {
 	cout << timestamp << endl;
 
 	std::string::iterator first = timestamp.begin(), last = timestamp.end();
-	auto w = [](int x){std::cout << "lamba applied:" << x << std::endl;};
-    
+	
 	parse(
 	      first,
 	      last,
-	      char_('"') >>
-	      int_[w] 
-	      );
+	      '"' >>
+	      qi::int_ >>
+	      '/' >>
+	      qi::int_ >>
+	      '/' >>
+	      qi::int_
+	      );	
     }
-  }    
-  return 0; 
+
+    return 0; 
 }
 

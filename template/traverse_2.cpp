@@ -13,10 +13,42 @@
 #include <iostream>
 #include <fstream>
 
+#include<boost/spirit/include/qi.hpp>
+
+#include "csv.hpp"
+
+#include "tbb/task_scheduler_init.h"
+#include "tbb/concurrent_hash_map.h"
+#include "tbb/blocked_range.h"
+#include "tbb/parallel_for.h"  
+
 #define WORKER_THREAD_NUM (2)
 #define MAX_QUEUE_NUM (1024)
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
+
+std::string timestamp_string[WORKER_THREAD_NUM];
+
+namespace qi = boost::spirit::qi;
+using namespace std;
+
+using qi::int_;
+using qi::parse;
+using qi::char_;
+
+using namespace tbb;
+
+struct HashCompare {
+  static size_t hash( unsigned long long x ) {
+    return (size_t)x;
+  }
+  static bool equal( unsigned long long x, unsigned long long y ) {
+    return x==y;
+  }
+};
+
+typedef concurrent_hash_map<unsigned long long, int, HashCompare> TimeStamp_msec;
+static TimeStamp_msec timestamp_msec;    
 
 typedef struct _result {
     int num;
@@ -37,17 +69,82 @@ typedef struct _queue {
 
 typedef struct _thread_arg {
     int cpuid;
+    int thread_id;
     queue_t* q;
     char* srchstr;
     char* dirname;
     int filenum;
 } thread_arg_t;
 
-int traverse_file(char* filename, char* srchstr) {
+int traverse_file(char* filename, char* srchstr, int thread_id) {
     char buf[1024];
-    int n = 0, sumn = 0;
+    int n = 0;
     int i;
-    std::string s1 = "-read";
+
+    int counter = 0;
+    double result;
+    
+    const string sfile = std::string(filename); 
+    vector<vector<string>> sdata; 
+
+    int thread_id_local = thread_id;
+    std::string local_string = "[local string]:";
+    
+    try {
+      Csv objCsv(sfile);
+      if (!objCsv.getCsv(sdata)) {
+	cout << "read ERROR" << endl;
+	return 1;
+      }
+    }
+    catch (...) {
+      cout << "EXCEPTION (READ)" << endl;
+      return 1;
+    }
+
+    for (unsigned int row = 0; row < sdata.size(); row++) {
+        vector<string> rec = sdata[row];
+	     
+	std::string timestamp = rec[0];
+	cout << timestamp << endl;
+
+	std::string::iterator first = timestamp.begin(), last = timestamp.end();
+
+	auto str = [=](int x){
+	  
+	  ostringstream ss;
+	  ss << x;
+
+	  /*
+	  if(ss.str().length() == 1)
+	    {
+	      local_string = local_string + "0" + ss.str();
+	    }
+	  else
+	    {
+	      local_string = local_string + ss.str();
+	    }
+	  */	
+
+	  std::cout << "lamba applied to:" << x << ":" << "threadID:" << thread_id_local << std::endl;
+	};
+
+	parse(
+	      first,
+	      last,
+	      '"' >>
+	      int_[str] >>
+	      '/' >>
+	      int_[str]
+	      );
+
+	/*
+	unsigned long long timestamp_ull = stoull(timestamp_string[thread_id]);	
+	TimeStamp_msec::accessor a;
+	timestamp_msec.insert(a, timestamp_ull);
+	a->second += 1;           
+	*/
+    }
 
     printf("%s \n", filename);
 
@@ -170,6 +267,8 @@ void worker_func(thread_arg_t* arg) {
     queue_t* q = arg->q;
     char* srchstr = arg->srchstr;
 
+    int thread_id = arg->thread_id;
+
 #ifdef __CPU_SET
     cpu_set_t mask;    
     __CPU_ZERO(&mask);
@@ -187,7 +286,7 @@ void worker_func(thread_arg_t* arg) {
         if (strncmp(fname, END_MARK_FNAME, END_MARK_FLENGTH + 1) == 0)
             break;
 
-        n = traverse_file(fname, srchstr);
+        n = traverse_file(fname, srchstr, thread_id);
         pthread_mutex_lock(&result.mutex);
 
         if (n > result.num) {
@@ -210,7 +309,7 @@ void worker_func(thread_arg_t* arg) {
         if (strncmp(fname, END_MARK_FNAME, END_MARK_FLENGTH + 1) == 0)
             break;
 
-        n = traverse_file(fname, srchstr);
+        n = traverse_file(fname, srchstr, thread_id);
 
         if (n > my_result_num) {
             my_result_num = n;
@@ -261,6 +360,7 @@ int main(int argc, char* argv[]) {
         // targ[i].srchstr = argv[1];
         targ[i].dirname = argv[1];
         targ[i].filenum = 0;
+	targ[i].thread_id = i;
         targ[i].cpuid = i%cpu_num;
     }
     result.fname = NULL;
@@ -270,9 +370,9 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&result.mutex, NULL);
 
     pthread_create(&master, NULL, (void*)master_func, (void*)&targ[0]);
-    for (i = 1; i < thread_num; ++i) 
+    for (i = 1; i < thread_num; ++i)
         pthread_create(&worker[i], NULL, (void*)worker_func, (void*)&targ[i]);
-
+	
     for (i = 1; i < thread_num; ++i) 
         pthread_join(worker[i], NULL);
 

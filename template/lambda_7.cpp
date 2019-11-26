@@ -6,6 +6,8 @@
 namespace qi = boost::spirit::qi;
 using namespace std;
 
+std::string timestamp_string;
+
 int main(int argc, char** argv) {
   using qi::int_;
   using qi::parse;
@@ -23,7 +25,7 @@ int main(int argc, char** argv) {
   
     int N = atoi(argv[2]);  
     double result;
-  
+    
     const string sfile = std::string(argv[1]); 
     vector<vector<string>> sdata; 
 	  
@@ -38,7 +40,8 @@ int main(int argc, char** argv) {
       cout << "EXCEPTION (READ)" << endl;
       return 1;
     }
-	
+
+    
     for (unsigned int row = 0; row < sdata.size(); row++) {
         vector<string> rec = sdata[row];
 	     
@@ -46,14 +49,45 @@ int main(int argc, char** argv) {
 	cout << timestamp << endl;
 
 	std::string::iterator first = timestamp.begin(), last = timestamp.end();
-	auto w = [](int x){std::cout << "lamba applied:" << x << std::endl;};
-    
+	
+	auto w = [](int x){
+	  
+	  ostringstream ss;
+	  ss << x;
+
+	  if(ss.str().length() == 1)
+	    {
+	      // std::cout << "HIT" << std::endl;
+	      timestamp_string = timestamp_string + "0" + ss.str();
+	    }
+	  else
+	    {
+	      timestamp_string = timestamp_string + ss.str();
+	    }
+
+	  // std::cout << timestamp_string << std::endl;
+	  std::cout << "lamba applied:" << x << std::endl;
+	};
+
+	timestamp_string = "";    
 	parse(
 	      first,
 	      last,
-	      char_('"') >>
-	      int_[w] 
+	      '"' >>
+	      int_[w] >>
+	      '/' >>
+	      int_[w] >>
+	      '/' >>
+	      int_[w] >>
+	      ' ' >> 
+	      int_[w] >>
+	      ':' >>
+	      int_[w] >>
+	      ':' >>
+	      int_[w]	      
 	      );
+
+	cout << timestamp_string << endl;
     }
   }    
   return 0; 
