@@ -124,9 +124,9 @@ if __name__ == '__main__':
 
     f = standardization_p(f)
 
-    T = 570
+    T = 230
     length_of_sequences = T
-    maxlen = 400
+    maxlen = 120 
     epochs = 500
     batch_size = 10
     
