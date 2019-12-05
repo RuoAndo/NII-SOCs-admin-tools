@@ -5,7 +5,7 @@
 
 #include <cublas_v2.h>
 #include <cuda_runtime.h>
-#include <helper_cuda.h>
+//#include <helper_cuda.h>
 
 /* Matrix size */
 // #define N (275)
