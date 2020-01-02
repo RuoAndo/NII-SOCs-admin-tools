@@ -180,7 +180,10 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
   
   const string list_file = string(filelist_name); 
   vector<vector<string>> list_data; 
-    	
+
+  int ingress_counter_local = 0;
+  int egress_counter_local = 0;
+  
   try {
     Csv objCsv(list_file);
     if (!objCsv.getCsv(list_data)) {
@@ -290,6 +293,7 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 	    all_line = all_line + "," + str;
 	    found_flag[linecounter] = 1;
 	    ingress_counter_global++;
+	    ingress_counter_local++;
 	  }
 
 	std::string sessionIPstring_2;
@@ -315,6 +319,7 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 	    all_line = all_line + "," + str;
 	    found_flag_2[linecounter] = 1;
 	    egress_counter_global++;
+	    egress_counter_local++;
 	  }
     
 	  /*
@@ -323,12 +328,14 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 	  a->second += 1;
 	  */
 
-	  if(linecounter%100==0 && linecounter > 10)
+	  if(linecounter%1000==0 && linecounter > 10)
 	    {
 	    std::cout << "[" << now_str() << "] "
 		      << "threadID:" << thread_id << ":"
 	              << filename << ":" 
 		      << linecounter << " lines - done. "
+		      << "ingress:" << ingress_counter_local << ":"
+		      << "egress:" << egress_counter_local << ":"
 	              << "ingress:" << ingress_counter_global << ":"
 		      << "egress:" << egress_counter_global << ":"
 		      << endl;
@@ -347,6 +354,7 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
   cout << "EGRESS:" << found_flag_2.size() << endl;
   */  
 
+  /*
   int ingress_counter = 0;
   int egress_counter = 0;
     
@@ -359,6 +367,7 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
     if(itr->second==1)
       egress_counter++;
   }
+  */
 
   boost::filesystem::path full_path(boost::filesystem::current_path());
   cout << full_path << endl;
