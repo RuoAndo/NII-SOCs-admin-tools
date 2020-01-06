@@ -328,7 +328,7 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 	  a->second += 1;
 	  */
 
-	  if(linecounter%1000==0 && linecounter > 10)
+	  if(linecounter%100000==0 && linecounter > 10)
 	    {
 	    std::cout << "[" << now_str() << "] "
 		      << "threadID:" << thread_id << ":"
@@ -644,7 +644,10 @@ int main(int argc, char* argv[]) {
 
     pthread_create(&master, NULL, (void*)master_func, (void*)&targ[0]);
     for (i = 1; i < thread_num; ++i)
+      {
+	std::cout <<"[" << now_str() << "] " << "thread - " << i << " launched" << std::endl;
         pthread_create(&worker[i], NULL, (void*)worker_func, (void*)&targ[i]);
+      }
 	
     for (i = 1; i < thread_num; ++i) 
         pthread_join(worker[i], NULL);
