@@ -406,11 +406,7 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
       if(found_flag[linecounter]==1)
       {
 	std::string all_line;
-	// all_line = "1";
 	all_line = str2;
-
-	// const char *json;
-	//memcpy(json, all_line.c_str(),all_line.size());
 
 	picojson::value v;
 	const std::string err = picojson::parse(v, all_line);
@@ -418,19 +414,26 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 
 	std::cout << "######" << std::endl;
 	for (const auto& p : obj) { 
-	  std::cout << p.first << ": " << p.second.to_str() << std::endl;
-	  // std::cout << p.second.to_str() << std::endl;
-	  std::cout << obj["@timestamp"].get<std::string>() << std::endl;
+	  // std::cout << p.first << ": " << p.second.to_str() << std::endl;
+	  outputfile_outward << p.second.to_str() << ",";
 	}
-	
-	// outputfile_outward << all_line << std::endl;
+	outputfile_outward << std::endl;
       }
       if(found_flag_2[linecounter]==1)
       {
 	std::string all_line;
-	// all_line = "1";
 	all_line = str2;
-	// outputfile_inward << all_line << std::endl;
+
+	picojson::value v;
+	const std::string err = picojson::parse(v, all_line);
+	picojson::object& obj = v.get<picojson::object>();
+
+	std::cout << "######" << std::endl;
+	for (const auto& p : obj) { 
+	  // std::cout << p.first << ": " << p.second.to_str() << std::endl;
+	  outputfile_inward << p.second.to_str() << ",";
+	}
+	outputfile_inward << std::endl;
       }
 
     linecounter++;
