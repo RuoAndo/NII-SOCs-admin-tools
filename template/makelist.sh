@@ -1,5 +1,6 @@
 wget https://ip-ranges.amazonaws.com/ip-ranges.json
 
+
 rm -rf list-*
 
 cat ip-ranges.json | jq ".prefixes[].region" | uniq | sed s/\"//g > list-region-tmp

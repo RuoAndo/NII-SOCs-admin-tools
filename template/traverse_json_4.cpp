@@ -34,7 +34,7 @@
 #include "tbb/blocked_range.h"
 #include "tbb/parallel_for.h"  
 
-#define WORKER_THREAD_NUM (33)
+#define WORKER_THREAD_NUM (17)
 #define MAX_QUEUE_NUM (1024)
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
