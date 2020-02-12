@@ -21,8 +21,8 @@ mkdir egress_${REGION_NAME}_${date}
 
 ./build.sh traverse_json_4
 
-#echo "copying..."
-#time cp -r /mnt/data2/${date} .
+echo "copying..."
+time cp -r /sql_data/json/${date} .
 time ./traverse_json_4 $date list-${REGION_NAME}
 
 ls ./${date}/*ingress > list
