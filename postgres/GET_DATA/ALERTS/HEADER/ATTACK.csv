@@ -1,0 +1,1 @@
+alarm_id,capture_time,src_university_id,dest_university_id,mail_send_status,application_protocol,classification,client,dest_ip,dest_country_code,dest_port_or_icmp_code,intrusion_policy,alarm_name,network_analysis_policy,priority,protocol,generator_id,snort_id,revision,src_ip,src_country_code,src_port_or_icmp_code,payload_flg,device_name

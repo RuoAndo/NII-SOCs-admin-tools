@@ -1,0 +1,6 @@
+# outputCsv write per 1hours - not implemented ON or OFF
+OUTPUT_CSV_PER_1HOURS=OFF
+# outputCsv compress by zip ON or OFF
+ZIP_COMPRESS_FLG=OFF
+# sortKey use:"order by number", notuse:
+SORT_KEY=order by 1

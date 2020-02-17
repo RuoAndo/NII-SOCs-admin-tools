@@ -1,0 +1,368 @@
+#!/bin/bash
+############################################
+#
+# 【概要】
+#     データをCSV形式で取得する。
+#
+# 【使用方法】
+#     ./getDataCSv.sh 対象データ "抽出開始日時" "抽出終了日時"
+#
+#     ＜各引数の説明＞
+#         対象データ：必須 SESSION（セッション）
+#                          TARGET（標的型サイバー攻撃警報）
+#                          ATTACK（サイバー攻撃警報）
+#                          COMMERR（通信異常）
+#
+#         抽出開始日時：任意 抽出期間の開始日時（yyyy/mm/dd hh24:mi）※capture_timeで絞り込みする
+#                            ※未指定の場合は「現在時刻 - 1時間」とする
+#
+#         抽出終了日時：任意 抽出期間の開始日時（yyyy/mm/dd hh24:mi）※capture_timeで絞り込みする
+#                            ※未指定の場合は「現在時刻」とする
+#
+############################################
+# サブ関数
+############################################
+function printParamErr() {
+    echo "--------------------------------------------"
+    echo "-- 【使用方法】"
+    echo "--     ./getDataCSv.sh 対象データ \"抽出開始日時\" \"抽出終了日時\""
+    echo "--"
+    echo "--     ＜各引数の説明＞"
+    echo "--         対象データ：必須 SESSION（セッション）"
+    echo "--                          TARGET（標的型サイバー攻撃警報）"
+    echo "--                          ATTACK（サイバー攻撃警報）"
+    echo "--                          COMMERR（通信異常）"
+    echo "--"
+    echo "--         抽出開始日時：任意 抽出期間の開始日時（yyyy/mm/dd hh24:mi）※capture_timeで絞り込みする"
+    echo "--                            ※未指定の場合は「現在時刻 - 1時間」とする"
+    echo "--"
+    echo "--         抽出終了日時：任意 抽出期間の開始日時（yyyy/mm/dd hh24:mi）※capture_timeで絞り込みする"
+    echo "--                            ※未指定の場合は「現在時刻」とする"
+    echo "--------------------------------------------"
+    exit 1
+}
+
+############################################
+# パラメータチェック
+############################################
+## 引数
+if [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 ]; then
+    echo "--------------------------------------------"
+    echo "-- ParamError：引数が正しくありません"
+    printParamErr
+fi
+
+## 対象データチェック
+TARGET_DATA_KBN=$1
+
+if [ "$1" != "SESSION" -a "$1" != "TARGET" -a "$1" != "ATTACK" -a "$1" != "COMMERR" ]; then
+    echo "--------------------------------------------"
+    echo "-- ParamError：対象データが正しくありません"
+    printParamErr
+fi
+
+## 抽出開始日時
+if [ $# -eq 1 ]; then
+    START_TIME=`date +"%Y/%m/%d %H:%M" -d "1 hours ago"`
+else
+    START_TIME=$2
+fi
+
+if [ ${#START_TIME} -ne 16 ]; then
+    echo "--------------------------------------------"
+    echo "-- ParamError：抽出開始日時の桁数が正しくありません"
+    printParamErr
+fi
+
+## 抽出終了日時
+if [ $# -eq 1 -o $# -eq 2 ]; then
+    END_TIME=`date +"%Y/%m/%d %H:%M"`
+else	
+    END_TIME=$3
+fi
+
+if [ ${#END_TIME} -ne 16 ]; then
+    echo "--------------------------------------------"
+    echo "-- ParamError：抽出終了日時の桁数が正しくありません"
+    printParamErr
+fi
+
+### "-"は"/"に置換する
+START_TIME=`echo "${START_TIME}" | sed -e "s/\-/\//g"`
+END_TIME=`echo "${END_TIME}" | sed -e "s/\-/\//g"`
+
+## 開始、終了チェック
+## 時刻を秒に変換する
+START_TIME_SECOND=`date -d "${START_TIME}" '+%s'`
+END_TIME_SECOND=`date -d "${END_TIME}" '+%s'`
+
+if [ ${START_TIME_SECOND} -ge ${END_TIME_SECOND} ]; then
+    echo "--------------------------------------------"
+    echo "-- ParamError：開始、終了日時が同じ、もしくは逆転しています"
+    echo "--------------------------------------------"
+    exit 1
+fi
+
+## ディレクトリチェック
+if [ ! -e "./INPUT" ]; then
+    mkdir ./INPUT
+fi
+if [ ! -e "./ALERTS/HEADER" ]; then
+    mkdir -p ./ALERTS/HEADER
+fi
+
+############################################
+# 定数定義
+############################################
+## DB接続パラメータ
+export PGHOST=IPADDRESS
+export PGPORT=PORT
+export PGDATABASE=DBNAME
+export PGUSER=USERNAME
+export PGPASSWORD=PASSWD
+
+## SQL実行間隔
+SQL_EXE_INTERVAL=5
+
+## カレント時間
+CURRENT_DATE=`date +"%Y%m%d_%H%M%S"`
+
+## 出力ファイル
+FILE_START=`date +"%Y%m%d_%H%M" -d "${START_TIME}"`
+FILE_END=`date +"%Y%m%d_%H%M" -d "${END_TIME}"`
+OUTPUT_FILE_NAME="./ALERTS/${TARGET_DATA_KBN}_${FILE_START}-${FILE_END}.csv"
+
+# 存在している場合は削除する
+if [ -e "${OUTPUT_FILE_NAME}" ];then
+    rm -f ${OUTPUT_FILE_NAME}
+fi
+
+## 対象テーブル
+TARGET_TABLE=`grep ${TARGET_DATA_KBN} ./INPUT/table.csv | cut -d' ' -f2`
+
+## パラメータ設定
+OUTPUT_CSV_PER_1HOURS_FLG=`grep "OUTPUT_CSV_PER_1HOURS" ./INPUT/setParameter.txt | awk -F'=' '{print $2}'`
+ZIP_FLG=`grep "ZIP_COMPRESS_FLG" ./INPUT/setParameter.txt | awk -F'=' '{print $2}'`
+SORT_KEY=`grep "SORT_KEY" ./INPUT/setParameter.txt | awk -F'=' '{print $2}'`
+
+############################################
+# 実行確認
+############################################
+echo "--------------------------------------"
+echo "-- 【対象データ】${TARGET_DATA_KBN}"
+echo "-- 【抽出開始日時】${START_TIME}"
+echo "-- 【抽出終了日時】${END_TIME}"
+echo "--"
+echo "-- 【ユーザ設定（INPUT/setParameter.txt）】"
+echo "--   出力CSVを1時間区切りで出力:${OUTPUT_CSV_PER_1HOURS_FLG}"
+echo "--   出力CSVファイル圧縮：${ZIP_FLG}"
+echo "--   出力CSVソートキー：${SORT_KEY}"
+echo "--------------------------------------"
+#echo -n "-- よろしいですか？ [y/n] => "
+#read ANS
+
+#if [ "${ANS}" != "y" -a "${ANS}" != "yes" ]; then
+#    exit 0
+#fi
+
+############################################
+# 実行
+############################################
+## カラム名取得
+COLUMN_NAME_FILE="./ALERTS/HEADER/${TARGET_DATA_KBN}.csv"
+cat ./INPUT/getColumn.sql | sed -e "s@PARA_TABLE@${TARGET_TABLE}@g" > getTableTMP_$$.sql
+psql -q -f getTableTMP_$$.sql -A -F, -t > ${COLUMN_NAME_FILE}.tmp
+cat ${COLUMN_NAME_FILE}.tmp | tr '\n' ',' | sed 's/,$/\n/g' > ${COLUMN_NAME_FILE}
+rm ${COLUMN_NAME_FILE}.tmp
+
+NOW_TIME=${START_TIME}
+
+## 時刻を秒に変換する
+NOW_TIME_SECOND=`date -d "${NOW_TIME}" '+%s'`
+
+## SQL実行回数
+SQL_EXE_NUM=`expr \( ${END_TIME_SECOND} - ${NOW_TIME_SECOND} \) / \( ${SQL_EXE_INTERVAL} \* 60 \)`
+if [ `expr \( ${END_TIME_SECOND} - ${NOW_TIME_SECOND} \) % \( ${SQL_EXE_INTERVAL} \* 60 \)` -ne 0 ];then
+    SQL_EXE_NUM=`expr ${SQL_EXE_NUM} + 1`
+fi
+
+## SQL実行用日時
+DATE_FROM=`date +"%Y/%m/%d %H:%M:%S" -d "${START_TIME}"`
+DATE_TO=`date +"%Y/%m/%d %H:%M:%S" -d "${START_TIME} ${SQL_EXE_INTERVAL} minutes"`
+
+## 処理カウンタ
+CNT=0
+## 最終１時間フラグ
+LAST_FLG="OFF"
+## ZIP対象ファイル
+if [ ${OUTPUT_CSV_PER_1HOURS_FLG} = "ON" ];then
+    ZIP_TARGET_FILE=""
+else
+    ZIP_TARGET_FILE=${OUTPUT_FILE_NAME}
+fi
+
+echo "--------------------------------------------"
+echo -n "-- 対象データを取得しています... 進捗状況：${SQL_EXE_NUM} / ["
+
+while [ ${NOW_TIME_SECOND} -lt ${END_TIME_SECOND} ]
+do
+
+    # SQLのDATE_TOが終了条件を超えていたら、終了条件の時間までを取得する
+    if [ `date -d "${DATE_TO}" '+%s'` -gt ${END_TIME_SECOND} ]; then
+        DATE_TO=${END_TIME}
+        LAST_FLG="ON"
+    fi
+    
+    # 出力ファイルを1時間区切りでファイル分割する
+    if [ ${OUTPUT_CSV_PER_1HOURS_FLG} = "ON" ];then
+        if [ `expr ${CNT} % 12` -eq 0 ];then
+            FILE_START=`date +"%Y%m%d_%H%M" -d "${DATE_FROM}"`
+            FILE_END=`date +"%Y%m%d_%H%M" -d "${DATE_FROM} 1 hours"`
+            FILE_END_HOURS=`date +"%Y/%m/%d %H:%M:%S" -d "${DATE_FROM} 1 hours"`
+            
+            # 最後の1時間は終了時刻に変更
+            if [ `date -d "${FILE_END_HOURS}" '+%s'` -ge ${END_TIME_SECOND} ];then
+                FILE_END=`date +"%Y%m%d_%H%M" -d "${END_TIME}"`
+            fi
+            
+            OUTPUT_FILE_NAME="./ALERTS/${TARGET_DATA_KBN}_${FILE_START}-${FILE_END}.csv"
+            
+            # 存在している場合は削除する
+            if [ -e "${OUTPUT_FILE_NAME}" ];then
+                rm -f ${OUTPUT_FILE_NAME}
+            fi
+            
+            # ZIP用対象ファイル
+            FILE_NAME=`echo ${OUTPUT_FILE_NAME} | cut -d'/' -f3`
+            ZIP_TARGET_FILE=`echo "${ZIP_TARGET_FILE} ${FILE_NAME}"`
+        fi
+    fi
+
+    # SQL文作成
+    cat ./INPUT/template.sql | sed -e "s@PARA_TABLE@${TARGET_TABLE}@g" \
+                                   -e "s@PARA_FROM@${DATE_FROM}@g" \
+                                   -e "s@PARA_TO@${DATE_TO}@g" \
+                                   -e "s@PARA_SORT@${SORT_KEY}@g" > selectTMP_$$.sql
+    
+    # SQL実行
+    psql -q -f selectTMP_$$.sql -A -F, -t >> ${OUTPUT_FILE_NAME}
+    
+    DATE_FROM=`date +"%Y/%m/%d %H:%M:%S" -d "${DATE_FROM} ${SQL_EXE_INTERVAL} minutes"`
+    DATE_TO=`date +"%Y/%m/%d %H:%M:%S" -d "${DATE_TO} ${SQL_EXE_INTERVAL} minutes"`
+    
+    NOW_TIME=`date +"%Y/%m/%d %H:%M:%S" -d "${NOW_TIME} ${SQL_EXE_INTERVAL} minutes"`
+    NOW_TIME_SECOND=`date -d "${NOW_TIME}" '+%s'`
+    
+    # 進捗状況
+    CNT=`expr ${CNT} + 1`
+    if [ `expr ${CNT} % 10` -eq 0 ]; then
+        echo -n "+"
+    else
+        echo -n "*"
+    fi
+done
+
+echo "]"
+
+############################################
+# 後処理
+############################################
+if [ "${ZIP_FLG}" = "ON" ];then
+    
+    TARGET_DIR=""
+
+    # 1時間分割時
+    if [ ${OUTPUT_CSV_PER_1HOURS_FLG} = "ON" ];then
+        FILE_START=`date +"%Y%m%d_%H%M" -d "${START_TIME}"`
+        FILE_END=`date +"%Y%m%d_%H%M" -d "${END_TIME}"`
+        OUTPUT_FILE_NAME="./ALERTS/${TARGET_DATA_KBN}_${FILE_START}-${FILE_END}"
+        ZIP_TARGET_FILE=`echo ${ZIP_TARGET_FILE} | sed -e "s@ @ .\/ALERTS\/@g" -e "s@^@.\/ALERTS\/@"`
+    fi
+
+    # 出力ファイルを圧縮する
+    echo "--------------------------------------------"
+    echo "-- 対象CSVファイルを圧縮しています..."
+    zip -jqm ${OUTPUT_FILE_NAME}.zip ${ZIP_TARGET_FILE}
+    OUTPUT_FILE_NAME="${OUTPUT_FILE_NAME}.zip"
+fi
+
+echo "--------------------------------------------"
+echo "-- 対象CSVファイル：${OUTPUT_FILE_NAME}"
+echo "--------------------------------------------"
+
+### 一時ファイル削除
+rm ./*TMP_$$.sql
+
+START_TIME=`echo "${START_TIME}" | sed -e "s/\-//g"`
+END_TIME=`echo "${END_TIME}" | sed -e "s/\-//g"`
+
+echo $START_TIME
+echo $END_TIME
+
+mkdir ${1}_egress
+mkdir ${1}_ingress
+
+MKDIRDATE=`date --date '1 day ago' +%Y%m%d`
+
+rm -rf ${1}_${MKDIRDATE}
+mkdir ${1}_${MKDIRDATE}
+cp tmp ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv
+
+./build.sh multi_measure_${1} 
+./multi_measure_${1} ${1}_${MKDIRDATE} list-sinet
+
+cat header-${1} > tmp
+cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_egress >> tmp
+cp tmp ${1}_egress/${1}_${FILE_START}-${FILE_END}.csv_egress
+
+cat header-${1} > tmp
+cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_ingress >> tmp
+cp tmp ${1}_ingress/${1}_${FILE_START}-${FILE_END}.csv_ingress
+
+rm -rf ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_*
+
+# us-east-1
+
+mkdir ${1}_us-east-1_egress
+mkdir ${1}_us-east-1_ingress
+
+./multi_measure_${1} ${1}_${MKDIRDATE} list-us-east-1
+
+cat header-${1} > tmp
+cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_egress >> tmp
+cp tmp ${1}_us-east-1_egress/${1}_${FILE_START}-${FILE_END}.csv_egress
+
+cat header-${1} > tmp
+cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_ingress >> tmp
+cp tmp ${1}_us-east-1_ingress/${1}_${FILE_START}-${FILE_END}.csv_ingress
+
+# ap-northeast-1
+
+mkdir ${1}_ap-northeast-1_egress
+mkdir ${1}_ap-northeast-1_ingress
+
+./multi_measure_${1} ${1}_${MKDIRDATE} list-ap-northeast-1
+
+cat header-${1} > tmp
+cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_egress >> tmp
+cp tmp ${1}_ap-northeast-1_egress/${1}_${FILE_START}-${FILE_END}.csv_egress
+
+cat header-${1} > tmp
+cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_ingress >> tmp
+cp tmp ${1}_ap-northeast-1_ingress/${1}_${FILE_START}-${FILE_END}.csv_ingress
+
+# eu-west-1
+
+mkdir ${1}_eu-west-1_egress
+mkdir ${1}_eu-west-1_ingress
+
+./multi_measure_${1} ${1}_${MKDIRDATE} list-eu-west-1
+
+cat header-${1} > tmp
+cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_egress >> tmp
+cp tmp ${1}_eu-west-1_egress/${1}_${FILE_START}-${FILE_END}.csv_egress
+
+cat header-${1} > tmp
+cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_ingress >> tmp
+cp tmp ${1}_eu-west-1_ingress/${1}_${FILE_START}-${FILE_END}.csv_ingress
+

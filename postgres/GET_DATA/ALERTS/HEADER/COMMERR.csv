@@ -1,0 +1,1 @@
+comm_err_alarm_id,capture_time,src_and_dest_ip_class,src_university_id,dest_university_id,event_name,threat_count,severity,category,start_time,end_time,src_ip,src_country_code,dest_dns_domain,alarm_name,threat_intent,device_ntdomain,dest_ip,dest_country_code,dvchost

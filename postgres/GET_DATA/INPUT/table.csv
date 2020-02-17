@@ -1,0 +1,4 @@
+SESSION session_info
+TARGET targeted_attack_alarm
+ATTACK attack_alarm
+COMMERR communication_error
