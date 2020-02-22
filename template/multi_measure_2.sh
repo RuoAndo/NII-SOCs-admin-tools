@@ -22,7 +22,7 @@ mkdir egress_${REGION_NAME}_${date}
 ./build.sh traverse_json_4
 
 echo "copying..."
-time cp -r /sql_data/json/${date} .
+time cp -r /mnt/data/json/${date} .
 time ./traverse_json_4 $date list-${REGION_NAME}
 
 ls ./${date}/*ingress > list
@@ -30,7 +30,7 @@ ls ./${date}/*ingress > list
 while read line; do
     fn_src=`echo $line`
     fn_dst=`echo $line | cut -d "/" -f 3`
-    cat header > tmp
+    # cat header > tmp
     cat ${fn_src} >> tmp
     echo "./ingress/${REGION_NAME}_${fn_dst}_${date}"
     cp tmp ./ingress_${REGION_NAME}_${date}/${REGION_NAME}_${fn_dst}_${date}
@@ -42,7 +42,7 @@ ls ./${date}/*egress > list
 while read line; do
     fn_src=`echo $line`
     fn_dst=`echo $line | cut -d "/" -f 3`
-    cat header > tmp
+    # cat header > tmp
     cat ${fn_src} >> tmp
     echo "./egress/${REGION_NAME}_${fn_dst}_${date}"
     cp tmp ./egress_${REGION_NAME}_${date}/${REGION_NAME}_${fn_dst}_${date}
