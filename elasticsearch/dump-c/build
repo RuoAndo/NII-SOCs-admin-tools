@@ -1,0 +1,1 @@
+gcc dump.c -lpthread -lcurl -ljansson
