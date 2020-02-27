@@ -7,10 +7,14 @@
 #define THREAD_NUM 2
 #define DATA_NUM 10
 
-#define SLICE_SIZE 16384
-#define JSON_SIZE 2048
-#define LINE_LIMIT 100
-#define DISP_RATIO 5
+static int SLICE_SIZE = 0;
+//#define SLICE_SIZE 3072
+
+#define JSON_SIZE 1024
+
+static int LINE_LIMIT = 0; 
+//#define LINE_LIMIT 9000
+#define DISP_RATIO 10
 
 static int line_counter = 0;
 static int curl_counter = 0;
@@ -63,6 +67,12 @@ memfwrite(char* ptr, size_t size, size_t nmemb, void* stream) {
   if (mf->data) {
     memcpy(mf->data + mf->size, ptr, block);
     mf->size += block;
+
+    /*
+    if(mf->data[mf->size] != "")
+      mf->data[mf->size] = '\n';
+    */    
+
   }
   return block;
 }
@@ -98,9 +108,7 @@ void thread_func(void *arg) {
 
     // printf("%s \n", targ->scrollID);
 
-
-    char *url = "http://USERNAME:PASSWD@IPADDRESS:9200/_search/scroll";
-
+    
     char dispstring[2048];
     
     for(int i = 0; i < 10000; i++)
@@ -185,26 +193,35 @@ void thread_func(void *arg) {
 
 }
 
-int main()
-{
+int main(int argc, char *argv[]){
+
     pthread_t handle[THREAD_NUM];
     thread_arg_t targ[THREAD_NUM];
     int data[DATA_NUM];
     int i;
 
+    SLICE_SIZE = atoi(argv[1]);
+    LINE_LIMIT = atoi(argv[2]);
+    
     CURL* curl;
     MEMFILE* mf = NULL;
     char* js = NULL;
 
     char scrollID[2048];
-   
+    
+    static time_t t1,t2;
+    static clock_t start, end;
+    
+    start = clock();
+    t1 = time(NULL);    
+    
     for (i = 0; i < THREAD_NUM; i++) {
         targ[i].thread_no = i;
         // targ[i].data = data;
 
         mf = memfopen();
   
-        char *url = "http://USERNAME:PASSWORD@IPADDRESS:9200/INDEX_NAME/_search?scroll=1m";
+        
   
         char post_data[512];
         memset(post_data,0,512);
@@ -245,6 +262,14 @@ int main()
 
     for (i = 0; i < THREAD_NUM; i++)
         pthread_join(handle[i], NULL);
+
+    t2 = time(NULL);
+    end = clock();
+
+
+    printf("SLICE SIZE %d \n", SLICE_SIZE);
+    printf("LINE LIMIT %d \n", LINE_LIMIT);
+    printf("time = %d[s]\n", (int)(t2-t1));
+    printf( "elapsed time:%d[ms]\n", end - start );
     
-    return 0;
 }

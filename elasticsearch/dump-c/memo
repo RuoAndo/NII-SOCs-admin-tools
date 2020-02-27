@@ -1,0 +1,2 @@
+gcc -o 2 ppb_first_thread.c -lpthread -lcurl -ljansson
+rm -rf f*; time ./dump 1024 1000; time ./2 | tee log-2
