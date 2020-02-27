@@ -1,4 +1,4 @@
-date=$(date -d '1 day ago' "+%Y%m%d")
+date=$(date -d '2 day ago' "+%Y%m%d")
 echo $date
 REGION_NAME=$1
 
@@ -22,7 +22,7 @@ mkdir egress_${REGION_NAME}_${date}
 ./build.sh traverse_json_4
 
 echo "copying..."
-time cp -r /mnt/data/json/${date} .
+time cp -r /data1/json/${date} .
 time ./traverse_json_4 $date list-${REGION_NAME}
 
 ls ./${date}/*ingress > list
