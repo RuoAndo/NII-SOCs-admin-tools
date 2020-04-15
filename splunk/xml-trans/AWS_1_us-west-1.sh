@@ -1,0 +1,1 @@
+./trans.sh template.aws.xml "/mnt/data/aws/us-west/Usenix_LISA19/direction_discrimination/gpu/ingress_us-west-1/*" "/mnt/data/aws/us-west/Usenix_LISA19/direction_discrimination/gpu/egress_us-west-1/*" "h-gpu03" "AWS_1_us-west-1_N_California" > AWS_1_us-west-1_N_California.xml
