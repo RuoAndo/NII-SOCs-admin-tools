@@ -1,3 +1,8 @@
+if [ $# != 3 ]; then
+        echo "usage: ./trans.sh [shellscript filename] [XML file name] [postfix string]"
+	exit 1
+fi
+
 str=`sed -n 6p $1`
 echo $str
 
