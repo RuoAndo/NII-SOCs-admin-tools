@@ -2,7 +2,7 @@
 
 #!/bin/bash
 
-rm -rf  all-test.xml
+rm -rf streamstats_chart_all_ingress.xml
 grep -v dashboard streamstats_template_ingress.xml | grep -v label > org.xml 
 
 echo "<dashboard>" >> streamstats_chart_all_ingress.xml
