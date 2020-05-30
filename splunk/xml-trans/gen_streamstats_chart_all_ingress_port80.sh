@@ -1,12 +1,10 @@
-#SINET_10_Hokkaido_Daigaku,"/mnt/data2/sinet/hokkaido/Usenix_LISA19/direction_discrimination/gpu/ingress_hokkaidodai/*",host="h-gpu04"
-
 #!/bin/bash
 
 rm -rf streamstats_chart_all_ingress_port80.xml
 grep -v dashboard streamstats_template_ingress_port80.xml | grep -v label > org.xml 
 
 echo "<dashboard>" >> streamstats_chart_all_ingress_port80.xml
-echo "<label>SINET treamstats charts (ingress)</label>" >> streamstats_chart_all_ingress_port80.xml
+echo "<label>SINET treamstats charts (ingress) to PORT80</label>" >> streamstats_chart_all_ingress_port80.xml
 
 while read row; do
   column1=`echo ${row} | cut -d , -f 1`
