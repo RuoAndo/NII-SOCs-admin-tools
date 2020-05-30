@@ -12,4 +12,7 @@ IIIII: file path of ingoing
 EEEEE: file path of outgoing
 HHHHH: host name
 
-
+<pre>
+# ./1-1-aws.sh | grep -v egress > parameter-list-aws
+# ./gen_streamstats_chart_all_ingress_aws.sh parameter-list-aws
+</pre>
