@@ -5,7 +5,7 @@
       <title>【session data】【outgoing】source="EEEEE" host="HHHHH" sourcetype="csv" sourcetype="csv" earliest=-3d@d latest=-1d@d | where destination_port = 25 | timechart count as count span=10m</title>
       <chart>
         <search>
-          <query>source="EEEEE" host="HHHHH" sourcetype="csv" earliest=-3d@d latest=-1d@d |  where destination_port = 21 | timechart count as count span=10m</query>
+          <query>source="EEEEE" host="HHHHH" sourcetype="csv" earliest=-3d@d latest=-1d@d |  where destination_port = 25 | timechart count as count span=10m</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
