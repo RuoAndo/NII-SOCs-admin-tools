@@ -2,9 +2,15 @@ import xml.etree.ElementTree as ET
 
 import sys
 args = sys.argv
+argc = len(args) 
+
+if (argc != 2):  
+    print("Usage: ./xml-azure.py [XML File]")
+    quit()
 
 tree = ET.parse(args[1])
 root = tree.getroot()
+
 
 #print(root.tag)
 #print(root.attrib)
