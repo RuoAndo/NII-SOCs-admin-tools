@@ -36,18 +36,15 @@ std::vector < std::vector< std::string > > parse_csv(const char* filepath)
     std::string line;
     std::ifstream ifs(filepath);
 
-    // csvを走査
     while (std::getline(ifs, line)) {
 
         std::vector< std::string > data;
 
-        // 1行を走査
         boost::tokenizer< boost::escaped_list_separator< char > > tokens(line);
         for (const std::string& token : tokens) {
             data.push_back(token);
         }
 
-        // 1行読み込んだ結果を入れる
         cells.push_back(data);
     }
 
@@ -69,12 +66,12 @@ int main(int argc, char *argv[])
             parse( cell.begin(), cell.end(), parser );
             // ternary operator)
 	    if(info.full)
-	      cout << "OK:" << cell << endl;
+	      cout << cell << ",";
 	    
 	    // cout << (info.full ? "OK" : "fail") << endl;
 	    
         }
-        // std::cout << std::endl;
+        std::cout << std::endl;
     }
 
     return 0;
