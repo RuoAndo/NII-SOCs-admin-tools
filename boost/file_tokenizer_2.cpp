@@ -54,8 +54,6 @@ std::vector < std::vector< std::string > > parse_csv(const char* filepath)
     return cells;
 }
 
-
-
 // int main(void)
 int main(int argc, char *argv[])
 {
@@ -76,7 +74,7 @@ int main(int argc, char *argv[])
 	    // cout << (info.full ? "OK" : "fail") << endl;
 	    
         }
-        std::cout << std::endl;
+        // std::cout << std::endl;
     }
 
     return 0;
