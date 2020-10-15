@@ -9,9 +9,9 @@ wget https://gist.githubusercontent.com/micahflee/1ca459c2bb1cc36a6b354e3303d9fe
 
 $ head -n 3 tmp                                                                    
 <pre>
-101.64.234.86,GeoIP City Edition, Rev 1: CN, 02, Zhejiang, Hangzhou, N/A, 30.293600, 120.161400, 0, 0
-101.98.11.146,GeoIP City Edition, Rev 1: NZ, E7, Auckland, Auckland, 1010, -36.866699, 174.766693, 0, 0
-103.16.152.10,GeoIP City Edition, Rev 1: BD, 81, Dhaka, Dhaka, 1000, 23.723101, 90.408600, 0, 0
+*.*.234.86,GeoIP City Edition, Rev 1: CN, 02, Zhejiang, Hangzhou, N/A, 30.293600, 120.161400, 0, 0
+*.*.11.146,GeoIP City Edition, Rev 1: NZ, E7, Auckland, Auckland, 1010, -36.866699, 174.766693, 0, 0
+*.*.152.10,GeoIP City Edition, Rev 1: BD, 81, Dhaka, Dhaka, 1000, 23.723101, 90.408600, 0, 0
 </pre>
 
 $ cat tmp2.kml
