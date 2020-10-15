@@ -1,4 +1,8 @@
 <pre>
+wget https://gist.githubusercontent.com/micahflee/1ca459c2bb1cc36a6b354e3303d9fee0/raw/0673750c8c47a883387cda15966bcaf00f2a7ce4/grizzly_ips.txt
+</pre>
+
+<pre>
  1017  ./geoip.sh grizzly_ips.txt > tmp
  1021  ./kml.pl tmp > tmp2.kml
 </pre>
