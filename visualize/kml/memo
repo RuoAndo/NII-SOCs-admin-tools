@@ -1,0 +1,3 @@
+ 1017  ./geoip.sh grizzly_ips.txt > tmp
+ 1021  ./kml.pl tmp > tmp2.kml
+
