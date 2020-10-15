@@ -37,3 +37,5 @@ $ cat tmp2.kml
 IP:101.64.234.86 |/description|
 |styleUrl|#msn_ylw-pushpin1300|/styleUrl|
 </pre>
+
+<img src="g.jpg">
