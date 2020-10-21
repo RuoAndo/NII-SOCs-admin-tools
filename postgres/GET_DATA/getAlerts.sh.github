@@ -302,67 +302,10 @@ echo $END_TIME
 mkdir ${1}_egress
 mkdir ${1}_ingress
 
-MKDIRDATE=`date --date '1 day ago' +%Y%m%d`
+MKDIRDATE=`date --date '2 day ago' +%Y%m%d`
 
 rm -rf ${1}_${MKDIRDATE}
 mkdir ${1}_${MKDIRDATE}
 cp tmp ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv
 
-./build.sh multi_measure_${1} 
-./multi_measure_${1} ${1}_${MKDIRDATE} list-sinet
-
-cat header-${1} > tmp
-cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_egress >> tmp
-cp tmp ${1}_egress/${1}_${FILE_START}-${FILE_END}.csv_egress
-
-cat header-${1} > tmp
-cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_ingress >> tmp
-cp tmp ${1}_ingress/${1}_${FILE_START}-${FILE_END}.csv_ingress
-
-rm -rf ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_*
-
-# us-east-1
-
-mkdir ${1}_us-east-1_egress
-mkdir ${1}_us-east-1_ingress
-
-./multi_measure_${1} ${1}_${MKDIRDATE} list-us-east-1
-
-cat header-${1} > tmp
-cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_egress >> tmp
-cp tmp ${1}_us-east-1_egress/${1}_${FILE_START}-${FILE_END}.csv_egress
-
-cat header-${1} > tmp
-cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_ingress >> tmp
-cp tmp ${1}_us-east-1_ingress/${1}_${FILE_START}-${FILE_END}.csv_ingress
-
-# ap-northeast-1
-
-mkdir ${1}_ap-northeast-1_egress
-mkdir ${1}_ap-northeast-1_ingress
-
-./multi_measure_${1} ${1}_${MKDIRDATE} list-ap-northeast-1
-
-cat header-${1} > tmp
-cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_egress >> tmp
-cp tmp ${1}_ap-northeast-1_egress/${1}_${FILE_START}-${FILE_END}.csv_egress
-
-cat header-${1} > tmp
-cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_ingress >> tmp
-cp tmp ${1}_ap-northeast-1_ingress/${1}_${FILE_START}-${FILE_END}.csv_ingress
-
-# eu-west-1
-
-mkdir ${1}_eu-west-1_egress
-mkdir ${1}_eu-west-1_ingress
-
-./multi_measure_${1} ${1}_${MKDIRDATE} list-eu-west-1
-
-cat header-${1} > tmp
-cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_egress >> tmp
-cp tmp ${1}_eu-west-1_egress/${1}_${FILE_START}-${FILE_END}.csv_egress
-
-cat header-${1} > tmp
-cat ${1}_${MKDIRDATE}/${1}_${FILE_START}-${FILE_END}.csv_ingress >> tmp
-cp tmp ${1}_eu-west-1_ingress/${1}_${FILE_START}-${FILE_END}.csv_ingress
 
