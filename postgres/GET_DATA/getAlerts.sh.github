@@ -302,7 +302,7 @@ echo $END_TIME
 mkdir ${1}_egress
 mkdir ${1}_ingress
 
-MKDIRDATE=`date --date '2 day ago' +%Y%m%d`
+MKDIRDATE=`date --date '1 day ago' +%Y%m%d`
 
 rm -rf ${1}_${MKDIRDATE}
 mkdir ${1}_${MKDIRDATE}
