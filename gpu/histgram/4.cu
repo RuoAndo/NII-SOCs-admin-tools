@@ -32,7 +32,7 @@ int main( int argc, char* argv[] )
 {
   int N = atoi(argv[2]);
   
-  thrust::host_vector<long> h_vec_1(N);
+  thrust::host_vector<unsigned long long> h_vec_1(N);
   thrust::host_vector<long> h_vec_2(N);   
 
   const string csv_file = std::string(argv[1]); 
@@ -73,25 +73,47 @@ int main( int argc, char* argv[] )
 	  bytes.erase(c,1);
 	}
 
+/*
       std::cout << timestamp << std::endl;
       std::cout << bytes << std::endl;
+*/
 
-      h_vec_1.push_back(std::stol(timestamp.c_str()));
+      // h_vec_1.push_back(std::stoull(timestamp.c_str()));
+      h_vec_1[row] = std::stoull(timestamp.c_str());
       h_vec_2[row] = std::stol(bytes);
   }
 
-  thrust::host_vector<long> dout_2(N);
-  thrust::host_vector<long> dout_3(N);
-  thrust::host_vector<long> d_vec_2(N);
-  
-  thrust::copy(h_vec_2.begin(), h_vec_2.end(), d_vec_2.begin());   
-  thrust::inclusive_scan(d_vec_2.begin(), d_vec_2.end(), dout_2.begin());
-  thrust::exclusive_scan(d_vec_2.begin(), d_vec_2.end(), dout_3.begin());
+  int in_size = N;
 
-  for(int i=0;i<N;i++)
+  thrust::device_vector<unsigned long long> key_in(N);
+  thrust::device_vector<long> value_in(N);
+
+  /*
+  thrust::device_vector<unsigned long long> key_in(in_size) = h_vec_1;
+  thrust::device_vector<long> value_in(in_size) = h_vec_2;
+  */
+
+  thrust::copy(h_vec_1.begin(), h_vec_1.end(), key_in.begin());
+  thrust::copy(h_vec_2.begin(), h_vec_2.end(), value_in.begin());
+
+  thrust::device_vector<unsigned long long> key_out(in_size, 0);
+  thrust::device_vector<long> value_out(in_size, 0);
+
+  thrust::sort(key_in.begin(), key_in.end());
+
+  auto new_end = thrust::reduce_by_key(key_in.begin(),
+                                     key_in.end(),
+                                     value_in.begin(),
+                                     key_out.begin(),
+                                     value_out.begin());
+
+  long new_size = new_end.first - key_out.begin();
+  
+  for(long i=0; i < new_size;i++)
   {
-	// cout << d_vec_2[i] << "," << dout_2[i] << "," << dout_3[i] << endl;
-	cout << d_vec_2[i] << "," << dout_3[i] << endl;
-  }	  
+   std::cout << key_out[i] << "," << value_out[i] << "," << std::endl;
+  }
+   std::cout << std::endl;
+
   return 0;
 }
