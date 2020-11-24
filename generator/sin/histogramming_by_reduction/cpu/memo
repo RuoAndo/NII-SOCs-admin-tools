@@ -1,0 +1,7 @@
+ 2367  ./build.sh rand_gen
+ 2378  ./rand_gen 100000
+ 2379  rm -rf data/*
+ 2380  split -l 10000 random_data.txt 
+ 2381  mv x* ./data/
+ 2382  time ./multi_measure data/
+ 2384  head -n 5 tmp-counts 
