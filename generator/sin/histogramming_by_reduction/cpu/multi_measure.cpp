@@ -200,8 +200,14 @@ int traverse_file(char* filename, int thread_id) {
 	    continue;
 	  }
 	    
-	std::string tms = rec[37];
+
+	// std::string tms = rec[0];
+	// "2019-07-02 00:00:10.228
 	
+	std::string tms0 = rec[0];
+        std::string tms = tms0.replace(19,5,"0");  
+	// cout << tms << endl;
+
 	for(size_t c = tms.find_first_of("\""); c != string::npos; c = c = tms.find_first_of("\"")){
     	      tms.erase(c,1);
 	}
@@ -221,16 +227,17 @@ int traverse_file(char* filename, int thread_id) {
 	for(size_t c = tms.find_first_of(":"); c != string::npos; c = c = tms.find_first_of(":")){
 	      tms.erase(c,1);
 	}
-
+	
 	// key[row] = stoull(tms);
 	// value[row] = 1;
 
-	// std::string bytes = rec[20];
-	std::string bytes = "1";
+	std::string bytes = rec[3];
+	// std::string bytes = "1";
 
 	for(size_t c = bytes.find_first_of("\""); c != string::npos; c = c = bytes.find_first_of("\"")){
 	  bytes.erase(c,1);
-	}         
+	} 
+       
 
 	clock_gettime(CLOCK_REALTIME, &startTime);
 	sleepTime.tv_sec = 0;
@@ -563,7 +570,7 @@ int main(int argc, char* argv[]) {
 
       outputfile << timestamp.substr(0,4) << "-" << timestamp.substr(4,2) << "-" << timestamp.substr(6,2) << " "
 		 << timestamp.substr(8,2) << ":" << timestamp.substr(10,2) << ":" << timestamp.substr(12,2)
-		 << "." << timestamp.substr(14,3) << ","
+		 << timestamp.substr(14,3) << ","
 		 << itr->second << endl; 
     }
     outputfile.close();
