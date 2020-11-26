@@ -24,3 +24,10 @@ grep GPU_number kernel.cu -rin
 </pre>
 
 When you are to change # of GPU to more than one, change GPU_number (kernel.cu).
+
+<pre>
+# time ./a.out 2000000000                                                                                    
+real    1023m7.453s
+user    967m40.348s
+sys     55m14.891s
+</pre>
