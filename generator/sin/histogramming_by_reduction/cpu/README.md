@@ -10,3 +10,10 @@
 # head -n 5 tmp-counts 
 </pre>
 
+<pre>
+$ time ./a.out 2000000000
+
+real    1018m42.861s
+user    962m25.721s
+sys     56m4.835s
+</pre>
