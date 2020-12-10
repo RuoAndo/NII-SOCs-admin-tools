@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0m/home/hadoop/nii-cyber-security-admin/spark/csv/main.scala:10:7: forward reference extends over definition of value rdd[0m
+[0m[[0m[31merror[0m] [0m[0m      rdd.foreach(println)[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
