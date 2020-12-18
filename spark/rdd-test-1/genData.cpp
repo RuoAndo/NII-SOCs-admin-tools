@@ -8,6 +8,8 @@
 #include <bitset>
 #include<fstream>
 
+#include <random>
+
 #include <functional> //for std::function
 #include <algorithm>  //for std::generate_n
  
@@ -295,7 +297,20 @@ int main( int argc, char* argv[] )
     outputfile << "," << "\"" << GetRandom(1,1000) << "\"";
 
     // device name
-    outputfile<< "," << "\"" << "rand-pa1" << "\"";
+    int rnd_tmp = rnd();
+    
+    // std::random_device rnd;
+    if (rnd_tmp % 3 == 0)   
+      outputfile<< "," << "\"" << "rand-pa1" << "\"";
+
+    else if (rnd_tmp % 3 == 1)   
+      outputfile<< "," << "\"" << "rand-pa2" << "\"";
+
+    else if (rnd_tmp % 3 == 2)   
+      outputfile<< "," << "\"" << "rand-pa3" << "\"";
+
+    else
+      outputfile<< "," << "\"" << "rand-pa3" << "\"";
 
     outputfile << endl;
   }
