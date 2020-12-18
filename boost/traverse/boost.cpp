@@ -49,7 +49,7 @@ using namespace std;
 using namespace tbb;
 
 // 2 / 1024
-#define WORKER_THREAD_NUM 20
+#define WORKER_THREAD_NUM 11
 #define MAX_QUEUE_NUM 91
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
