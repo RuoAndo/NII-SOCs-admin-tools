@@ -49,7 +49,7 @@ using namespace std;
 using namespace tbb;
 
 // 2 / 1024
-#define WORKER_THREAD_NUM 10
+#define WORKER_THREAD_NUM 20
 #define MAX_QUEUE_NUM 91
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
@@ -70,6 +70,7 @@ static int dir_1_counter_global = 0;
 static int miss_counter = 0;
 
 static int timestamp_counter = 0;
+static int chunk_counter = 0;
 
 #include <boost/spirit.hpp>
 using namespace std;
@@ -284,7 +285,8 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
     }
 
     cout << "[" << now_str() << "]" << "thread - " << thread_id << " - CSV file READ(1) done." << endl; 
- 
+    chunk_counter++;
+    
     for (unsigned int row = 0; row < list_data.size(); row++) {
       
       vector<string> rec = list_data[row];
@@ -295,7 +297,7 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 
       std::cout << "[" << now_str() << "]" << "threadID:" << thread_id << ":" << list_file << ":" << "(" << list_data.size() << "):"
 		<< argIP << "/" << netmask << ":" << filename << ":" << dir_0_counter_global << ":" << dir_1_counter_global
-		<< ":" << std::endl;
+		<< ":" << chunk_counter << std::endl;
       
       char del2 = '.';
 	    
@@ -375,14 +377,14 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 	     
         } // for(const auto& cell : rows) {
 
-	 /*
+
 	 if(row_counter % DISP_RATIO == 0 && row_counter > 0)
 	   {
 	     std::cout << "[" << now_str() << "]" << "threadID:" << thread_id << ":(" << row_counter << ")" << list_file << ":" << "(" << list_data.size() << "):"
 		       << argIP << "/" << netmask << ":" << filename << ":" << dir_0_counter_global << ":" << dir_1_counter_global
-		       << ":" << std::endl;
+		       << ":" << chunk_counter << std::endl;
 	   }
-	 */
+
 
 	 disp_counter++;
 	 row_counter++;
@@ -654,6 +656,8 @@ int main(int argc, char* argv[]) {
 
     // static iTbb_Map_map TbbVec_Boost_Map;
 
+    cout << "[" << now_str() << "]" << "now writing to trancated.txt..." << endl; 
+    
     ofstream outputfile("truncated.txt");
     
     for(auto itr = TbbVec_Boost_Map.begin(); itr != TbbVec_Boost_Map.end(); ++itr) {
@@ -709,8 +713,7 @@ int main(int argc, char* argv[]) {
 
     outputfile.close();
 
-    std::cout << "written to trancated.txt" << std::endl;
-    
+    cout << "[" << now_str() << "]" << "writing to trancated.txt done" << std::endl;  
     
     // print_result(&targ[0]);
 
