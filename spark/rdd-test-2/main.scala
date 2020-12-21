@@ -16,7 +16,7 @@ object Main {
       val sc = new SparkContext("local[*]", "App", conf)
 
       var start = System.currentTimeMillis
-      val rddFromFile = sc.textFile("hdfs://192.168.76.216:9000/user/hadoop/ingress-CN-all")
+      val rddFromFile = sc.textFile("hdfs://192.168.76.216:9000/user/hadoop/sinet_egress_all_20201217")
  
       val rdd = rddFromFile.map(f=>{
       	  f.split(",")

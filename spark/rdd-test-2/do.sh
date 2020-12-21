@@ -1,1 +1,1 @@
- sbt -J-Xmx128G -J-Xms128G run
+ sbt -J-Xmx256G -J-Xms256G run
