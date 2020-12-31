@@ -26,7 +26,7 @@ object Main {
       var start = System.currentTimeMillis
 
       
-      val dessertRDD = sc.textFile("hdfs://192.168.76.216:9000/user/hadoop/" + "egress-cn-20201212")
+      val dessertRDD = sc.textFile("hdfs://192.168.76.216:9000/user/hadoop/" + "sinet_egress_all_20201228")
 
       val dessertDF = dessertRDD.map { record =>
       	  val splitRecord = record.split(",")
@@ -37,13 +37,23 @@ object Main {
 	  Dessert(timestamp, destIP, sourceIP, category)
 	  }.toDF
 
-      val top10 = dessertDF.take(10) 	  
-      top10.foreach(println)
+      // val top10 = dessertDF.take(10) 	  
+      // top10.foreach(println)
 
       println("---")
-      val name_price_2 = dessertDF.where($"destIP" === "204.11.56.48").take(10)
-      name_price_2.foreach(println)
+      // val name_price_2 = dessertDF.where($"destIP" === "204.11.56.48").take(10)
+      val name_price_2 = dessertDF.where($"category" === "abused-drugs") //.take()
+      // val name_price_2 = dessertDF.where($"category" === "phishing").take(100)
 
+      name_price_2.foreach { row => 
+            		    println(row)
+		    	    }
+
+      // println("COUNT: " + name_price_2.size) 
+      // name_price_2.foreach(println)
+
+      // println(name_price_2)
+      
       /*
       numPerPriceRangeDF.foreach { row => println(row(0)) }
 
