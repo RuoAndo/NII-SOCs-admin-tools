@@ -1,0 +1,18 @@
+[info] welcome to sbt 1.4.4 (Private Build Java 1.8.0_275)
+[info] loading project definition from /mnt/data/hadoop/nii-cyber-security-admin/spark/spark-sql-test-6/project
+[info] loading settings for project spark-sql-test-6 from build.sbt ...
+[info] set current project to App (in build file:/mnt/data/hadoop/nii-cyber-security-admin/spark/spark-sql-test-6/)
+[info] running Main 
+[tart_tim,estination_i,ource_i,ategor]
+[2020/12/12 00:19:57,133.65.76.179,218.93.207.94,any]
+[2020/12/12 00:19:59,133.65.41.125,222.187.238.57,any]
+[2020/12/12 00:20:08,133.65.137.80,222.187.238.39,any]
+[2020/12/12 00:20:08,133.65.122.109,218.93.207.94,any]
+[2020/12/12 00:20:06,133.65.35.77,222.187.238.57,any]
+[2020/12/12 00:20:06,133.65.103.69,222.187.224.30,any]
+[2020/12/12 00:20:05,133.65.120.99,218.93.207.94,any]
+[2020/12/12 00:20:04,133.65.78.83,218.93.207.94,any]
+[2020/12/12 00:20:04,133.65.80.205,222.187.238.39,any]
+---
+elapsed time: 56562 msec
+[success] Total time: 63 s (01:03), completed Dec 29, 2020 7:02:18 PM
