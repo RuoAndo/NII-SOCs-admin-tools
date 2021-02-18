@@ -260,8 +260,8 @@ int traverse_file(char* filename, char* filename_list, int thread_id) {
 	    continue;
 	  }
 	    
-	std::string srcIP = rec2[27];
-	std::string destIP = rec2[20];
+	std::string srcIP = rec2[4];
+	std::string destIP = rec2[7];
 	
 	for(size_t c = srcIP.find_first_of("\""); c != string::npos; c = c = srcIP.find_first_of("\"")){
 	  srcIP.erase(c,1);
