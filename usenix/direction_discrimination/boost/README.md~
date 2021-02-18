@@ -1,0 +1,16 @@
+# build
+<pre>
+# ./build.sh multi_measure
+</pre>
+
+# generate list
+
+<pre>
+# ./makelist.sh
+</pre>
+
+# run
+
+<pre>
+# ./discrimination [CSV DIR] [listname]
+</pre>

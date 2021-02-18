@@ -1,0 +1,10 @@
+cat header |  sed -e 's/,/\n/g' | nl
+
+cat list | sed -e 's/\[//g' | sed -e 's/\]//g'
+
+
+./search.sh list2 list-shanghai-2 | uniq | wc -l
+./do.sh ingress_shanghai-2 | cut -d "," -f 22 | grep -v ip | tr -d "\"" | uniq > list2
+
+ 2249  time ./do2.sh shanghai-2
+  2250  time ./do2.sh shanghai-3
