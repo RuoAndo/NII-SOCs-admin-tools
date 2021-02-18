@@ -1,0 +1,8 @@
+ 2326  cp -r tmp-box.bak/ tmp-box
+ 2327  cp ../gpu/listgen.sh .
+ 2328  ./listgen.sh 
+ 2329  ./listgen.sh  > test-list
+ 2330  ls
+ 2331  history
+ 2332  ./multi_measure tmp-box test-list 
+
