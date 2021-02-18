@@ -1,1 +1,5 @@
 cat header|  sed -e 's/,/\n/g' 
+
+ 2310  cp -r tmp-box.bak/ tmp-box
+ 2311  ./listgen.sh > test-list
+ 2312  ./discernGPU tmp-box test-list 
