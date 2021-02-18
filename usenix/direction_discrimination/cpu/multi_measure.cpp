@@ -45,8 +45,8 @@ using namespace std;
 using namespace tbb;
 
 // 2 / 1024
-#define WORKER_THREAD_NUM 17
-#define MAX_QUEUE_NUM 91
+#define WORKER_THREAD_NUM 3
+#define MAX_QUEUE_NUM 9
 #define END_MARK_FNAME   "///"
 #define END_MARK_FLENGTH 3
 
@@ -201,7 +201,12 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 	found_flag[i] = 0;
 	found_flag_2[i] = 0;
       }
-    
+
+    /*
+    cout << "[TEST] list size " << list_data.size() << endl;
+    cout << "[TEST] list name " << filelist_name << endl;
+    */
+	
     counter = 0;
     for (unsigned int row = 0; row < list_data.size(); row++) {
       
@@ -228,17 +233,23 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
       for (unsigned int row2 = 0; row2 < session_data.size(); row2++) {
 	vector<string> rec2 = session_data[row2];
 
+	// cout << "[TEST] session size" << session_data.size() << endl;
+	
+	/*
 	if(row2 == 0)
 	  continue;
-	
+	*/
+
+	/*
 	if(rec2.size() < 34)
 	  {
 	    miss_counter++;
 	    continue;
 	  }
-   
-	std::string srcIP = rec2[27];
-	std::string destIP = rec2[20];
+	*/   
+
+	std::string srcIP = rec2[4];
+	std::string destIP = rec2[7];
 	
 	for(size_t c = srcIP.find_first_of("\""); c != string::npos; c = c = srcIP.find_first_of("\"")){
 	  srcIP.erase(c,1);
@@ -247,7 +258,13 @@ int traverse_file(char* filename, char* filelist_name, int thread_id) {
 	for(size_t c = destIP.find_first_of("\""); c != string::npos; c = c = destIP.find_first_of("\"")){
 	  destIP.erase(c,1);
 	}
-				
+
+	/*
+        cout << "[test] srcIP: " << srcIP << endl;
+	cout << "[test] destIP: " << destIP << endl;
+	cout << "[test] addr: " << argIP << endl; 
+	*/	
+
 	std::string sessionIPstring;
 	for (const auto subStr : split_string_2(srcIP, del2)) {
 	  unsigned long ipaddr_src;
