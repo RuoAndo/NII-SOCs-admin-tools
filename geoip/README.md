@@ -9,4 +9,7 @@
 # pip install geoip2
 
 # split -n 10 tmp-ipaddr -d 1
+
+# pip install geopy 
+
 </pre>
