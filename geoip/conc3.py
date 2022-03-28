@@ -3,81 +3,96 @@ import time
 import mpu
 import geoip2.database
 import os
+import datetime
 
 from haversine import haversine, Unit
 
-def test(x):
-
-    reader = geoip2.database.Reader('GeoLite2-City.mmdb')
+reader = geoip2.database.Reader('GeoLite2-City.mmdb')
     
-    dnsiplist = []  
+dnsiplist = []  
 
-    file_dns=str(x)
+file_gs= "gs.txt"  
+
+with open(file_gs) as f:
     
-    with open(file_dns) as f:
+    for line in f:
+        dnsiplist.append(line.strip()) 
         
-        for line in f:
-            dnsiplist.append(line.strip()) 
+f.close()
 
-    f.close()
+rfilename = "100"
+wfilename = "100" + ".dis"
 
-    file_gs = "gs.txt"  
-    wfilename = str(x) + ".dis"
-
+try:
     os.remove(wfilename)
-    fw = open(wfilename, 'a')
+except:
+    pass
+    
+for ip in dnsiplist:
+            
+    distance = 100000000000000
+    nearest_ip = ""
+    
+    response = reader.city(ip)
+
+    print(ip)
+    print("open " + rfilename)
 
     counter = 0
-    
-    with open(file_gs) as f2:
+    with open(rfilename) as rf:
         
-        reader2 = geoip2.database.Reader('GeoLite2-City.mmdb')
-        for line2 in f2:
+        for line2 in rf:
 
-            print(line2.strip())
+            #reader2 = geoip2.database.Reader('GeoLite2-City.mmdb')
+
+            counter = counter + 1
+            #print(counter)
+
+            now = datetime.datetime.now()            
+
+            if counter % 100000 == 0:
+                print("[" + str(now) + "] " + str(counter) + " lines done." )
+
             
-            response = reader.city(line2)
-           
-            for ip in dnsiplist:
-                 #print(ip)
-
-                try:
-                    
-                    response2 = reader.city(ip)
-
-                    lyon = (response2.location.latitude, response2.location.longitude) # (lat, lon)
-                    paris = (response.location.latitude, response.location.longitude) # (lat, lon)
-
-                    #print(haversine(lyon, paris))
-                    fw.write(str(line2.strip())+","+str(ip)+","+str(haversine(lyon, paris))+"\n")
-
-                    counter = counter + 1
-
-
-
-                    
-                except:
-                    pass
-
-
-                if counter % 1000000 == 0:
-                    print(counter + "  - done.")
+            try:
+                response2 = reader.city(line2.strip())
+            except:
+                continue
                 
-                
+            try:
 
-        reader2.close()
+                paris = (response.location.latitude, response.location.longitude) # (lat, lon)
+                lyon = (response2.location.latitude, response2.location.longitude) # (lat, lon)
 
-        print(counter)
-        
-    f2.close()
-    fw.close()        
+                if float(distance) > float(haversine(lyon, paris)):
+                    #fw = open(wfilename, 'a')
+                    #fw.write(str(ip)+","+str(line2.strip())+","+str(haversine(lyon, paris))+"\n")
+                    #fw.close()        
 
-    reader.close()
+                    now = datetime.datetime.now()            
+                    print("[" + str(now) + "] UPDATE:"+str(ip)+","+str(line2.strip())+","+str(haversine(lyon, paris)))
+
+                    nearest_ip = line2.strip()
+                    distance = haversine(lyon, paris) 
+                        
+                           
+            except:
+                continue
+
+            #reader2.close()
+
+
+    now = datetime.datetime.now()            
+
+    fw = open(wfilename, 'a')
+    fw.write(str(ip)+","+str(line2.strip())+","+str(haversine(lyon, paris))+"\n")
+    fw.close()
+    
+    print("["+str(now)+"]"+" COMMIT: "+str(nearest_ip)+","+str(line2.strip())+","+str(haversine(lyon, paris)))
+    
+    print("close " + rfilename)
+    rf.close()    
+
+reader.close()
     
        
-#a=[100,101,102,103,104,105,106,107,108,109]
-a=[100]
-
-with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-    for i in a:
-        executor.submit(test,i)
