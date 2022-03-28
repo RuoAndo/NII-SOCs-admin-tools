@@ -96,7 +96,7 @@ def test(x):
 a=[100,101,102,103,104,105,106,107,108,109]
 #a=[100]
 
-with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
     for i in a:
         executor.submit(test,i)
            
