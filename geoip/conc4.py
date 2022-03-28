@@ -71,7 +71,7 @@ def test(x):
                         #fw.close()        
 
                         now = datetime.datetime.now()            
-                        print("[" + str(now) + "][" + str(x) + "] UPDATE:" + str(ip)+","+str(line2.strip())+","+str(haversine(lyon, paris)))
+                        print("[" + str(now) + "][" + str(x) + "] UPDATE:" + str(ip)+","+str(line2.strip())+","+str(haversine(lyon, paris))+" at line:" + str(counter) )
 
                         nearest_ip = line2.strip()
                         distance = haversine(lyon, paris) 
