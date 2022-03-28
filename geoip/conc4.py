@@ -93,7 +93,8 @@ def test(x):
         print("close " + rfilename)
         rf.close()    
 
-a=[100,101,102,103,104,105,106,107,108,109]
+#a=[100,101,102,103,104,105,106,107,108,109]
+a=list(range(100, 150))
 #a=[100]
 
 with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
