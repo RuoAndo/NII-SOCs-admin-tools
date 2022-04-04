@@ -1,6 +1,6 @@
 import concurrent.futures
 import time
-import mpu
+#import mpu
 import geoip2.database
 import os
 import datetime
@@ -84,11 +84,11 @@ def test(x):
 
         now = datetime.datetime.now()            
 
-        fw = open(wfilename, 'a')
-        fw.write(str(ip)+","+str(line2.strip())+","+str(haversine(lyon, paris))+"\n")
-        fw.close()
-    
         print("["+str(now)+"]"+" COMMIT: "+str(ip)+","+str(nearest_ip)+","+str(haversine(lyon, paris)))
+
+        fw = open(wfilename, 'a')
+        fw.write(str(ip)+","+str(nearest_ip)+","+str(haversine(lyon, paris)))
+        fw.close()
     
         print("close " + rfilename)
         rf.close()    
@@ -97,7 +97,7 @@ def test(x):
 a=list(range(100, 150))
 #a=[100]
 
-with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
     for i in a:
         executor.submit(test,i)
            
