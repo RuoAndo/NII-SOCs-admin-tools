@@ -87,7 +87,7 @@ def test(x):
         print("["+str(now)+"]"+" COMMIT: "+str(ip)+","+str(nearest_ip)+","+str(haversine(lyon, paris)))
 
         fw = open(wfilename, 'a')
-        fw.write(str(ip)+","+str(nearest_ip)+","+str(haversine(lyon, paris)))
+        fw.write(str(ip)+","+str(nearest_ip)+","+str(haversine(lyon, paris))+"\n")
         fw.close()
     
         print("close " + rfilename)
