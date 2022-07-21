@@ -1,0 +1,10 @@
+cat MIN | awk -F',' '{print int($4)}'
+cat MIN | awk -F',' '{print int($4)}'
+
+cat MIN | awk -F',' '{print $1","$2","$3","int($4)}' y
+cat MIN-2 | awk -F',' '$4==0 {print $1}' 
+
+cat MIN-2 | awk -F',' '$4<200 {print $1}' | wc -l
+76
+cat MIN-2 | awk -F',' '$4>200 {print $1}' | wc -l
+226
