@@ -17,14 +17,14 @@ with open(filename, encoding='utf8', newline='') as f:
     for row in csvreader:
         print(row)
 
-        if int(float(row[3])) < 1250: 
-            #A = (row[1], row[2])
-            X.append(int(float(row[3])))
+        try:
+            if int(float(row[3])) < 1250: 
+                #A = (row[1], row[2])
+                X.append(int(float(row[3])))
 
-      
-#plt.hist(X,bins=50)
-#plt.hist(X, bins=50, cumulative=True)
-
+        except:
+            pass
+        
 fig, ax = plt.subplots()
 ax.hist(X,bins=50)
 
