@@ -1,3 +1,5 @@
+
+
 cat MIN | awk -F',' '{print int($4)}'
 cat MIN | awk -F',' '{print int($4)}'
 
@@ -7,4 +9,22 @@ cat MIN-2 | awk -F',' '$4==0 {print $1}'
 cat MIN-2 | awk -F',' '$4<200 {print $1}' | wc -l
 76
 cat MIN-2 | awk -F',' '$4>200 {print $1}' | wc -l
+
 226
+
+ 2033  sort -k1,1 TRACEROUTE-2
+  2034  sort -k1,1 TRACEROUTE-2 | head
+   2035  sort -k1,1 MIN-2 | head
+    2036  sort -k1,1 MIN-2 > MIN-2-sorted
+     2037  sort -k1,1 TRACEROUTE-2 > TRACEROUTE-2-sorted
+      2038  paste MIN-2-sorted TRACEROUTE-2-sorted -d ","
+       2039  paste MIN-2-sorted TRACEROUTE-2-sorted -d "," > tmp
+        2040  more tmp
+	 2041  paste MIN-2-sorted TRACEROUTE-2-sorted -d "," > MIN-TRACEROUTE-COMO
+	  2042  paste MIN-2-sorted TRACEROUTE-2-sorted -d "," > MIN-TRACEROUTE-COMP
+
+
+ 2046  ./lessthan-traceroute-min.sh | cut -d "," -f4,8 > tmp-48
+ 2047  more tmp-48
+ 2048  python hist2.py tmp-48 
+
