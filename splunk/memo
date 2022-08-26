@@ -4,3 +4,6 @@ source="/home/flare/alerts/target" | stats count by source_ip | outputcsv target
  2048  ./sort.pl tmp
  2049  ./sort.pl tmp > tmp-sorted
 
+ 2205  python scatter.py tmp tmp2
+ 2211  python scatter2.py tmp3
+
