@@ -54,9 +54,23 @@ int main(int argc, char **argv)
             exit_code = 4;
             goto end;
         }
+	
+	MMDB_entry_data_s data;
+	float lat;
+	float lng;
+	
+	MMDB_get_value(&result.entry, &data, "location", "latitude", NULL);
+	// fprintf(stdout, "Data (%d, %d): %f\n", (int)data.has_data, data.data_size, data.double_value);
+	lat = data.double_value;
+	
+	MMDB_get_value(&result.entry, &data, "location", "longitude", NULL);
+	// fprintf(stdout, "Data (%d, %d): %f\n", (int)data.has_data, data.data_size, data.double_value);
+	lng = data.double_value;
 
+	printf("%f,%f \n", lat, lng);
+	
         if (NULL != entry_data_list) {
-            MMDB_dump_entry_data_list(stdout, entry_data_list, 2);
+	  // MMDB_dump_entry_data_list(stdout, entry_data_list, 2);
         }
     } else {
         fprintf(
