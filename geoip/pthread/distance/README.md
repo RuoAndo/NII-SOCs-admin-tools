@@ -32,3 +32,15 @@ mv xa* ./box/a
 13 time ./multi_measure_2 box/g/ $MINDIS $2 | tee -a log
 14 time ./multi_measure_2 box/h/ $MINDIS $2 | tee -a log
 </pre>
+
+#2
+
+<pre>
+# cp ../GeoLite2-City.mmdb .
+# time ./do.sh 0 gs.txt
+real	6m32.702s
+user	3m28.617s
+sys	5m46.207s
+</pre>
+
+
