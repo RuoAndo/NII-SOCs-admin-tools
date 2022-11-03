@@ -1,5 +1,19 @@
 # 0
-split -n 8 iplist 
+
+split -n 400 iplist
+mv xa* ./box/a
+...
+
+<pre>
+# tree
+\u251c\u2500\u2500 box
+\u2502 \u251c\u2500\u2500 a
+\u2502 \u2502 \u251c\u2500\u2500 xaa
+\u2502 \u2502 \u251c\u2500\u2500 xab
+\u2502 \u2502 \u251c\u2500\u2500 xac
+\u2502 \u2502 \u251c\u2500\u2500 xad
+\u2502 \u2502 \u251c\u2500\u2500 xae
+</pre>
 
 # 1
 <pre>
