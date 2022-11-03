@@ -1,3 +1,7 @@
+# 0
+split -n 8 iplist 
+
+# 1
 <pre>
  1 ./build.sh multi_measure_2
  2
