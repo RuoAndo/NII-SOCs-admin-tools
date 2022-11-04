@@ -60,3 +60,10 @@ grep distance log |  cut -d ":" -f 4 | sort | uniq -c | grep -E '[0-9]{1,3}\.[0-
 t $1}' > COUNT
 paste IP COUNT -d ","
 </pre>
+
+distance, count
+<pre>
+grep distance log |  cut -d ":" -f 7 | uniq -c | awk '{print $1}' > COUNT
+grep distance log |  cut -d ":" -f 7 | uniq -c | awk '{print $2}' > DISTANCE
+paste DISTANCE COUNT -d ","
+<pre>
