@@ -65,7 +65,7 @@ distance, count
 # grep distance log |  cut -d ":" -f 7 | uniq -c | awk '{print $1}' > COUNT
 # grep distance log |  cut -d ":" -f 7 | uniq -c | awk '{print $2}' > DISTANCE
 # paste DISTANCE COUNT -d ","
-<pre>
+</pre>
 
 <pre>
 # paste DISTANCE COUNT -d "," | grep -v box | grep -v BINGO
