@@ -50,3 +50,13 @@ Main
 [BINGO][thread_id]:2:box/a//xar:*.*.67.124:37.751,-97.822->*.*.152.252:37.751,-97.822,distance:0
 [BINGO][thread_id]:2:box/a//xar:*.*.67.124:37.751,-97.822->*.*.145.125:37.751,-97.822,distance:0
 </pre>
+
+# 3 
+count.sh
+<pre>
+grep distance log |  cut -d ":" -f 4 | sort | uniq -c | grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | awk '{ prin
+t $2}' > IP
+grep distance log |  cut -d ":" -f 4 | sort | uniq -c | grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | awk '{ prin
+t $1}' > COUNT
+paste IP COUNT -d ","
+</pre>
