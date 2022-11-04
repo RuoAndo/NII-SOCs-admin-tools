@@ -1,5 +1,4 @@
 # 0
-
 split -n 400 iplist
 mv xa* ./box/a
 ...
