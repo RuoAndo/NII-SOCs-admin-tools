@@ -71,3 +71,16 @@ distance, count
 <pre>
 # paste DISTANCE COUNT -d "," | grep -v box | grep -v BINGO
 </pre>
+
+<pre>
+# paste DISTANCE COUNT -d "," | grep -v box | sed s'/,/ /' > tmp
+</pre>
+
+<pre>
+# awk -f sum.awk tmp | sort -t " " -k2n > tmp2
+# head -n 5 tmp2
+0.302481 1
+1000.02 1
+1001.93 1
+1003.24 1
+</pre>
