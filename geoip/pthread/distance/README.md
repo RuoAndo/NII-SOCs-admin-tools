@@ -33,8 +33,7 @@ mv xa* ./box/a
 14 time ./multi_measure_2 box/h/ $MINDIS $2 | tee -a log
 </pre>
 
-#2
-
+#　2
 <pre>
 # cp ../GeoLite2-City.mmdb .
 # time ./do.sh 0 gs.txt
@@ -43,4 +42,11 @@ user	3m28.617s
 sys	5m46.207s
 </pre>
 
-
+<pre>
+# head -n 5 log 
+Main
+[08:26:28.553] thread - 1 launched.
+[08:26:28.554] thread - 2 launched.
+[BINGO][thread_id]:2:box/a//xar:*.*.67.124:37.751,-97.822->*.*.152.252:37.751,-97.822,distance:0
+[BINGO][thread_id]:2:box/a//xar:*.*.67.124:37.751,-97.822->*.*.145.125:37.751,-97.822,distance:0
+</pre>
