@@ -8,6 +8,7 @@ while read line; do
     #echo $ip
     latlng=`python geoip-test.py $ip`
 
-    echo $ip","$count","$latlng
+    echo $latlng","$count
+    #echo $count","$latlng
     
 done < result.${2}.${1}
