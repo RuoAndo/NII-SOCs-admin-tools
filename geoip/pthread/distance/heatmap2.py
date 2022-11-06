@@ -6,6 +6,7 @@ import geopandas as gpd
 import sys
 args = sys.argv
 
+# reading newly generated tmp
 df = pd.read_csv('tmp')
 print(df['lat'])
 
