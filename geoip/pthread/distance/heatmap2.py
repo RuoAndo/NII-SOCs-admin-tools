@@ -3,6 +3,9 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import geopandas as gpd
 
+import sys
+args = sys.argv
+
 df = pd.read_csv('tmp')
 print(df['lat'])
 
@@ -32,4 +35,10 @@ plt.ylim([-90, 90])
 #          str(first_year) + " - " + str(last_year))
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
+
+imgstring = args[1] + "." + args[2] + ".png" 
+
+plt.savefig(imgstring)
 plt.show()
+
+

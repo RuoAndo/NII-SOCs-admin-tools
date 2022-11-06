@@ -1,4 +1,4 @@
-#time ./do.sh $1 $2 
+time ./do.sh $1 $2 
 grep tbb log | grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3},[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d ":" -f 2 | cut -d "," -f 1 | sort | uniq -c  | awk '{print $2,$1}' | sort -t " " -k 2n > result.${2}.${1}
 
 while read line; do
@@ -12,3 +12,5 @@ while read line; do
     #echo $count","$latlng
     
 done < result.${2}.${1}
+
+python heatmap2.py ${2} ${1}
