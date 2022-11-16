@@ -24,7 +24,7 @@ y = df['lng']
 z = df['count']
 plt.scatter(x, y, s=20*z, c=z, alpha=0.6, vmin=0, vmax=threshold,
             cmap='autumn')
-plt.colorbar(label='Impact Energy [kt]')
+plt.colorbar(label='Server intensive rate')
 
 # Creating axis limits and title
 plt.xlim([-180, 180])
@@ -34,12 +34,15 @@ plt.ylim([-90, 90])
 #last_year = df["Datetime"].max().strftime("%Y")
 #plt.title("NASA: Fireballs Reported by Government Sensors\n" +     
 #          str(first_year) + " - " + str(last_year))
+
+plt.title(args[2])
+
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 
 imgstring = args[1] + "." + args[2] + ".png" 
 
 plt.savefig(imgstring)
-plt.show()
+#plt.show()
 
 
