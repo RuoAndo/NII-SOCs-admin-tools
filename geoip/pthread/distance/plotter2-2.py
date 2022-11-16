@@ -12,14 +12,18 @@ data1
 
 data1_x = data1[data1.columns[0]]
 data1_y = data1[data1.columns[1]]
-ax1 = fig.add_subplot(2, 1, 1)
+#ax1 = fig.add_subplot(2, 1, 1, xscale="log")
+ax1 = fig.add_subplot(1, 2, 1)
 
+ax1.set_title("distance = 0 KM",fontsize=12)
 ax1.set_xlabel("IP")
 ax1.set_ylabel("density") 
 ax1.plot(data1_x, data1_y)
 
+#ax1.set_aspect('equal')
+
 ticks = 5
-plt.xticks(np.arange(0, len(data1_x), ticks), data1_x[::ticks], rotation=40)
+plt.xticks(np.arange(0, len(data1_x), ticks), data1_x[::ticks], rotation=40, fontsize=10)
 
 ####
 
@@ -28,18 +32,25 @@ data2
 
 data2_x = data2[data2.columns[0]]
 data2_y = data2[data2.columns[1]]
-ax2 = fig.add_subplot(2, 1, 2)
 
+#ax2 = fig.add_subplot(2, 1, 2, yscale="log")
+ax2 = fig.add_subplot(1, 2, 2)
+
+ax2.set_title("distance < 500 KM",fontsize=12)
 ax2.set_xlabel("IP")
-ax2.set_ylabel("density") 
+ax2.set_ylabel("density")
+
+#ax2.set_aspect('equal')
+
 ax2.plot(data2_x, data2_y)
 
-ticks = 5
-plt.xticks(np.arange(0, len(data2_x), ticks), data2_x[::ticks], rotation=40)
+#ticks = 5
+plt.xticks(np.arange(0, len(data2_x), ticks), data2_x[::ticks], rotation=40, fontsize=10)
 
+####
 
+fig.subplots_adjust()
 fig.tight_layout()
-#fig.subplots_adjust()
 
 #plt.title(args[1])
 fig.show()
