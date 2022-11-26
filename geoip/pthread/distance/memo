@@ -1,4 +1,10 @@
- 461  time ./test.sh 0 hc.txt
+ 1216  python heatmap2.py covid19.txt 1000
+ 1217  eog covid19.txt.1000.png 
+
+461  time ./test.sh 0 hc.txt
 
 cat csv.covid19.txt.500 | cut -d "," -f 1 | sed -re 's/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/*.*.*.*/g' 
+cat csv.covid19.txt.500 | cut -d "," -f 1 | awk -F "." '{print $1.".*."$2.".*"}'
+
+1186  python plotter2.py plot.gs.txt.0 plot.gs.txt.500 
 
