@@ -4,20 +4,12 @@
 #include <string>
 #include <boost/tokenizer.hpp>
 
-
-
 std::vector < std::vector< std::string > > parse_csv(const char* filepath)
 {
-
-  using namespace std;
-
-  /*
   std::vector< std::vector< std::string > > cells;
   std::string line;
   std::ifstream ifs(filepath);
-  */
 
-  /*
   while (std::getline(ifs, line)) {
 
     std::vector< std::string > data;
@@ -29,9 +21,8 @@ std::vector < std::vector< std::string > > parse_csv(const char* filepath)
 
     cells.push_back(data);
   }
-  */
 
-  // return cells;
+ return cells;
 }
 
 
@@ -39,12 +30,14 @@ std::vector < std::vector< std::string > > parse_csv(const char* filepath)
 int main(void)
 {
   const auto cells = parse_csv("test.csv");
+
   for (const auto& rows : cells) {
     for (const auto& cell : rows) {
       std::cout << "<" << cell << "> " << std::endl;
     }
     std::cout << std::endl;
   }
+
 
   return 0;
 }

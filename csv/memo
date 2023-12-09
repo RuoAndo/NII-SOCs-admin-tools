@@ -1,0 +1,12 @@
+root@flare-Precision-Tower-7910:~/nii-cyber-security-admin/csv# g++ 1.cpp
+root@flare-Precision-Tower-7910:~/nii-cyber-security-admin/csv# ./a.out 
+
+<2017> 
+<hoge> 
+<> 
+<field 1> 
+
+<2018> 
+<huga> 
+<> 
+<field 4649> 
